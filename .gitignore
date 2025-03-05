@@ -1,48 +1,49 @@
-### Build output ###
-target/              # Output della compilazione di Maven
-build/               # Output della compilazione per altri strumenti
+# === Build e Output ===
+target/
 !**/src/main/**/target/
 !**/src/test/**/target/
+build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### Maven ###
-*.log                # File di log generici
-.mvn/wrapper/        # Cartella del wrapper Maven, può essere esclusa
-!.mvn/wrapper/maven-wrapper.jar # Manteniamo solo il jar del wrapper
+# === Maven Wrapper ===
+!.mvn/wrapper/maven-wrapper.jar
 
-### IntelliJ IDEA ###
-.idea/               # Configurazioni di IntelliJ (proprietarie, non necessarie)
+# === IntelliJ IDEA ===
+.idea/
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
-*.iws                # File di sessione
-*.iml                # File progetto IntelliJ
-*.ipr                # File progetto IntelliJ (versioni più vecchie)
+*.iws
+*.iml
+*.ipr
 
-### Eclipse ###
+# === Eclipse ===
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings/
+.settings
 .springBeans
 .sts4-cache
 
-### NetBeans ###
+# === NetBeans ===
 /nbproject/private/
-.nb-gradle/
-nbbuild/
-dist/
-nbdist/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-### VS Code ###
+# === VS Code ===
 .vscode/
 
-### File di sistema ###
-.DS_Store            # MacOS
-Thumbs.db            # Windows
+# === Sistema Operativo ===
+.DS_Store
+Thumbs.db
 
-### Git ###
-.vcs.xml             # File di IntelliJ legato al controllo di versione
+# === Log e File Temporanei ===
+*.log
+
+# === Git ===
+.vcs.xml
