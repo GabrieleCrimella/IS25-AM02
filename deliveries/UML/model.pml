@@ -199,6 +199,8 @@ package "Model"{
         GREEN 2
         YELLOW 3
         NONE 0
+        -int power
+        +int getPower()
     }
 
     class Motor extends Tile{
