@@ -83,7 +83,7 @@ package "Model"{
 
         +Gameboard(int level)
         +void movePosition(int step, Player p)
-        +List<Player> getClassifica()
+        +List<Player> getRanking()
     }
 
     enum TileType{
@@ -142,9 +142,9 @@ package "Model"{
         +void removeBattery()
     }
 
-    class Shield extends Tile{
+    class Shield extends BatteryUser{
         -boolean[4] shielded
-        +Shield(int north, int east, int south, int west)
+        +Shield(boolean n, boolean e, boolean s, boolean w)
         +boolean isShielded( RotationType side)
     }
 
@@ -174,22 +174,24 @@ package "Model"{
         +BrownCabin()
     }
 
+
     class Storage extends SpecialStorage{
         +boolean isvalid(BoxType t)
         +Storage(int maxNum)
     }
+    Note right: @overdrive addBox(..) con all'interno isvalid()
 
     class SpecialStorage extends Tile{
         -int maxNum
-        -TypeBox[maxNum] occupation
+        -List<Box> occupation
 
         +SpecialStorage(int maxNum)
-        +void addBox(TypeBox)
-        +TypeBox[maxNum] getOccupation()
-        +void removeBox(TypeBox box)
+        +void addBox(Box)
+        +List<Box> getOccupation()
+        +void removeBox(Box box)
         +int getNumOccupied()
-        +int getNumBox(TypeBox t)
     }
+
 
     enum BoxType{
         RED 4
@@ -197,21 +199,26 @@ package "Model"{
         GREEN 2
         YELLOW 3
         NONE 0
-        -int value
-        +boolean isSpecial()
-        +int getValue()
     }
 
     class Motor extends Tile{
+        +Motor()
     }
 
-    class DoubleMotor extends Motor{
+    class DoubleMotor extends BatteryUser{
+        +DoubleMotor()
     }
 
     class Cannon extends Tile{
+        +Cannon()
     }
 
-    class DoubleCannon extends Cannon{
+    class DoubleCannon extends BatteryUser{
+        +DoubleCannon()
+    }
+
+    abstract class BatteryUser extends Tile{
+        +UseBattery(BatteryStorage bs)
     }
 
 
@@ -260,79 +267,102 @@ package "Model"{
     Note right : createCard() farà solo una return creatore_di_this()
 
     class OpenSpace extends Card{
-        +OpenSpace openspace()
+        +Openspace()
         +OpenSpace createCard()
         +void effect(Gameboard gb)
     }
 
     class Stardust extends Card{
-        +Stardust stardust()
+        +Stardust()
         +Stardust createCard()
         +void effect(Gameboard gb)
     }
 
     class AbbandonedShip extends Card{
-        +AbbandonedShip abbandonedship()
+        -int humanLost
+        -int creditwin
+        -int flyBack
+
+        +AbbandonedShip(int h, int c, int fB)
         +AbbandonedShip createCard()
         +void effect(Gameboard gb)
     }
 
-    class Planet extends Card{
+    class Planet extends Card_with_box{
         -int daysLost
-        -List<int[4]> planetOffers
+        -List<List<Box>> planetOffers
 
+        +Planet(int daysLost, List<List<Box>> planetOffers)
         +Planet createCard()
         +void effect(Gameboard gb)
-        +Planet planet(int daysLost, List<int[4]> planetOffers)
     }
 
     class MeteoritesStorm extends Card{
         -List<int[2]> meteorites
-        +void effect(List<Player> p, List<int[2]> meteorites)
+
+        +MeteoritesStorm(List<int[2]> m)
+        +MeteoritesStorm createCard()
+        +void effect(Gameboard gb)
     }
 
     abstract class Enemies extends Card{
         -int cannonPowers
         -int daysLost
+        -int credit
+
+        +Enemies(int c, int d, int cr)
         +int getCannonPowers()
         +int getDaysLost()
+        +int getCredit()
     }
 
     class Pirates extends Enemies{
         -boolean[3] shots
-        -int credits
-        +void effect(List<Player> p, int cannonPowers, int daysLost, boolean[3] shots, int credits)
-    }
 
-    class Trafficker extends Enemies{
-        -int boxesLost
-        -int[4] boxesWon
-        +void effect(List<Player> p, int cannonPowers, int daysLost, int boxesLost, int boxesWon)
+        +Pirates(int c, int d, int cr, boolean[3] shots)
+        +Pirates createCard()
+        +void effect(Gameboard gb)
     }
 
     class SlaveOwner extends Enemies{
         -int humansLost
-        -int credits
-        +void effect(List<Player> p, int cannonPowers, int daysLost, int humanLost, int credits)
+
+        +SlaveOwner(int c, int d, int cr, int human)
+        +SlaveOwner createCard()
+        +void effect(Gameboard gb)
     }
 
-    class AbbandonedStation extends Card{
-        -int humansNeeded
-        -int[4] boxesWon
+    class Trafficker extends Card_with_box{
+        -int cannonPowers
         -int daysLost
-        +void effect(List<Player> p, int humansNeeded, int[4] boxesWon, int daysLost)
+        -int boxesLost
+        -List<Box> boxesWon
+
+        +Trafficker(int c, int d, int b)
+        +Trafficker createCard()
+        +void effect(Gameboard gb)
+    }
+
+    class AbbandonedStation extends Card_with_box{
+        -int humansNeeded
+        -int daysLost
+        -List<Box> boxesWon
+
+        +AbbandonedStation(int h, int d)
+        +AbbandonedStation createCard()
+        +void effect(Gameboard gb)
     }
 
     class WarZoneI extends Card{
-        +void effect(List<Player> p)
+        +void effect(Gameboard gb)
     }
 
     class WarZoneII extends Card{
-        +void effect(List<Player> p)
+        +void effect(Gameboard gb)
     }
 
     class Epidemy extends Card{
-        +void effect(List<Player> p)
+        +void effect(Gameboard gb)
     }
 
     CardDeck *-- Card
@@ -355,5 +385,43 @@ package "Model"{
         YELLOW
         GREEN
         BLUE
+    }
+
+    abstract class Box {
+        -int value
+        -BoxType type
+
+        +Box(int value, BoxType type)
+        +int getValue()
+        +BoxType getBoxType()
     }
+
+    class RedBox extends Box{
+    }
+
+    class GreenBox extends Box{
+    }
+
+    class BlueBox extends Box{
+    }
+
+    class YellowBox extends Box{
+    }
+
+    class BoxStore{
+        -Hashmap<int value, List<Box> boxline> Store
+
+        +void addBox(Box box)
+        +Box removeBox(int value)
+    }
+
+    BoxStore *-- Box
+    Card_with_box --> BoxStore
+
+    Abstract class Card_with_box extends Card{
+        -BoxStore Store
+
+        +BoxStore getBoxStore()
+    }
+
 @enduml
