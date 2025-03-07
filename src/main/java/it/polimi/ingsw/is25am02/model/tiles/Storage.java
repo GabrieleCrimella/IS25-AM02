@@ -4,16 +4,17 @@ import it.polimi.ingsw.is25am02.model.BoxType;
 import it.polimi.ingsw.is25am02.model.ConnectorType;
 import it.polimi.ingsw.is25am02.model.RotationType;
 import it.polimi.ingsw.is25am02.model.TileType;
+import it.polimi.ingsw.is25am02.model.cards.Boxes.Box;
 
-public class Storage extends SpecialStorage{
+public class Storage extends SpecialStorage {
 
     public Storage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum) {
         super(t, connectors, rotationType, id, maxNum);
     }
 
-    public boolean isValid(BoxType t){
-        return false;
+    @Override
+    public void addBox(Box box) {
+        if (!box.getType().isSpecial())
+            super.addBox(box);
     }
-
-
 }

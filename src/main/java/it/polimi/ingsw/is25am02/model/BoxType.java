@@ -1,7 +1,7 @@
 package it.polimi.ingsw.is25am02.model;
 
 public enum BoxType {
-    RED(4), BLUE(1), GREEN(2), YELLOW(3), NONE(0);
+    BLUE(1), GREEN(2), YELLOW(3), RED(4), NONE(0);
 
     private int power;
 
@@ -11,5 +11,9 @@ public enum BoxType {
 
     public int getPower() {
         return power;
+    }
+
+    public boolean isSpecial(){
+        return this==BoxType.RED;
     }
 }
