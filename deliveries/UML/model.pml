@@ -166,11 +166,11 @@ package "Model"{
         +void removePurpleAlien()
     }
 
-    class PurpleCabin extends Cabin{
+    class PurpleCabin extends Tile{
         +PurpleCabin()
     }
 
-    class BrownCabin extends Cabin{
+    class BrownCabin extends Tile{
         +BrownCabin()
     }
 

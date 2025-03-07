@@ -30,10 +30,6 @@ public class Spaceship {
         }
     }
 
-    void startMask(){
-
-    }
-
     void addTile(int x, int y, Tile t){
         spaceshipBoard[x][y] = t;
     }
@@ -80,10 +76,6 @@ public class Spaceship {
 
     boolean checkSpaceship(){
         return false;
-    }
-
-    void fixSpaceship(){
-
     }
 
     List<Tile> getbatteryStorage(){
