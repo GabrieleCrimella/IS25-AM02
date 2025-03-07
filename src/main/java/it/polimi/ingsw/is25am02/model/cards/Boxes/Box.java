@@ -3,8 +3,8 @@ package it.polimi.ingsw.is25am02.model.cards.Boxes;
 import it.polimi.ingsw.is25am02.model.BoxType;
 
 public abstract class Box {
-    private int value;
-    private BoxType type;
+    private final int value;
+    private final BoxType type;
 
     public Box(int value, BoxType type) {
         this.value = value;
