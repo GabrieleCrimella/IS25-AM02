@@ -8,7 +8,6 @@ package "Model"{
         -int cosmicCredits
         -Tile currentTile
         +Spaceship(int level)
-        {abstract}+ void startMask()
         +void addTile(int x, int y, Tile t)
         +Tile getTile(int x, int y)
         +void removeTile(int x, int y)
@@ -16,12 +15,11 @@ package "Model"{
         +double calculateMotorPower()
         +int calculateExposedConnectors()
         +int getCosmicCredits()
-        +void addCosmicCredits()
-        +void removeCosmicCredits()
+        +void addCosmicCredits(int num)
+        +void removeCosmicCredits(int num)
         +int getNumOfWastedTiles()
         +void addNumOfWastedTiles(int num)
         +boolean checkSpaceship()
-        +void fixSpaceship()
         +List<Tile> getBatteryStorage()
         +void removeBattery(BatteryStorage t)
         +boolean isExposed(boolean row_coloumn, boolean right_left)
