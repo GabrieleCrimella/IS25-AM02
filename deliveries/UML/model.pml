@@ -425,5 +425,4 @@ package "Model"{
 
         +BoxStore getBoxStore()
     }
-
 @enduml

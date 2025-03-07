@@ -1,4 +1,4 @@
-package it.polimi.ingsw.is25am02.model;
+package it.polimi.ingsw.is25am02.model.Cards;
 
 public abstract class Card {
     private final int level;
@@ -12,5 +12,5 @@ public abstract class Card {
     }
 
     public abstract Card createCard();
-    public abstract void effect();
+    public abstract void effect(Gameboard gb);
 }
