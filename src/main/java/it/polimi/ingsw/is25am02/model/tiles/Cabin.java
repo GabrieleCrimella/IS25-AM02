@@ -28,16 +28,16 @@ public class Cabin extends Tile{
         return numBrownAlien;
     }
 
-    public void removeHumans (int num){
-        numHuman -= num;
-    }
-
-    public void removePurpleAlien(){
-        numPurpleAlien -= 1;
-    }
-
-    public void removeBrownAlien(){
-        numBrownAlien -= 1;
+    public void remove (int num){
+        if (numHuman != 0){
+            numHuman =  numHuman - num;
+        }
+        if (numPurpleAlien != 0){
+            numPurpleAlien = numPurpleAlien - num;
+        }
+        if (numBrownAlien != 0){
+            numBrownAlien = numBrownAlien - num;
+        }
     }
 
 
