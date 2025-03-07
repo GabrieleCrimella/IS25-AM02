@@ -8,7 +8,7 @@ public abstract class Tile {
     private TileType tType;
     private ConnectorType[] connectors; // Correct declaration
     private RotationType rotationType;
-    private boolean visibile;
+    private boolean visible;
     private int id;
 
     //Constructor
@@ -21,15 +21,15 @@ public abstract class Tile {
         this.connectors = connectors;
         this.rotationType = rotationType;
         this.id = id;
-        this.visibile = false;
+        this.visible = false;
     }
 
     public int getId() {
         return id;
     }
 
-    public boolean isVisibile() {
-        return visibile;
+    public boolean isVisible() {
+        return visible;
     }
 
     public RotationType getRotationType() {
@@ -40,7 +40,7 @@ public abstract class Tile {
         return connectors;
     }
 
-    public TileType gettType() {
+    public TileType getType() {
         return tType;
     }
 
@@ -48,7 +48,7 @@ public abstract class Tile {
         return false;
     }
 
-    public void setVisibile(boolean visibile) {
-        this.visibile = visibile;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

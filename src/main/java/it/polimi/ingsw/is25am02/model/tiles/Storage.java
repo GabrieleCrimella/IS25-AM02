@@ -11,7 +11,7 @@ public class Storage extends SpecialStorage{
         super(t, connectors, rotationType, id, maxNum);
     }
 
-    public boolean isvalid(BoxType t){
+    public boolean isValid(BoxType t){
         return false;
     }
 
