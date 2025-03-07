@@ -1,6 +1,4 @@
-package it.polimi.ingsw.is25am02.model.cards.Boxes;
+package it.polimi.ingsw.is25am02.model.cards.boxes;
 
-
-//serve le carte che hanno interazione coi Box"
 public class BoxStore {
 }
