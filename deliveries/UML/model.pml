@@ -174,13 +174,6 @@ package "Model"{
         +BrownCabin()
     }
 
-
-    class Storage extends SpecialStorage{
-        +boolean isvalid(BoxType t)
-        +Storage(int maxNum)
-    }
-    Note right: @overdrive addBox(..) con all'interno isvalid()
-
     class SpecialStorage extends Tile{
         -int maxNum
         -List<Box> occupation
@@ -192,6 +185,10 @@ package "Model"{
         +int getNumOccupied()
     }
 
+    class Storage extends SpecialStorage{
+        +Storage(int maxNum)
+    }
+    Note right: @overdrive addBox(..) con all'interno isvalid() presente in BoxType
 
     enum BoxType{
         RED 4
@@ -201,6 +198,7 @@ package "Model"{
         NONE 0
         -int power
         +int getPower()
+        +boolean isValid()
     }
 
     class Motor extends Tile{
