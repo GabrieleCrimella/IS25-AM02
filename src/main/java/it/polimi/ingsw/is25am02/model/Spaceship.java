@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Spaceship {
@@ -30,87 +31,93 @@ public class Spaceship {
         }
     }
 
-    void addTile(int x, int y, Tile t){
+    public void  addTile(int x, int y, Tile t){
         spaceshipBoard[x][y] = t;
     }
 
-    Tile getTile(int x, int y){
+    public Tile getTile(int x, int y){
         return spaceshipBoard[x][y];
     }
 
-    void removeTile(int x, int y){
+    public void removeTile(int x, int y){
         spaceshipBoard[x][y] = null;
     }
 
-    double calculateCannonPower(){
+    public double calculateCannonPower(){
         return 0.0;
     }
 
-    double calculateMotorPower(){
-        return 0.0;
-    }
-
-    int calculateExposedConnectors(){
+    public int calculateMotorPower(){
         return 0;
     }
 
-    int getCosmicCredits(){
+    public int calculateExposedConnectors(){
+        return 0;
+    }
+
+    public int getCosmicCredits(){
         return cosmicCredits;
     }
 
-    void addCosmicCredits(int numCosmicCredits){
+    public void addCosmicCredits(int numCosmicCredits){
         cosmicCredits += numCosmicCredits;
     }
 
-    void removeCosmicCredits(int numCosmicCredits){
+    public void removeCosmicCredits(int numCosmicCredits){
         cosmicCredits -= numCosmicCredits;
     }
 
-    int getNumOfWastedTiles(){
+    public int getNumOfWastedTiles(){
         return numOfWastedTiles;
     }
 
-    void addNumOfWastedTiles(int num){
+    public void addNumOfWastedTiles(int num){
         numOfWastedTiles += num;
     }
 
-    boolean checkSpaceship(){
+    public boolean checkSpaceship(){
         return false;
     }
 
-    List<Tile> getbatteryStorage(){
+    public List<Tile> getbatteryStorage(){
         return null;
     }
 
-    void removeBattery(BatteryStorage t){
+    public void removeBattery(BatteryStorage t){
 
     }
 
-    boolean isExposed(boolean row_column, boolean right_left){
+    public boolean isExposed(boolean row_column, boolean right_left){
         return false;
     }
 
-    List<Cabin> getHumanCabins(){
+    public List<Cabin> getHumanCabins(){
         return null;
     }
 
-    List<Cabin> getPurpleCabins(){
+    public List<Cabin> getPurpleCabins(){
         return null;
     }
 
-    List<Cabin> getBrownCabins(){
+    public List<Cabin> getBrownCabins(){
         return null;
     }
 
-    Tile getCurrentTile(){
+    public Tile getCurrentTile(){
         return currentTile;
     }
 
-    List<SpecialStorage> getStorageTiles(){
+    public List<SpecialStorage> getStorageTiles(){
         return null;
     }
 
+    public void calculateDamageMeteorites(ArrayList<Integer> meteorites, int line){
 
+    }
+
+    public void calculateDamageShots(ArrayList<Integer> shots, int line){
+
+    }
 
 
 

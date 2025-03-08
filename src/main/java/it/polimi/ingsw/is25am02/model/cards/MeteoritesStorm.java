@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
+import it.polimi.ingsw.is25am02.model.Player;
 
 import java.util.ArrayList;
 
@@ -19,5 +20,12 @@ public class MeteoritesStorm extends Card {
         return new MeteoritesStorm(level, meteorites);
     }
 
-    public void effect(Gameboard gb){}
+    public void effect(Gameboard gb){
+        for(ArrayList<Integer> meteorite : meteorites){
+            int num = gb.getDice().pickRandomNumber();
+            for(Player i : gb.getRanking()){
+                i.getSpaceship().calculateDamageMeteorites(meteorite, num);
+            }
+        }
+    }
 }
