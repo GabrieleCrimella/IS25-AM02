@@ -22,4 +22,9 @@ public class Player {
     public PlayerColor getColor() {
         return color;
     }
+
+    //manages player interaction for yes or no answers
+    public boolean choose(){
+        return false;
+    }
 }

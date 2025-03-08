@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
+import it.polimi.ingsw.is25am02.model.Player;
 
 public class AbbandonedShip extends Card{
     private final int humanLost;
@@ -22,5 +23,13 @@ public class AbbandonedShip extends Card{
     }
 
     public void effect(Gameboard gb){
+        for(Player i: gb.getRanking()){
+            if(i.choose()){
+                i.getSpaceship().addCosmicCredits(creditWin);
+                gb.move(flyBack, i);
+                i.getSpaceship().removeCrew(humanLost);
+                break;
+            }
+        }
     }
 }

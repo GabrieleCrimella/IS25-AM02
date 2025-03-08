@@ -119,6 +119,10 @@ public class Spaceship {
 
     }
 
+    public void removeCrew(int alive){
+
+    }
+
 
 
 
