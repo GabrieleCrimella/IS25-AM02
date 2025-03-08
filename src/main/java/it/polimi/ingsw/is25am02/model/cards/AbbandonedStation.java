@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
+import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 
@@ -27,5 +28,12 @@ public class AbbandonedStation extends Card_with_box {
     }
 
     public void effect(Gameboard gb){
+        for(Player i : gb.getRanking()){
+            if(i.getSpaceship().crewMember() >= humanNeeded && i.choose()){
+                i.getSpaceship().boxManage();
+                gb.move(daysLost, i);
+                break;
+            }
+        }
     }
 }

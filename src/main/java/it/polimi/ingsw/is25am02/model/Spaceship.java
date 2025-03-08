@@ -115,13 +115,13 @@ public class Spaceship {
 
     }
 
-    public void calculateDamageShots(ArrayList<Integer> shots, int line){
+    public void calculateDamageShots(ArrayList<Integer> shots, int line){}
 
-    }
+    public void removeCrew(int alive){}
 
-    public void removeCrew(int alive){
+    public int crewMember(){ return 0; }
 
-    }
+    public void boxManage(){}
 
 
 
