@@ -8,7 +8,6 @@ package "Model"{
         -int cosmicCredits
         -Tile currentTile
         +Spaceship(int level)
-        {abstract}+ void startMask()
         +void addTile(int x, int y, Tile t)
         +Tile getTile(int x, int y)
         +void removeTile(int x, int y)
@@ -16,12 +15,11 @@ package "Model"{
         +double calculateMotorPower()
         +int calculateExposedConnectors()
         +int getCosmicCredits()
-        +void addCosmicCredits()
-        +void removeCosmicCredits()
+        +void addCosmicCredits(int num)
+        +void removeCosmicCredits(int num)
         +int getNumOfWastedTiles()
         +void addNumOfWastedTiles(int num)
         +boolean checkSpaceship()
-        +void fixSpaceship()
         +List<Tile> getBatteryStorage()
         +void removeBattery(BatteryStorage t)
         +boolean isExposed(boolean row_coloumn, boolean right_left)
@@ -166,20 +164,13 @@ package "Model"{
         +void removePurpleAlien()
     }
 
-    class PurpleCabin extends Cabin{
+    class PurpleCabin extends Tile{
         +PurpleCabin()
     }
 
-    class BrownCabin extends Cabin{
+    class BrownCabin extends Tile{
         +BrownCabin()
     }
-
-
-    class Storage extends SpecialStorage{
-        +boolean isvalid(BoxType t)
-        +Storage(int maxNum)
-    }
-    Note right: @overdrive addBox(..) con all'interno isvalid()
 
     class SpecialStorage extends Tile{
         -int maxNum
@@ -192,6 +183,10 @@ package "Model"{
         +int getNumOccupied()
     }
 
+    class Storage extends SpecialStorage{
+        +Storage(int maxNum)
+    }
+    Note right: @overdrive addBox(..) con all'interno isvalid() presente in BoxType
 
     enum BoxType{
         RED 4
@@ -199,6 +194,9 @@ package "Model"{
         GREEN 2
         YELLOW 3
         NONE 0
+        -int power
+        +int getPower()
+        +boolean isValid()
     }
 
     class Motor extends Tile{
@@ -423,5 +421,4 @@ package "Model"{
 
         +BoxStore getBoxStore()
     }
-
 @enduml

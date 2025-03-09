@@ -12,5 +12,5 @@ public abstract class Card {
     }
 
     public abstract Card createCard();
-    public abstract void effect();
+    public abstract void effect(Gameboard gb);
 }
