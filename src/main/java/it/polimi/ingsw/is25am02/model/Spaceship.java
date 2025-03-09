@@ -2,10 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
-import it.polimi.ingsw.is25am02.model.tiles.Cabin;
-import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +27,7 @@ public class Spaceship {
         loadSpaceshipMask(level);
     }
 
-    //Todo: da togliere, serve solo per il testing, per vedere che la legge correttamente da json
+    //serve solo per il testing, per vedere che la legge correttamente da json
     public boolean[][] getMaskSpaceship() {
         return maskSpaceship;
     }
@@ -57,8 +54,8 @@ public class Spaceship {
                 JsonNode maskNode = levelNode.get("mask"); // Estrai la maschera
                 maskSpaceship = new boolean[maskNode.size()][maskNode.get(0).size()];  //convert the JSON node in a boolean matrix
 
-                for (int i = 0; i < maskNode.size(); i++) {     //forall row
-                    for (int j = 0; j < maskNode.get(i).size(); j++) {      //forall element
+                for (int i = 0; i < maskNode.size(); i++) {     //forall rows
+                    for (int j = 0; j < maskNode.get(i).size(); j++) {      //forall elements
                         int value = maskNode.get(i).get(j).asInt();
                         if (value == 2) {
                             x_start = i;
@@ -118,32 +115,60 @@ public class Spaceship {
         numOfWastedTiles += num;
     }
 
+    //todo: fare il metodo
     public boolean checkSpaceship() {
         return false;
     }
 
+    //todo: fare il metodo
     public List<Tile> getbatteryStorage() {
         return null;
     }
 
+    //todo: fare il metodo
     public void removeBattery(BatteryStorage t) {
 
     }
 
+    //todo: fare il metodo
     public boolean isExposed(boolean row_column, boolean right_left) {
         return false;
     }
 
     public List<Cabin> getHumanCabins() {
-        return null;
+        List<Cabin> humanCabins = new ArrayList<>();
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.CABIN)) {
+                    humanCabins.add((Cabin) tile);
+                }
+            }
+        }
+        return humanCabins;
     }
 
     public List<Cabin> getPurpleCabins() {
-        return null;
+        List<Cabin> purpleCabins = new ArrayList<>();
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.PURPLE_CABIN)) {
+                    purpleCabins.add((Cabin) tile);
+                }
+            }
+        }
+        return purpleCabins;
     }
 
     public List<Cabin> getBrownCabins() {
-        return null;
+        List<Cabin> brownCabins = new ArrayList<>();
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.BROWN_CABIN)) {
+                    brownCabins.add((Cabin) tile);
+                }
+            }
+        }
+        return brownCabins;
     }
 
     public Tile getCurrentTile() {
@@ -151,23 +176,36 @@ public class Spaceship {
     }
 
     public List<SpecialStorage> getStorageTiles() {
-        return null;
+        List<SpecialStorage> storageTiles = new ArrayList<>();
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.SPECIAL_STORAGE) || tile.getType().equals(TileType.STORAGE)) {
+                    storageTiles.add((SpecialStorage) tile);
+                }
+            }
+        }
+        return storageTiles;
     }
 
+    //todo: fare il metodo
     public void calculateDamageMeteorites(ArrayList<Integer> meteorites, int line) {
 
     }
 
+    //todo: fare il metodo
     public void calculateDamageShots(ArrayList<Integer> shots, int line) {
     }
 
+    //todo: fare il metodo
     public void removeCrew(int alive) {
     }
 
+    //todo: fare il metodo
     public int crewMember() {
         return 0;
     }
 
+    //todo: fare il metodo
     public void boxManage() {
     }
 
