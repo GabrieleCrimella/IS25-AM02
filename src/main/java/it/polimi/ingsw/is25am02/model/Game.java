@@ -72,10 +72,11 @@ public class Game {
     public Card playNextCard(){
         return deck.playnextCard();
     }
-    public HashMap<Player p, int i> getPositions(){
-//todo
+    public HashMap<Player, Integer> getPositions(){
+        return globalBoard.getPositions();
     }
     public List<Tile> possibleChoice(Player p, TileType t){
 //todo
+        return null;
     }
 }
