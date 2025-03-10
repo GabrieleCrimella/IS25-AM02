@@ -85,27 +85,48 @@ public class Spaceship {
         spaceshipBoard[x][y] = null;
     }
 
-    public int getNumOfDoubleCannon() {
-        int num = 0;
+    //ritorna i cannoni doppi che può usare il giocatore
+    public List<DoubleCannon> getNumOfDoubleCannon() {
+        List<DoubleCannon> doubleCannons = new ArrayList<>();
         for (Tile[] tiles : spaceshipBoard) {
             for (Tile tile : tiles) {
                 if (tile.getType().equals(TileType.D_CANNON)) {
-                    num++;
+                    doubleCannons.add((DoubleCannon) tile);
                 }
             }
         }
-        return num;
+        return doubleCannons;
     }
 
     //todo: fare il metodo, aggiungere a UML che VA AGGIUNTA UNA firma (overload) del metodo e che ho aggiunto il metodo getNumOfDoubleCannon
-    public double calculateCannonPower() {
-        //in questo caso, ipotizzo che l'utente <NON> voglia usare cannoni doppi
-        return 0;
+    public double calculateCannonPower(List<DoubleCannon> doubleCannons) {
+        //calcola la potenza sinoglola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
+        return 0.0;
     }
 
-    //todo: fare il metodo
-    public int calculateMotorPower() {
-        return 0;
+    public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
+        int power = 0;
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.MOTOR)) {
+                    power++;
+                }
+            }
+        }
+        return power + doubleMotors.size() * 2;
+    }
+
+    //ritorna i motori doppi che può usare il giocatore
+    public List<DoubleMotor> getNumOfDoubleMotor() {
+        List<DoubleMotor> doubleMotor = new ArrayList<>();
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.D_MOTOR)) {
+                    doubleMotor.add((DoubleMotor) tile);
+                }
+            }
+        }
+        return doubleMotor;
     }
 
     //todo: fare il metodo
@@ -154,6 +175,11 @@ public class Spaceship {
                 }
             }
         }
+        //todo: controllare che i motori siano verso il dietro
+        //todo: controllare che non ci sia niente nella tile dopo dove punta un cannone
+        //todo: controllare che non ci sia niente dietro i motori
+
+        //todo: guardare anche le cose double
         return true;
     }
 
@@ -174,7 +200,7 @@ public class Spaceship {
     }
 
     //todo: fare il metodo
-    public boolean isExposed(boolean row_column, boolean right_left) {
+    public boolean isExposed(boolean row_column, boolean right_left__or__up_down) {
         return true;
     }
 
@@ -239,30 +265,23 @@ public class Spaceship {
     public void calculateDamageShots(ArrayList<Integer> shots, int line) {
     }
 
-    //todo: finire il metodo
+    //todo: rifare il metodo, creandone prima un altro che ritorna le tile che contengono delle persone vive.
+    //todo: in questo metodo non passare il numero di vivi da rimuovere, ma passare le tile da cui rimuovere i vivi
     public void removeCrew(int alive) {
         for (Tile[] tiles : spaceshipBoard) {
             for (Tile tile : tiles) {
-                if(tile.getType().equals(TileType.CABIN)){
+                if (tile.getType().equals(TileType.CABIN)) {
                     Cabin temp = (Cabin) tile;
-                    int num=temp.getNumBrownAlien()+temp.getNumPurpleAlien()+temp.getNumHuman();
-                    if(num>0 && alive >0){
-                        temp.remove(min(alive,num));
+                    int num = temp.getNumBrownAlien() + temp.getNumPurpleAlien() + temp.getNumHuman();
+                    if (num > 0 && alive > 0) {
+                        temp.remove(min(alive, num));
                     }
-                }
-                //todo finire il metodo, c'è un problema: PurpleCabin non eredita da Cabin, non ha i metodi adatti
-                if(tile.getType().equals(TileType.PURPLE_CABIN)){
-                    PurpleCabin temp = (PurpleCabin) tile;
-                }
-                //todo finire il metodo, c'è un problema: BrownCabin non eredita da Cabin, non ha i metodi adatti
-                if(tile.getType().equals(TileType.BROWN_CABIN)){
-                    BrownCabin temp = (BrownCabin) tile;
                 }
             }
         }
     }
 
-    //todo: fare il metodo
+    //todo: fare il metodo. ritorna il numero di vivi sulla nave (aliens e umani). gli alieni contano doppio
     public int crewMember() {
         return 0;
     }
