@@ -7,6 +7,7 @@ package "Model"{
         -int numOfWastedTiles
         -int cosmicCredits
         -Tile currentTile
+        -int x_start, y_start
         +Spaceship(int level)
         +void addTile(int x, int y, Tile t)
         +Tile getTile(int x, int y)
