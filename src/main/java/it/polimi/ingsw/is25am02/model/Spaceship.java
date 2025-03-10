@@ -9,13 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.min;
+
 public class Spaceship {
     private static final String JSON_FILE_PATH = "src/main/resources/json/spaceship.json";
-    private Tile[][] spaceshipBoard;
+    private final Tile[][] spaceshipBoard;
     private boolean[][] maskSpaceship;
     private int numOfWastedTiles;
     private int cosmicCredits;
-    private Tile currentTile;
+    private final Tile currentTile;
     private int x_start, y_start;
 
     public Spaceship(int level) {
@@ -83,14 +85,30 @@ public class Spaceship {
         spaceshipBoard[x][y] = null;
     }
 
+    public int getNumOfDoubleCannon() {
+        int num = 0;
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.D_CANNON)) {
+                    num++;
+                }
+            }
+        }
+        return num;
+    }
+
+    //todo: fare il metodo, aggiungere a UML che VA AGGIUNTA UNA firma (overload) del metodo e che ho aggiunto il metodo getNumOfDoubleCannon
     public double calculateCannonPower() {
+        //in questo caso, ipotizzo che l'utente <NON> voglia usare cannoni doppi
         return 0;
     }
 
+    //todo: fare il metodo
     public int calculateMotorPower() {
         return 0;
     }
 
+    //todo: fare il metodo
     public int calculateExposedConnectors() {
         return 0;
     }
@@ -115,24 +133,49 @@ public class Spaceship {
         numOfWastedTiles += num;
     }
 
-    //todo: fare il metodo
     public boolean checkSpaceship() {
-        return false;
+        for (int i = 1; i < spaceshipBoard.length - 1; i++) {
+            for (int j = 1; j < spaceshipBoard[i].length - 1; j++) {
+                if (spaceshipBoard[i + 1][j] != null) {
+                    if (!spaceshipBoard[i][j].checkConnectors(spaceshipBoard[i + 1][j], RotationType.EAST))
+                        return false;
+                }
+                if (spaceshipBoard[i - 1][j] != null) {
+                    if (!spaceshipBoard[i][j].checkConnectors(spaceshipBoard[i - 1][j], RotationType.WEST))
+                        return false;
+                }
+                if (spaceshipBoard[i][j + 1] != null) {
+                    if (!spaceshipBoard[i][j].checkConnectors(spaceshipBoard[i][j + 1], RotationType.NORTH))
+                        return false;
+                }
+                if (spaceshipBoard[i][j - 1] != null) {
+                    if (!spaceshipBoard[i][j].checkConnectors(spaceshipBoard[i][j - 1], RotationType.SOUTH))
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
-    //todo: fare il metodo
-    public List<Tile> getbatteryStorage() {
-        return null;
+    public List<BatteryStorage> getbatteryStorage() {
+        List<BatteryStorage> batteryStorages = new ArrayList<>();
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if (tile.getType().equals(TileType.BATTERY)) {
+                    batteryStorages.add((BatteryStorage) tile);
+                }
+            }
+        }
+        return batteryStorages;
     }
 
-    //todo: fare il metodo
     public void removeBattery(BatteryStorage t) {
-
+        t.removeBattery();
     }
 
     //todo: fare il metodo
     public boolean isExposed(boolean row_column, boolean right_left) {
-        return false;
+        return true;
     }
 
     public List<Cabin> getHumanCabins() {
@@ -196,8 +239,27 @@ public class Spaceship {
     public void calculateDamageShots(ArrayList<Integer> shots, int line) {
     }
 
-    //todo: fare il metodo
+    //todo: finire il metodo
     public void removeCrew(int alive) {
+        for (Tile[] tiles : spaceshipBoard) {
+            for (Tile tile : tiles) {
+                if(tile.getType().equals(TileType.CABIN)){
+                    Cabin temp = (Cabin) tile;
+                    int num=temp.getNumBrownAlien()+temp.getNumPurpleAlien()+temp.getNumHuman();
+                    if(num>0 && alive >0){
+                        temp.remove(min(alive,num));
+                    }
+                }
+                //todo finire il metodo, c'è un problema: PurpleCabin non eredita da Cabin, non ha i metodi adatti
+                if(tile.getType().equals(TileType.PURPLE_CABIN)){
+                    PurpleCabin temp = (PurpleCabin) tile;
+                }
+                //todo finire il metodo, c'è un problema: BrownCabin non eredita da Cabin, non ha i metodi adatti
+                if(tile.getType().equals(TileType.BROWN_CABIN)){
+                    BrownCabin temp = (BrownCabin) tile;
+                }
+            }
+        }
     }
 
     //todo: fare il metodo
