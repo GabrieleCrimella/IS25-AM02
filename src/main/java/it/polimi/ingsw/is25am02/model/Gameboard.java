@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Gameboard {
-    private int numStep;
-    private int[] startingPosition;
+    private final int numStep;
+    private final int[] startingPosition;
     HashMap<Player,Integer> positions;
     Dice dice;
 
@@ -26,6 +26,12 @@ public class Gameboard {
 
     public Dice getDice() {
         return dice;
+    }
+
+    public void initializeGameBoard(int[] startingPosition) {
+        for (int i = 0; i < getRanking().size(); i++) {
+            positions.put(getRanking().get(i), startingPosition[i]);
+        }
     }
 
     public void move(int step, Player player) {
