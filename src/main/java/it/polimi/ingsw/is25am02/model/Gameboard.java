@@ -29,10 +29,22 @@ public class Gameboard {
     }
 
     public void move(int step, Player player) {
+        int initial_position = positions.get(player);
+        int target_position = initial_position+step;
+        for(int i = initial_position; i <= initial_position+step; i++) {
+            while(positions.containsValue(i)){
+                target_position++;
+            }
+        }
 
+        positions.put(player,target_position);
     }
 
     public LinkedList<Player> getRanking() {
-        return null;
+        LinkedList<Player> ranking = new LinkedList<>();
+        ranking.addAll(positions.keySet()); //metto tutti i giocatori nella lista
+        //ordino i giocatori in base alla posizione sulla board
+        ranking.sort((p1, p2) -> Integer.compare(positions.get(p2), positions.get(p1)));
+        return ranking;
     }
 }
