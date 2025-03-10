@@ -290,5 +290,16 @@ public class Spaceship {
     public void boxManage() {
     }
 
+    public int calculateNumAlive(){
+        int alive = 0;
+        for (Cabin cabin : getHumanCabins()) {
+            alive +=cabin.getNumHuman();
+            alive += 2*cabin.getNumPurpleAlien();
+            alive += 2*cabin.getNumBrownAlien();
+        }
+        return alive;
+    }
+
+
 
 }
