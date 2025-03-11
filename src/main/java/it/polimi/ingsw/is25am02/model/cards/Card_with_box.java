@@ -1,7 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.cards.Boxes.BoxStore;
+import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 
 public abstract class Card_with_box extends Card {
     private BoxStore store;

@@ -2,8 +2,8 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.cards.Boxes.Box;
-import it.polimi.ingsw.is25am02.model.cards.Boxes.BoxStore;
+import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
 
 import java.util.ArrayList;
