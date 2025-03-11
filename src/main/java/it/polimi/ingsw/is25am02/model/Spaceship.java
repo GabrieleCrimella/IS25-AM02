@@ -89,10 +89,23 @@ public class Spaceship {
 
     public void returnTile() {//todo durante la fase di costruzione se scarto una carta, rimetto la current tile nel heaptile
     //dovrà chiamare addTile dell'heap
-
     }
 
-    //ritorna i cannoni doppi che può usare il giocatore
+    public boolean isShielded(RotationType side){
+        for (int i=0; i<12; i++) {
+            for (int j=0; j<12; j++) {
+                if  (spaceshipBoard[i][j] != null && spaceshipBoard[i][j].getType().equals(TileType.SHIELD)){
+                    Shield cur = (Shield) spaceshipBoard[i][j];
+                    if (cur.isShielded(side)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    //todo: ritorna i cannoni doppi che può usare il giocatore
     public List<DoubleCannon> getNumOfDoubleCannon() {
         List<DoubleCannon> doubleCannons = new ArrayList<>();
         for (Tile[] tiles : spaceshipBoard) {
@@ -105,11 +118,23 @@ public class Spaceship {
         return doubleCannons;
     }
 
+    //todo: metodo che controlla se c'è un cannone
+    public boolean isCannonPresent(RotationType side, int num){
+        return false;
+    }
+
+    //todo: metodo che controllo se c'è un doppio cannone
+    //qui la batteria viene utilizzata
+    public boolean isDoubleCannonPresent(RotationType side, int num){
+        return false;
+    }
+
     //todo: fare il metodo, aggiungere a UML che VA AGGIUNTA UNA firma (overload) del metodo e che ho aggiunto il metodo getNumOfDoubleCannon
     public double calculateCannonPower(List<DoubleCannon> doubleCannons) {
         //calcola la potenza sinoglola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         return 0.0;
     }
+
 
     public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
         int power = 0;
@@ -207,7 +232,7 @@ public class Spaceship {
     }
 
     //todo: fare il metodo
-    public boolean isExposed(boolean row_column, boolean right_left__or__up_down) {
+    public boolean isExposed(RotationType rotationType) {
         return true;
     }
 
@@ -263,9 +288,14 @@ public class Spaceship {
         return storageTiles;
     }
 
-    //todo: fare il metodo
+    //todo: fare il metodo - non sono sicura che serva
     public void calculateDamageMeteorites(ArrayList<Integer> meteorites, int line) {
 
+    }
+
+    //todo: calcolare la distruzione della nave in base a dove è arrivato il meteorie
+    //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
+    public void meteoriteDamage(int bigOrSmall, RotationType rotationType, int num) {
     }
 
     //todo: fare il metodo
@@ -296,8 +326,6 @@ public class Spaceship {
     //todo: fare il metodo
     public void boxManage() {
     }
-
-
 
     public int calculateNumAlive(){
         int alive = 0;

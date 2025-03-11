@@ -7,10 +7,14 @@ import java.util.List;
 import java.util.Set;
 
 public class Game {
+    private Card currentCard;
+    private Player currentPlayer;
+    private Gameboard globalBoard;
+    private int diceResult;
+
     private String gameName;
     private int maxAllowedPlayers;
     private List<Player> players;
-    private Gameboard globalBoard;
     private int level;
     private CardDeck deck;
     private Hourglass hourglass;
@@ -19,10 +23,13 @@ public class Game {
     public Game(List<Player> p, int level){
         this.players = p;
         this.level = level;
+        this.diceResult = 0;
     }
+
     public CardDeck getDeck(){
         return deck;
     }
+
     public Gameboard getGameboard(){
         return globalBoard;
     }
@@ -41,6 +48,11 @@ public class Game {
     public int getMaxAllowedPlayers(){
         return maxAllowedPlayers;
     }
+
+    public Card getCurrentCard(){
+        return currentCard;
+    }
+
 
     public HeapTiles getHeapTile() {
         return heapTile;
@@ -71,9 +83,6 @@ public class Game {
     public void removeTile(Player p, int x, int y){
         p.getSpaceship().removeTile(x, y);
     }
-    public Card playNextCard(){
-        return deck.playnextCard();
-    }
     public HashMap<Player, Integer> getPositions(){
         return globalBoard.getPositions();
     }
@@ -88,5 +97,31 @@ public class Game {
         return heapTile.getVisibleTiles();
     }
 
+    public void playNextCard(){
 
+        this.currentPlayer = getGameboard().getRanking().getFirst();
+        this.currentCard = deck.playnextCard();
+    }
+
+    public int getDiceResult() {
+        return diceResult;
+    }
+
+    public void setDiceResult(int diceResult) {
+        this.diceResult = getGameboard().getDice().pickRandomNumber();
+    }
+
+    public void nextPlayer(){
+        //Player diventa il prossimo player
+        //Se il player è l'ultimo il currentPlayer deve diventare il nuovo primo e cambiare carta. (forse exception forse viene implementato qui dentro)
+        //Gioca la carta corrente con il player nuovo
+    }
+
+    public void previousPlayer(){
+        //come next player ma torna indietro
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 }

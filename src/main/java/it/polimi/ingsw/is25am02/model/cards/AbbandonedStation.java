@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import java.util.LinkedList;
 
 public class AbbandonedStation extends Card_with_box {
-    private int level;
     private BoxStore store;
     private final int humanNeeded;
     private final int daysLost;
@@ -23,16 +23,25 @@ public class AbbandonedStation extends Card_with_box {
 
     public AbbandonedStation createCard(){
         //Here the code for reading on file the card's values
-        return new AbbandonedStation(level, store, humanNeeded, daysLost, boxesWon);
+        return new AbbandonedStation(getLevel(), store, humanNeeded, daysLost, boxesWon);
     }
 
-    public void effect(Gameboard gb){
-        for(Player i : gb.getRanking()){
+    public void effect(Game game, boolean choice){
+        if(game.getCurrentPlayer().getSpaceship().crewMember() >= humanNeeded && choice){
+            game.getCurrentPlayer().getSpaceship().boxManage();
+            game.getGameboard().move(daysLost, game.getCurrentPlayer());
+            game.playNextCard();
+        }
+        else {
+            game.nextPlayer();
+        }
+        /*
+            for(Player i : gb.getRanking()){
             if(i.getSpaceship().crewMember() >= humanNeeded && i.choose()){
                 i.getSpaceship().boxManage();
                 gb.move(daysLost, i);
                 break;
             }
-        }
+         */
     }
 }

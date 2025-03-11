@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
+import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 
@@ -17,12 +18,17 @@ public class Stardust extends Card {
         return new Stardust(level);
     }
 
-    public void effect(Gameboard gb){
+    public void effect(Game game){
+        game.getGameboard().move((-1)*game.getCurrentPlayer().getSpaceship().calculateExposedConnectors(), game.getCurrentPlayer());
+        game.previousPlayer();
+        /*
+        Anti-pattern
         ListIterator<Player> iterator = gb.getRanking().listIterator(gb.getRanking().size());
         Player i;
         while(iterator.hasPrevious()){
             i = iterator.previous();
             gb.move((-1) * i.getSpaceship().calculateExposedConnectors(), i);
+         */
         }
-    }
+
 }

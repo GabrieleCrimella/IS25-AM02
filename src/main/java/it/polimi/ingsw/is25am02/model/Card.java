@@ -11,6 +11,10 @@ public abstract class Card {
         return createCard();
     }
 
+    public int getLevel() {
+        return level;
+    }
+
     public abstract Card createCard();
-    public abstract void effect(Gameboard gb);
+    //public abstract void effect();
 }
