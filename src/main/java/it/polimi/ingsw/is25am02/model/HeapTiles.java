@@ -8,17 +8,12 @@ import java.util.Random;
 import java.util.Set;
 
 public class HeapTiles {
-    private Set<Tile> setTiles;
-    private Random random;
+    private final Set<Tile> setTiles;
+    private final Random random;
 
     public HeapTiles(Set<Tile> setTiles, Random random) {
         this.setTiles = setTiles;
         this.random = random;
-    }
-
-    public HeapTiles(Set<Tile> setTiles) {
-        this.setTiles = new HashSet<>(setTiles);
-        this.random = new Random();
     }
 
     public Tile DrawTile() {
@@ -45,9 +40,11 @@ public class HeapTiles {
         return visibleTiles;
     }
     public void removeVisibleTile(Tile t){
+
         getVisibleTiles().remove(t);
     }
     public void addTile(Tile t){
+
         getVisibleTiles().add(t);
     }
 }

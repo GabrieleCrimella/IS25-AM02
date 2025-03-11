@@ -36,6 +36,10 @@ public abstract class Tile {
         return rotationType;
     }
 
+    public void setRotationType(RotationType rotationType) {
+        this.rotationType = rotationType;
+    }
+
     public ConnectorType[] getConnectors() {
         return connectors;
     }

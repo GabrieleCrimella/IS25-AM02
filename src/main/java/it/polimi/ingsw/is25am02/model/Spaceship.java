@@ -81,8 +81,15 @@ public class Spaceship {
         return spaceshipBoard[x][y];
     }
 
-    public void removeTile(int x, int y) {
+    public void removeTile(int x, int y) { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
+
         spaceshipBoard[x][y] = null;
+        numOfWastedTiles++;
+    }
+
+    public void returnTile() {//todo durante la fase di costruzione se scarto una carta, rimetto la current tile nel heaptile
+    //dovrà chiamare addTile dell'heap
+
     }
 
     //ritorna i cannoni doppi che può usare il giocatore
@@ -242,7 +249,7 @@ public class Spaceship {
 
     public Tile getCurrentTile() {
         return currentTile;
-    }
+    }// è la tile che sto guardando
 
     public List<SpecialStorage> getStorageTiles() {
         List<SpecialStorage> storageTiles = new ArrayList<>();
@@ -289,6 +296,8 @@ public class Spaceship {
     //todo: fare il metodo
     public void boxManage() {
     }
+
+
 
     public int calculateNumAlive(){
         int alive = 0;

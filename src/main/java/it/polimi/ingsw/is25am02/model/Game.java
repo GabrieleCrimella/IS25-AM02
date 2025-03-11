@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class Game {
     private String gameName;
@@ -58,10 +59,11 @@ public class Game {
         //todo devo aggiungere la tile all'heap tiles
     }
 
-    public void addTile(Player p, Tile t, int x, int y){
+    public void addTile(Player p, Tile t, int x, int y, RotationType rotation){
+        t.setRotationType(rotation);
         p.getSpaceship().addTile(x, y, t);
     }
-    public void shipFinished(Player p){//todo serve??
+    public void shipFinished(Player p){//todo prende il player e lo mette in una delle posizioni di partenza
     }
     public boolean checkSpaceship(Player p){
         return p.getSpaceship().checkSpaceship();
@@ -76,7 +78,15 @@ public class Game {
         return globalBoard.getPositions();
     }
     public List<Tile> possibleChoice(Player p, TileType t){
-//todo
+        //todo mi ritorna una lista con tutti con tutte le tile di quel tipo per quel giocatore
         return null;
     }
+    public void removeTile(int x, int y) {
+        //todo
+    }
+    public Set<Tile> getVisibleTiles(){
+        return heapTile.getVisibleTiles();
+    }
+
+
 }
