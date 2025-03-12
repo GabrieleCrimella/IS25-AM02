@@ -1,67 +1,109 @@
 @startuml
 package "Model"{
 
-    abstract class Spaceship{
+    class Spaceship{
         -Tile[12][12] spaceshipBoard
         -boolean[12][12] maskSpaceship
         -int numOfWastedTiles
         -int cosmicCredits
         -Tile currentTile
         -int x_start, y_start
+        --
         +Spaceship(int level)
+        --
         +void addTile(int x, int y, Tile t)
         +Tile getTile(int x, int y)
         +void removeTile(int x, int y)
+        --
         +double calculateCannonPower()
         +double calculateMotorPower()
         +int calculateExposedConnectors()
+        +boolean checkSpaceship()
+        --
         +int getCosmicCredits()
         +void addCosmicCredits(int num)
         +void removeCosmicCredits(int num)
+        --
         +int getNumOfWastedTiles()
         +void addNumOfWastedTiles(int num)
-        +boolean checkSpaceship()
-        +List<Tile> getBatteryStorage()
+        --
         +void removeBattery(BatteryStorage t)
-        +boolean isExposed(boolean row_coloumn, boolean right_left)
-        +List<Cabin> getHumanCabins()
-        +List<Cabin> getPurpleCabins()
-        +List<Cabin> getBrownCabins()
+        +boolean isExposed(RotationType, int num)
         +Tile getCurrentTile()
-        +List<SpecialStorage> getStorageTiles()
+        +List<Tile> getList(TileType)
     }
+
+    Interface Game_Interface{
+        +void flipHourglass()
+        +Tile takeTile(Player p)
+        +Tile takeTile(Player p, Tile t)
+        +void returnTile(Tile t)
+        +void addTile(Player p, Tile t, int x, int y)
+        +void removeTile(Player p, int x, int y)
+        +void shipFinished(Player p)
+        +boolean checkSpaceship(Player p)
+        --
+        +void playNextCard()
+        +HashMap<int i, Player p> getPositions()
+        +HashMap<Player p, StatePlayerType> getState()
+        +List<Tile> possibleChoice(Player p, TypeTile t)
+        +List<Player> getWinners()
+    }
+
+    Game_Interface <|.. Game
 
     class Game{
         -String gameName
-        -int maxAllowedPlayers
-        -List<Player> players
-        -GameBoard globalBoard
         -int level
+        -int maxAllowedPlayers
+        -GameBoard globalBoard
         -CardDeck deck
         -Hourglass hourglass
         -HeapTiles heapTiles
-
+        -State state
+        --
         +Game(List<Player> p, int level)
+        --
         +CardDeck getDeck()
         +GlobalBoard getGlobalBoard()
-        +List<Player> getWinners()
         +List<Player> getPlayers()
         +String getName()
         +int getLevel()
         +HeapTiles getHeapTiles()
         +Hourglass getHourglass()
-        +void flipHourglass()
-        +Tile getTile()
-        +Tile getTile(Tile t)
-        +void returnTile(Tile t)
-        +void addTile(Player p, Tile t, int x, int y)
-        +void shipFinished(Player p)
-        +boolean checkSpaceship(Player p)
-        +void removeTile(Player p, int x, int y)
-        +Card playNextCard()
-        +HashMap<int i, Player p> getPositions()
-        +List<Tile> possibleChoice(Player p, TypeTile t)
     }
+
+    class State{
+        +Card currentCard
+        +Player currentPlayer
+        +HashMap<Player p, StatePlayerType> state
+        +StateType phase
+        --
+        Tutti i getter e setter per vedere i dati
+    }
+
+    enum StatePlayerType{
+        FINISHED
+        NOT_FINISHED
+        CORRECT_SHIP
+        WRONG_SHIP
+        IN_GAME
+        OUT_GAME
+    }
+
+    enum StateType{
+        START
+        INITIALIZATION
+        BUILD
+        CHECK
+        CORRECTION
+        TAKE_CARD
+        EFFECT_ON_PLAYER
+        CHANGE_CONDITION
+        RESULT
+    }
+
+    Game --> State
 
     Game --> Hourglass
 
@@ -79,7 +121,7 @@ package "Model"{
         -int numStep
         -int[4] startingPositions
         -HashMap<Player, int> position
-
+        --
         +Gameboard(int level)
         +void movePosition(int step, Player p)
         +List<Player> getRanking()
@@ -120,7 +162,7 @@ package "Model"{
         -RotationType rotation
         -boolean visible
         -int id
-
+        --
         +Tile(TileType t, ConnectorType[4] connectors, RotationType r, boolean v, int id)
         +int getId()
         +boolean getVisible()
@@ -129,6 +171,36 @@ package "Model"{
         +TileType getTileType()
         +boolean checkConnections(Tile t, RotationType sideToCheck)
         +void setVisible()
+        ---
+        Battey
+        +int getNumBattery()
+        +void removeBattery()
+        --
+        Shield
+        +boolean isShielded(RotationType side)
+        --
+        Cabin
+        +List<Alive> getNumCrew()
+        +void removeCrew(int num)
+        +void addCrew(Alive member)
+        --
+        Storage
+        +void addBox(Box)
+        +List<Box> getOccupation()
+        +void removeBox(Box box)
+        +int getNumOccupied()
+    }
+
+    class Alive{
+        -AliveType race
+        --
+        +AliveType getRace()
+    }
+
+    enum AliveType{
+        HUMAN
+        BROWN_ALIEN
+        PURPLE_ALIEN
     }
 
     Spaceship "1..n" o-- "1" Tile
@@ -137,14 +209,12 @@ package "Model"{
         -int Battery
         -int maxBattery
         +BatteryStorage(int maxBattery)
-        +int getNumBattery()
-        +void removeBattery()
     }
 
-    class Shield extends BatteryUser{
-        -boolean[4] shielded
-        +Shield(boolean n, boolean e, boolean s, boolean w)
-        +boolean isShielded( RotationType side)
+    class Shield extends Tile{
+        -HashMap<RotationType, boolean> shielded
+        --
+        +Shield(HashMap<RotationType, boolean> shielded)
     }
 
     class Structural extends Tile{
@@ -152,17 +222,9 @@ package "Model"{
     }
 
     class Cabin extends Tile{
-        -int numHuman
-        -int numPurpleAlien
-        -int numBrownAlien
-
+        List<Alive> Crew
+        --
         +Cabin(int human, int p_alien, int o_alien)
-        +int getNumHumans()
-        +int getNumPurpleAlien()
-        +int getNumBrownAlien()
-        +void removeHumans(int num)
-        +void removeBrownAlien()
-        +void removePurpleAlien()
     }
 
     class PurpleCabin extends Tile{
@@ -176,18 +238,13 @@ package "Model"{
     class SpecialStorage extends Tile{
         -int maxNum
         -List<Box> occupation
-
+        --
         +SpecialStorage(int maxNum)
-        +void addBox(Box)
-        +List<Box> getOccupation()
-        +void removeBox(Box box)
-        +int getNumOccupied()
     }
 
     class Storage extends SpecialStorage{
         +Storage(int maxNum)
     }
-    Note right: @overdrive addBox(..) con all'interno isvalid() presente in BoxType
 
     enum BoxType{
         RED 4
@@ -204,7 +261,7 @@ package "Model"{
         +Motor()
     }
 
-    class DoubleMotor extends BatteryUser{
+    class DoubleMotor extends Tile{
         +DoubleMotor()
     }
 
@@ -212,14 +269,9 @@ package "Model"{
         +Cannon()
     }
 
-    class DoubleCannon extends BatteryUser{
+    class DoubleCannon extends Tile{
         +DoubleCannon()
     }
-
-    abstract class BatteryUser extends Tile{
-        +UseBattery(BatteryStorage bs)
-    }
-
 
     class Dice{
         +int pickRandomNumber()
@@ -228,7 +280,7 @@ package "Model"{
     class Hourglass{
         -Timer timer
         -long durata
-
+        --
         +Hourglass()
         +long getTimeLeft()
         +void flip()
@@ -236,7 +288,7 @@ package "Model"{
 
     class HeapTiles{
         -Set<Tile> setTiles
-
+        --
         +HeapTiles()
         +Tile DrawTile()
         +Set<Tile> getVisibleTiles()
@@ -247,6 +299,7 @@ package "Model"{
     class CardDeck{
         -HashMap<int numDeck, List<Card> miniDeck,boolean occupied> deck
         -List<Card> finalDeck
+        --
         +CardDeck(int level)
         +List<Card> createFinalDeck()
         +Card giveCard()
@@ -256,7 +309,7 @@ package "Model"{
 
     abstract class Card{
         - int level
-
+        --
         +Card card(int level)
         +Card newCard()
         {abstract}+Card createCard()
@@ -422,4 +475,6 @@ package "Model"{
 
         +BoxStore getBoxStore()
     }
+
+    Cabin --> Alive
 @enduml
