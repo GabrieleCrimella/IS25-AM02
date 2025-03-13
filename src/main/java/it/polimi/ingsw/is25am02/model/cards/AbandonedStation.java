@@ -7,23 +7,23 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AbbandonedStation extends Card_with_box {
+public class AbandonedStation extends Card_with_box {
     private BoxStore store;
     private final int humanNeeded;
     private final int daysLost;
     private LinkedList<Box> boxesWon;
     private StateCardType stateCardType;
 
-    public AbbandonedStation(int level, BoxStore store, int humanNeeded, int daysLost, LinkedList<Box> boxesWon) {
+    public AbandonedStation(int level, BoxStore store, int humanNeeded, int daysLost, LinkedList<Box> boxesWon) {
         super(level, store);
         this.humanNeeded = humanNeeded;
         this.daysLost = daysLost;
         this.boxesWon = boxesWon;
     }
 
-    public AbbandonedStation createCard(){
+    public AbandonedStation createCard(){
         //Here the code for reading on file the card's values
-        return new AbbandonedStation(getLevel(), store, humanNeeded, daysLost, boxesWon);
+        return new AbandonedStation(getLevel(), store, humanNeeded, daysLost, boxesWon);
     }
 
     List<Box> choiceBox(Player p, boolean choice){

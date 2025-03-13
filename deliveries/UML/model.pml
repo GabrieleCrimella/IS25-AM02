@@ -51,7 +51,7 @@ package "Model"{
         --
         effetti carte
         void choice(Player p, boolean choice)
-        void removeCrew(Player p, Cabin cabin, int numCrew)
+        void removeCrew(Cabin cabin, int numCrew)
         List<Box> choiceBox(Player p, boolean choice)
         void moveBox(List<Box> start, List<Box> end, BoxType type)
         List<Box> choicePlanet(Player p, int index)
