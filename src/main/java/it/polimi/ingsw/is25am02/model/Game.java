@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class Game {
@@ -64,7 +65,7 @@ public class Game {
     public void flipHourglass(){
         hourglass.flip();
     }
-    public Tile getTile(Player p, int x, int y){//restituisce il tile in una certa posizione
+    public Optional<Tile> getTile(Player p, int x, int y){//restituisce il tile in una certa posizione
         return p.getSpaceship().getTile(x, y);
     }
     public void returnTile(Tile t){// vedo la tile e la ributto nel mucchio
