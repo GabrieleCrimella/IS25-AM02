@@ -48,6 +48,19 @@ package "Model"{
         +HashMap<Player p, StatePlayerType> getState()
         +List<Tile> possibleChoice(Player p, TypeTile t)
         +List<Player> getWinners()
+        --
+        effetti carte
+        void choice(Player p, boolean choice)
+        void removeCrew(Player p, Cabin cabin, int numCrew)
+        List<Box> choiceBox(Player p, boolean choice)
+        void moveBox(List<Box> start, List<Box> end, BoxType type)
+        List<Box> choicePlanet(Player p, int index)
+        void choiceDMotor(Player p, List<Pair<DoubleMotor, BatteryStorage>>)
+        void choiceDCannon(Player p, List<Pair<DoubleCannon, BatteryStorage>>)
+        void removeBox(Player p, SpecialStorage storage, BoxType type)
+        void removeBattery(Player p, BatteryStorage storage)
+
+
     }
 
     Game_Interface <|.. Game
@@ -102,6 +115,13 @@ package "Model"{
         EFFECT_ON_PLAYER
         CHANGE_CONDITION
         RESULT
+    }
+
+    enum StateCardType{
+        DECISION
+        CHOICE_ATTRIBUTES
+        REMOVE
+        BOXMANAGEMENT
     }
 
     Game --> State
@@ -173,7 +193,7 @@ package "Model"{
         +boolean checkConnections(Tile t, RotationType sideToCheck)
         +void setVisible()
         ---
-        Battey
+        Battery
         +int getNumBattery()
         +void removeBattery()
         --
@@ -314,7 +334,6 @@ package "Model"{
         +Card card(int level)
         +Card newCard()
         {abstract}+Card createCard()
-        {abstract}+void effect(Gameboard gb)
     }
 
     Note right : createCard() farà solo una return creatore_di_this()
