@@ -77,7 +77,7 @@ package "Model"{
         +Card currentCard
         +Player currentPlayer
         +HashMap<Player p, StatePlayerType> state
-        +StateType phase
+        +StateGameType phase
         --
         Tutti i getter e setter per vedere i dati
     }
@@ -91,12 +91,13 @@ package "Model"{
         OUT_GAME
     }
 
-    enum StateType{
+    enum StateGameType{
         START
-        INITIALIZATION
+        INITIALIZATION_GAME
         BUILD
         CHECK
         CORRECTION
+        INITIALIZATION_SPACESHIP
         TAKE_CARD
         EFFECT_ON_PLAYER
         CHANGE_CONDITION
