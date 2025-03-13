@@ -1,12 +1,15 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
-import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Game;
-import it.polimi.ingsw.is25am02.model.Gameboard;
-import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
+import it.polimi.ingsw.is25am02.model.tiles.DoubleMotor;
+import javafx.util.Pair;
+
+import java.util.List;
 
 public class OpenSpace extends Card {
     int level;
+    StateCardType stateCardType;
 
     public OpenSpace(int level) {
         super(level);
@@ -14,6 +17,10 @@ public class OpenSpace extends Card {
 
     public OpenSpace createCard(){
         return new OpenSpace(level);
+    }
+
+    void choiceDMotor(Player p, List<Pair<DoubleMotor, BatteryStorage>> whichDMotor){
+
     }
 
     public void effect(Game game, Gameboard gb, Player player) {

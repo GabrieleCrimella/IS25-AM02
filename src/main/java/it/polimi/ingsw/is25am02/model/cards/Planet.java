@@ -7,12 +7,14 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Planet extends Card_with_box{
     private int level;
     private BoxStore store;
     private final int daysLost;
     private final ArrayList<ArrayList<Box>> planetOffers;
+    private ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
 
     public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers) {
         super(level, store);
@@ -24,6 +26,11 @@ public class Planet extends Card_with_box{
         //Here the code for reading on file the card's values
         return new Planet(level, store, daysLost, planetOffers);
     }
+    //index indica l'indice del pianeta, se è zero vuol dire che non voglio atterrare
+    List<Box> choicePlanet(Player p, int index){
+        return null;
+    }
+
 //ogni giocatore può decidere se atterrare o meno su un pianeta, quando sta su un pianeta può decidere quante merci prendere e dove metterle
     public void effect(Gameboard gb){
         for (Player i : gb.getRanking()){

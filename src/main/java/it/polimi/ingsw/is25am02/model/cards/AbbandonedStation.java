@@ -1,18 +1,18 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
-import it.polimi.ingsw.is25am02.model.Game;
-import it.polimi.ingsw.is25am02.model.Gameboard;
-import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class AbbandonedStation extends Card_with_box {
     private BoxStore store;
     private final int humanNeeded;
     private final int daysLost;
     private LinkedList<Box> boxesWon;
+    private StateCardType stateCardType;
 
     public AbbandonedStation(int level, BoxStore store, int humanNeeded, int daysLost, LinkedList<Box> boxesWon) {
         super(level, store);
@@ -24,6 +24,13 @@ public class AbbandonedStation extends Card_with_box {
     public AbbandonedStation createCard(){
         //Here the code for reading on file the card's values
         return new AbbandonedStation(getLevel(), store, humanNeeded, daysLost, boxesWon);
+    }
+
+    List<Box> choiceBox(Player p, boolean choice){
+        return null;
+    }
+    void moveBox(List<Box> start, List<Box> end, BoxType type){
+
     }
 
     public void effect(Game game, boolean choice){
