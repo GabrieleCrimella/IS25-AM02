@@ -19,6 +19,7 @@ public class AbandonedStation extends Card_with_box {
         this.humanNeeded = humanNeeded;
         this.daysLost = daysLost;
         this.boxesWon = boxesWon;
+        this.stateCardType=StateCardType.DECISION;
     }
 
     public AbandonedStation createCard(){
@@ -26,29 +27,28 @@ public class AbandonedStation extends Card_with_box {
         return new AbandonedStation(getLevel(), store, humanNeeded, daysLost, boxesWon);
     }
 
-    List<Box> choiceBox(Player p, boolean choice){
+    List<Box> choiceBox(Game game, Player p, boolean choice){
+        if (stateCardType != StateCardType.DECISION) {
+            throw new IllegalStateException();
+        }
+        if(choice){
+            stateCardType = StateCardType.BOXMANAGEMENT;
+            if(p.getSpaceship().crewMember()<humanNeeded){//se gli uomini richiesti sono maggiori di quelli che ha il giocatore
+                throw new IllegalArgumentException("Non hai abbastanza crew");
+            }
+            moveBox(p.getSpaceship().get,boxesWon);//todo
+            p.getSpaceship().boxManage();
+            game.getGameboard().move(daysLost, p);
+            game.playNextCard();
+
+        }
+        else{
+            game.nextPlayer();
+        }
         return null;
     }
     void moveBox(List<Box> start, List<Box> end, BoxType type){
-
+//todo
     }
 
-    public void effect(Game game, boolean choice){
-        if(game.getCurrentPlayer().getSpaceship().crewMember() >= humanNeeded && choice){
-            game.getCurrentPlayer().getSpaceship().boxManage();
-            game.getGameboard().move(daysLost, game.getCurrentPlayer());
-            game.playNextCard();
-        }
-        else {
-            game.nextPlayer();
-        }
-        /*
-            for(Player i : gb.getRanking()){
-            if(i.getSpaceship().crewMember() >= humanNeeded && i.choose()){
-                i.getSpaceship().boxManage();
-                gb.move(daysLost, i);
-                break;
-            }
-         */
-    }
 }
