@@ -138,40 +138,71 @@ public class Spaceship {
         numOfWastedTiles += num;
     }
 
+    /*
+     * todo: il client nella fase di assemblaggio può aggiungere anche tiles dove la maschera contiene 0.
+     * todo: è durante la fase di controllo che si fa il controllo con la maschera
+     */
     public boolean checkSpaceship() {
 
+        //controllo delle connessioni delle varie tiles
         for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && spaceshipIterator.getUpTile(t).isPresent()) {
-                if (!t.get().checkConnectors(spaceshipIterator.getUpTile(t).get(), RotationType.NORTH)) {
+            if (t.isPresent() && spaceshipIterator.getUpTile(t.get()).isPresent()) {
+                if (!t.get().checkConnectors(spaceshipIterator.getUpTile(t.get()).get(), RotationType.NORTH)) {
                     return false;
                 }
             }
         }
         for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && spaceshipIterator.getDownTile(t).isPresent()) {
-                if (!t.get().checkConnectors(spaceshipIterator.getDownTile(t).get(), RotationType.SOUTH)) {
+            if (t.isPresent() && spaceshipIterator.getDownTile(t.get()).isPresent()) {
+                if (!t.get().checkConnectors(spaceshipIterator.getDownTile(t.get()).get(), RotationType.SOUTH)) {
                     return false;
                 }
             }
         }
         for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && spaceshipIterator.getRightTile(t).isPresent()) {
-                if (!t.get().checkConnectors(spaceshipIterator.getRightTile(t).get(), RotationType.EAST)) {
+            if (t.isPresent() && spaceshipIterator.getRightTile(t.get()).isPresent()) {
+                if (!t.get().checkConnectors(spaceshipIterator.getRightTile(t.get()).get(), RotationType.EAST)) {
                     return false;
                 }
             }
         }
         for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && spaceshipIterator.getLeftTile(t).isPresent()) {
-                if (!t.get().checkConnectors(spaceshipIterator.getLeftTile(t).get(), RotationType.WEST)) {
+            if (t.isPresent() && spaceshipIterator.getLeftTile(t.get()).isPresent()) {
+                if (!t.get().checkConnectors(spaceshipIterator.getLeftTile(t.get()).get(), RotationType.WEST)) {
                     return false;
                 }
             }
         }
 
-        //todo: controllare che i motori siano verso il dietro
+        /*
+         * controllo che i motori siano rivolti verso south, quindi, supponendo che
+         * i motori siano orientati in modo standard verso SOUTH, nella loro posizione relativa standard,
+         * quindi verso NORTH.
+         */
+        for (Optional<Tile> t : spaceshipIterator) {
+            if (t.isPresent() && (t.get().getType().equals(TileType.D_MOTOR) || t.get().getType().equals(TileType.MOTOR))) {
+                if (!t.get().getRotationType().equals(RotationType.NORTH)) {
+                    //NORTH cioè il motore NON è nella sua posizione standard"
+                    return false;
+                }
+
+                //qui controllo che dietro un motore non ci sia nulla
+                if (spaceshipIterator.getDownTile(t.get()).isPresent()) {
+                    return false;
+                }
+            }
+        }
+
+        for (Optional<Tile> t : spaceshipIterator) {
+            if (t.isPresent() && (t.get().getType().equals(TileType.D_CANNON) || t.get().getType().equals(TileType.CANNON))) {
+                if (spaceshipIterator.getFrontTile(t.get()).isPresent()) {
+                    return false;
+                }
+            }
+        }
+
+
         //todo: controllare che non ci sia niente nella tile dopo dove punta un cannone
-        //todo: controllare che non ci sia niente dietro i motori
 
         //todo: guardare anche le cose double
         return true;
@@ -267,7 +298,7 @@ public class Spaceship {
     //todo: in questo metodo non passare il numero di vivi da rimuovere, ma passare le tile da cui rimuovere i vivi
     public void removeCrew(int alive) {
 
-        for(Optional<Tile> t : spaceshipIterator){
+        for (Optional<Tile> t : spaceshipIterator) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
                 Cabin temp = (Cabin) t.get();
                 int num = temp.getNumBrownAlien() + temp.getNumPurpleAlien() + temp.getNumHuman();
