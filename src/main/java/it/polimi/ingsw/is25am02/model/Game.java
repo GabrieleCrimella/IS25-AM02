@@ -117,4 +117,16 @@ public class Game {
     }
 
     public Card getCurrentCard(){ return currentState.getCurrentCard(); }
+
+
+
+
+
+
+
+
+
+
+    //metodi effetto carte
+
 }
