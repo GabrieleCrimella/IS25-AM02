@@ -1,5 +1,7 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.util.*;
@@ -310,5 +312,9 @@ public class Spaceship {
         }
 
         return alive;
+    }
+
+    public boolean own(Tile tile) {  //todo il metodo controlla che la tile passata appartenga alla nave
+        return true;
     }
 }

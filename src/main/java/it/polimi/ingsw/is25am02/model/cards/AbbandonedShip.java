@@ -1,54 +1,79 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
+import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAME;
+
 public class AbbandonedShip extends Card{
-    private final int humanLost;
+    private final int AliveLost;
     private final int creditWin;
     private final int flyBack;
     private StateCardType stateCardType;
-    private int leftHuman;//va decrementato per tenere conto degli umani che sono da togliere
+    private int AliveRemoved;    //Crew eliminate from Spaceship
 
-    public AbbandonedShip(int level, int humanLost, int creditWin, int flyBack){
+    //Phase: DECISION e REMOVE
+
+    public AbbandonedShip(int level, int AliveLost, int creditWin, int flyBack){
         super(level);
-        this.humanLost = humanLost;
+        this.AliveLost = AliveLost;
         this.creditWin = creditWin;
         this.flyBack = flyBack;
-        this.leftHuman = humanLost;
+        this.AliveRemoved = 0;
+        this.stateCardType = StateCardType.DECISION;
     }
 
     public AbbandonedShip createCard(){
         //Here the code for reading on file the card's values
-        return new AbbandonedShip(humanLost, creditWin, flyBack, getLevel());
+        return new AbbandonedShip(AliveLost, creditWin, flyBack, getLevel());
     }
 
-    void choice(Player p, boolean choice){
+    void choice(Game game, Player player, boolean choice){
 
+        //Controlli di Stato
+        if (stateCardType != StateCardType.DECISION || player.getStatePlayer() != IN_GAME || game.getCurrentState().getPhase() != EFFECT_ON_PLAYER) {
+            throw new IllegalStateException();
+        }
+        else if (game.getCurrentPlayer() != player) {
+            throw new IllegalStateException();   //todo qui sarà IllegalPlayerException()
+        }
+
+        if (choice){
+            //Cambio stato
+            stateCardType = StateCardType.REMOVE;
+
+            //Applico effetti (Volo e Crediti)
+            player.getSpaceship().addCosmicCredits(creditWin);
+            game.getGameboard().move((-1)*flyBack, player);
+        } else {
+            game.nextPlayer();
+        }
     }
-    void removeCrew(Player p, Cabin cabin, int numCrew){
 
-    }
-    public void effect(Game game, boolean choice){
-            if (choice){
-                game.getCurrentPlayer().getSpaceship().addCosmicCredits(creditWin);
-                game.getGameboard().move(flyBack, game.getCurrentPlayer());
-                game.getCurrentPlayer().getSpaceship().removeCrew(humanLost);
-                game.playNextCard();
-            }
-            else {
-                game.nextPlayer();
-            }
-            /*
-            Anti-Pattern
-            for(Player i: gb.getRanking()){
-            if(i.choose()){
-                i.getSpaceship().addCosmicCredits(creditWin);
-                gb.move(flyBack, i);
-                i.getSpaceship().removeCrew(humanLost);
-                break;
-            }
-             */
+    void removeCrew(Game game, Player player, Cabin cabin){
 
+        //Controlli di Stato
+        if (stateCardType != StateCardType.REMOVE || player.getStatePlayer() != IN_GAME || game.getCurrentState().getPhase() != EFFECT_ON_PLAYER) {
+            throw new IllegalStateException();
+        }
+        else if (game.getCurrentPlayer() != player) {
+            throw new IllegalStateException();   //todo qui sarà IllegalPlayerException()
+        }
+        else if( !player.getSpaceship().own(cabin) ){
+            throw new IllegalStateException();   //todo qui sarà IllegalTileException()
+        }
+
+        try {
+            cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
+            AliveRemoved++;
+        } catch (IllegalStateException e) {  //todo qui sarà IllegalRemoveException()
+            //gestisco eccezione non c'è equipaggio sulla cabin passata
+        }
+
+        if (AliveRemoved == AliveLost) {
+            game.playNextCard();
+        }
     }
 }

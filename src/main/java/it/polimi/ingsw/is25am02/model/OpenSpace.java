@@ -4,7 +4,7 @@ public class OpenSpace extends Card{
 
     private int level;
     public OpenSpace(int level){
-        this.level = level;
+        super(level);
 
     }
     public OpenSpace createCard(){//use costructor
@@ -17,7 +17,7 @@ public class OpenSpace extends Card{
         int motorPower;
         for (Player player : gb.getRanking()){
             motorPower = player.getSpaceship().calculateMotorPower();
-            gb.movePosition(motorPower, player);
+            gb.move(motorPower, player);
         }
 
     }

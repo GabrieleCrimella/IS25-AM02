@@ -1,5 +1,8 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.enumerations.StateGameType;
+import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
