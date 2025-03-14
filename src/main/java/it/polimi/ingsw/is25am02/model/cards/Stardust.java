@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 import java.util.ListIterator;
 
@@ -11,6 +12,7 @@ public class Stardust extends Card {
     private int level;
 
     public Stardust(int level) {
+
         super(level);
     }
 
@@ -18,17 +20,11 @@ public class Stardust extends Card {
         return new Stardust(level);
     }
 
-    public void effect(Game game){
-        game.getGameboard().move((-1)*game.getCurrentPlayer().getSpaceship().calculateExposedConnectors(), game.getCurrentPlayer());
+    public void effect(Game game, Player player){
+
+        game.getGameboard().move((-1)*player.getSpaceship().calculateExposedConnectors(), player);
         game.previousPlayer();
-        /*
-        Anti-pattern
-        ListIterator<Player> iterator = gb.getRanking().listIterator(gb.getRanking().size());
-        Player i;
-        while(iterator.hasPrevious()){
-            i = iterator.previous();
-            gb.move((-1) * i.getSpaceship().calculateExposedConnectors(), i);
-         */
+
         }
 
 }
