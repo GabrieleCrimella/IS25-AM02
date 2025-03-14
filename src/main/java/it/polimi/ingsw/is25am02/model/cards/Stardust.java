@@ -10,14 +10,15 @@ import java.util.ListIterator;
 
 public class Stardust extends Card {
     private int level;
+    private StateCardType cardType;
 
-    public Stardust(int level) {
+    public Stardust(int level, StateCardType cardType) {
 
-        super(level);
+        super(level, cardType);
     }
 
     public Stardust createCard(){
-        return new Stardust(level);
+        return new Stardust(level,cardType);
     }
 
     public void effect(Game game, Player player){

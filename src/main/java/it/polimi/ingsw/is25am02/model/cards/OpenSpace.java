@@ -13,14 +13,14 @@ public class OpenSpace extends Card {
     int level;
     StateCardType stateCardType;
 
-    public OpenSpace(int level) {
+    public OpenSpace(int level, StateCardType stateCardType) {
 
-        super(level);
+        super(level, stateCardType);
         this.stateCardType=StateCardType.CHOICE_ATTRIBUTES;
     }
 
     public OpenSpace createCard(){
-        return new OpenSpace(level);
+        return new OpenSpace(level,stateCardType);
     }
 
     void choiceDMotor(Player player, Game game, List<Pair<DoubleMotor, BatteryStorage>> whichDMotor){
