@@ -34,7 +34,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         }
     }
 
-    public SpaceshipIterator reference(){
+    public SpaceshipIterator reference() {
         return this;
     }
 
@@ -123,20 +123,29 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         throw new NoSuchElementException();
     }
 
-    public Optional<Tile> getUpTile(Optional<Tile> t){
+    public Optional<Tile> getUpTile(Tile t) {
         return spaceshipBoard[x_current - 1][y_current];
     }
 
-    public Optional<Tile> getDownTile(Optional<Tile> t){
+    public Optional<Tile> getDownTile(Tile t) {
         return spaceshipBoard[x_current + 1][y_current];
     }
 
-    public Optional<Tile> getLeftTile(Optional<Tile> t){
+    public Optional<Tile> getLeftTile(Tile t) {
         return spaceshipBoard[x_current][y_current - 1];
     }
 
-    public Optional<Tile> getRightTile(Optional<Tile> t){
+    public Optional<Tile> getRightTile(Tile t) {
         return spaceshipBoard[x_current][y_current + 1];
+    }
+
+    public Optional<Tile> getFrontTile(Tile t) {
+        return switch (t.getRotationType()) {
+            case NORTH -> getUpTile(t);
+            case EAST -> getRightTile(t);
+            case SOUTH -> getDownTile(t);
+            case WEST -> getLeftTile(t);
+        };
     }
 
     @Override
