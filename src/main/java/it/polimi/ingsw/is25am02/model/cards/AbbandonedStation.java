@@ -11,14 +11,14 @@ import java.util.List;
 
 public class AbbandonedStation extends Card_with_box {
     private BoxStore store;
-    private final int humanNeeded;
+    private final int AliveNeeded;
     private final int daysLost;
     private LinkedList<Box> boxesWon;
     private StateCardType stateCardType;
 
-    public AbbandonedStation(int level, BoxStore store, int humanNeeded, int daysLost, LinkedList<Box> boxesWon) {
+    public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon) {
         super(level, store);
-        this.humanNeeded = humanNeeded;
+        this.AliveNeeded = AliveNeeded;
         this.daysLost = daysLost;
         this.boxesWon = boxesWon;
         this.stateCardType=StateCardType.DECISION;
@@ -26,14 +26,20 @@ public class AbbandonedStation extends Card_with_box {
 
     public AbbandonedStation createCard(){
         //Here the code for reading on file the card's values
-        return new AbbandonedStation(getLevel(), store, humanNeeded, daysLost, boxesWon);
+        return new AbbandonedStation(getLevel(), store, AliveNeeded, daysLost, boxesWon);
     }
 
-    List<Box> choiceBox(Game game, Player p, boolean choice){
-        return null;
+    List<Box> choiceBox(Game game, Player player, boolean choice){
+        if(player.getSpaceship().calculateNumAlive()>AliveNeeded){ //se ho abbastanza giocatori per salire sulla nave
+            stateCardType=StateCardType.BOXMANAGEMENT;
+            game.getGameboard().move((-1)*daysLost, player);
+        }
+        else
+            throw new IllegalStateException(); //todo IllegalCountingException
+        return boxesWon;
     }
     void moveBox(List<Box> start, List<Box> end, BoxType type){
-//todo
+
     }
 
 }
