@@ -46,7 +46,7 @@ public interface Game_Interface {
     void choice(Player player, boolean choice);
     void removeCrew(Player player, Cabin cabin);
     List<Box> choiceBox(Player player, boolean choice);
-    void moveBox(List<Box> start, List<Box> end, BoxType type);
+    void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception;
     List<Box> choicePlanet(Player player, int index);
     void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices);
     void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices);
