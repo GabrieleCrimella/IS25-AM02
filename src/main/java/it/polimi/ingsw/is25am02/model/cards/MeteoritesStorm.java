@@ -1,11 +1,12 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MeteoritesStorm extends Card {
     private ArrayList<Pair<Integer, RotationType>> meteorites;

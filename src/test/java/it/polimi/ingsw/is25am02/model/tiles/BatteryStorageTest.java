@@ -1,6 +1,8 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
-import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
+import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

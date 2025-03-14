@@ -1,12 +1,11 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
-import static it.polimi.ingsw.is25am02.model.StateGameType.EFFECT_ON_PLAYER;
-import static it.polimi.ingsw.is25am02.model.StatePlayerType.IN_GAME;
-import static it.polimi.ingsw.is25am02.model.TileType.CABIN;
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
+import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAME;
 
 public class AbandonedShip extends Card{
     private final int AliveLost;

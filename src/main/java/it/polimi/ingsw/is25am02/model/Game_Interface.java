@@ -1,5 +1,8 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
+import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
+import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.util.ArrayList;

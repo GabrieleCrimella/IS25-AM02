@@ -1,4 +1,4 @@
-package it.polimi.ingsw.is25am02.model;
+package it.polimi.ingsw.is25am02.model.enumerations;
 
 public enum RotationType {
     NORTH(0), EAST(1), SOUTH(2), WEST(3);

@@ -2,7 +2,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.StateCardType;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
@@ -40,6 +40,5 @@ public class Trafficker extends Card_with_box{
     }
 
     public void effect(Gameboard gb){
-
     }
 }

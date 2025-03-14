@@ -3,6 +3,8 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
+import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class AbandonedStation extends Card_with_box {
         if (stateCardType != StateCardType.DECISION) {
             throw new IllegalStateException();
         }
+
         if(choice){
             stateCardType = StateCardType.BOXMANAGEMENT;
             if(p.getSpaceship().crewMember()<humanNeeded){//se gli uomini richiesti sono maggiori di quelli che ha il giocatore

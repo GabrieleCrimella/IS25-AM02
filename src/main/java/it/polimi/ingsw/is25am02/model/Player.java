@@ -1,6 +1,9 @@
 package it.polimi.ingsw.is25am02.model;
 
-import static it.polimi.ingsw.is25am02.model.StatePlayerType.NOT_FINISHED;
+import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
+
+import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.NOT_FINISHED;
 
 public class Player {
     private Spaceship spaceship;

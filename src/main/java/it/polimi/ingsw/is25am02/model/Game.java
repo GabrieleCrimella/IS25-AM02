@@ -1,5 +1,7 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.util.HashMap;
@@ -8,18 +10,16 @@ import java.util.Optional;
 import java.util.Set;
 
 public class Game {
-    private Card currentCard;
-    private Player currentPlayer;
-    private Gameboard globalBoard;
     private int diceResult;
 
     private String gameName;
     private int maxAllowedPlayers;
     private List<Player> players;
-    private int level;
+    private final int level;
     private CardDeck deck;
     private Hourglass hourglass;
     private HeapTiles heapTile;
+    private Gameboard globalBoard;
     private State currentState;
 
     public Game(List<Player> p, int level){
@@ -28,41 +28,33 @@ public class Game {
         this.diceResult = 0;
     }
 
-    public CardDeck getDeck(){
-        return deck;
-    }
-
+    //getter
+    public CardDeck getDeck(){ return deck; }
     public Gameboard getGameboard(){
         return globalBoard;
     }
-    public List<Player> getWinners(){//ritorna la lista dei giocatori che hanno una quantità di crediti positivi
-        return null;
-    }
-    private List<Player> getPlayers(){
-        return null;
-    }
-    public String getName(){
-        return gameName;
-    }
+    private List<Player> getPlayers(){ return null; }
+    public String getName(){ return gameName; }
     public int getlevel(){
         return level;
     }
-    public int getMaxAllowedPlayers(){
-        return maxAllowedPlayers;
-    }
-    public Card getCurrentCard(){
-        return currentCard;
-    }
+    public int getMaxAllowedPlayers(){ return maxAllowedPlayers; }
     public HeapTiles getHeapTile() {
         return heapTile;
     }
     public Hourglass getHourglass(){
         return hourglass;
     }
-
-    public State getCurrentState(){
-        return currentState;
+    public State getCurrentState(){ return currentState; }
+    public int getDiceResult() {
+        return diceResult;
     }
+
+    public void setDiceResult(int diceResult) {
+        this.diceResult = getGameboard().getDice().pickRandomNumber();
+    }
+
+
 
     public void flipHourglass(){
         hourglass.flip();
@@ -101,18 +93,10 @@ public class Game {
     }
 
     public void playNextCard(){
-
-        this.currentPlayer = getGameboard().getRanking().getFirst();
-        this.currentCard = deck.playnextCard();
+        currentState.setCurrentPlayer( getGameboard().getRanking().getFirst() );
+        currentState.setCurrentCard( deck.playnextCard() );
     }
 
-    public int getDiceResult() {
-        return diceResult;
-    }
-
-    public void setDiceResult(int diceResult) {
-        this.diceResult = getGameboard().getDice().pickRandomNumber();
-    }
 
     public void nextPlayer(){
         //Player diventa il prossimo player
@@ -125,6 +109,12 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        return currentState.getCurrentPlayer();
     }
+
+    public List<Player> getWinners(){//ritorna la lista dei giocatori che hanno una quantità di crediti positivi
+        return null;
+    }
+
+    public Card getCurrentCard(){ return currentState.getCurrentCard(); }
 }
