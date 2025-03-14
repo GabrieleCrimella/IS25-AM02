@@ -69,4 +69,8 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method");
     }
 
+    void effect(Game game, Player player) throws UnsupportedOperationException{
+        throw new UnsupportedOperationException("Not supported method");
+    }
+
 }
