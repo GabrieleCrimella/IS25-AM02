@@ -10,10 +10,11 @@ import java.util.List;
 
 public abstract class Card {
     private final int level;
-    private StateCardType stateCardType;
+    private StateCardType stateCard;
 
-    public Card(int level) {
+    public Card(int level, StateCardType stateCard) {
         this.level = level;
+        this.stateCard = stateCard;
     }
 
     public Card newCard() {
@@ -25,7 +26,11 @@ public abstract class Card {
     }
 
     public StateCardType getStateCard() {
-        return stateCardType;
+        return stateCard;
+    }
+
+    public void setStateCard(StateCardType stateCardType) {
+        this.stateCard = stateCardType;
     }
 
     public abstract Card createCard();
@@ -42,11 +47,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void moveBox(List<Box> start, List<Box> end, BoxType type) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
-    }
-
-    List<Box> choicePlanet(Player player, int index) throws UnsupportedOperationException{
+    List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 

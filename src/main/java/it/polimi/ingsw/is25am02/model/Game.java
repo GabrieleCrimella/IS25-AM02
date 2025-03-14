@@ -7,6 +7,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
+import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.*;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAME;
 
@@ -147,26 +148,22 @@ public class Game implements Game_Interface {
     @Override
     public void choice(Player player, boolean choice) {
         //Controllo di Stato
-        if (this.getCurrentCard().getStateCard() == StateCardType.DECISION && player.getStatePlayer() == IN_GAME &&
-            this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player)) {
-            this.getCurrentCard().choice(this,player, choice);
+        if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
+            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().choice(this,player, choice);
         }
-        else{
-            throw new IllegalStateException();
-        }
+        else throw new IllegalStateException();
     }
 
     @Override
     public void removeCrew(Player player, Cabin cabin) {
         //Controllo di Stato
-        if (this.getCurrentCard().getStateCard() == StateCardType.REMOVE && player.getStatePlayer() == IN_GAME &&
-            this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player) &&
+        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
+            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
             player.getSpaceship().own(cabin)) {
-            this.getCurrentCard().removeCrew(this, player, cabin);
+            getCurrentCard().removeCrew(this, player, cabin);
         }
-        else{
-            throw new IllegalStateException();
-        }
+        else throw new IllegalStateException();
     }
 
     @Override
@@ -175,18 +172,38 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void moveBox(List<Box> start, List<Box> end, BoxType type) {
-
+    public void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception {
+        if(getCurrentCard().getStateCard() == BOXMANAGEMENT && player.getStatePlayer() == IN_GAME &&
+           getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
+           start.contains(box)){
+            if(on) {
+                start.remove(box);
+                end.add(box);
+            }
+            else {
+                getCurrentCard().setStateCard(DECISION);
+                nextPlayer();
+            }
+        }
+        throw new Exception();
     }
 
     @Override
     public List<Box> choicePlanet(Player player, int index) {
-        return List.of();
+        //Controllo di Stato
+        if (this.getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
+            this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player)) {
+            return this.getCurrentCard().choicePlanet(this,player, index);
+        }
+        else throw new IllegalStateException();
     }
 
     @Override
     public void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) {
-
+        if (this.getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
+        this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player)) {
+            
+        }
     }
 
     @Override

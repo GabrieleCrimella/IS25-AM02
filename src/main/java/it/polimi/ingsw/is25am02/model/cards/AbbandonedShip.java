@@ -11,18 +11,16 @@ public class AbbandonedShip extends Card{
     private final int AliveLost;
     private final int creditWin;
     private final int flyBack;
-    private StateCardType stateCardType;
     private int AliveRemoved;    //Crew eliminate from Spaceship
 
     //Phase: DECISION e REMOVE
 
     public AbbandonedShip(int level, int AliveLost, int creditWin, int flyBack){
-        super(level);
+        super(level,StateCardType.DECISION);
         this.AliveLost = AliveLost;
         this.creditWin = creditWin;
         this.flyBack = flyBack;
         this.AliveRemoved = 0;
-        this.stateCardType = StateCardType.DECISION;
     }
 
     public AbbandonedShip createCard(){
@@ -33,7 +31,7 @@ public class AbbandonedShip extends Card{
     void choice(Game game, Player player, boolean choice){
         if (choice){
             //Cambio stato
-            stateCardType = StateCardType.REMOVE;
+            setStateCard(StateCardType.REMOVE);
 
             //Applico effetti (Volo e Crediti)
             player.getSpaceship().addCosmicCredits(creditWin);
