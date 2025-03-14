@@ -16,8 +16,8 @@ public class AbbandonedStation extends Card_with_box {
     private LinkedList<Box> boxesWon;
     private StateCardType stateCardType;
 
-    public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon) {
-        super(level, store);
+    public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon, StateCardType stateCardType) {
+        super(level, store, stateCardType);
         this.AliveNeeded = AliveNeeded;
         this.daysLost = daysLost;
         this.boxesWon = boxesWon;
@@ -26,20 +26,18 @@ public class AbbandonedStation extends Card_with_box {
 
     public AbbandonedStation createCard(){
         //Here the code for reading on file the card's values
-        return new AbbandonedStation(getLevel(), store, AliveNeeded, daysLost, boxesWon);
+        return new AbbandonedStation(getLevel(), store, AliveNeeded, daysLost, boxesWon, stateCardType);
     }
 
     List<Box> choiceBox(Game game, Player player, boolean choice){
-        if(player.getSpaceship().calculateNumAlive()>AliveNeeded){ //se ho abbastanza giocatori per salire sulla nave
+        if(player.getSpaceship().calculateNumAlive()>AliveNeeded&&choice){ //se ho abbastanza giocatori per salire sulla nave
             stateCardType=StateCardType.BOXMANAGEMENT;
             game.getGameboard().move((-1)*daysLost, player);
         }
         else
-            throw new IllegalStateException(); //todo IllegalCountingException
+           game.nextPlayer();
         return boxesWon;
     }
-    void moveBox(List<Box> start, List<Box> end, BoxType type){
 
-    }
 
 }
