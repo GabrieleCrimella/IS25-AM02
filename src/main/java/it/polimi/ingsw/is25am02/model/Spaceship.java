@@ -138,6 +138,7 @@ public class Spaceship {
 
     public boolean checkSpaceship() {
 
+        //controllo delle connessioni delle varie tiles
         for (Optional<Tile> t : spaceshipIterator) {
             if (t.isPresent() && spaceshipIterator.getUpTile(t).isPresent()) {
                 if (!t.get().checkConnectors(spaceshipIterator.getUpTile(t).get(), RotationType.NORTH)) {
@@ -166,6 +167,21 @@ public class Spaceship {
                 }
             }
         }
+
+        /*
+         * controllo che i motori siano rivolti verso south, quindi, supponendo che
+         * i motori siano orientati in modo standard verso SOUTH, nella loro posizione relativa standard,
+         * quindi verso NORTH.
+         */
+        for (Optional<Tile> t : spaceshipIterator) {
+            if (t.isPresent() && (t.get().getType().equals(TileType.D_MOTOR) || t.get().getType().equals(TileType.MOTOR))) {
+                if (!t.get().getRotationType().equals(RotationType.NORTH)) {
+                    //NORTH cioè il motore NON è nella sua posizione standard"
+                    return false;
+                }
+            }
+        }
+
 
         //todo: controllare che i motori siano verso il dietro
         //todo: controllare che non ci sia niente nella tile dopo dove punta un cannone
@@ -265,7 +281,7 @@ public class Spaceship {
     //todo: in questo metodo non passare il numero di vivi da rimuovere, ma passare le tile da cui rimuovere i vivi
     public void removeCrew(int alive) {
 
-        for(Optional<Tile> t : spaceshipIterator){
+        for (Optional<Tile> t : spaceshipIterator) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
                 Cabin temp = (Cabin) t.get();
                 int num = temp.getNumBrownAlien() + temp.getNumPurpleAlien() + temp.getNumHuman();
