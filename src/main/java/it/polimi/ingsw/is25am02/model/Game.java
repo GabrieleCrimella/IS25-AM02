@@ -222,7 +222,7 @@ public class Game implements Game_Interface {
     @Override
     public void removeBox(Player player, SpecialStorage storage, BoxType type) {
         //State Control
-        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
+        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
             getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
             getCurrentCard().removeBox(player, storage, type);
         }
@@ -232,7 +232,7 @@ public class Game implements Game_Interface {
     @Override
     public void removeBattery(Player player, BatteryStorage storage) {
         //State Control
-        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
+        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
                 getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
             getCurrentCard().removeBattery(player, storage);
         }
