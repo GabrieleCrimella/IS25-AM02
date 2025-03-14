@@ -64,13 +64,13 @@ public class Game implements Game_Interface {
     }
     public Card getCurrentCard(){ return currentState.getCurrentCard(); }
 
-
+    //todo
     public void nextPlayer(){
         //Player diventa il prossimo player
         //Se il player è l'ultimo il currentPlayer deve diventare il nuovo primo e cambiare carta. (forse exception forse viene implementato qui dentro)
         //Gioca la carta corrente con il player nuovo
     }
-
+    //todo
     public void previousPlayer(){
         //come next player ma torna indietro
     }
@@ -79,67 +79,67 @@ public class Game implements Game_Interface {
     public Game GameCreator(List<Player> p, int level) {
         return new Game(p, level);
     }
-
+    //todo
     @Override
     public void flipHourglass() {
 
     }
-
+    //todo
     @Override
     public Tile takeTile(Player player) {
         return null;
     }
-
+    //todo
     @Override
     public Tile takeTile(Player player, Tile tile) {
         return null;
     }
-
+    //todo
     @Override
     public void returnTile(Player player, Tile tile) {
 
     }
-
+    //todo
     @Override
     public void addTile(Player player, Tile tile, int x, int y) {
 
     }
-
+    //todo
     @Override
     public void shipFinished(Player player) {
 
     }
-
+    //todo
     @Override
     public boolean checkSpaceship(Player player) {
         return false;
     }
-
+    //todo
     @Override
     public void removeTile(Player player, int x, int y) {
 
     }
-
+    //todo
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
 
     }
-
+    //todo
     @Override
     public void playNextCard() {
 
     }
-
+    //todo
     @Override
     public HashMap<Integer, Player> getPosition() {
         return null;
     }
-
+    //todo
     @Override
     public HashMap<Player, StatePlayerType> getState() {
         return null;
     }
-
+    //todo
     @Override
     public List<Tile> possibleChoice(Player player, TileType type) {
         return List.of();
@@ -147,7 +147,7 @@ public class Game implements Game_Interface {
 
     @Override
     public void choice(Player player, boolean choice) {
-        //Controllo di Stato
+        //State Control
         if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
             getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
             getCurrentCard().choice(this,player, choice);
@@ -157,7 +157,7 @@ public class Game implements Game_Interface {
 
     @Override
     public void removeCrew(Player player, Cabin cabin) {
-        //Controllo di Stato
+        //StateControl
         if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
             getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
             player.getSpaceship().own(cabin)) {
@@ -165,7 +165,7 @@ public class Game implements Game_Interface {
         }
         else throw new IllegalStateException();
     }
-
+    //todo
     @Override
     public List<Box> choiceBox(Player player, boolean choice) {
         return List.of();
@@ -173,6 +173,7 @@ public class Game implements Game_Interface {
 
     @Override
     public void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception {
+        //State Control
         if(getCurrentCard().getStateCard() == BOXMANAGEMENT && player.getStatePlayer() == IN_GAME &&
            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
            start.contains(box)){
@@ -190,37 +191,54 @@ public class Game implements Game_Interface {
 
     @Override
     public List<Box> choicePlanet(Player player, int index) {
-        //Controllo di Stato
-        if (this.getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
-            this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player)) {
-            return this.getCurrentCard().choicePlanet(this,player, index);
+        //State Control
+        if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
+            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            return getCurrentCard().choicePlanet(this,player, index);
         }
         else throw new IllegalStateException();
     }
 
     @Override
     public void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) {
-        if (this.getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
-        this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player)) {
-            
+        //State Control
+        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
+            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().choiceDoubleMotor(player, choices);
         }
+        else throw new IllegalStateException();
     }
 
     @Override
     public void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) {
-
+        //State Control
+        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
+            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().choiceDoubleCannon(player, choices);
+        }
+        else throw new IllegalStateException();
     }
 
     @Override
     public void removeBox(Player player, SpecialStorage storage, BoxType type) {
-
+        //State Control
+        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
+            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().removeBox(player, storage, type);
+        }
+        else throw new IllegalStateException();
     }
 
     @Override
     public void removeBattery(Player player, BatteryStorage storage) {
-
+        //State Control
+        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
+                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().removeBattery(player, storage);
+        }
+        else throw new IllegalStateException();
     }
-
+    //todo
     @Override
     public ArrayList<Player> getWinners() {
         return null;

@@ -17,12 +17,14 @@ public class Planet extends Card_with_box{
     private final int daysLost;
     private final ArrayList<ArrayList<Box>> planetOffers;
     private ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
+    private ArrayList<Player> landed;
 
     public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers) {
         super(level, store, StateCardType.DECISION);
         this.daysLost = daysLost;
         this.planetOffers = planetOffers;
         this.occupied = new ArrayList<>();
+        this.landed = new ArrayList<>();
 
         for(ArrayList<Box> boxes : planetOffers) {
             occupied.add(0);
@@ -34,13 +36,15 @@ public class Planet extends Card_with_box{
         return new Planet(level, store, daysLost, planetOffers);
     }
 
-    List<Box> choicePlanet(Game game, Player p, int index) throws Exception {
+    //todo devi spostare indietro i player alla fine in ordine inverso di rotta
+    List<Box> choicePlanet(Game game, Player player, int index) throws Exception {
         if(index == -1){   //Il player ha deciso di non atterrare
             game.nextPlayer();
             return null;
         }
         else if(index>=0 && index <= planetOffers.size() && occupied.get(index) == 0) {
             occupied.set(index, 1);
+            landed.add(player);
             setStateCard(StateCardType.BOXMANAGEMENT);
             return planetOffers.get(index);
         }
