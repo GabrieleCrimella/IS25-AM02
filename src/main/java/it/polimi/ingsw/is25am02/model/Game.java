@@ -7,6 +7,9 @@ import javafx.util.Pair;
 
 import java.util.*;
 
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
+import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAME;
+
 public class Game implements Game_Interface {
     private int diceResult;
 
@@ -143,12 +146,27 @@ public class Game implements Game_Interface {
 
     @Override
     public void choice(Player player, boolean choice) {
-
+        //Controllo di Stato
+        if (this.getCurrentCard().getStateCard() == StateCardType.DECISION && player.getStatePlayer() == IN_GAME &&
+            this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player)) {
+            this.getCurrentCard().choice(this,player, choice);
+        }
+        else{
+            throw new IllegalStateException();
+        }
     }
 
     @Override
-    public void removeCrew(Cabin cabin) {
-
+    public void removeCrew(Player player, Cabin cabin) {
+        //Controllo di Stato
+        if (this.getCurrentCard().getStateCard() == StateCardType.REMOVE && player.getStatePlayer() == IN_GAME &&
+            this.getCurrentState().getPhase() == EFFECT_ON_PLAYER && this.getCurrentPlayer().equals(player) &&
+            player.getSpaceship().own(cabin)) {
+            this.getCurrentCard().removeCrew(this, player, cabin);
+        }
+        else{
+            throw new IllegalStateException();
+        }
     }
 
     @Override

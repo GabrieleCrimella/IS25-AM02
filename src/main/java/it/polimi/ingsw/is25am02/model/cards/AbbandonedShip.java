@@ -31,15 +31,6 @@ public class AbbandonedShip extends Card{
     }
 
     void choice(Game game, Player player, boolean choice){
-
-        //Controlli di Stato
-        if (stateCardType != StateCardType.DECISION || player.getStatePlayer() != IN_GAME || game.getCurrentState().getPhase() != EFFECT_ON_PLAYER) {
-            throw new IllegalStateException();
-        }
-        else if (game.getCurrentPlayer() != player) {
-            throw new IllegalStateException();   //todo qui sarà IllegalPlayerException()
-        }
-
         if (choice){
             //Cambio stato
             stateCardType = StateCardType.REMOVE;
@@ -53,18 +44,6 @@ public class AbbandonedShip extends Card{
     }
 
     void removeCrew(Game game, Player player, Cabin cabin){
-
-        //Controlli di Stato
-        if (stateCardType != StateCardType.REMOVE || player.getStatePlayer() != IN_GAME || game.getCurrentState().getPhase() != EFFECT_ON_PLAYER) {
-            throw new IllegalStateException();
-        }
-        else if (game.getCurrentPlayer() != player) {
-            throw new IllegalStateException();   //todo qui sarà IllegalPlayerException()
-        }
-        else if( !player.getSpaceship().own(cabin) ){
-            throw new IllegalStateException();   //todo qui sarà IllegalTileException()
-        }
-
         try {
             cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
             AliveRemoved++;

@@ -44,7 +44,7 @@ public interface Game_Interface {
     HashMap<Player, StatePlayerType> getState();
     List<Tile> possibleChoice(Player player, TileType type);
     void choice(Player player, boolean choice);
-    void removeCrew(Cabin cabin);
+    void removeCrew(Player player, Cabin cabin);
     List<Box> choiceBox(Player player, boolean choice);
     void moveBox(List<Box> start, List<Box> end, BoxType type);
     List<Box> choicePlanet(Player player, int index);

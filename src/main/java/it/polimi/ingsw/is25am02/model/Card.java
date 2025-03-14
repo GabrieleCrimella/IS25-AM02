@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 public abstract class Card {
     private final int level;
+    private StateCardType stateCardType;
 
     public Card(int level) {
         this.level = level;
@@ -22,13 +24,17 @@ public abstract class Card {
         return level;
     }
 
+    public StateCardType getStateCard() {
+        return stateCardType;
+    }
+
     public abstract Card createCard();
 
-    void choice(Player player, boolean choice) throws UnsupportedOperationException{
+    void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void removeCrew(Cabin cabin) throws UnsupportedOperationException{
+    void removeCrew(Game game, Player player, Cabin cabin) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
