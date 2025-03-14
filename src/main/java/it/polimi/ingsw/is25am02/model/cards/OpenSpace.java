@@ -36,6 +36,7 @@ public class OpenSpace extends Card {
         else flyBack = player.getSpaceship().calculateMotorPower(null); //se uso solo motori singoli
 
         game.getGameboard().move(flyBack,player);
+        game.nextPlayer();
 
     }
 
