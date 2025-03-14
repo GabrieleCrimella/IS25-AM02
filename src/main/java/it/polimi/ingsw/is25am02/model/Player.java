@@ -1,14 +1,18 @@
 package it.polimi.ingsw.is25am02.model;
 
+import static it.polimi.ingsw.is25am02.model.StatePlayerType.NOT_FINISHED;
+
 public class Player {
     private Spaceship spaceship;
     private String nickname;
     private PlayerColor color;
+    private StatePlayerType statePlayer;
 
     public Player(Spaceship spaceship, String nickname, PlayerColor color) {
         this.spaceship = spaceship;
         this.nickname = nickname;
         this.color = color;
+        this.statePlayer = NOT_FINISHED;
     }
 
     public Spaceship getSpaceship() {
@@ -23,8 +27,7 @@ public class Player {
         return color;
     }
 
-    //manages player interaction for yes or no answers
-    public boolean choose(){
-        return false;
+    public StatePlayerType getStatePlayer() {
+        return statePlayer;
     }
 }

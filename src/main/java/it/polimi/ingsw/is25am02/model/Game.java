@@ -20,6 +20,7 @@ public class Game {
     private CardDeck deck;
     private Hourglass hourglass;
     private HeapTiles heapTile;
+    private State currentState;
 
     public Game(List<Player> p, int level){
         this.players = p;
@@ -49,17 +50,18 @@ public class Game {
     public int getMaxAllowedPlayers(){
         return maxAllowedPlayers;
     }
-
     public Card getCurrentCard(){
         return currentCard;
     }
-
-
     public HeapTiles getHeapTile() {
         return heapTile;
     }
     public Hourglass getHourglass(){
         return hourglass;
+    }
+
+    public State getCurrentState(){
+        return currentState;
     }
 
     public void flipHourglass(){

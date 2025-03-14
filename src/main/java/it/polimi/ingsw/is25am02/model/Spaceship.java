@@ -295,4 +295,8 @@ public class Spaceship {
 
         return alive;
     }
+
+    public boolean own(Tile tile) {  //todo il metodo controlla che la tile passata appartenga alla nave
+        return true;
+    }
 }
