@@ -181,6 +181,11 @@ public class Spaceship {
                     //NORTH cioè il motore NON è nella sua posizione standard"
                     return false;
                 }
+
+                //qui controllo che dietro un motore non ci sia nulla
+                if(spaceshipIterator.getDownTile(t).isPresent()){
+                    return false;
+                }
             }
         }
 
