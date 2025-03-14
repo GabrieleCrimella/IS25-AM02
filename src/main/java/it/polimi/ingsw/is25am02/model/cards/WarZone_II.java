@@ -31,38 +31,5 @@ public class WarZone_II extends Card_with_box {
     }
 
     public void effect(Gameboard gb){
-        for(Player p : gb.getRanking()){//quello con meno cannoni
-            int cannons = p.getSpaceship().calculateCannonPower();
-            if (cannons < minCann) {
-                minCann = cannons;
-                lessCannon = p;
-            }
-        }
-        gb.move(-flyback,lessCannon);
-
-        for(Player p : gb.getRanking()){//quello con meno motori
-            int motors = p.getSpaceship().calculateMotorPower();
-            if (motors < minMotor) {
-                minMotor = motors;
-                lessMotor = p;
-            }
-        }
-        getBoxStore().removeBox(boxesLost);
-
-
-
-        for(Player p : gb.getRanking()){
-            //quello con meno uomini
-            int alive = p.getSpaceship().calculateNumAlive();
-            if (alive < minAlive) {
-                minAlive = alive;
-                lessHuman = p;
-            }
-        }
-
-        for(ArrayList<Integer> shot: shots){
-            lessCannon.getSpaceship().calculateDamageShots(shot); //todo a che serve line in calculate DamageShots se ho il dado?
-        }
-
     }
 }

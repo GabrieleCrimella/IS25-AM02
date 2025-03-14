@@ -1,16 +1,20 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
+import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.model.tiles.*;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public interface Game_Interface {
     //Phase START
-    Game Game(ArrayList<Player> p, int level);
+    Game GameCreator(List<Player> p, int level);
 
     //Phase INITIALIZATION_GAME
     //Nothing
@@ -36,10 +40,19 @@ public interface Game_Interface {
     void playNextCard();
 
     //Phase EFFECT_ON_PLAYERS
-    void effect(); //Bisogna ancora capire bene come implementare
     HashMap<Integer, Player> getPosition();
     HashMap<Player, StatePlayerType> getState();
-    ArrayList<Tile> possibleChoice(Player player, TileType type);
+    List<Tile> possibleChoice(Player player, TileType type);
+    void choice(Player player, boolean choice);
+    void removeCrew(Cabin cabin);
+    List<Box> choiceBox(Player player, boolean choice);
+    void moveBox(List<Box> start, List<Box> end, BoxType type);
+    List<Box> choicePlanet(Player player, int index);
+    void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices);
+    void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices);
+    void removeBox(Player player, SpecialStorage storage, BoxType type);
+    void removeBattery(Player player, BatteryStorage storage);
+
 
     //Phase CHANGE_CONDITION
     //Nothing

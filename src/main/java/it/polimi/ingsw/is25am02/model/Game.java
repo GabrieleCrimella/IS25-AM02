@@ -1,21 +1,19 @@
 package it.polimi.ingsw.is25am02.model;
 
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.tiles.*;
+import javafx.util.Pair;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-public class Game {
+public class Game implements Game_Interface {
     private int diceResult;
 
     private String gameName;
     private int maxAllowedPlayers;
     private List<Player> players;
-    private final int level;
+    private int level;
     private CardDeck deck;
     private Hourglass hourglass;
     private HeapTiles heapTile;
@@ -53,49 +51,14 @@ public class Game {
     public void setDiceResult(int diceResult) {
         this.diceResult = getGameboard().getDice().pickRandomNumber();
     }
-
-
-
-    public void flipHourglass(){
-        hourglass.flip();
-    }
-    public Optional<Tile> getTile(Player p, int x, int y){//restituisce il tile in una certa posizione
-        return p.getSpaceship().getTile(x, y);
-    }
-    public void returnTile(Tile t){// vedo la tile e la ributto nel mucchio
-        //todo devo aggiungere la tile all'heap tiles
-    }
-
-    public void addTile(Player p, Tile t, int x, int y, RotationType rotation){
-        t.setRotationType(rotation);
-        p.getSpaceship().addTile(x, y, t);
-    }
-    public void shipFinished(Player p){//todo prende il player e lo mette in una delle posizioni di partenza
-    }
-    public boolean checkSpaceship(Player p){
-        return p.getSpaceship().checkSpaceship();
-    }
-    public void removeTile(Player p, int x, int y){
-        p.getSpaceship().removeTile(x, y);
-    }
-    public HashMap<Player, Integer> getPositions(){
-        return globalBoard.getPositions();
-    }
-    public List<Tile> possibleChoice(Player p, TileType t){
-        //todo mi ritorna una lista con tutti con tutte le tile di quel tipo per quel giocatore
-        return null;
-    }
-    public void removeTile(int x, int y) {
-        //todo
-    }
     public Set<Tile> getVisibleTiles(){
         return heapTile.getVisibleTiles();
     }
 
-    public void playNextCard(){
-        currentState.setCurrentPlayer( getGameboard().getRanking().getFirst() );
-        currentState.setCurrentCard( deck.playnextCard() );
+    public Player getCurrentPlayer() {
+        return currentState.getCurrentPlayer();
     }
+    public Card getCurrentCard(){ return currentState.getCurrentCard(); }
 
 
     public void nextPlayer(){
@@ -108,25 +71,123 @@ public class Game {
         //come next player ma torna indietro
     }
 
-    public Player getCurrentPlayer() {
-        return currentState.getCurrentPlayer();
+    @Override
+    public Game GameCreator(List<Player> p, int level) {
+        return new Game(p, level);
     }
 
-    public List<Player> getWinners(){//ritorna la lista dei giocatori che hanno una quantità di crediti positivi
+    @Override
+    public void flipHourglass() {
+
+    }
+
+    @Override
+    public Tile takeTile(Player player) {
         return null;
     }
 
-    public Card getCurrentCard(){ return currentState.getCurrentCard(); }
+    @Override
+    public Tile takeTile(Player player, Tile tile) {
+        return null;
+    }
 
+    @Override
+    public void returnTile(Player player, Tile tile) {
 
+    }
 
+    @Override
+    public void addTile(Player player, Tile tile, int x, int y) {
 
+    }
 
+    @Override
+    public void shipFinished(Player player) {
 
+    }
 
+    @Override
+    public boolean checkSpaceship(Player player) {
+        return false;
+    }
 
+    @Override
+    public void removeTile(Player player, int x, int y) {
 
+    }
 
-    //metodi effetto carte
+    @Override
+    public void addCrew(Player player, int x, int y, AliveType type) {
 
+    }
+
+    @Override
+    public void playNextCard() {
+
+    }
+
+    @Override
+    public HashMap<Integer, Player> getPosition() {
+        return null;
+    }
+
+    @Override
+    public HashMap<Player, StatePlayerType> getState() {
+        return null;
+    }
+
+    @Override
+    public List<Tile> possibleChoice(Player player, TileType type) {
+        return List.of();
+    }
+
+    @Override
+    public void choice(Player player, boolean choice) {
+
+    }
+
+    @Override
+    public void removeCrew(Cabin cabin) {
+
+    }
+
+    @Override
+    public List<Box> choiceBox(Player player, boolean choice) {
+        return List.of();
+    }
+
+    @Override
+    public void moveBox(List<Box> start, List<Box> end, BoxType type) {
+
+    }
+
+    @Override
+    public List<Box> choicePlanet(Player player, int index) {
+        return List.of();
+    }
+
+    @Override
+    public void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) {
+
+    }
+
+    @Override
+    public void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) {
+
+    }
+
+    @Override
+    public void removeBox(Player player, SpecialStorage storage, BoxType type) {
+
+    }
+
+    @Override
+    public void removeBattery(Player player, BatteryStorage storage) {
+
+    }
+
+    @Override
+    public ArrayList<Player> getWinners() {
+        return null;
+    }
 }

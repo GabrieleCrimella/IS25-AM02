@@ -48,6 +48,7 @@ package "Model"{
         +HashMap<Player p, StatePlayerType> getState()
         +List<Tile> possibleChoice(Player p, TypeTile t)
         +List<Player> getWinners()
+        +void AddCrew(Player player, int x, int y, AliveType type)
         --
         effetti carte
         void choice(Player p, boolean choice)
