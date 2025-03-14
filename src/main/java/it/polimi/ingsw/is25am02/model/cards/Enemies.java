@@ -1,14 +1,15 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 public abstract class Enemies extends Card {
     private int cannonPowers;
     private int daysLost;
     private int credit;
 
-    public Enemies(int level, int cannonPowers, int daysLost, int credit) {
-        super(level);
+    public Enemies(int level, int cannonPowers, int daysLost, int credit, StateCardType stateCard) {
+        super(level, stateCard);
         this.cannonPowers = cannonPowers;
         this.daysLost = daysLost;
         this.credit = credit;

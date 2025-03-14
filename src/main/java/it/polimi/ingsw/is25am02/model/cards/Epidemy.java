@@ -1,12 +1,13 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 public class Epidemy extends Card {
     private int level;
 
     public Epidemy(int level) {
-        super(level);
+        super(level, StateCardType.DECISION);
     }
 
     public Epidemy createCard(){
@@ -14,13 +15,5 @@ public class Epidemy extends Card {
     }
 
     public void effect(Game game){
-        for(Player i : game.getGameboard().getRanking()){
-            Spaceship s = i.getSpaceship();
-            for(int x =0; x<11; x++){
-                for(int y =0; y<11; y++){
-                    //work in progress
-                }
-            }
-        }
     }
 }

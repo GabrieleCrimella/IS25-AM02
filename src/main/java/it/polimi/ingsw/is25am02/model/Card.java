@@ -46,7 +46,9 @@ public abstract class Card {
     List<Box> choiceBox(Player player, boolean choice) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
-
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException{
+        throw new UnsupportedOperationException("Not supported method");
+    }
     List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }

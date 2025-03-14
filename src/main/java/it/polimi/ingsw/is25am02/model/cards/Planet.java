@@ -11,6 +11,8 @@ import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION;
+
 public class Planet extends Card_with_box{
     private int level;
     private BoxStore store;
@@ -36,7 +38,6 @@ public class Planet extends Card_with_box{
         return new Planet(level, store, daysLost, planetOffers);
     }
 
-    //todo devi spostare indietro i player alla fine in ordine inverso di rotta
     List<Box> choicePlanet(Game game, Player player, int index) throws Exception {
         if(index == -1){   //Il player ha deciso di non atterrare
             game.nextPlayer();
@@ -51,4 +52,21 @@ public class Planet extends Card_with_box{
         throw new Exception(); //todo creare exception per pianeta occupato
     }
 
+    @Override
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException {
+        if(on) {
+            start.remove(box);
+            end.add(box);
+        }
+        else {
+            if(player.equals(game.getGameboard().getRanking().getLast())) {
+                //todo devi spostare indietro i player alla fine in ordine inverso di rotta
+                for(Player p : landed){
+                    game.getGameboard().move((-1)*daysLost, p);
+                }
+            }
+            game.getCurrentCard().setStateCard(DECISION);
+            game.nextPlayer();
+        }
+    }
 }

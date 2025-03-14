@@ -11,11 +11,10 @@ import java.util.ArrayList;
 public class MeteoritesStorm extends Card {
     private ArrayList<Pair<Integer, RotationType>> meteorites;
     private int currentIndex;
-    private StateCardType stateCardType;
 
 
     public MeteoritesStorm(int level, ArrayList<Pair<Integer,RotationType>> meteorites) {
-        super(level);
+        super(level,StateCardType.DECISION);
         this.meteorites = meteorites;
         currentIndex = 0;
     }

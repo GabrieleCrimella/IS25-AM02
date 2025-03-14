@@ -177,14 +177,7 @@ public class Game implements Game_Interface {
         if(getCurrentCard().getStateCard() == BOXMANAGEMENT && player.getStatePlayer() == IN_GAME &&
            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
            start.contains(box)){
-            if(on) {
-                start.remove(box);
-                end.add(box);
-            }
-            else {
-                getCurrentCard().setStateCard(DECISION);
-                nextPlayer();
-            }
+            getCurrentCard().moveBox(this, player, start, end, box, on);
         }
         throw new Exception();
     }
