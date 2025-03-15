@@ -26,7 +26,7 @@ public class AbbandonedShip extends Card{
 
     public AbbandonedShip createCard(){
         //Here the code for reading on file the card's values
-        return new AbbandonedShip(AliveLost, creditWin, flyBack, getLevel());
+        return new AbbandonedShip(getLevel(), AliveLost, creditWin, flyBack);
     }
 
     @Override

@@ -13,28 +13,25 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
+
 public class SlaveOwner extends Enemies{
-    private int level;
-    private int cannonPowers;
-    private int daysLost;
-    private int credit;
     private final int AliveLost;
     private int AliveRemoved;
-    private StateCardType stateCardType;
 
     public SlaveOwner(int level, int cannonPowers, int daysLost, int credit, int humanLost) {
-        super(level, cannonPowers, daysLost, credit);
-        this.AliveRemoved = humanLost;
+        super(level, cannonPowers, daysLost, credit, StateCardType.DECISION);
         this.AliveLost = humanLost;
-        this.stateCardType = StateCardType.DECISION;
+        this.AliveRemoved = 0;
     }
 
     public SlaveOwner createCard(){
         //Here the code for reading on file the card's values
-        return new SlaveOwner(level, cannonPowers, daysLost, credit, AliveLost);
+        return new SlaveOwner(getLevel(), getCannonPowers(), getDaysLost(), getCredit(), AliveLost);
     }
 
-    void choiceDCannon(Player player, Game game, List<Pair<DoubleCannon, BatteryStorage>> whichDCannon){
+    @Override
+    public void choiceDoubleCannon(Game game, Player player, List<Pair<DoubleCannon, BatteryStorage>> whichDCannon){
         List<DoubleCannon> dCannon = new ArrayList<>();
         double playerPower;
         if(whichDCannon!=null){// il giocatore ha scelto di usare almeno un motore doppio
@@ -46,20 +43,24 @@ public class SlaveOwner extends Enemies{
         }
         else playerPower = player.getSpaceship().calculateMotorPower(null); //se uso solo motori singoli
 
-        if(playerPower>cannonPowers){ //se il giocatore è piu forte dei schiavisti allora li sconfigge
-            player.getSpaceship().addCosmicCredits(credit);
-            game.getGameboard().move((-1)*daysLost, player);
+        if(playerPower>getCannonPowers()){ //se il giocatore è piu forte dei schiavisti allora li sconfigge
+            setStateCard(StateCardType.DECISION);
+
+            //player.getSpaceship().addCosmicCredits(getCredit());
+            //game.getGameboard().move((-1)*getDaysLost(), player);
 
         }
-        else if(playerPower==cannonPowers){//non succede niente al player current ma passo al player successivo
+        else if(playerPower==getCannonPowers()){ //non succede niente al player current ma passo al player successivo
             game.nextPlayer();
         }
-        else{//viene colpito il giocatore e si passa al prossimo
-            stateCardType = StateCardType.REMOVE;
+        else{  //viene colpito il giocatore e si passa al prossimo
+            setStateCard(StateCardType.REMOVE);
             game.nextPlayer();
 
         }
     }
+
+    @Override
     public void removeCrew(Game game, Player player, Cabin cabin){
         try {
             cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
@@ -69,7 +70,8 @@ public class SlaveOwner extends Enemies{
         }
 
         if (AliveRemoved == AliveLost) {
-            game.playNextCard();
+            game.getCurrentCard().setStateCard(StateCardType.FINISH);
+            game.getCurrentState().setPhase(TAKE_CARD);
         }
     }
 
