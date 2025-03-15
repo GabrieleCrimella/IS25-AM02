@@ -9,24 +9,24 @@ import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION;
 
 public class Planet extends Card_with_box{
-    private int level;
-    private BoxStore store;
     private final int daysLost;
     private final ArrayList<ArrayList<Box>> planetOffers;
     private ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
-    private ArrayList<Player> landed;
+    private LinkedList<Player> landed;
 
     public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers) {
         super(level, store, StateCardType.DECISION);
         this.daysLost = daysLost;
         this.planetOffers = planetOffers;
         this.occupied = new ArrayList<>();
-        this.landed = new ArrayList<>();
+        this.landed = new LinkedList<>();
 
         for(ArrayList<Box> boxes : planetOffers) {
             occupied.add(0);
@@ -35,34 +35,36 @@ public class Planet extends Card_with_box{
 
     public Planet createCard(){
         //Here the code for reading on file the card's values
-        return new Planet(level, store, daysLost, planetOffers);
+        return new Planet(getLevel(), getBoxStore(), daysLost, planetOffers);
     }
 
-    List<Box> choicePlanet(Game game, Player player, int index) throws Exception {
+
+    @Override
+    public List<Box> choicePlanet(Game game, Player player, int index){
         if(index == -1){   //Il player ha deciso di non atterrare
             game.nextPlayer();
             return null;
         }
-        else if(index>=0 && index <= planetOffers.size() && occupied.get(index) == 0) {
+        else if(index>=0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
             setStateCard(StateCardType.BOXMANAGEMENT);
             return planetOffers.get(index);
         }
-        throw new Exception(); //todo creare exception per pianeta occupato
+        return null;
     }
 
     @Override
-    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException {
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) {
         if(on) {
             start.remove(box);
             end.add(box);
         }
         else {
             if(player.equals(game.getGameboard().getRanking().getLast())) {
-                //todo devi spostare indietro i player alla fine in ordine inverso di rotta
-                for(Player p : landed){
-                    game.getGameboard().move((-1)*daysLost, p);
+                Iterator<Player> it = landed.descendingIterator();
+                while(it.hasNext()) {
+                    game.getGameboard().move((-1)*daysLost, it.next());
                 }
             }
             game.getCurrentCard().setStateCard(DECISION);

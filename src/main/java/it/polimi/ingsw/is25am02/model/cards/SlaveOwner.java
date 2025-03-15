@@ -60,7 +60,7 @@ public class SlaveOwner extends Enemies{
 
         }
     }
-    void removeCrew(Game game, Player player, Cabin cabin){
+    public void removeCrew(Game game, Player player, Cabin cabin){
         try {
             cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
             AliveRemoved++;

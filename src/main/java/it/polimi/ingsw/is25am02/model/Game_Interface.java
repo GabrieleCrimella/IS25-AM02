@@ -37,7 +37,7 @@ public interface Game_Interface {
     void addCrew(Player player, int x, int y, AliveType type);
 
     //Phase TAKE_CARD
-    void playNextCard();
+    void playNextCard(Player player);
 
     //Phase EFFECT_ON_PLAYERS
     HashMap<Integer, Player> getPosition();
@@ -45,7 +45,7 @@ public interface Game_Interface {
     List<Tile> possibleChoice(Player player, TileType type);
     void choice(Player player, boolean choice);
     void removeCrew(Player player, Cabin cabin);
-    List<Box> choiceBox(Player player, boolean choice);
+    List<Box> choiceBox(Player player, boolean choice) throws Exception;
     void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception;
     List<Box> choicePlanet(Player player, int index);
     void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices);

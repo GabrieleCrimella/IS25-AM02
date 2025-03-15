@@ -67,8 +67,7 @@ public class Game implements Game_Interface {
     //todo
     public void nextPlayer(){
         //Player diventa il prossimo player
-        //Se il player è l'ultimo il currentPlayer deve diventare il nuovo primo e cambiare carta. (forse exception forse viene implementato qui dentro)
-        //Gioca la carta corrente con il player nuovo
+        //Se il player è l'ultimo il currentPlayer deve diventare il nuovo primo e mette la carta in stato di FINISH
     }
     //todo
     public void previousPlayer(){
@@ -126,7 +125,7 @@ public class Game implements Game_Interface {
     }
     //todo
     @Override
-    public void playNextCard() {
+    public void playNextCard(Player player) {
 
     }
     //todo
@@ -165,21 +164,26 @@ public class Game implements Game_Interface {
         }
         else throw new IllegalStateException();
     }
-    //todo
+
     @Override
-    public List<Box> choiceBox(Player player, boolean choice) {
-        return List.of();
+    public List<Box> choiceBox(Player player, boolean choice){
+        //State Control
+        if(getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
+           getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)){
+            return getCurrentCard().choiceBox(this, player, choice);
+        }
+        throw new IllegalStateException();
     }
 
     @Override
-    public void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception {
+    public void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on){
         //State Control
         if(getCurrentCard().getStateCard() == BOXMANAGEMENT && player.getStatePlayer() == IN_GAME &&
            getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
            start.contains(box)){
             getCurrentCard().moveBox(this, player, start, end, box, on);
         }
-        throw new Exception();
+        throw new IllegalStateException();
     }
 
     @Override

@@ -4,5 +4,6 @@ public enum StateCardType {
     DECISION,
     CHOICE_ATTRIBUTES,
     REMOVE,
-    BOXMANAGEMENT
+    BOXMANAGEMENT,
+    FINISH
 }

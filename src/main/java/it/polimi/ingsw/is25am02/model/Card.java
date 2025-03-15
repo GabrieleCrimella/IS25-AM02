@@ -35,41 +35,43 @@ public abstract class Card {
 
     public abstract Card createCard();
 
-    void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException{
+    public void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void removeCrew(Game game, Player player, Cabin cabin) throws UnsupportedOperationException{
+    public void removeCrew(Game game, Player player, Cabin cabin) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    List<Box> choiceBox(Player player, boolean choice) throws UnsupportedOperationException{
+    public List<Box> choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
+
     public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
-    List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException{
+
+    public List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) throws UnsupportedOperationException{
+    public void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) throws UnsupportedOperationException{
+    public void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void removeBox(Player player, SpecialStorage storage, BoxType type) throws UnsupportedOperationException{
+    public void removeBox(Player player, SpecialStorage storage, BoxType type) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void removeBattery(Player player, BatteryStorage storage) throws UnsupportedOperationException{
+    public void removeBattery(Player player, BatteryStorage storage) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    void effect(Game game, Player player) throws UnsupportedOperationException{
+    public void effect(Game game, Player player) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 

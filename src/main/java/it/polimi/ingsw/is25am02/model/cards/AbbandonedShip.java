@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAME;
 
 public class AbbandonedShip extends Card{
@@ -28,7 +29,8 @@ public class AbbandonedShip extends Card{
         return new AbbandonedShip(AliveLost, creditWin, flyBack, getLevel());
     }
 
-    void choice(Game game, Player player, boolean choice){
+    @Override
+    public void choice(Game game, Player player, boolean choice){
         if (choice){
             //Cambio stato
             setStateCard(StateCardType.REMOVE);
@@ -41,7 +43,8 @@ public class AbbandonedShip extends Card{
         }
     }
 
-    void removeCrew(Game game, Player player, Cabin cabin){
+    @Override
+    public void removeCrew(Game game, Player player, Cabin cabin){
         try {
             cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
             AliveRemoved++;
@@ -50,7 +53,8 @@ public class AbbandonedShip extends Card{
         }
 
         if (AliveRemoved == AliveLost) {
-            game.playNextCard();
+            game.getCurrentCard().setStateCard(StateCardType.FINISH);
+            game.getCurrentState().setPhase(TAKE_CARD);
         }
     }
 }

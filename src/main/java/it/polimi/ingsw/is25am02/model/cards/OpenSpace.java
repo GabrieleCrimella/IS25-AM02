@@ -10,17 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpenSpace extends Card {
-    int level;
 
     public OpenSpace(int level) {
         super(level, StateCardType.CHOICE_ATTRIBUTES);
     }
 
     public OpenSpace createCard(){
-        return new OpenSpace(level);
+        return new OpenSpace(getLevel());
     }
 
-    void choiceDoubleMotor(Player player, Game game, List<Pair<DoubleMotor, BatteryStorage>> whichDMotor){
+
+    public void choiceDoubleMotor(Player player, Game game, List<Pair<DoubleMotor, BatteryStorage>> whichDMotor){
         List<DoubleMotor> dMotors = new ArrayList<>();
         int flyBack;
         if(whichDMotor!=null){// il giocatore ha scelto di usare almeno un motore doppio
