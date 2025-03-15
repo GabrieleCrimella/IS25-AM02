@@ -57,11 +57,7 @@ public class MeteoritesStorm extends Card {
                 game.getCurrentPlayer().getSpaceship().meteoriteDamage(currentMeteor.getKey(), currentMeteor.getValue(), game.getDiceResult());
             }
         }
-        //avanza al prossimo meteorite
-        if (currentIndex >= meteorites.size()) {
-            game.playNextCard();
-        }
-        else {
+        if(true) {
             //todo: qui in veirtà bisogna controllare che abbia già agito con questo meteorite su tutti i player presenti
             /*un'opzione può essere mettere un int[4] dentro ogni arrayList di meteorites dove scrivi per che player hanno già subito
             l'effetto.

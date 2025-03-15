@@ -109,6 +109,4 @@ public class Trafficker extends Card_with_box{
         }
         else throw new RuntimeException();
     }
-
-
 }
