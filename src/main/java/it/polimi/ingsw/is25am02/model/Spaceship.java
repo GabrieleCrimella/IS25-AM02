@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -341,4 +342,13 @@ public class Spaceship {
     public boolean isMostExpensive(BoxType type) {
         return true;
     }
+
+    public void epidemyRemove() {
+        for(Optional<Tile> t : spaceshipIterator){
+            if(t.isPresent() && t.get().getType().equals(TileType.CABIN)){
+                //todo devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
+            }
+        }
+    }
+
 }

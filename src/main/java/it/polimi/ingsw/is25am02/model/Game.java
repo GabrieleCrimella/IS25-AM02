@@ -17,7 +17,7 @@ public class Game implements Game_Interface {
     private String gameName;
     private int maxAllowedPlayers;
     private List<Player> players;
-    private int level;
+    private final int level;
     private CardDeck deck;
     private Hourglass hourglass;
     private HeapTiles heapTile;
