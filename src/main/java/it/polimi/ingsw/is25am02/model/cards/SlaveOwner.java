@@ -34,30 +34,34 @@ public class SlaveOwner extends Enemies{
     public void choiceDoubleCannon(Game game, Player player, List<Pair<DoubleCannon, BatteryStorage>> whichDCannon){
         List<DoubleCannon> dCannon = new ArrayList<>();
         double playerPower;
-        if(whichDCannon!=null){// il giocatore ha scelto di usare almeno un motore doppio
+        if(whichDCannon!=null){  // il giocatore ha scelto di usare almeno un motore doppio
             for(Pair<DoubleCannon, BatteryStorage> pair: whichDCannon){
                 dCannon.add(pair.getKey());
-                pair.getValue().removeBattery();//rimuovo la batteria che è stata usata
+                pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
             }
             playerPower= player.getSpaceship().calculateCannonPower(dCannon);
         }
-        else playerPower = player.getSpaceship().calculateMotorPower(null); //se uso solo motori singoli
+        else playerPower = player.getSpaceship().calculateCannonPower(null); //se uso solo motori singoli
 
-        if(playerPower>getCannonPowers()){ //se il giocatore è piu forte dei schiavisti allora li sconfigge
+        if(playerPower > getCannonPowers()){ //se il giocatore è piu forte dei schiavisti allora li sconfigge
             setStateCard(StateCardType.DECISION);
-
-            //player.getSpaceship().addCosmicCredits(getCredit());
-            //game.getGameboard().move((-1)*getDaysLost(), player);
-
         }
-        else if(playerPower==getCannonPowers()){ //non succede niente al player current ma passo al player successivo
+        else if(playerPower == getCannonPowers()){ //non succede niente al player current ma passo al player successivo
             game.nextPlayer();
         }
-        else{  //viene colpito il giocatore e si passa al prossimo
+        else{  //viene colpito il giocatore
             setStateCard(StateCardType.REMOVE);
-            game.nextPlayer();
-
         }
+    }
+
+    @Override
+    public void choice(Game game, Player player, boolean choice){
+        if(choice){
+            player.getSpaceship().addCosmicCredits(getCredit());
+            game.getGameboard().move((-1)*getDaysLost(), player);
+        }
+        setStateCard(StateCardType.FINISH);
+        game.getCurrentState().setPhase(TAKE_CARD);
     }
 
     @Override
@@ -70,8 +74,14 @@ public class SlaveOwner extends Enemies{
         }
 
         if (AliveRemoved == AliveLost) {
-            game.getCurrentCard().setStateCard(StateCardType.FINISH);
-            game.getCurrentState().setPhase(TAKE_CARD);
+            if(player.equals(game.getGameboard().getRanking().getLast())){
+                game.getCurrentCard().setStateCard(StateCardType.FINISH);
+                game.getCurrentState().setPhase(TAKE_CARD);
+            }
+            else{
+                game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                game.nextPlayer();
+            }
         }
     }
 
