@@ -62,16 +62,38 @@ public class Game implements Game_Interface {
     public Player getCurrentPlayer() {
         return currentState.getCurrentPlayer();
     }
+
     public Card getCurrentCard(){ return currentState.getCurrentCard(); }
 
-    //todo
     public void nextPlayer(){
-        //Player diventa il prossimo player
-        //Se il player è l'ultimo il currentPlayer deve diventare il nuovo primo e mette la carta in stato di FINISH
+        int index = players.indexOf(getCurrentPlayer());
+
+        if(players.indexOf(getCurrentPlayer())== players.size()) {//se il giocatore è l'ultimo allora iil currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
+            currentState.setCurrentPlayer(players.getFirst());
+            getCurrentCard().setStateCard(FINISH);
+        }
+        else if(players.get(index+1).getStatePlayer()==IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
+            currentState.setCurrentPlayer(players.get(index + 1));//metto il prossimo giocatore come giocatore corrente
+        }
+        else {//se il prossimo giocatore è in stato di out game, allora devo chiamare il prossimo giocatore
+            nextPlayer();
+        }
+
     }
-    //todo
+
     public void previousPlayer(){
         //come next player ma torna indietro
+        int index = players.indexOf(getCurrentPlayer());
+
+        if(index==0) {//se il giocatore è il primo allora il currentPlayer rimane il primo e lo stato della carta diventa FINISH{
+            getCurrentCard().setStateCard(FINISH);
+        }
+        else if(players.get(index-1).getStatePlayer()==IN_GAME) {//se il precedente giocatore è in gioco allora lo metto come prossimo giocatore corrente
+            currentState.setCurrentPlayer(players.get(index - 1));//metto il prossimo giocatore come giocatore corrente
+        }
+        else {//se il precedente giocatore è in stato di out game, allora devo chiamare il prossimo giocatore
+            previousPlayer();
+        }
     }
 
     @Override
