@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
@@ -329,7 +330,15 @@ public class Spaceship {
         return alive;
     }
 
+    //todo Mi dice se la tile appartiene alla nave
     public boolean own(Tile tile) {  //todo il metodo controlla che la tile passata appartenga alla nave
+        return true;
+    }
+
+
+    //todo Mi dice se il tipo di box passato è al pari del blocco più pregiato della nave
+    //se non ci sono box ritorno false
+    public boolean isMostExpensive(BoxType type) {
         return true;
     }
 }

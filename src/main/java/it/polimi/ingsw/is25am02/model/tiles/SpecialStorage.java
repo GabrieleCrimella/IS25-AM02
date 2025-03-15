@@ -5,11 +5,12 @@ import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialStorage extends Tile{
     int maxNum;
-    List<Box> occupation;
+    ArrayList<Box> occupation;
 
     public SpecialStorage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum) {
         super(t, connectors, rotationType, id);
@@ -20,15 +21,15 @@ public class SpecialStorage extends Tile{
         occupation.add(box);
     }
 
-    List<Box> getOccupation(){
+    public ArrayList<Box> getOccupation(){
         return occupation;
     }
 
-    void removeBox(Box box){
+    public void removeBox(Box box){
         occupation.remove(box);
     }
 
-    int getNumOccupation(){
+    public int getNumOccupation(){
         return occupation.size();
     }
 
