@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import java.util.ArrayList;
 import java.util.List;
 
+//special storage può contenere tutte le box
 public class SpecialStorage extends Tile{
     int maxNum;
     ArrayList<Box> occupation;

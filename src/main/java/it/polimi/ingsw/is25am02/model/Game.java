@@ -24,10 +24,12 @@ public class Game implements Game_Interface {
     private Gameboard globalBoard;
     private State currentState;
 
+    //todo: dove sono tutte le "instanziazioni" degli attributi?
     public Game(List<Player> p, int level){
         this.players = p;
         this.level = level;
         this.diceResult = 0;
+        this.heapTile= new HeapTiles();
     }
 
     //getter

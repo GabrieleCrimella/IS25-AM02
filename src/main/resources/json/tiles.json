@@ -1,0 +1,1659 @@
+[
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web155.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web156.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 3,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web152.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 2,
+      "SOUTH": 1,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web154.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web150.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web151.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 3,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web149.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "SHIELD",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 2,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web153.jpg",
+    "isShield": {
+      "NORTH": true,
+      "EAST": true,
+      "SOUTH": false,
+      "WEST": false
+    }
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web59.jpg"
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web57.jpg"
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web54.jpg"
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web58.jpg"
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 3,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web55.jpg"
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web53.jpg"
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web60.jpg"
+  },
+  {
+    "type": "STRUCTURAL",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 3,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web56.jpg"
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web8.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web9.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web2.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web3.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web4.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web5.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 1,
+      "SOUTH": 1,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web6.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 2,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web7.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web10.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web11.jpg",
+    "maxBattery": 2
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web12.jpg",
+    "maxBattery": 3
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web13.jpg",
+    "maxBattery": 3
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web14.jpg",
+    "maxBattery": 3
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web15.jpg",
+    "maxBattery": 3
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 2,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web16.jpg",
+    "maxBattery": 3
+  },
+  {
+    "type": "BATTERY",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web17.jpg",
+    "maxBattery": 3
+  },
+  {
+    "type": "BROWN_CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web137.jpg"
+  },
+  {
+    "type": "BROWN_CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web138.jpg"
+  },
+  {
+    "type": "BROWN_CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web139.jpg"
+  },
+  {
+    "type": "BROWN_CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web140.jpg"
+  },
+  {
+    "type": "BROWN_CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web141.jpg"
+  },
+  {
+    "type": "BROWN_CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web142.jpg"
+  },
+  {
+    "type": "PURPLE_CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web143.jpg"
+  },
+  {
+    "type": "PURPLE_CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web144.jpg"
+  },
+  {
+    "type": "PURPLE_CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web145.jpg"
+  },
+  {
+    "type": "PURPLE_CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web146.jpg"
+  },
+  {
+    "type": "PURPLE_CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web147.jpg"
+  },
+  {
+    "type": "PURPLE_CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web148.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 3,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web35.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 2,
+      "SOUTH": 1,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web36.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 2,
+      "SOUTH": 2,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web37.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web38.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web39.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web40.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 3,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web41.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web42.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web43.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web44.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web45.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web46.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web47.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web48.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web49.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web50.jpg"
+  },
+  {
+    "type": "CABIN",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web51.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web101.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web102.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web103.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web104.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web105.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web106.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 3,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web107.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web108.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web109.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 3,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web110.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web111.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web112.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web113.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 3,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web114.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 1,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web115.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 3,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web116.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web117.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web118.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web119.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 3,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web120.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web121.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 3,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web122.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 2,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web123.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web124.jpg"
+  },
+  {
+    "type": "CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web125.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web126.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web127.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 3,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web128.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web129.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web130.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web131.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web132.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 3,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web133.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 1,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web134.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web135.jpg"
+  },
+  {
+    "type": "D_CANNON",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web136.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web71.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web72.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web73.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web74.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web75.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web76.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web77.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web78.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web79.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web80.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web81.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web82.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web83.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web84.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web85.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web86.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web87.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web88.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web89.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web90.jpg"
+  },
+  {
+    "type": "MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web91.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web92.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web93.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web94.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web95.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web96.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web97.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web98.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web99.jpg"
+  },
+  {
+    "type": "D_MOTOR",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web100.jpg"
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web62.jpg",
+    "maxBox": 1
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web63.jpg",
+    "maxBox": 1
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 1,
+      "SOUTH": 1,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web64.jpg",
+    "maxBox": 1
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web65.jpg",
+    "maxBox": 1
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 2,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web66.jpg",
+    "maxBox": 1
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web67.jpg",
+    "maxBox": 1
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web68.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web69.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "SPECIAL_STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web70.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 3,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web18.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 3,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web19.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 3,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web20.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web21.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web22.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 1,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web23.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web24.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 1,
+      "SOUTH": 2,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web25.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web26.jpg",
+    "maxBox": 2
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web27.jpg",
+    "maxBox": 3
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web28.jpg",
+    "maxBox": 3
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web29.jpg",
+    "maxBox": 3
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 0
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web30.jpg",
+    "maxBox": 3
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 1,
+      "EAST": 0,
+      "SOUTH": 2,
+      "WEST": 1
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web31.jpg",
+    "maxBox": 3
+  },
+  {
+    "type": "STORAGE",
+    "connectors": {
+      "NORTH": 2,
+      "EAST": 0,
+      "SOUTH": 1,
+      "WEST": 2
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web32.jpg",
+    "maxBox": 3
+  },
+  {
+    "type": "COLORED_CABIN",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 3,
+      "SOUTH": 3,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web33.jpg",
+    "color": "blue"
+  },
+  {
+    "type": "COLORED_CABIN",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 3,
+      "SOUTH": 3,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web34.jpg",
+    "color": "green"
+  },
+  {
+    "type": "COLORED_CABIN",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 3,
+      "SOUTH": 3,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web52.jpg",
+    "color": "red"
+  },
+  {
+    "type": "COLORED_CABIN",
+    "connectors": {
+      "NORTH": 3,
+      "EAST": 3,
+      "SOUTH": 3,
+      "WEST": 3
+    },
+    "image": "/images/tiles/GT-new_tiles_16_for web61.jpg",
+    "color": "yellow"
+  },
+  {
+    "type": "EMPTY",
+    "image": "/images/tiles/GT-new_tiles_16_for web157.jpg"
+  }
+]

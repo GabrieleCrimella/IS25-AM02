@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
+//todo: ricordiamoci di mettere che all'inizio della preparazione della nave i giocatori trovano già posizionata la "tile iniziale" folorata al centro della loro nave
 public abstract class Tile {
     private TileType tType;
     private ConnectorType[] connectors;

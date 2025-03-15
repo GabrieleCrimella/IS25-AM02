@@ -9,11 +9,14 @@ public class Cabin extends Tile{
     int numPurpleAlien;
     int numBrownAlien;
 
-    public Cabin(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int numHuman, int numPurpleAlien, int numBrownAlien) {
+    public Cabin(TileType t, ConnectorType[] connectors, RotationType rotationType, int id) {
         super(t, connectors, rotationType, id);
-        this.numHuman = numHuman;
-        this.numPurpleAlien = numPurpleAlien;
-        this.numBrownAlien = numBrownAlien;
+    }
+
+    public void setAlive(int human, int brown_alien, int purple_alien){
+        numHuman = human;
+        numBrownAlien = brown_alien;
+        numPurpleAlien = purple_alien;
     }
 
     public int getNumHuman() {

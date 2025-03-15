@@ -1,12 +1,25 @@
 package it.polimi.ingsw.is25am02.model.enumerations;
 
 public enum ConnectorType {
-    NONE, SINGLE, DOUBLE, UNIVERSAL;
+    NONE(0), SINGLE(1), DOUBLE(2), UNIVERSAL(3);
 
-    int numConnectorType;
+    private final int numConnectorType;
+
+    ConnectorType(int numConnectorType) {
+        this.numConnectorType = numConnectorType;
+    }
 
     public int getNum() {
         return numConnectorType;
+    }
+
+    public static ConnectorType getConnectorTypeByNum(int num) {
+        return switch (num) {
+            case 1 -> SINGLE;
+            case 2 -> DOUBLE;
+            case 3 -> UNIVERSAL;
+            default -> NONE;
+        };
     }
 
     public boolean compatible(ConnectorType other) {

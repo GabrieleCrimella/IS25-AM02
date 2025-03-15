@@ -195,6 +195,7 @@ public class Spaceship {
             }
         }
 
+        //controlla che davanti ai cannoni non ci sia nulla
         for (Optional<Tile> t : spaceshipIterator) {
             if (t.isPresent() && (t.get().getType().equals(TileType.D_CANNON) || t.get().getType().equals(TileType.CANNON))) {
                 if (spaceshipIterator.getFrontTile(t.get()).isPresent()) {
@@ -202,11 +203,6 @@ public class Spaceship {
                 }
             }
         }
-
-
-        //todo: controllare che non ci sia niente nella tile dopo dove punta un cannone
-
-        //todo: guardare anche le cose double
         return true;
     }
 
