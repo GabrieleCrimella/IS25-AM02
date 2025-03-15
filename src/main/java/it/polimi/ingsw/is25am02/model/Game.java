@@ -66,34 +66,30 @@ public class Game implements Game_Interface {
     public Card getCurrentCard(){ return currentState.getCurrentCard(); }
 
     public void nextPlayer(){
-        int index = players.indexOf(getCurrentPlayer());
+        int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
 
-        if(players.indexOf(getCurrentPlayer())== players.size()) {//se il giocatore è l'ultimo allora iil currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
-            currentState.setCurrentPlayer(players.getFirst());
+        if(getGameboard().getRanking().indexOf(getCurrentPlayer())== getGameboard().getRanking().size()) {//se il giocatore è l'ultimo allora iil currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
+            currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(FINISH);
         }
-        else if(players.get(index+1).getStatePlayer()==IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
-            currentState.setCurrentPlayer(players.get(index + 1));//metto il prossimo giocatore come giocatore corrente
+        else if(getGameboard().getRanking().get(index+1).getStatePlayer()==IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
+            currentState.setCurrentPlayer(getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
         }
-        else {//se il prossimo giocatore è in stato di out game, allora devo chiamare il prossimo giocatore
-            nextPlayer();
-        }
+
 
     }
 
-    public void previousPlayer(){
+    public void previousPlayer(){//todo potrebbe non servirci (era stata pensata per andare in ordine inverso di rotta)
         //come next player ma torna indietro
-        int index = players.indexOf(getCurrentPlayer());
+        int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
 
         if(index==0) {//se il giocatore è il primo allora il currentPlayer rimane il primo e lo stato della carta diventa FINISH{
             getCurrentCard().setStateCard(FINISH);
         }
-        else if(players.get(index-1).getStatePlayer()==IN_GAME) {//se il precedente giocatore è in gioco allora lo metto come prossimo giocatore corrente
-            currentState.setCurrentPlayer(players.get(index - 1));//metto il prossimo giocatore come giocatore corrente
+        else if(getGameboard().getRanking().get(index-1).getStatePlayer()==IN_GAME) {//se il precedente giocatore è in gioco allora lo metto come prossimo giocatore corrente
+            currentState.setCurrentPlayer(getGameboard().getRanking().get(index - 1));//metto il prossimo giocatore come giocatore corrente
         }
-        else {//se il precedente giocatore è in stato di out game, allora devo chiamare il prossimo giocatore
-            previousPlayer();
-        }
+
     }
 
     @Override
