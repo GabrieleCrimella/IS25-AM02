@@ -201,7 +201,7 @@ public class Game implements Game_Interface {
         //State Control
         if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
             getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
-            getCurrentCard().choiceDoubleMotor(player, choices);
+            getCurrentCard().choiceDoubleMotor(this,player, choices);
         }
         else throw new IllegalStateException();
     }
@@ -211,7 +211,7 @@ public class Game implements Game_Interface {
         //State Control
         if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
             getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
-            getCurrentCard().choiceDoubleCannon(player, choices);
+            getCurrentCard().choiceDoubleCannon(this,player, choices);
         }
         else throw new IllegalStateException();
     }

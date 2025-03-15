@@ -14,4 +14,16 @@ public abstract class Enemies extends Card {
         this.daysLost = daysLost;
         this.credit = credit;
     }
+
+    public int getCannonPowers() {
+        return cannonPowers;
+    }
+
+    public int getDaysLost() {
+        return daysLost;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
 }

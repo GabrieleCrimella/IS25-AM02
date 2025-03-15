@@ -55,11 +55,11 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) throws UnsupportedOperationException{
+    public void choiceDoubleMotor(Game game, Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) throws UnsupportedOperationException{
+    public void choiceDoubleCannon(Game game, Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 

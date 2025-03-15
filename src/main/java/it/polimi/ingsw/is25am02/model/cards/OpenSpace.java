@@ -19,11 +19,11 @@ public class OpenSpace extends Card {
         return new OpenSpace(getLevel());
     }
 
-
-    public void choiceDoubleMotor(Player player, Game game, List<Pair<DoubleMotor, BatteryStorage>> whichDMotor){
+    @Override
+    public void choiceDoubleMotor( Game game, Player player, List<Pair<DoubleMotor, BatteryStorage>> whichDMotor){
         List<DoubleMotor> dMotors = new ArrayList<>();
         int flyBack;
-        if(whichDMotor!=null){// il giocatore ha scelto di usare almeno un motore doppio
+        if(whichDMotor!=null){  // il giocatore ha scelto di usare almeno un motore doppio
             for(Pair<DoubleMotor, BatteryStorage> pair: whichDMotor){
                 dMotors.add(pair.getKey());
                 pair.getValue().removeBattery();//rimuovo la batteria che è stata usata
@@ -32,10 +32,7 @@ public class OpenSpace extends Card {
         }
         else flyBack = player.getSpaceship().calculateMotorPower(null); //se uso solo motori singoli
 
-        game.getGameboard().move(flyBack,player);
+        game.getGameboard().move((-1)*flyBack, player);
         game.nextPlayer();
-
     }
-
-
 }

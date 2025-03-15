@@ -41,16 +41,13 @@ public class Planet extends Card_with_box{
 
     @Override
     public List<Box> choicePlanet(Game game, Player player, int index){
-        if(index == -1){   //Il player ha deciso di non atterrare
-            game.nextPlayer();
-            return null;
-        }
-        else if(index>=0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
+        if(index>=0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
             setStateCard(StateCardType.BOXMANAGEMENT);
             return planetOffers.get(index);
         }
+        game.nextPlayer();
         return null;
     }
 
