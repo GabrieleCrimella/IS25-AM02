@@ -1,11 +1,15 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
+import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Cannon, DoubleCannon, DoubleMotor, Motors, PurpleCabin, Shield, SpecialStorage, Storage, Structural{
 //todo: ricordiamoci di mettere che all'inizio della preparazione della nave i giocatori trovano già posizionata la "tile iniziale" folorata al centro della loro nave
-public abstract class Tile {
     private TileType tType;
     private ConnectorType[] connectors;
     private RotationType rotationType;
@@ -96,4 +100,52 @@ public abstract class Tile {
         else
             return false;
     }
+    //metodi degli altri tipi
+
+    //storage e specialStorage
+    List<Box> getOccupation(){
+
+        List<Box> vuoto = new ArrayList<Box>();
+        return vuoto;
+    }
+
+    void removeBox(Box box){
+    }
+
+    int getNumOccupation(){
+        return 0;
+    }
+
+    public void addBox(Box box) {
+    }
+
+    //shield
+
+    public boolean isShielded(RotationType side){
+        return false;
+    }
+
+    //cabin
+    public void setAlive(int human, int brown_alien, int purple_alien){}
+
+    public int getNumHuman(){
+        return 0;
+    }
+
+    public int getNumPurpleAlien(){
+        return 0;
+    }
+
+    public int getNumBrownAlien(){
+        return 0;}
+
+    public void remove (int num){}
+
+    //battery storage
+
+    public int getNumBattery() {
+        return 0;
+    }
+
+    public void removeBattery(){}
 }

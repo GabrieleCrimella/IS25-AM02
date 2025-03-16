@@ -4,7 +4,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
-public class BatteryStorage extends Tile {
+public final class BatteryStorage extends Tile {
     int battery;
     int maxBattery;
 
@@ -14,10 +14,12 @@ public class BatteryStorage extends Tile {
         this.maxBattery = maxBattery;
     }
 
+    @Override
     public int getNumBattery() {
         return battery;
     }
 
+    @Override
     public void removeBattery(){
         battery = battery -1;
     }
