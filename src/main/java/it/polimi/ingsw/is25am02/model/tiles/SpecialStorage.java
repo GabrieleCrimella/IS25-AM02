@@ -15,6 +15,7 @@ public final class SpecialStorage extends Tile{
 
     public SpecialStorage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum) {
         super(t, connectors, rotationType, id);
+        this.occupation = new ArrayList<>();
         this.maxNum = maxNum;
     }
 

@@ -5,6 +5,8 @@ import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Storage extends Tile {
@@ -12,10 +14,10 @@ public final class Storage extends Tile {
     int maxNum;
     List<Box> occupation;
 
-    public Storage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum, List<Box> occupation) {
+    public Storage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum) {
         super(t, connectors, rotationType, id);
         this.maxNum = maxNum;
-        this.occupation = occupation;
+        this.occupation = new ArrayList<Box>();
     }
 
     @Override

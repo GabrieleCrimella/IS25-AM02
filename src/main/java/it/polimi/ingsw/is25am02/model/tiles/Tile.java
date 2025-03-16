@@ -57,6 +57,8 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         return tType;
     }
 
+    //tested
+    //it is taken for granted that the tile being passed is actually touching the current tile on the sideToCheck
     public boolean checkConnectors (Tile t, RotationType sideToCheck){
         int[] thisTile = new int[4];
         int[] otherTile = new int[4];
@@ -70,9 +72,9 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         */
         for (int i = 0; i < 4; i++) {
             int positionThis= (i+this.rotationType.getNum())%4;
-            thisTile[i] = connectors[positionThis].getNum();
+            thisTile[positionThis] = connectors[i].getNum();
             int positionOther= (i+t.rotationType.getNum())%4;
-            otherTile[i] = connectors[positionOther].getNum();
+            otherTile[positionOther] = t.getConnectors()[i].getNum();
         }
 
         return switch (sideToCheck) {

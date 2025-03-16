@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.model.HeapTiles;
 import javafx.util.Pair;
 
 import java.util.*;
