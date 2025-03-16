@@ -31,6 +31,7 @@ public class Game implements Game_Interface {
         this.players = p;
         this.level = level;
         this.diceResult = 0;
+        this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
     }
 
