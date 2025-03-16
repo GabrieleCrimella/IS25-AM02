@@ -233,7 +233,7 @@ public class Spaceship {
     }
 
     //todo: fare il metodo
-    public boolean isExposed(RotationType rotationType) {
+    public boolean isExposed(RotationType rotationType, int num) {
         return true;
     }
 
@@ -295,7 +295,10 @@ public class Spaceship {
 
     //todo: calcolare la distruzione della nave in base a dove è arrivato il meteorie
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
-    public void meteoriteDamage(int bigOrSmall, RotationType rotationType, int num) {
+    //ritorna 0 se la nave non è stata divisa in sotto parti
+    //ritorna 1 se la nave si è divisa in varie parti
+    public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
+        return false;
     }
 
     //todo: fare il metodo
@@ -317,7 +320,7 @@ public class Spaceship {
         }
     }
 
-    //todo: fare il metodo. ritorna il numero di vivi sulla nave (aliens e umani). gli alieni contano doppio
+    //todo: fare il metodo. ritorna il numero di vivi sulla nave (aliens e umani)
     public int crewMember() {
         return 0;
     }
@@ -356,5 +359,7 @@ public class Spaceship {
             }
         }
     }
-
+    //todo mantiene il pezzo di nave con la tile nella posizione (x,y), tutti i pezzi rimossi sono messi eliminati e si
+    //aggiunge +1 per ogni pezzo al contatore degli scarti
+    public void holdSpaceship(int x, int y) {}
 }

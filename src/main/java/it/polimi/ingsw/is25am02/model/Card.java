@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Card {
     private final int level;
@@ -68,6 +69,14 @@ public abstract class Card {
     }
 
     public void removeBattery(Player player, BatteryStorage storage) throws UnsupportedOperationException{
+        throw new UnsupportedOperationException("Not supported method");
+    }
+
+    public void calculateDamage(Game game, Player player, Optional<BatteryStorage> storage) throws UnsupportedOperationException{
+        throw new UnsupportedOperationException("Not supported method");
+    }
+
+    public void holdSpaceship(Game game, Player player, int x, int y) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 

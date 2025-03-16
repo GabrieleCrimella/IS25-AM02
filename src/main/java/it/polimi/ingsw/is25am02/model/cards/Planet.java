@@ -61,7 +61,8 @@ public class Planet extends Card_with_box{
             if(player.equals(game.getGameboard().getRanking().getLast())) {
                 Iterator<Player> it = landed.descendingIterator();
                 while(it.hasNext()) {
-                    game.getGameboard().move((-1)*daysLost, it.next());
+                    Player temp = it.next();
+                    game.getGameboard().move((-1)*daysLost, temp);
                 }
             }
             game.getCurrentCard().setStateCard(DECISION);

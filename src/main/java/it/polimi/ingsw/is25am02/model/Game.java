@@ -74,7 +74,7 @@ public class Game implements Game_Interface {
         return diceResult;
     }
 
-    public void setDiceResult(int diceResult) {
+    public void setDiceResult() {
         this.diceResult = getGameboard().getDice().pickRandomNumber();
     }
 
@@ -93,14 +93,12 @@ public class Game implements Game_Interface {
     public void nextPlayer() {
         int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
 
-        if (getGameboard().getRanking().indexOf(getCurrentPlayer()) == getGameboard().getRanking().size()) {//se il giocatore è l'ultimo allora iil currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
+        if (getGameboard().getRanking().indexOf(getCurrentPlayer()) == getGameboard().getRanking().size()-1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(FINISH);
         } else if (getGameboard().getRanking().get(index + 1).getStatePlayer() == IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
             currentState.setCurrentPlayer(getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
         }
-
-
     }
 
     public void previousPlayer() {//todo potrebbe non servirci (era stata pensata per andare in ordine inverso di rotta)
@@ -297,6 +295,34 @@ public class Game implements Game_Interface {
         if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
                 getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
             getCurrentCard().removeBattery(player, storage);
+        } else throw new IllegalStateException();
+    }
+
+    @Override
+    public void rollDice(Player player) {
+        //State Control
+        if (getCurrentCard().getStateCard() == ROLL && player.getStatePlayer() == IN_GAME &&
+                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            setDiceResult();
+            getCurrentCard().setStateCard(CHOICE_ATTRIBUTES);
+        } else throw new IllegalStateException();
+    }
+
+    @Override
+    public void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage) {
+        //State Control
+        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
+                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().calculateDamage(this, player, batteryStorage);
+        } else throw new IllegalStateException();
+    }
+
+    @Override
+    public void holdSpaceship(Player player, int x, int y) {
+        //State Control
+        if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
+                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().holdSpaceship(this, player, x, y);
         } else throw new IllegalStateException();
     }
 

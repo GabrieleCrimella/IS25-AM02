@@ -11,6 +11,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public interface Game_Interface {
     //Phase START
@@ -52,6 +53,9 @@ public interface Game_Interface {
     void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices);
     void removeBox(Player player, SpecialStorage storage, BoxType type);
     void removeBattery(Player player, BatteryStorage storage);
+    void rollDice(Player player);
+    void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage);
+    void holdSpaceship(Player player, int x, int y);
 
 
     //Phase CHANGE_CONDITION
