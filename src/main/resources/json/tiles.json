@@ -1654,6 +1654,12 @@
   },
   {
     "type": "EMPTY",
+    "connectors": {
+      "NORTH": 0,
+      "EAST": 0,
+      "SOUTH": 0,
+      "WEST": 0
+    },
     "image": "/images/tiles/GT-new_tiles_16_for web157.jpg"
   }
 ]

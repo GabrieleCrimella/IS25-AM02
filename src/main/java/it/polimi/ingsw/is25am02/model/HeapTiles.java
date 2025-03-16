@@ -102,7 +102,7 @@ public class HeapTiles {
         }
     }
 
-    public Tile DrawTile() {
+    public Tile drawTile() {
         int index = random.nextInt(setTiles.size()); // Seleziona un indice casuale
         Iterator<Tile> iterator = setTiles.iterator();
 
@@ -116,7 +116,7 @@ public class HeapTiles {
     }
 
     public Set<Tile> getVisibleTiles() {
-        Set<Tile> visibleTiles = new HashSet<Tile>();
+        Set<Tile> visibleTiles = new HashSet<>();
         for (Tile tile : setTiles) {
             if (tile.isVisible()) {
                 visibleTiles.add(tile);
@@ -128,11 +128,11 @@ public class HeapTiles {
 
     public void removeVisibleTile(Tile t) {
 
-        getVisibleTiles().remove(t);
+        setTiles.remove(t);
     }
 
     public void addTile(Tile t) {
-
-        getVisibleTiles().add(t);
+        t.setVisible();
+        setTiles.add(t);
     }
 }

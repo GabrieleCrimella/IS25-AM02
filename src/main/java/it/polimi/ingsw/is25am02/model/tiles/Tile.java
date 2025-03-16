@@ -33,6 +33,10 @@ public abstract class Tile {
         return visible;
     }
 
+    public void setVisible(){
+        this.visible = true;
+    }
+
     public RotationType getRotationType() {
         return rotationType;
     }
