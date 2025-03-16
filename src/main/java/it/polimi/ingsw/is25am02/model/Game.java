@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
@@ -132,28 +133,37 @@ public class Game implements Game_Interface {
             player.getSpaceship().setCurrentTile(temp);
         } catch (AlreadyViewingTileException e) {
             //se il giocatore sta già guardando una tile, la tile pescata viene rimessa nel mazzo (in modo ancora invisibile) e viene in realtà restituita la tile che il giocatore stava guardando
-            heapTile.addTile(temp,false);
-            temp=player.getSpaceship().getCurrentTile();
+            heapTile.addTile(temp, false);
+            temp = player.getSpaceship().getCurrentTile();
         }
         return temp;
     }
 
-    //todo
     @Override
     public Tile takeTile(Player player, Tile tile) {
-        return null;
+        heapTile.removeVisibleTile(tile);
+        try {
+            player.getSpaceship().setCurrentTile(tile);
+            return tile;
+        } catch (AlreadyViewingTileException e) {
+            //se l'utente sta già guardando una tile, rimetto quella che ha passato come parametro nel mucchio e ritorno quella che sta già guardando
+            heapTile.addTile(tile, true);
+            return player.getSpaceship().getCurrentTile();
+        }
     }
 
-    //todo
+    //il giocatore "scarta" la tile che stava guardando.
     @Override
     public void returnTile(Player player, Tile tile) {
-
+        Tile temp = player.getSpaceship().getCurrentTile();
+        heapTile.addTile(temp, true);
+        player.getSpaceship().returnTile();
     }
 
     //todo
     @Override
     public void addTile(Player player, Tile tile, int x, int y) {
-
+        player.getSpaceship().addTile(x, y, tile);
     }
 
     //todo

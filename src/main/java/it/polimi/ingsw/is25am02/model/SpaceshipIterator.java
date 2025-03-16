@@ -88,6 +88,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         else throw new IllegalArgumentException("Invalid tile position");
     }
 
+    //todo: il controllo di correttezza con la maschera andrebbe fatto forse SOLO durante il check della spaceship. DISCUTIAMONE E CAPIAMO.
     public void addTile(Tile tile, int x, int y) {
         if (spaceshipMask[x][y])
             spaceshipBoard[x][y] = Optional.of(tile);
