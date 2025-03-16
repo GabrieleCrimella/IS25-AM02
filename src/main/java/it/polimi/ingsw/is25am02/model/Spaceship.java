@@ -132,7 +132,7 @@ public class Spaceship {
         //Per ogni tile se quello sopra di lui è vuoto [x][y+1] devi chiamare connectorsOnSide(RotationType.NORTH)
         //Se questo metodo ti ritorna ConnectorType.NONE non devi aggiungere 1, se no aggiungi 1.
         //Uguale per tutti gli altri lati
-
+    return 0;
     }
 
     public int getCosmicCredits() {
