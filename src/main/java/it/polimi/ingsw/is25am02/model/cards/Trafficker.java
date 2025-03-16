@@ -14,6 +14,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
@@ -39,17 +40,17 @@ public class Trafficker extends Card_with_box{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) throws UnsupportedOperationException {
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException {
         //Calcolo potenza Player
-        if(choices != null) {
+        if(choices.isPresent()) {
             ArrayList<DoubleCannon> doubleCannons = new ArrayList<>();
-            for (Pair<DoubleCannon, BatteryStorage> pair : choices) {
+            for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
                 doubleCannons.add(pair.getKey());
                 pair.getValue().removeBattery();
             }
             double playerPower = player.getSpaceship().calculateCannonPower(doubleCannons);
         }
-        double playerPower = player.getSpaceship().calculateCannonPower(null);
+        double playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<DoubleCannon>());
 
         //Paragoni
         if(playerPower > cannonPowers){

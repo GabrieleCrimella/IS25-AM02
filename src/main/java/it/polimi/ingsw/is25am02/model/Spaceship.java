@@ -296,6 +296,10 @@ public class Spaceship {
         return false;
     }
 
+    public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
+        return false;
+    }
+
     //todo: rifare il metodo, creandone prima un altro che ritorna le tile che contengono delle persone vive.
     //todo: in questo metodo non passare il numero di vivi da rimuovere, ma passare le tile da cui rimuovere i vivi
     public void removeCrew(int alive) {
