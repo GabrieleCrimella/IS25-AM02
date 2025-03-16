@@ -264,7 +264,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices) {
+    public void choiceDoubleMotor(Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices) {
         //State Control
         if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
                 getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
@@ -273,7 +273,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices) {
+    public void choiceDoubleCannon(Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
         //State Control
         if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
                 getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {

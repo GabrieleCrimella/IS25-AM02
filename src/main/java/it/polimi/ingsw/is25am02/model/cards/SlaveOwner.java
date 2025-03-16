@@ -12,6 +12,7 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
@@ -31,17 +32,17 @@ public class SlaveOwner extends Enemies{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, List<Pair<DoubleCannon, BatteryStorage>> whichDCannon){
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> whichDCannon){
         List<DoubleCannon> dCannon = new ArrayList<>();
         double playerPower;
-        if(whichDCannon!=null){  // il giocatore ha scelto di usare almeno un motore doppio
-            for(Pair<DoubleCannon, BatteryStorage> pair: whichDCannon){
+        if(whichDCannon.isPresent()){  // il giocatore ha scelto di usare almeno un motore doppio
+            for(Pair<DoubleCannon, BatteryStorage> pair: whichDCannon.get()){
                 dCannon.add(pair.getKey());
                 pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
             }
             playerPower= player.getSpaceship().calculateCannonPower(dCannon);
         }
-        else playerPower = player.getSpaceship().calculateCannonPower(null); //se uso solo motori singoli
+        else playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<DoubleCannon>()); //se uso solo motori singoli
 
         if(playerPower > getCannonPowers()){ //se il giocatore è piu forte dei schiavisti allora li sconfigge
             setStateCard(StateCardType.DECISION);
