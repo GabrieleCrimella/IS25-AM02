@@ -4,7 +4,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
-public class Cabin extends Tile{
+public final class Cabin extends Tile{
     int numHuman;
     int numPurpleAlien;
     int numBrownAlien;
@@ -13,24 +13,29 @@ public class Cabin extends Tile{
         super(t, connectors, rotationType, id);
     }
 
+    @Override
     public void setAlive(int human, int brown_alien, int purple_alien){
         numHuman = human;
         numBrownAlien = brown_alien;
         numPurpleAlien = purple_alien;
     }
 
+    @Override
     public int getNumHuman() {
         return numHuman;
     }
 
+    @Override
     public int getNumPurpleAlien() {
         return numPurpleAlien;
     }
 
+    @Override
     public int getNumBrownAlien() {
         return numBrownAlien;
     }
 
+    @Override
     public void remove (int num){
         if (numHuman != 0){
             numHuman =  numHuman - num;

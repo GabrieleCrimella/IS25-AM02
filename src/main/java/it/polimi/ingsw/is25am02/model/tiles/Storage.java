@@ -5,15 +5,38 @@ import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 
-public class Storage extends SpecialStorage {
+import java.util.List;
 
-    public Storage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum) {
-        super(t, connectors, rotationType, id, maxNum);
+public final class Storage extends Tile {
+
+    int maxNum;
+    List<Box> occupation;
+
+    public Storage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum, List<Box> occupation) {
+        super(t, connectors, rotationType, id);
+        this.maxNum = maxNum;
+        this.occupation = occupation;
+    }
+
+    @Override
+    List<Box> getOccupation(){
+        return occupation;
+    }
+
+    @Override
+    void removeBox(Box box){
+        occupation.remove(box);
+    }
+
+    @Override
+    int getNumOccupation(){
+        return occupation.size();
     }
 
     @Override
     public void addBox(Box box) {
         if (!box.getType().isSpecial())
-            super.addBox(box);
+            occupation.add(box);
     }
+
 }

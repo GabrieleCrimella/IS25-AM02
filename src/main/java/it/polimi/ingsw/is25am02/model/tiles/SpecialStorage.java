@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //special storage può contenere tutte le box
-public class SpecialStorage extends Tile{
+public final class SpecialStorage extends Tile{
     int maxNum;
     ArrayList<Box> occupation;
 
@@ -18,18 +18,22 @@ public class SpecialStorage extends Tile{
         this.maxNum = maxNum;
     }
 
+    @Override
     public void addBox(Box box){
         occupation.add(box);
     }
 
+    @Override
     public ArrayList<Box> getOccupation(){
         return occupation;
     }
 
+    @Override
     public void removeBox(Box box){
         occupation.remove(box);
     }
 
+    @Override
     public int getNumOccupation(){
         return occupation.size();
     }

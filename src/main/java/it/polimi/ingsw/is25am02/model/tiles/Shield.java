@@ -4,7 +4,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
-public class Shield extends Tile{
+public final class Shield extends Tile{
     boolean[] shielded;
 
     public Shield(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, boolean[] shielded) {
@@ -12,6 +12,7 @@ public class Shield extends Tile{
         this.shielded = shielded;
     }
 
+    @Override
     public boolean isShielded(RotationType side){
         int[] thisTile = new int[4];
         boolean[] rotatedShield = new boolean[4];
