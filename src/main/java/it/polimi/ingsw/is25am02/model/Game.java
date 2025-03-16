@@ -281,6 +281,15 @@ public class Game implements Game_Interface {
     }
 
     @Override
+    public void choiceCrew(Player player) {
+        //State Control
+        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
+                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+            getCurrentCard().choiceCrew(this, player);
+        } else throw new IllegalStateException();
+    }
+
+    @Override
     public void removeBox(Player player, SpecialStorage storage, BoxType type) {
         //State Control
         if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&

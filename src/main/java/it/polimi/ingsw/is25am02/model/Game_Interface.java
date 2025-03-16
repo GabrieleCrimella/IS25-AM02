@@ -51,6 +51,7 @@ public interface Game_Interface {
     List<Box> choicePlanet(Player player, int index);
     void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices);
     void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices);
+    void choiceCrew(Player player);
     void removeBox(Player player, SpecialStorage storage, BoxType type);
     void removeBattery(Player player, BatteryStorage storage);
     void rollDice(Player player);

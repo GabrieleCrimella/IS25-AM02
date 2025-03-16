@@ -64,6 +64,10 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method");
     }
 
+    public void choiceCrew(Game game, Player player) throws UnsupportedOperationException{
+        throw new UnsupportedOperationException("Not supported method");
+    }
+
     public void removeBox(Game game, Player player, SpecialStorage storage, BoxType type) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
