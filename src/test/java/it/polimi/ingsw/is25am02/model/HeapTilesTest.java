@@ -19,7 +19,7 @@ class HeapTilesTest {
         assertNotNull(tile);
 
         //ri-aggiungo la tile che ho scelto al mucchio
-        heapTiles.addTile(tile);
+        heapTiles.addTile(tile,true);
 
         //verifico che sia stata reinserita nel mucchio in modo "visibile"
         Set<Tile> sT = heapTiles.getVisibleTiles();

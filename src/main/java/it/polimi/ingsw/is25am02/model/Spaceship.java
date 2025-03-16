@@ -4,7 +4,6 @@ import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
-import javafx.util.Pair;
 
 import java.util.*;
 
@@ -14,7 +13,7 @@ public class Spaceship {
     private final SpaceshipIterator spaceshipIterator;
     private int numOfWastedTiles;
     private int cosmicCredits;
-    private final Tile currentTile;
+    private Tile currentTile;
     private int x_start, y_start;
 
     public Spaceship(int level) {
@@ -45,8 +44,18 @@ public class Spaceship {
         numOfWastedTiles++;
     }
 
-    public void returnTile() {//todo durante la fase di costruzione se scarto una carta, rimetto la current tile nel heaptile
-        //dovrà chiamare addTile dell'heap
+    //todo durante la fase di costruzione se scarto una carta, rimetto la current tile nel heaptile
+    //todo questo metodo però non vede heaptiles, è Game che deve gestire l'operazione: questo metodo ritorna currentTile, il Game lo rimette nell'heapTile
+    public void returnTile() {
+        currentTile = null;
+    }
+
+    public void setCurrentTile(Tile t) throws AlreadyViewingTileException {
+        if(currentTile==null){
+            currentTile = t;
+        }else {
+            throw new AlreadyViewingTileException();
+        }
     }
 
     public boolean isShielded(RotationType side) {
@@ -340,8 +349,8 @@ public class Spaceship {
     }
 
     public void epidemyRemove() {
-        for(Optional<Tile> t : spaceshipIterator){
-            if(t.isPresent() && t.get().getType().equals(TileType.CABIN)){
+        for (Optional<Tile> t : spaceshipIterator) {
+            if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
                 //todo devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
             }
         }

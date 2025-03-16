@@ -131,8 +131,9 @@ public class HeapTiles {
         setTiles.remove(t);
     }
 
-    public void addTile(Tile t) {
-        t.setVisible();
+    public void addTile(Tile t, boolean visible) {
+        if (visible)
+            t.setVisible();
         setTiles.add(t);
     }
 }
