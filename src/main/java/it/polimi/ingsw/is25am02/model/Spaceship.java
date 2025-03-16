@@ -288,21 +288,12 @@ public class Spaceship {
         return storageTiles;
     }
 
-    //todo: fare il metodo - non sono sicura che serva
-    public void calculateDamageMeteorites(ArrayList<Integer> meteorites, int line) {
-
-    }
-
     //todo: calcolare la distruzione della nave in base a dove è arrivato il meteorie
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
     //ritorna 1 se la nave si è divisa in varie parti
     public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
         return false;
-    }
-
-    //todo: fare il metodo
-    public void calculateDamageShots(ArrayList<Integer> shots, int line) {
     }
 
     //todo: rifare il metodo, creandone prima un altro che ritorna le tile che contengono delle persone vive.

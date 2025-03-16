@@ -20,7 +20,7 @@ public class Stardust extends Card {
     }
 
     @Override
-    public void effect(Game game) {
+    public void effect(Game game){
         Iterator<Player> it = game.getGameboard().getRanking().descendingIterator();
         while (it.hasNext()) {
             Player player = it.next();

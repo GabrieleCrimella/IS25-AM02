@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class MeteoritesStorm extends Card {
-    private ArrayList<Pair<Integer, RotationType>> meteorites;
+    private final ArrayList<Pair<Integer, RotationType>> meteorites;
     private int currentIndex;
 
 

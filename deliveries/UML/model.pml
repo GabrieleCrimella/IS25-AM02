@@ -2,8 +2,7 @@
 package "Model"{
 
     class Spaceship{
-        -Tile[12][12] spaceshipBoard
-        -boolean[12][12] maskSpaceship
+        -SpaceshipIterator it
         -int numOfWastedTiles
         -int cosmicCredits
         -Tile currentTile
@@ -11,57 +10,96 @@ package "Model"{
         --
         +Spaceship(int level)
         --
+        GESTIONE TILE
         +void addTile(int x, int y, Tile t)
-        +Tile getTile(int x, int y)
+        +Optional<Tile> getTile(int x, int y)
         +void removeTile(int x, int y)
+        +void returnTile()
+        +Tile getCurrentTile()
+        +void setCurrentTile(Tile t)
         --
+        CALCOLO VALORI
         +double calculateCannonPower()
-        +double calculateMotorPower()
+        +int calculateMotorPower()
         +int calculateExposedConnectors()
-        +boolean checkSpaceship()
+        +int calculateMember()
         --
+        GESTIONE COSMIC CREDITS
         +int getCosmicCredits()
         +void addCosmicCredits(int num)
         +void removeCosmicCredits(int num)
         --
+        GESTIONE SCARTI
         +int getNumOfWastedTiles()
         +void addNumOfWastedTiles(int num)
         --
-        +void removeBattery(BatteryStorage t)
+        CONTROLLO VALORI
+        +boolean checkSpaceship()
+        +boolean isShielded(RotationType side)
         +boolean isExposed(RotationType, int num)
-        +Tile getCurrentTile()
+        +boolean isCannonPresent(RotationType side, int num)
+        +boolean isDoubleCannonPresent(RotationType side, int num)
+        +boolean isMostExpensive(BoxType type)
+        --
+        GESTIONE COLPI / METEORITI
+        +boolean meteoriteDamage(int size, RotationType rot, int num, Optional<BatteryStorage> storage)
+        +boolean shotDamage(int size, RotationType rot, int num, Optional<BatteryStorage> storage)
+        --
+        FUNZIONI EXTRA
+        +void epidemyRemove()
+        +void removeBattery(BatteryStorage t)
         +List<Tile> getList(TileType)
+        +void holdSpaceship(int x, int y)
+        +boolean own(Tile tile)
     }
 
+    class SpaceIterator{}
+
+    Spaceship --> SpaceIterator
+
     Interface Game_Interface{
-        +void flipHourglass()
-        +Tile takeTile(Player p)
-        +Tile takeTile(Player p, Tile t)
-        +void returnTile(Tile t)
-        +void addTile(Player p, Tile t, int x, int y)
-        +void removeTile(Player p, int x, int y)
-        +void shipFinished(Player p)
-        +boolean checkSpaceship(Player p)
+        Phase START
+        +Game GameCreator(List<Player> p, int level);
         --
-        +void playNextCard()
-        +HashMap<int i, Player p> getPositions()
-        +HashMap<Player p, StatePlayerType> getState()
-        +List<Tile> possibleChoice(Player p, TypeTile t)
-        +List<Player> getWinners()
-        +void AddCrew(Player player, int x, int y, AliveType type)
+        Phase BUILD
+        +void flipHourglass();
+        +Tile takeTile(Player player);
+        +Tile takeTile(Player player, Tile tile);
+        +void returnTile(Player player, Tile tile);
+        +void addTile(Player player, Tile tile, int x, int y);
+        +void shipFinished(Player player);
         --
-        effetti carte
-        void choice(Player p, boolean choice)
-        void removeCrew(Cabin cabin, int numCrew)
-        List<Box> choiceBox(Player p, boolean choice)
-        void moveBox(List<Box> start, List<Box> end, BoxType type)
-        List<Box> choicePlanet(Player p, int index)
-        void choiceDMotor(Player p, List<Pair<DoubleMotor, BatteryStorage>>)
-        void choiceDCannon(Player p, List<Pair<DoubleCannon, BatteryStorage>>)
-        void removeBox(Player p, SpecialStorage storage, BoxType type)
-        void removeBattery(Player p, BatteryStorage storage)
-
-
+        Phase CHECK
+        +boolean checkSpaceship(Player player);
+        --
+        Phase CORRECTION
+        +void removeTile(Player player, int x, int y);
+        --
+        Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
+        +void addCrew(Player player, int x, int y, AliveType type);
+        --
+        Phase TAKE_CARD
+        +void playNextCard(Player player);
+        --
+        Phase EFFECT_ON_PLAYERS
+        +HashMap<Integer, Player> getPosition();
+        +HashMap<Player, StatePlayerType> getState();
+        +List<Tile> possibleChoice(Player player, TileType type);
+        +void choice(Player player, boolean choice);
+        +void removeCrew(Player player, Cabin cabin);
+        +List<Box> choiceBox(Player player, boolean choice) throws Exception;
+        +void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception;
+        +List<Box> choicePlanet(Player player, int index);
+        +void choiceDoubleMotor(Player player, List<Pair<DoubleMotor, BatteryStorage>> choices);
+        +void choiceDoubleCannon(Player player, List<Pair<DoubleCannon, BatteryStorage>> choices);
+        +void removeBox(Player player, SpecialStorage storage, BoxType type);
+        +void removeBattery(Player player, BatteryStorage storage);
+        +void rollDice(Player player);
+        +void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage);
+        +void holdSpaceship(Player player, int x, int y);
+        --
+        Phase RESULT
+        +ArrayList<Player> getWinners();
     }
 
     Game_Interface <|.. Game
@@ -75,25 +113,25 @@ package "Model"{
         -Hourglass hourglass
         -HeapTiles heapTiles
         -State state
+        -List<Player> Players
+        -int diceResult
         --
         +Game(List<Player> p, int level)
         --
-        +CardDeck getDeck()
-        +GlobalBoard getGlobalBoard()
-        +List<Player> getPlayers()
-        +String getName()
-        +int getLevel()
-        +HeapTiles getHeapTiles()
-        +Hourglass getHourglass()
+        +Getter degli attributi
+        +Setter per dice
+        +Player getCurrentPlayer()
+        +Card getCurrentCard()
+        +void nextPlayer()
     }
 
     class State{
-        +Card currentCard
-        +Player currentPlayer
-        +HashMap<Player p, StatePlayerType> state
-        +StateGameType phase
+        -Card currentCard
+        -Player currentPlayer
+        -StateGameType phase
         --
-        Tutti i getter e setter per vedere i dati
+        +Getter
+        +Setter
     }
 
     enum StatePlayerType{
@@ -186,13 +224,18 @@ package "Model"{
         -int id
         --
         +Tile(TileType t, ConnectorType[4] connectors, RotationType r, boolean v, int id)
+        --
+        GETTER
         +int getId()
         +boolean getVisible()
         +RotationType getRotations()
         +ConnectorType[4] getConnectors()
         +TileType getTileType()
-        +boolean checkConnections(Tile t, RotationType sideToCheck)
+        --
+        SETTER
         +void setVisible()
+        --
+        +boolean checkConnections(Tile t, RotationType sideToCheck)
         ---
         Battery
         +int getNumBattery()
@@ -203,7 +246,7 @@ package "Model"{
         --
         Cabin
         +List<Alive> getNumCrew()
-        +void removeCrew(int num)
+        +void removeCrew()
         +void addCrew(Alive member)
         --
         Storage
@@ -230,6 +273,7 @@ package "Model"{
     class BatteryStorage extends Tile{
         -int Battery
         -int maxBattery
+        --
         +BatteryStorage(int maxBattery)
     }
 
@@ -274,8 +318,10 @@ package "Model"{
         GREEN 2
         YELLOW 3
         NONE 0
+        --
         -int power
         +int getPower()
+        --
         +boolean isValid()
     }
 
@@ -330,59 +376,65 @@ package "Model"{
     }
 
     abstract class Card{
-        - int level
+        -int level
         --
         +Card card(int level)
         +Card newCard()
         {abstract}+Card createCard()
     }
 
-    Note right : createCard() farà solo una return creatore_di_this()
-
     class OpenSpace extends Card{
         +Openspace()
         +OpenSpace createCard()
-        +void effect(Gameboard gb)
+        +void choiceDoubleMotor( Game game, Player player, List<Pair<DoubleMotor, BatteryStorage>> Motor)
     }
 
     class Stardust extends Card{
         +Stardust()
         +Stardust createCard()
-        +void effect(Gameboard gb)
+        +void effect(Game game)
     }
 
     class AbbandonedShip extends Card{
         -int humanLost
+        -int AliveRemoved
         -int creditwin
         -int flyBack
-
-        +AbbandonedShip(int h, int c, int fB)
+        --
+        +AbbandonedShip(...)
         +AbbandonedShip createCard()
-        +void effect(Gameboard gb)
+        +void choice(Game game, Player player, boolean choice)
+        +void removeCrew(Game game, Player player, Cabin cabin)
     }
 
     class Planet extends Card_with_box{
         -int daysLost
         -List<List<Box>> planetOffers
-
-        +Planet(int daysLost, List<List<Box>> planetOffers)
+        -ArrayList<Integer> occupied
+        -LinkedList<Player> landed;
+        --
+        +Planet(...)
         +Planet createCard()
-        +void effect(Gameboard gb)
+        +List<Box> choicePlanet(Game game, Player player, int index)
+        +void moveBox(Game g, Player p, List<Box> start, List<Box> end, Box box, boolean on)
     }
 
     class MeteoritesStorm extends Card{
-        -List<int[2]> meteorites
-
-        +MeteoritesStorm(List<int[2]> m)
+        -ArrayList<Pair<Integer, RotationType>> meteorites
+        -int currentIndex
+        --
+        +MeteoritesStorm(...)
         +MeteoritesStorm createCard()
-        +void effect(Gameboard gb)
+        +void holdSpaceship(Game game, Player player, int x, int y)
+        +void calculateDamage(Game g, Player p, Optional<BatteryStorage> storage)
+
     }
 
     abstract class Enemies extends Card{
         -int cannonPowers
         -int daysLost
         -int credit
-
+        --
         +Enemies(int c, int d, int cr)
         +int getCannonPowers()
         +int getDaysLost()
@@ -391,51 +443,58 @@ package "Model"{
 
     class Pirates extends Enemies{
         -boolean[3] shots
-
-        +Pirates(int c, int d, int cr, boolean[3] shots)
+        --
+        +Pirates(...)
         +Pirates createCard()
-        +void effect(Gameboard gb)
     }
 
     class SlaveOwner extends Enemies{
-        -int humansLost
-
-        +SlaveOwner(int c, int d, int cr, int human)
+        -int AliveLost
+        -int AliveRemoved
+        --
+        +SlaveOwner(...)
         +SlaveOwner createCard()
-        +void effect(Gameboard gb)
+        +void choiceDoubleCannon(Game g, Player p, List<Pair<DoubleCannon, BatteryStorage>> Cannon)
+        +void choice(Game game, Player player, boolean choice)
+        +void removeCrew(Game game, Player player, Cabin cabin)
     }
 
     class Trafficker extends Card_with_box{
         -int cannonPowers
         -int daysLost
         -int boxesLost
-        -List<Box> boxesWon
-
-        +Trafficker(int c, int d, int b)
+        -int boxesRemove
+        -ArrayList<Box> boxesWon
+        --
+        +Trafficker(...)
         +Trafficker createCard()
-        +void effect(Gameboard gb)
+        +void choiceDoubleCannon(Game g, Player p, List<Pair<DoubleCannon, BatteryStorage>> choices)
+        +List<Box> choiceBox(Game game, Player player, boolean choice)
+        +void moveBox(Game g, Player p, List<Box> start, List<Box> end, Box box, boolean on)
+        +void removeBox(Game g, Player p, SpecialStorage storage, BoxType type)
     }
 
     class AbbandonedStation extends Card_with_box{
-        -int humansNeeded
+        -int AliveNeeded
         -int daysLost
-        -List<Box> boxesWon
-
-        +AbbandonedStation(int h, int d)
+        -LinkedList<Box> boxesWon
+        --
+        +AbbandonedStation(...)
         +AbbandonedStation createCard()
-        +void effect(Gameboard gb)
+        +List<Box> choiceBox(Game game, Player player, boolean choice)
+        +void moveBox(Game g, Player p, List<Box> start, List<Box> end, Box box, boolean on)
     }
 
     class WarZoneI extends Card{
-        +void effect(Gameboard gb)
     }
 
     class WarZoneII extends Card{
-        +void effect(Gameboard gb)
     }
 
     class Epidemy extends Card{
-        +void effect(Gameboard gb)
+        +Epidemy()
+        +Epidemy createCard()
+        +void effect(Game game)
     }
 
     CardDeck *-- Card
@@ -446,11 +505,11 @@ package "Model"{
         -Spaceship spaceship
         -String nickname
         -PlayerColor playerColor
-
+        -StatePlayerType state
+        --
         +Player(Spaceship s, String nickname, PlayerColor pColor)
-        +Spaceship getSpaceship()
-        +String getNickName()
-        +PlayerColor getPlayerColor()
+        +Getter
+        +void setStatePlayer(StatePlayerType statePlayer)
     }
 
     enum PlayerColor{

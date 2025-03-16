@@ -33,4 +33,8 @@ public class Player {
     public StatePlayerType getStatePlayer() {
         return statePlayer;
     }
+
+    public void setStatePlayer(StatePlayerType statePlayer) {
+        this.statePlayer = statePlayer;
+    }
 }
