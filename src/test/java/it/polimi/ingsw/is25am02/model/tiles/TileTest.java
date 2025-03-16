@@ -188,6 +188,20 @@ class TileTest {
         assertEquals(false, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
 
+    @Test
+    void test_should_check_connector_on_given_side(){
+        TileType t = TileType.BATTERY;
+        ConnectorType[] connectors = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
+        RotationType rotationType = RotationType.NORTH;
+        int id = 1;
+        int maxBattery = 3;
+        BatteryStorage batteryStorage = new BatteryStorage(t, connectors, rotationType, id, maxBattery);
+        assertEquals(ConnectorType.DOUBLE, batteryStorage.connectorOnSide(RotationType.NORTH));
+        assertEquals(ConnectorType.NONE, batteryStorage.connectorOnSide(RotationType.EAST));
+        assertEquals(ConnectorType.SINGLE, batteryStorage.connectorOnSide(RotationType.SOUTH));
+        assertEquals(ConnectorType.UNIVERSAL, batteryStorage.connectorOnSide(RotationType.WEST));
+
+    }
 
 
 
