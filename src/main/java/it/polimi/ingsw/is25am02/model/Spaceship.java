@@ -408,37 +408,6 @@ public class Spaceship {
         return true;
     }
 
-    public HashMap<Tile,Integer> tilesWithAlive(){ //ritorna una hash map con le tile e le persone vive che contengono
-        HashMap<Tile,Integer> cabinWithAlive = new HashMap<>();
-        for(Optional<Tile> t : spaceshipIterator){
-            if(t.isPresent() && t.get().getType().equals(TileType.CABIN)){
-                cabinWithAlive.put(t.get(), t.get().getNumPurpleAlien()+t.get().getNumBrownAlien() + t.get().getNumHuman());
-            }
-        }
-        return cabinWithAlive;
-
-    }
-
-    //passo una hashmap con la tile e il numero di alive da rimuovere da quella tile
-    public void removeCrew(HashMap<Tile, Integer> aliveToRemove) {
-        if(aliveToRemove.isEmpty()){
-            throw new IllegalArgumentException("Impossibile remove crew");
-        }
-        for( Tile t : aliveToRemove.keySet()){
-            t.remove(aliveToRemove.get(t));
-        }
-
-    }
-
-    //ritorna il numero di vivi sulla nave (aliens e umani)
-    public int crewMember() {
-        int alive = 0;
-        for(Tile t : getTilesByType(TileType.CABIN)){
-            alive += t.getNumPurpleAlien()+ t.getNumBrownAlien() + t.getNumHuman();
-        }
-        return alive;
-    }
-
     public int calculateNumAlive() {
         int alive = 0;
         for (Tile cabin : getTilesByType(TileType.CABIN)) {
