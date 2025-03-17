@@ -15,7 +15,6 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAM
 
 public class Game implements Game_Interface {
     private int diceResult;
-
     private String gameName;
     private int maxAllowedPlayers;
     private List<Player> players;
@@ -33,6 +32,7 @@ public class Game implements Game_Interface {
         this.diceResult = 0;
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
+        this.currentState = new State(p);
     }
 
     //getter

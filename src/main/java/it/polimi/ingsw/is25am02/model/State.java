@@ -5,13 +5,14 @@ import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class State {
     private Card currentCard;
     private Player currentPlayer;
     private StateGameType phase;
 
-    public void state(ArrayList<Player> players) {
+    public State(List<Player> players) {
         this.phase = StateGameType.START;
         this.currentCard = null;
         this.currentPlayer = players.getFirst();

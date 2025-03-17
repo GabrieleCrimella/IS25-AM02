@@ -45,14 +45,28 @@ public class Planet extends Card_with_box{
 
     @Override
     public List<Box> choicePlanet(Game game, Player player, int index){
+        //index = -1 if you don't want to land
         if(index>=0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
             setStateCard(StateCardType.BOXMANAGEMENT);
             return planetOffers.get(index);
         }
-        game.nextPlayer();
-        return null;
+        else if (player.equals(game.getGameboard().getRanking().getLast())){
+            Iterator<Player> it = landed.descendingIterator();
+            while(it.hasNext()) {
+                Player temp = it.next();
+                game.getGameboard().move((-1)*daysLost, temp);
+            }
+            game.getCurrentCard().setStateCard(DECISION);
+            game.nextPlayer();
+            return null;
+        }
+        else{
+            game.nextPlayer();
+            return null;
+        }
+
     }
 
     @Override
