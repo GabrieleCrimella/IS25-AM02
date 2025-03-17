@@ -211,7 +211,7 @@ public class Game implements Game_Interface {
     //todo
     @Override
     public List<Tile> possibleChoice(Player player, TileType type) {
-        return List.of();
+        return player.getSpaceship().getTilesByType(type);
     }
 
     @Override

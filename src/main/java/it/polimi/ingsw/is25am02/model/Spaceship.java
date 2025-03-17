@@ -45,20 +45,19 @@ public class Spaceship {
         numOfWastedTiles++;
     }
 
-    //todo durante la fase di costruzione se scarto una carta, rimetto la current tile nel heaptile
-    //todo questo metodo però non vede heaptiles, è Game che deve gestire l'operazione: questo metodo ritorna currentTile, il Game lo rimette nell'heapTile
     public void returnTile() {
         currentTile = null;
     }
 
     public void setCurrentTile(Tile t) throws AlreadyViewingTileException {
-        if(currentTile==null){
+        if (currentTile == null) {
             currentTile = t;
-        }else {
+        } else {
             throw new AlreadyViewingTileException();
         }
     }
 
+    //todo lo rigarda gabri
     public boolean isShielded(RotationType side) {
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 12; j++) {
@@ -73,22 +72,12 @@ public class Spaceship {
         return false;
     }
 
-    //todo: ritorna i cannoni doppi che può usare il giocatore
-    public List<DoubleCannon> getNumOfDoubleCannon() {
-        List<DoubleCannon> doubleCannons = new ArrayList<>();
-        for (Optional<Tile> tile : spaceshipIterator) {
-            if (tile.get().getType().equals(TileType.D_CANNON)) {
-                doubleCannons.add((DoubleCannon) tile.get());
-            }
-        }
-        return doubleCannons;
-    }
-
-    //todo: metodo che controlla se c'è un cannone
+    //todo: metodo che controlla se c'è un cannone. Il numero è la riga??
     public boolean isCannonPresent(RotationType side, int num) {
         return false;
     }
 
+    //LO TOGLIEREI, SI PUO' FARE CON GETTYPEBYTYPE E CONTROLLA SE LA LISTA RITORNATA E' VUOTA O MENO
     //todo: metodo che controllo se c'è un doppio cannone
     //qui la batteria viene utilizzata
     public boolean isDoubleCannonPresent(RotationType side, int num) {
@@ -114,17 +103,6 @@ public class Spaceship {
         return power + doubleMotors.size() * 2;
     }
 
-    //ritorna i motori doppi che può usare il giocatore
-    public List<DoubleMotor> getNumOfDoubleMotor() {
-        List<DoubleMotor> doubleMotor = new ArrayList<>();
-        for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && t.get().getType().equals(TileType.D_MOTOR)) {
-                doubleMotor.add((DoubleMotor) t.get());
-            }
-        }
-        return doubleMotor;
-    }
-
     //todo: fare il metodo
     public int calculateExposedConnectors() {
         //Gabri non so come si usa iterator
@@ -132,7 +110,7 @@ public class Spaceship {
         //Per ogni tile se quello sopra di lui è vuoto [x][y+1] devi chiamare connectorsOnSide(RotationType.NORTH)
         //Se questo metodo ti ritorna ConnectorType.NONE non devi aggiungere 1, se no aggiungi 1.
         //Uguale per tutti gli altri lati
-    return 0;
+        return 0;
     }
 
     public int getCosmicCredits() {
@@ -359,13 +337,25 @@ public class Spaceship {
             }
         }
     }
+
     //todo mantiene il pezzo di nave con la tile nella posizione (x,y), tutti i pezzi rimossi sono messi eliminati e si
     //aggiunge +1 per ogni pezzo al contatore degli scarti
-    public void holdSpaceship(int x, int y) {}
+    public void holdSpaceship(int x, int y) {
+    }
 
 
     //todo ritorno 1 se non ci sono box sulla nave, 0 altrimenti
-    public boolean noBox(){
+    public boolean noBox() {
         return false;
+    }
+
+    public List<Tile> getTilesByType(TileType type) {
+        List<Tile> temp = new ArrayList<>();
+        for (Optional<Tile> t : spaceshipIterator) {
+            if (t.get().getType().equals(type)) {
+                temp.add(t.get());
+            }
+        }
+        return temp;
     }
 }
