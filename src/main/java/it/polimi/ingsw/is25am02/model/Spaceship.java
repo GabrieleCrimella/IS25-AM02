@@ -510,6 +510,7 @@ public class Spaceship {
         return true;
     }
 
+
     public List<Tile> getTilesByType(TileType type) {
         List<Tile> temp = new ArrayList<>();
         for (Optional<Tile> t : spaceshipIterator) {
