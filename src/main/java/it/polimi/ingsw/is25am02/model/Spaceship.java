@@ -127,7 +127,12 @@ public class Spaceship {
 
     //todo: fare il metodo
     public int calculateExposedConnectors() {
-        return 0;
+        //Gabri non so come si usa iterator
+        //Quello che deve fare questo metodo e iterare per tutti i tile.
+        //Per ogni tile se quello sopra di lui è vuoto [x][y+1] devi chiamare connectorsOnSide(RotationType.NORTH)
+        //Se questo metodo ti ritorna ConnectorType.NONE non devi aggiungere 1, se no aggiungi 1.
+        //Uguale per tutti gli altri lati
+    return 0;
     }
 
     public int getCosmicCredits() {
