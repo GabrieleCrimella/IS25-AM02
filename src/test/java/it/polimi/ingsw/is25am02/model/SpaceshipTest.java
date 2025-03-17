@@ -1,9 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
-import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
-import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import org.junit.jupiter.api.Test;
 
@@ -11,9 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class SpaceshipTest {
-    @Test
-    void calculateNumAlive() {
+
+    public Game make_a_spaceship(){
         //4 spaceship
         Spaceship spaceship1 = new Spaceship(0);
         Spaceship spaceship2 = new Spaceship(0);
@@ -82,18 +81,72 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon6 = new Cannon(t5, connectors5, rotationType5, id5);
+        Tile cannon6 = new Cannon(t6, connectors6, rotationType6, id6);
         spaceship1.addTile(7,6, cannon6);
 
-
-
-
-
-
-
-
-
+        game.addCrew(player1, 7,7,AliveType.HUMAN);
+        game.addCrew(player1, 8,7,AliveType.HUMAN);
+        return game;
     }
+    @Test
+    void check_calculate_num_alive() {
+        Game game = make_a_spaceship();
+        assertEquals(4, game.getPlayers().getFirst().getSpaceship().calculateNumAlive());
+    }
+
+    @Test
+    void test_should_check_get_Tiles_By_Type_Cabin(){
+        Game game = make_a_spaceship();
+        assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTilesByType(TileType.CABIN).size());
+    }
+
+    @Test
+    void test_should_check_get_Tiles_By_Type_Shield(){
+        Game game = make_a_spaceship();
+        assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTilesByType(TileType.SHIELD).size());
+    }
+
+    @Test
+    void test_should_check_get_Tiles_By_Type_Cannon(){
+        Game game = make_a_spaceship();
+        assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTilesByType(TileType.CANNON).size());
+    }
+
+    @Test
+    void test_should_check_get_Tiles_By_Type_Battery(){
+        Game game = make_a_spaceship();
+        assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTilesByType(TileType.BATTERY).size());
+    }
+
+    @Test
+    void test_should_check_get_Tiles_By_Type_Motor(){
+        Game game = make_a_spaceship();
+        assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTilesByType(TileType.MOTOR).size());
+    }
+
+    @Test
+    void test_should_check_is_Shielded(){
+        Game game = make_a_spaceship();
+        assertEquals(true, game.getPlayers().getFirst().getSpaceship().isShielded(RotationType.NORTH));
+        assertEquals(true, game.getPlayers().getFirst().getSpaceship().isShielded(RotationType.WEST));
+        assertEquals(false, game.getPlayers().getFirst().getSpaceship().isShielded(RotationType.SOUTH));
+        assertEquals(false, game.getPlayers().getFirst().getSpaceship().isShielded(RotationType.EAST));
+    }
+
+    @Test
+    void test_get_Up_tile(){
+        Game game = make_a_spaceship();
+        Spaceship spaceship = game.getPlayers().getFirst().getSpaceship();
+        assertEquals(TileType.CANNON, spaceship.getSpaceshipIterator().getUpTile(spaceship.getTile(7,7).get()).get().getType());
+    }
+
+    @Test
+    void test_should_check_calculate_exposed_connectors(){
+        Game game = make_a_spaceship();
+        assertEquals(3, game.getPlayers().getFirst().getSpaceship().calculateExposedConnectors());
+    }
+
+
     /*
     @Test
     void test_should_load_spaceship_mask() {

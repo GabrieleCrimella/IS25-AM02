@@ -68,7 +68,7 @@ public class SlaveOwner extends Enemies{
     @Override
     public void removeCrew(Game game, Player player, Cabin cabin){
         try {
-            cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
+            cabin.removeCrew();            //todo togliere il parametro dalla remove di cabin
             AliveRemoved++;
         } catch (IllegalStateException e) {  //todo qui sarà IllegalRemoveException()
             //gestisco eccezione non c'è equipaggio sulla cabin passata

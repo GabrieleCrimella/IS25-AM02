@@ -9,10 +9,11 @@ import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import java.util.ArrayList;
 
 public final class Cabin extends Tile{
-    ArrayList<Alive> crew = new ArrayList<>();
+    ArrayList<Alive> crew;
 
     public Cabin(TileType t, ConnectorType[] connectors, RotationType rotationType, int id) {
         super(t, connectors, rotationType, id);
+        this.crew = new ArrayList<>();
     }
 
     @Override
