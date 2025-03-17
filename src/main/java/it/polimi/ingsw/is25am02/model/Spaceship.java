@@ -279,21 +279,21 @@ public class Spaceship {
                 }
             }
         }
-        if(rotationType==RotationType.SOUTH){
+        else if(rotationType==RotationType.SOUTH){
             for(int t=0; t<12;t++){
                 if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.SOUTH)!=ConnectorType.NONE){
                     return true;
                 }
             }
         }
-        if(rotationType==RotationType.EAST){
+        else if(rotationType==RotationType.EAST){
             for(int t=0; t<12;t++){
                 if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.EAST)!=ConnectorType.NONE){
                     return true;
                 }
             }
         }
-        if(rotationType==RotationType.WEST){
+        else if(rotationType==RotationType.WEST){
             for(int t=0; t<12;t++){
                 if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.WEST)!=ConnectorType.NONE){
                     return true;
@@ -320,7 +320,7 @@ public class Spaceship {
         return currentTile;
     }// è la tile che sto guardando
 
-    //todo: calcolare la distruzione della nave in base a dove è arrivato il meteorie
+    //calcola la distruzione della nave in base a dove è arrivato il meteorite
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
     //ritorna 1 se la nave si è divisa in varie parti
@@ -328,16 +328,46 @@ public class Spaceship {
         //ho un meteorite piccolo
         if(bigOrSmall==0){
             if(!isExposed(rotationType,num)){
-                return true; //se il lato non ha cavi esposti non succede niente
+                return false; //se il lato non ha cavi esposti non succede niente
             }
-            else if(isShielded(rotationType)){
-                removeBattery(); //todo bisogna chiedere all'utente da dove togliere la batteria
-                return true;
+            else if(isShielded(rotationType) && storage.isPresent()){ //se c'è uno scudo su quel lato e il layer vuole usarlo
+                removeBattery(storage.get());
+                return false;
             }
         }
         else{ //ho un meteorite grande
-            //todo devo controllare se c'è un cannone e se voglio attivarlo nel caso sia doppio
-            //todo se non c'è un cannone allora devo togliere la prima tile che incontro ed eventualmente tutti i pezzi attaccati ad esso
+            // devo controllare se c'è un cannone e se voglio attivarlo nel caso sia doppio
+            // se non c'è un cannone allora devo togliere la prima tile che incontro ed eventualmente tutti i pezzi attaccati ad esso
+            if(rotationType==RotationType.NORTH || rotationType==RotationType.SOUTH){
+                for(int t=0; t<12;t++){
+                    if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
+                        return false;
+                    }
+                    else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
+                        removeBattery(storage.get());
+                        return false;
+                    }
+                    else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
+                        removeTile(t, num);
+                        return true;
+                    }
+                }
+            }
+
+            else if(rotationType==RotationType.EAST || rotationType==RotationType.WEST) {
+                for (int t = 0; t < 12; t++) {
+                    if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                        return false;
+                    } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
+                        removeBattery(storage.get());
+                        return false;
+                    } else if (getTile(num, t).isPresent()) {
+                        removeTile(num, t);
+                        return true;
+                    }
+                }
+            }
+
         }
 
         return false;
@@ -346,16 +376,17 @@ public class Spaceship {
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
         //ho un colpo piccolo
         if(bigOrSmall==0){
-            if(isShielded(rotationType)){
-                removeBattery();//todo bisogna chiedere all'utente da dove vuole togliere la batteria
-                return true;
+            if(isShielded(rotationType) && storage.isPresent()){ //se c'è lo scudo
+                removeBattery(storage.get());
+                return false;
             }
+            //todo se non c'è lo scudo allora fa danno
         }
         else{ //ho un meterite grande
             //todo rimuovo la tile colpita, non ho modo di salvarmi
 
         }
-        return false;
+        return true;
     }
 
     //todo: rifare il metodo, creandone prima un altro che ritorna le tile che contengono delle persone vive.
