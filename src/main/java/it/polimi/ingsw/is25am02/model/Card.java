@@ -72,7 +72,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void removeBattery(Player player, BatteryStorage storage) throws UnsupportedOperationException{
+    public void removeBattery(Game game, Player player, BatteryStorage storage) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 

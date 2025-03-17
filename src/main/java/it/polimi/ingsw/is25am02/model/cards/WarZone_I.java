@@ -2,7 +2,6 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
-import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
@@ -49,6 +48,7 @@ public class WarZone_I extends Card {
         return currentPhase;
     }
 
+    @Override
     public void choiceCrew(Game game, Player player) {
         if(currentPhase == 1) {
             declarationCrew.put(player, player.getSpaceship().calculateNumAlive());
