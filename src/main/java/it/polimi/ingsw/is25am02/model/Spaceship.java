@@ -269,7 +269,6 @@ public class Spaceship {
         t.removeBattery();
     }
 
-    //todo: trovare yn modo più efficace per trovare la pruma tile su una certa colonna/riga
     //il metodo controlla se è esposto un certo lato nella riga/colonna num
     public boolean isExposed(RotationType rotationType, int num) {
         if(rotationType==RotationType.NORTH){
@@ -280,14 +279,14 @@ public class Spaceship {
             }
         }
         else if(rotationType==RotationType.SOUTH){
-            for(int t=0; t<12;t++){
+            for(int t=12; t>0;t--){
                 if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.SOUTH)!=ConnectorType.NONE){
                     return true;
                 }
             }
         }
         else if(rotationType==RotationType.EAST){
-            for(int t=0; t<12;t++){
+            for(int t=12; t>0;t--){
                 if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.EAST)!=ConnectorType.NONE){
                     return true;
                 }
