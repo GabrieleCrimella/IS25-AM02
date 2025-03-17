@@ -337,24 +337,47 @@ public class Spaceship {
         else{ //ho un meteorite grande
             // devo controllare se c'è un cannone e se voglio attivarlo nel caso sia doppio
             // se non c'è un cannone allora devo togliere la prima tile che incontro ed eventualmente tutti i pezzi attaccati ad esso
-            if(rotationType==RotationType.NORTH || rotationType==RotationType.SOUTH){
+            if(rotationType==RotationType.NORTH){
                 for(int t=0; t<12;t++){
                     if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
                         return false;
-                    }
-                    else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
+                    } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
                         removeBattery(storage.get());
                         return false;
-                    }
-                    else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
+                    } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
                         removeTile(t, num);
                         return true;
                     }
                 }
             }
-
-            else if(rotationType==RotationType.EAST || rotationType==RotationType.WEST) {
-                for (int t = 0; t < 12; t++) {
+            else if(rotationType==RotationType.SOUTH){
+                for(int t=12; t>0;t--){
+                    if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
+                        return false;
+                    } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
+                        removeBattery(storage.get());
+                        return false;
+                    } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
+                        removeTile(t, num);
+                        return true;
+                    }
+                }
+            }
+            else if(rotationType==RotationType.EAST) {
+                for (int t = 12; t > 0; t--) {
+                    if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                        return false;
+                    } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
+                        removeBattery(storage.get());
+                        return false;
+                    } else if (getTile(num, t).isPresent()) {
+                        removeTile(num, t);
+                        return true;
+                    }
+                }
+            }
+            if(rotationType==RotationType.WEST){
+                for(int t=0; t<12;t++){
                     if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
                         return false;
                     } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
