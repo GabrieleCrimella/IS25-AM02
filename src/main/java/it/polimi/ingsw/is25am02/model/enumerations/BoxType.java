@@ -24,6 +24,17 @@ public enum BoxType {
         };
     }
 
+    public static int getNumByTypeBox(BoxType boxType) {
+        return switch (boxType) {
+            case NONE -> 0;
+            case BLUE -> 1;
+            case GREEN -> 2;
+            case YELLOW -> 3;
+            case RED -> 4;
+            default -> throw new IllegalArgumentException("Invalid BoxType ");
+        };
+    }
+
     public boolean isSpecial(){
         return this==BoxType.RED;
     }
