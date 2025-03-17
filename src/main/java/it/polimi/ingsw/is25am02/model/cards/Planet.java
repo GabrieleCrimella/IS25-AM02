@@ -33,6 +33,10 @@ public class Planet extends Card_with_box{
         }
     }
 
+    public ArrayList<ArrayList<Box>> getPlanetOffers() {
+        return planetOffers;
+    }
+
     public Planet createCard(){
         //Here the code for reading on file the card's values
         return new Planet(getLevel(), getBoxStore(), daysLost, planetOffers);
@@ -53,6 +57,14 @@ public class Planet extends Card_with_box{
 
     @Override
     public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) {
+        /*
+        mancano vari controlli
+        1. li sto passando ad uno storage o a uno special storage? posso mettere i rossi nella lista end?
+        2. massimo numero di box che posso mettere nello storage? liste non sono limitate
+        Non so come puoi fare a controllare queste cose perchè al posto di passare il riferimento alla lista
+        dovresti passare il riferimento al tile/pianeta.
+        Ovviamente questo crea problemi perchè sono di tipi diversi.
+         */
         if(on) {
             start.remove(box);
             end.add(box);
