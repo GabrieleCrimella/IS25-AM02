@@ -74,7 +74,7 @@ public class Spaceship {
         return false;
     }
 
- //todo se ci sono alieni deve aumentare
+ //todo se ci sono alieni viola deve aumentare di due se power è più di zero
     public double calculateCannonPower(List<DoubleCannon> doubleCannons) {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
@@ -97,11 +97,12 @@ public class Spaceship {
                 }
             }
         }
+        //cerco tra le cabine se c'è una con un alieno
 
         return power;
     }
 
-//todo se ci sono alieni deve aumentare
+//todo se ci sono alieni marrone deve aumentare se power è più di zero
     public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
         int power = 0;
 
@@ -110,6 +111,7 @@ public class Spaceship {
                 power++;
             }
         }
+        //cerco tra le cabine se c'è una con un alieno
 
         return power + doubleMotors.size() * 2;
     }

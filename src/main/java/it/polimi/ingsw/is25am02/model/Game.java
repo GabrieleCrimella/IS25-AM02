@@ -4,26 +4,28 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
-import it.polimi.ingsw.is25am02.model.HeapTiles;
 import javafx.util.Pair;
 
 import java.util.*;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.*;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
-import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAME;
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
+import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.*;
 
 public class Game implements Game_Interface {
     private int diceResult;
     private String gameName;
     private int maxAllowedPlayers;
-    private List<Player> players;
+    private final List<Player> players;
     private final int level;
     private CardDeck deck;
     private Hourglass hourglass;
-    private HeapTiles heapTile;
-    private Gameboard globalBoard;
-    private State currentState;
+    private final HeapTiles heapTile;
+    private final Gameboard globalBoard;
+    private final State currentState;
+    private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
+    private int alreadyChecked = 0; //tiene conto dei giocatori che hanno la nave già controllata
 
     //todo: dove sono tutte le "instanziazioni" degli attributi?
     public Game(List<Player> p, int level) {
@@ -103,26 +105,14 @@ public class Game implements Game_Interface {
         }
     }
 
-    public void previousPlayer() {//todo potrebbe non servirci (era stata pensata per andare in ordine inverso di rotta)
-        //come next player ma torna indietro
-        int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
-
-        if (index == 0) {//se il giocatore è il primo allora il currentPlayer rimane il primo e lo stato della carta diventa FINISH{
-            getCurrentCard().setStateCard(FINISH);
-        } else if (getGameboard().getRanking().get(index - 1).getStatePlayer() == IN_GAME) {//se il precedente giocatore è in gioco allora lo metto come prossimo giocatore corrente
-            currentState.setCurrentPlayer(getGameboard().getRanking().get(index - 1));//metto il prossimo giocatore come giocatore corrente
-        }
-
-    }
-
     @Override
     public Game GameCreator(List<Player> p, int level) {
         return new Game(p, level);
     }
 
-    //todo
     @Override
     public void flipHourglass() {
+        hourglass.flip();
 
     }
 
@@ -160,32 +150,47 @@ public class Game implements Game_Interface {
         player.getSpaceship().returnTile();
     }
 
-    //todo
     @Override
     public void addTile(Player player, Tile tile, int x, int y) {
         player.getSpaceship().addTile(x, y, tile);
     }
 
-    //todo
+    //player passa alla fase di finish, se è la 4 volta che viene chiamato allora cambio lo stato di tutti gli altri
+    //aggiungo i giocatori alla gameboard
     @Override
     public void shipFinished(Player player) {
-        //ci sono delle cose
-        //una votla che tutti e 4 hanno finito
-        this.currentState.setPhase(StateGameType.CHECK);
+        int[] position = getGameboard().getStartingPosition();
+        player.setStatePlayer(FINISHED);
+        alreadyFinished ++;
+        getGameboard().positions.put(player,position[players.size() - alreadyFinished - 1]);
+        if(alreadyFinished == players.size()) { //se tutti i giocatori sono nella fase di finish allora passo alla fase di check
+            this.currentState.setPhase(StateGameType.CHECK);
+        }
     }
 
-    //todo
     @Override
     public boolean checkSpaceship(Player player) {
-
-        //quando vanno tutte bene
-
+        if(player.getSpaceship().checkSpaceship()){//se è corretta il player passa nello stato CORRECT
+            player.setStatePlayer(CORRECT_SHIP);
+            alreadyChecked ++;
+        } else {
+            player.setStatePlayer(WRONG_SHIP);//se la nave è sbagliata passo nello stato di wrong
+        }
+        if(alreadyChecked == players.size()) { //se tutti i giocatori hanno la nave corretta allora passo alla fase successiva
+            this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+            return true;
+        }
+        for(Player p : players){//se c'è anche un solo giocatore che è in wrong_ship allora si passa alla fase di correction
+            if(p.getStatePlayer().equals(WRONG_SHIP)){
+                this.currentState.setPhase(StateGameType.CORRECTION);
+            }
+        }
         return false;
     }
 
-    //todo
     @Override
     public void removeTile(Player player, int x, int y) {
+        player.getSpaceship().removeTile(x, y);
 
     }
 
@@ -248,30 +253,32 @@ public class Game implements Game_Interface {
                     }
                 }
             }
-
         }
-
     }
 
-    //todo
     @Override
     public void playNextCard(Player player) {
+        if(!player.equals(getGameboard().getRanking().getFirst())){ //se il player non è un leader allora lancio eccezione
+            throw new IllegalStateException("Il player non è il leader");
+        }
+        if(!player.getStatePlayer().equals(IN_GAME)){ //se il player non è in game allora lancio eccezione
+            throw new IllegalStateException("Il player non è IN GAME");
+        }
+        if(!getCurrentCard().getStateCard().equals(FINISH)){
+            throw new IllegalStateException("La carta prima non è finita");
+        }
+        if(!getCurrentState().getPhase().equals(TAKE_CARD)){
+            throw new IllegalStateException("Il gioco non è in stato di take card");
+        }
 
+        getDeck().playnextCard();
     }
 
-    //todo
     @Override
-    public HashMap<Integer, Player> getPosition() {
-        return null;
+    public HashMap<Player,Integer> getPosition() {
+        return getGameboard().getPositions();
     }
 
-    //todo
-    @Override
-    public HashMap<Player, StatePlayerType> getState() {
-        return null;
-    }
-
-    //todo
     @Override
     public List<Tile> possibleChoice(Player player, TileType type) {
         return player.getSpaceship().getTilesByType(type);
@@ -400,9 +407,17 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
-    //todo
     @Override
     public ArrayList<Player> getWinners() {
-        return null;
+        ArrayList<Player> winners = new ArrayList<>();
+        if(getPlayers() == null){
+            throw new IllegalArgumentException("La lista dei giocatori è vuota");
+        }
+        for(Player p : getPlayers()){
+            if(p.getSpaceship().getCosmicCredits()>0){
+                winners.add(p);
+            }
+        }
+        return winners;
     }
 }

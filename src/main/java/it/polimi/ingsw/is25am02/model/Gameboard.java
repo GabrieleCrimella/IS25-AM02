@@ -35,6 +35,10 @@ public class Gameboard {
         return numStep;
     }
 
+    public int[] getStartingPosition() {
+        return startingPosition;
+    }
+
     public HashMap<Player,Integer> getPositions() {
         return positions;
     }
