@@ -46,8 +46,8 @@ public class Game implements Game_Interface {
         return globalBoard;
     }
 
-    private List<Player> getPlayers() {
-        return null;
+    public List<Player> getPlayers() {
+        return players;
     }
 
     public String getName() {

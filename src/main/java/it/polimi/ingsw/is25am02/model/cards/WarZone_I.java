@@ -105,7 +105,7 @@ public class WarZone_I extends Card {
     public void removeCrew(Game game, Player player, Cabin cabin){
         if(currentPhase == 2) {
             try {
-                cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
+                cabin.removeCrew();            //todo togliere il parametro dalla remove di cabin
                 aliveRemoved++;
             } catch (IllegalStateException e) {  //todo qui sarà IllegalRemoveException()
                 //gestisco eccezione non c'è equipaggio sulla cabin passata

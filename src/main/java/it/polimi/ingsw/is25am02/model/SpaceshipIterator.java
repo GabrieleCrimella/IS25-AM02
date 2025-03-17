@@ -101,7 +101,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
 
     @Override
     public boolean hasNext() {
-        for (int i = x_current + 1; i < 12; i++) {
+        for (int i = x_current; i < 12; i++) {
             for (int j = (i == x_current) ? y_current + 1 : 0; j < 12; j++) {
                 if (spaceshipBoard[i][j].isPresent())
                     return true;
@@ -112,7 +112,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
 
     @Override
     public Optional<Tile> next() {
-        for (int i = x_current + 1; i < 12; i++) {
+        for (int i = x_current; i < 12; i++) {
             for (int j = (i == x_current) ? y_current + 1 : 0; j < 12; j++) {
                 if (spaceshipBoard[i][j].isPresent()) {
                     x_current = i;
