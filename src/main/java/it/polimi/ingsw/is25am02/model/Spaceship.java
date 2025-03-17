@@ -408,28 +408,35 @@ public class Spaceship {
         return true;
     }
 
-    //todo: rifare il metodo, creandone prima un altro che ritorna le tile che contengono delle persone vive.
-    //todo: in questo metodo non passare il numero di vivi da rimuovere, ma passare le tile da cui rimuovere i vivi
-    public void removeCrew(int alive) {
-
-        for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
-                Cabin temp = (Cabin) t.get();
-                int num = temp.getNumBrownAlien() + temp.getNumPurpleAlien() + temp.getNumHuman();
-                if (num > 0 && alive > 0) {
-                    temp.remove(min(alive, num));
-                }
+    public HashMap<Tile,Integer> tilesWithAlive(){ //ritorna una hash map con le tile e le persone vive che contengono
+        HashMap<Tile,Integer> cabinWithAlive = new HashMap<>();
+        for(Optional<Tile> t : spaceshipIterator){
+            if(t.isPresent() && t.get().getType().equals(TileType.CABIN)){
+                cabinWithAlive.put(t.get(), t.get().getNumPurpleAlien()+t.get().getNumBrownAlien() + t.get().getNumHuman());
             }
         }
+        return cabinWithAlive;
+
     }
 
-    //todo: fare il metodo. ritorna il numero di vivi sulla nave (aliens e umani)
+    //passo una hashmap con la tile e il numero di alive da rimuovere da quella tile
+    public void removeCrew(HashMap<Tile, Integer> aliveToRemove) {
+        if(aliveToRemove.isEmpty()){
+            throw new IllegalArgumentException("Impossibile remove crew");
+        }
+        for( Tile t : aliveToRemove.keySet()){
+            t.remove(aliveToRemove.get(t));
+        }
+
+    }
+
+    //ritorna il numero di vivi sulla nave (aliens e umani)
     public int crewMember() {
-        return 0;
-    }
-
-    //todo: fare il metodo. permette di gestire il fatto che l'utente
-    public void boxManage() {
+        int alive = 0;
+        for(Tile t : getTilesByType(TileType.CABIN)){
+            alive += t.getNumPurpleAlien()+ t.getNumBrownAlien() + t.getNumHuman();
+        }
+        return alive;
     }
 
     public int calculateNumAlive() {
@@ -472,13 +479,21 @@ public class Spaceship {
         return BoxType.getBoxTypeByNum(numBestType).equals(type);
     }
 
-    public void epidemyRemove() {
+    public void epidemyRemove() {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
+        HashMap<Tile,Integer> temp= new HashMap<>();
         for (Optional<Tile> t : spaceshipIterator) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
-                //todo devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
+                if(spaceshipIterator.getUpTile(t.get()).isPresent() && (spaceshipIterator.getUpTile(t.get()).get().getType().equals(TileType.CABIN)) ||
+                        spaceshipIterator.getDownTile(t.get()).isPresent() && (spaceshipIterator.getDownTile(t.get()).get().getType().equals(TileType.CABIN))  ||
+                                spaceshipIterator.getLeftTile(t.get()).isPresent() && (spaceshipIterator.getLeftTile(t.get()).get().getType().equals(TileType.CABIN))||
+                                        spaceshipIterator.getRightTile(t.get()).isPresent() && (spaceshipIterator.getRightTile(t.get()).get().getType().equals(TileType.CABIN))){
+                    temp.put(t.get(),1);
+                    removeCrew(temp);
+                }
             }
         }
     }
+
     //todo mantiene il pezzo di nave con la tile nella posizione (x,y), tutti i pezzi rimossi sono messi eliminati e si
     //aggiunge +1 per ogni pezzo al contatore degli scarti
     public void holdSpaceship(int x, int y) {}
