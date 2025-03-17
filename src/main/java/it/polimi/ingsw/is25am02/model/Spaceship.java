@@ -1,7 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
@@ -54,13 +53,14 @@ public class Spaceship {
     }
 
     public void setCurrentTile(Tile t) throws AlreadyViewingTileException {
-        if(currentTile==null){
+        if (currentTile == null) {
             currentTile = t;
-        }else {
+        } else {
             throw new AlreadyViewingTileException();
         }
     }
 
+    //todo lo rigarda gabri
     public boolean isShielded(RotationType side) {
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 12; j++) {
@@ -75,22 +75,12 @@ public class Spaceship {
         return false;
     }
 
-    //todo: ritorna i cannoni doppi che può usare il giocatore
-    public List<DoubleCannon> getNumOfDoubleCannon() {
-        List<DoubleCannon> doubleCannons = new ArrayList<>();
-        for (Optional<Tile> tile : spaceshipIterator) {
-            if (tile.isPresent() && tile.get().getType().equals(TileType.D_CANNON)) {
-                doubleCannons.add((DoubleCannon) tile.get()); //todo c'è cast!!!!
-            }
-        }
-        return doubleCannons;
-    }
-
-    //todo: metodo che controlla se c'è un cannone
+    //todo: metodo che controlla se c'è un cannone. Il numero è la riga??
     public boolean isCannonPresent(RotationType side, int num) {
         return false;
     }
 
+    //LO TOGLIEREI, SI PUO' FARE CON GETTYPEBYTYPE E CONTROLLA SE LA LISTA RITORNATA E' VUOTA O MENO
     //todo: metodo che controllo se c'è un doppio cannone
     //qui la batteria viene utilizzata
     public boolean isDoubleCannonPresent(RotationType side, int num) {
@@ -137,17 +127,7 @@ public class Spaceship {
         return power + doubleMotors.size() * 2;
     }
 
-    //ritorna i motori doppi che può usare il giocatore
-    public List<DoubleMotor> getNumOfDoubleMotor() {
-        List<DoubleMotor> doubleMotor = new ArrayList<>();
-        for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && t.get().getType().equals(TileType.D_MOTOR)) {
-                doubleMotor.add((DoubleMotor) t.get());
-            }
-        }
-        return doubleMotor;
-    }
-
+    //todo: fare il metodo
     public int calculateExposedConnectors() {
         //Gabri non so come si usa iterator
         //Quello che deve fare questo metodo e iterare per tutti i tile.
@@ -188,7 +168,8 @@ public class Spaceship {
         return cosmicCredits;
     }
 
-    public void addCosmicCredits(int numCosmicCredits) {cosmicCredits += numCosmicCredits;
+    public void addCosmicCredits(int numCosmicCredits) {
+        cosmicCredits += numCosmicCredits;
     }
 
     public void removeCosmicCredits(int numCosmicCredits) {
@@ -473,5 +454,15 @@ public class Spaceship {
     //todo ritorno 1 se non ci sono box sulla nave, 0 altrimenti
     public boolean noBox(){
         return false;
+    }
+
+    public List<Tile> getTilesByType(TileType type) {
+        List<Tile> temp = new ArrayList<>();
+        for (Optional<Tile> t : spaceshipIterator) {
+            if (t.get().getType().equals(type)) {
+                temp.add(t.get());
+            }
+        }
+        return temp;
     }
 }
