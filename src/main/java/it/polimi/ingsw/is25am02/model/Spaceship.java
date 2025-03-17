@@ -61,16 +61,10 @@ public class Spaceship {
         }
     }
 
-    //todo lo rigarda gabri
     public boolean isShielded(RotationType side) {
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 12; j++) {
-                if (spaceshipIterator.getTile(i, j).isPresent() && spaceshipIterator.getTile(i, j).get().getType().equals(TileType.SHIELD)) {
-                    Shield cur = (Shield) spaceshipIterator.getTile(i, j).get();
-                    if (cur.isShielded(side)) {
-                        return true;
-                    }
-                }
+        for(Tile t:getTilesByType(TileType.SHIELD)){
+            if(t.isShielded(side)){
+                return true;
             }
         }
         return false;
