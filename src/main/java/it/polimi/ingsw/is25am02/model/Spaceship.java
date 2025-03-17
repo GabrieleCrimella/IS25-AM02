@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
@@ -283,19 +284,6 @@ public class Spaceship {
         return false;
     }
 
-
-    public List<Cabin> getAliveCabins() {//todo tilebytype con cabin come parametro, toglierlo e sostituirlo contilebytytpe
-        List<Cabin> humanCabins = new ArrayList<>();
-
-        for (Optional<Tile> t : spaceshipIterator) {
-            if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
-                humanCabins.add((Cabin) t.get());
-            }
-        }
-
-        return humanCabins;
-    }
-
     public Tile getCurrentTile() {
         return currentTile;
     }// è la tile che sto guardando
@@ -378,16 +366,64 @@ public class Spaceship {
 
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
         //ho un colpo piccolo
-        if(bigOrSmall==0){
-            if(isShielded(rotationType) && storage.isPresent()){ //se c'è lo scudo
+        if(bigOrSmall==0) {
+            if (isShielded(rotationType) && storage.isPresent()) { //se c'è lo scudo
                 removeBattery(storage.get());
                 return false;
             }
-            //todo se non c'è lo scudo allora fa danno
         }
-        else{ //ho un meterite grande
-            //todo rimuovo la tile colpita, non ho modo di salvarmi
-
+         //se non c'è lo scudo oppure se c'è un colpo grande allora fa danno
+        if(rotationType==RotationType.NORTH){
+            for(int t=0; t<12;t++){
+                if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
+                    return false;
+                } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
+                    removeBattery(storage.get());
+                    return false;
+                } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
+                    removeTile(t, num);
+                    return true;
+                }
+            }
+        }
+        else if(rotationType==RotationType.SOUTH){
+            for(int t=12; t>0;t--){
+                if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
+                    return false;
+                } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
+                    removeBattery(storage.get());
+                    return false;
+                } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
+                    removeTile(t, num);
+                    return true;
+                }
+            }
+        }
+        else if(rotationType==RotationType.EAST) {
+            for (int t = 12; t > 0; t--) {
+                if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                    return false;
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
+                    removeBattery(storage.get());
+                    return false;
+                } else if (getTile(num, t).isPresent()) {
+                    removeTile(num, t);
+                    return true;
+                }
+            }
+        }
+        if(rotationType==RotationType.WEST){
+            for(int t=0; t<12;t++){
+                if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                    return false;
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
+                    removeBattery(storage.get());
+                    return false;
+                } else if (getTile(num, t).isPresent()) {
+                    removeTile(num, t);
+                    return true;
+                }
+            }
         }
         return true;
     }
@@ -418,7 +454,7 @@ public class Spaceship {
 
     public int calculateNumAlive() {
         int alive = 0;
-        for (Cabin cabin : getAliveCabins()) {
+        for (Tile cabin : getTilesByType(TileType.CABIN)) {
             alive += cabin.getNumHuman();
             alive += 2 * cabin.getNumPurpleAlien();
             alive += 2 * cabin.getNumBrownAlien();
