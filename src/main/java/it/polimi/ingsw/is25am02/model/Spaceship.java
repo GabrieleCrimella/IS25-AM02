@@ -487,9 +487,14 @@ public class Spaceship {
     public void holdSpaceship(int x, int y) {}
 
 
-    //todo ritorno 1 se non ci sono box sulla nave, 0 altrimenti
+    // ritorno 1 se non ci sono box sulla nave, 0 altrimenti
     public boolean noBox(){
-        return false;
+        for(Tile t: getTilesByType(TileType.STORAGE)){
+            if(t.getOccupation()!=null){
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<Tile> getTilesByType(TileType type) {
