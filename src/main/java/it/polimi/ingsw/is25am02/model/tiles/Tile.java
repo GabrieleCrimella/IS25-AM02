@@ -119,16 +119,16 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
     //metodi degli altri tipi
 
     //storage e specialStorage
-    List<Box> getOccupation(){
+    public List<Box> getOccupation(){
 
         List<Box> vuoto = new ArrayList<Box>();
         return vuoto;
     }
 
-    void removeBox(Box box){
+    public void removeBox(Box box){
     }
 
-    int getNumOccupation(){
+    public int getNumOccupation(){
         return 0;
     }
 

@@ -21,17 +21,17 @@ public final class Storage extends Tile {
     }
 
     @Override
-    List<Box> getOccupation(){
+    public List<Box> getOccupation(){
         return occupation;
     }
 
     @Override
-    void removeBox(Box box){
+    public void removeBox(Box box){
         occupation.remove(box);
     }
 
     @Override
-    int getNumOccupation(){
+    public int getNumOccupation(){
         return occupation.size();
     }
 

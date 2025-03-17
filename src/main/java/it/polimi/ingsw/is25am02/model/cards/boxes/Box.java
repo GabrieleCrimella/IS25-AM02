@@ -6,8 +6,8 @@ public abstract class Box {
     private final int value;
     private final BoxType type;
 
-    public Box(int value, BoxType type) {
-        this.value = value;
+    public Box(BoxType type) {
+        this.value = type.getPower();
         this.type = type;
     }
 

@@ -5,12 +5,23 @@ public enum BoxType {
 
     private int power;
 
-    private BoxType(int power) {
+    BoxType(int power) {
         this.power = power;
     }
 
     public int getPower() {
         return power;
+    }
+
+    public static BoxType getBoxTypeByNum(int num) {
+        return switch (num) {
+            case 0 -> NONE;
+            case 1 -> BLUE;
+            case 2 -> GREEN;
+            case 3 -> YELLOW;
+            case 4 -> RED;
+            default -> throw new IllegalArgumentException("Invalid BoxType number: " + num);
+        };
     }
 
     public boolean isSpecial(){

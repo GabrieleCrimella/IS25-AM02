@@ -305,7 +305,7 @@ public class Game implements Game_Interface {
         //State Control
         if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
                 getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
-            getCurrentCard().removeBattery(player, storage);
+            getCurrentCard().removeBattery(this, player, storage);
         } else throw new IllegalStateException();
     }
 
