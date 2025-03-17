@@ -117,7 +117,6 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         else
             return false;
     }
-    //metodi degli altri tipi
 
     //storage e specialStorage
     public List<Box> getOccupation()  throws UnsupportedOperationException {
@@ -141,7 +140,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    //cabin   //todo aggiornare cabin
+    //cabin
     public ArrayList<Alive> getNumCrew()  throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method");
     }

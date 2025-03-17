@@ -411,11 +411,8 @@ public class Spaceship {
     public int calculateNumAlive() {
         int alive = 0;
         for (Tile cabin : getTilesByType(TileType.CABIN)) {
-            alive += cabin.getNumHuman();
-            alive += 2 * cabin.getNumPurpleAlien();
-            alive += 2 * cabin.getNumBrownAlien();
+            alive += cabin.getNumCrew().size();
         }
-
         return alive;
     }
 
@@ -457,7 +454,6 @@ public class Spaceship {
                                 spaceshipIterator.getLeftTile(t.get()).isPresent() && (spaceshipIterator.getLeftTile(t.get()).get().getType().equals(TileType.CABIN))||
                                         spaceshipIterator.getRightTile(t.get()).isPresent() && (spaceshipIterator.getRightTile(t.get()).get().getType().equals(TileType.CABIN))){
                     temp.put(t.get(),1);
-                    removeCrew(temp);
                 }
             }
         }
