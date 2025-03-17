@@ -43,7 +43,7 @@ public class Spaceship {
 
     //todo vedere se la tile che rimuovo fa togliere altre tiles e poi aumentare wastedtiles, controllare se si stacca un pezzo di nave e capire diq aunte tiles è fatto questo pezzo
     public void removeTile(int x, int y) { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
-        spaceshipIterator.removeTile(x, y);
+        spaceshipIterator.removeTile(x, y); //tolgo la tile colpita
         numOfWastedTiles++; //todo da togliere
     }
 
@@ -70,19 +70,6 @@ public class Spaceship {
         return false;
     }
 
-    //todo: metodo che controlla se c'è un cannone. Il numero è la riga??
-    public boolean isCannonPresent(RotationType side, int num) {
-        return false;
-    }
-
-    //LO TOGLIEREI, SI PUO' FARE CON GETTYPEBYTYPE E CONTROLLA SE LA LISTA RITORNATA E' VUOTA O MENO
-    //todo: metodo che controllo se c'è un doppio cannone
-    //qui la batteria viene utilizzata
-    public boolean isDoubleCannonPresent(RotationType side, int num) {
-        return false;
-    }
-
-    //todo: fare il metodo, aggiungere a UML che VA AGGIUNTA UNA firma (overload) del metodo e che ho aggiunto il metodo getNumOfDoubleCannon
     public double calculateCannonPower(List<DoubleCannon> doubleCannons) {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
@@ -122,7 +109,6 @@ public class Spaceship {
         return power + doubleMotors.size() * 2;
     }
 
-    //todo: fare il metodo
     public int calculateExposedConnectors() {
         //Gabri non so come si usa iterator
         //Quello che deve fare questo metodo e iterare per tutti i tile.
@@ -457,16 +443,33 @@ public class Spaceship {
         return alive;
     }
 
-    //todo Mi dice se la tile appartiene alla nave
-    public boolean own(Tile tile) {  //todo il metodo controlla che la tile passata appartenga alla nave
-        return true;
+    //Mi dice se la tile appartiene alla nave
+    public boolean own(Tile tile) {
+        for(Optional<Tile> t : spaceshipIterator){
+            if(t.isPresent() && t.get().equals(tile)){
+                return true;
+            }
+        }
+        return false;
     }
 
 
-    //todo Mi dice se il tipo di box passato è al pari del blocco più pregiato della nave
-    //se non ci sono box ritorno false
+    // Mi dice se il tipo di box passato è al pari del blocco più pregiato della nave
+    //se non ci sono box ritorno false, rosso giallo verde blu
     public boolean isMostExpensive(BoxType type) {
-        return true;
+        int numType = BoxType.getNumByTypeBox(type);
+        int numBestType = BoxType.getNumByTypeBox(BoxType.BLUE);
+        for(Optional<Tile> t : spaceshipIterator){
+            if(t.isPresent() && t.get().getType().equals(TileType.SPECIAL_STORAGE) && t.get().getOccupation()!=null){
+                return type.equals(BoxType.RED);
+            }
+            else if(t.isPresent() && t.get().getType().equals(TileType.STORAGE)){
+                if(numBestType < BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType())){
+                    numBestType = BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType());//todo controllare che getOccupation sia lista ordinata
+                }
+            }
+        }
+        return BoxType.getBoxTypeByNum(numBestType).equals(type);
     }
 
     public void epidemyRemove() {
