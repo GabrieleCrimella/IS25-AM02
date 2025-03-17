@@ -494,6 +494,7 @@ public class Spaceship {
         }
     }
 
+
     //todo mantiene il pezzo di nave con la tile nella posizione (x,y), tutti i pezzi rimossi sono messi eliminati e si
     //aggiunge +1 per ogni pezzo al contatore degli scarti
     public void holdSpaceship(int x, int y) {}
