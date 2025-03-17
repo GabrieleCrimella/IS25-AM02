@@ -23,9 +23,7 @@ public class Gameboard {
         else{
             this.numStep = 24;
             startingPosition = new int[] {0,1, 3, 6};
-
         }
-
         this.positions = new HashMap<>();
         this.dice = new Dice();
 
