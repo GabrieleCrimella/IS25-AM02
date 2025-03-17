@@ -25,6 +25,10 @@ public class Spaceship {
         currentTile = null;
     }
 
+    public SpaceshipIterator getSpaceshipIterator() {
+        return spaceshipIterator;
+    }
+
     //serve solo per il testing, per vedere che la legge correttamente da json
     /*
      * public boolean[][] getMaskSpaceship() {
@@ -411,7 +415,7 @@ public class Spaceship {
     public int calculateNumAlive() {
         int alive = 0;
         for (Tile cabin : getTilesByType(TileType.CABIN)) {
-            alive += cabin.getNumCrew().size();
+            alive += cabin.getCrew().size();
         }
         return alive;
     }

@@ -169,12 +169,17 @@ public class Game implements Game_Interface {
     //todo
     @Override
     public void shipFinished(Player player) {
-
+        //ci sono delle cose
+        //una votla che tutti e 4 hanno finito
+        this.currentState.setPhase(StateGameType.CHECK);
     }
 
     //todo
     @Override
     public boolean checkSpaceship(Player player) {
+
+        //quando vanno tutte bene
+
         return false;
     }
 
@@ -184,9 +189,18 @@ public class Game implements Game_Interface {
 
     }
 
-    //todo
+    //todo bisogna controllare se ci sono le cabine aliene vicine
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
+        if (type.equals(AliveType.HUMAN)){
+            player.getSpaceship().getTile(x,y).get().addCrew(type);
+            player.getSpaceship().getTile(x,y).get().addCrew(type);
+        }
+        else if (type.equals(AliveType.BROWN_ALIEN)){
+        }
+        else {
+
+        }
 
     }
 

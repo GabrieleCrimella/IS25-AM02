@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model.tiles;
 
 import it.polimi.ingsw.is25am02.model.Alive;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
@@ -141,11 +142,11 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
     }
 
     //cabin
-    public ArrayList<Alive> getNumCrew()  throws UnsupportedOperationException {
+    public ArrayList<Alive> getCrew()  throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void addCrew(Alive member) throws UnsupportedOperationException {
+    public void addCrew(AliveType type) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method");
     }
 

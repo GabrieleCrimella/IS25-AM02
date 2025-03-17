@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
 import it.polimi.ingsw.is25am02.model.Alive;
+import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
@@ -15,12 +16,14 @@ public final class Cabin extends Tile{
     }
 
     @Override
-    public ArrayList<Alive> getNumCrew(){
+    public ArrayList<Alive> getCrew(){
         return crew;
     }
 
+
     @Override
-    public void addCrew(Alive member){
+    public void addCrew(AliveType type){
+        Alive member = new Alive(type);
         crew.add(member);
     }
 
