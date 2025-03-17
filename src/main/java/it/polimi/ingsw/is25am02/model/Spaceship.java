@@ -74,6 +74,7 @@ public class Spaceship {
         return false;
     }
 
+ //todo se ci sono alieni deve aumentare
     public double calculateCannonPower(List<DoubleCannon> doubleCannons) {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
@@ -100,7 +101,7 @@ public class Spaceship {
         return power;
     }
 
-
+//todo se ci sono alieni deve aumentare
     public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
         int power = 0;
 
@@ -450,14 +451,13 @@ public class Spaceship {
     }
 
     public void epidemyRemove() {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
-        HashMap<Tile,Integer> temp= new HashMap<>();
         for (Optional<Tile> t : spaceshipIterator) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
                 if(spaceshipIterator.getUpTile(t.get()).isPresent() && (spaceshipIterator.getUpTile(t.get()).get().getType().equals(TileType.CABIN)) ||
                         spaceshipIterator.getDownTile(t.get()).isPresent() && (spaceshipIterator.getDownTile(t.get()).get().getType().equals(TileType.CABIN))  ||
                                 spaceshipIterator.getLeftTile(t.get()).isPresent() && (spaceshipIterator.getLeftTile(t.get()).get().getType().equals(TileType.CABIN))||
                                         spaceshipIterator.getRightTile(t.get()).isPresent() && (spaceshipIterator.getRightTile(t.get()).get().getType().equals(TileType.CABIN))){
-                    temp.put(t.get(),1);
+                    t.get().removeCrew();
                 }
             }
         }
