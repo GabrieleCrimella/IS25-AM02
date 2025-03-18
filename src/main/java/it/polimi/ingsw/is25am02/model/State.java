@@ -13,7 +13,7 @@ public class State {
     private StateGameType phase;
 
     public State(List<Player> players) {
-        this.phase = StateGameType.START;
+        this.phase = StateGameType.BUILD;
         this.currentCard = null;
         this.currentPlayer = players.getFirst();
     }

@@ -16,8 +16,12 @@ class GameTest {
         System.out.println(game.getCurrentState().getPhase());
 
         //pesco una nuova tile per il giocatore 0
-        System.out.println(game.takeTile(players.get(0)).getType());
-        System.out.println(game.getCurrentState().getPhase());
+        try {
+            System.out.println(game.takeTile(players.get(0)).getType());
+        } catch (IllegalStateException e) {
+            System.out.println("Non puoi pescare una tile");
+        }
+        assert (game.getCurrentState().getPhase().equals(StateGameType.BUILD));
     }
 
 

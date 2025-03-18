@@ -34,6 +34,8 @@ public class Game implements Game_Interface {
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
         this.currentState = new State(p);
+        this.deck = new CardDeck();
+        this.currentState.setPhase(BUILD);
     }
 
     //getter
@@ -105,11 +107,6 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public Game GameCreator(List<Player> p, int level) {
-        return new Game(p, level);
-    }
-
-    @Override
     public void flipHourglass() {
         hourglass.flip();
     }
@@ -145,33 +142,42 @@ public class Game implements Game_Interface {
                 heapTile.addTile(tile, true);
                 return player.getSpaceship().getCurrentTile();
             }
-        }else throw new IllegalStateException("Non è il momento di pescare una tile");
+        } else throw new IllegalStateException("Non è il momento di pescare una tile");
     }
 
     //il giocatore "scarta" la tile che stava guardando.
     @Override
     public void returnTile(Player player, Tile tile) {
-        Tile temp = player.getSpaceship().getCurrentTile();
-        heapTile.addTile(temp, true);
-        player.getSpaceship().returnTile();
+        //State Control
+        if (getCurrentState().getPhase() == BUILD) {
+            Tile temp = player.getSpaceship().getCurrentTile();
+            heapTile.addTile(temp, true);
+            player.getSpaceship().returnTile();
+        } else throw new IllegalStateException("Non è il momento di scartare una tile");
     }
 
     @Override
     public void addTile(Player player, Tile tile, int x, int y) {
-        player.getSpaceship().addTile(x, y, tile);
+        //State Control
+        if (getCurrentState().getPhase() == BUILD) {
+            player.getSpaceship().addTile(x, y, tile);
+        } else throw new IllegalStateException("Non è il momento di aggiungere una tile");
     }
 
     //player passa alla fase di finish, se è la 4 volta che viene chiamato allora cambio lo stato di tutti gli altri
     //aggiungo i giocatori alla gameboard
     @Override
     public void shipFinished(Player player) {
-        int[] position = getGameboard().getStartingPosition();
-        player.setStatePlayer(FINISHED);
-        alreadyFinished++;
-        getGameboard().positions.put(player, position[players.size() - alreadyFinished - 1]);
-        if (alreadyFinished == players.size()) { //se tutti i giocatori sono nella fase di finish allora passo alla fase di check
-            this.currentState.setPhase(StateGameType.CHECK);
-        }
+        //State Control
+        if (getCurrentState().getPhase() == BUILD) {
+            int[] position = getGameboard().getStartingPosition();
+            player.setStatePlayer(FINISHED);
+            alreadyFinished++;
+            getGameboard().positions.put(player, position[players.size() - alreadyFinished - 1]);
+            if (alreadyFinished == players.size()) { //CAMBIO DI STATO: se tutti i giocatori sono nella fase di finish allora passo alla fase di check
+                this.currentState.setPhase(StateGameType.CHECK);
+            }
+        } else throw new IllegalStateException("Non è il momento per finire la tua nave");
     }
 
     @Override
