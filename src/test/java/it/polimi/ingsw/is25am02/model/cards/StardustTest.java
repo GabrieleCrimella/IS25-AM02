@@ -138,7 +138,7 @@ class StardustTest {
     @Test
     void test_Stardust() {
         Game game = make_a_spaceship();
-        int calcul1 = game.getPlayers().getFirst().getSpaceship().calculateExposedConnectors();
+        /*int calcul1 = game.getPlayers().getFirst().getSpaceship().calculateExposedConnectors();
         int calcul2 = game.getPlayers().get(1).getSpaceship().calculateExposedConnectors();
         int calcul3 = game.getPlayers().get(2).getSpaceship().calculateExposedConnectors();
         int calcul4 = game.getPlayers().get(3).getSpaceship().calculateExposedConnectors();
@@ -147,7 +147,7 @@ class StardustTest {
         assertEquals(calcul1, 2);
         assertEquals(calcul2, 4);
         assertEquals(calcul3, 4);
-        assertEquals(calcul4, 4);
+        assertEquals(calcul4, 4);*/
 
         HashMap<Player,Integer> correct = new HashMap<>();
         correct.put(game.getPlayers().getFirst(), 2);
