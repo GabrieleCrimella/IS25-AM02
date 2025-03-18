@@ -1,6 +1,6 @@
 # Galaxy Trucker - Java Implementation
 
-##Project Overview
+## Project Overview
 
 This project is a Java-based implementation of the table game Galaxy Trucker, developed at Politecnico di Milano for the final exam of Software Engineering.
 
