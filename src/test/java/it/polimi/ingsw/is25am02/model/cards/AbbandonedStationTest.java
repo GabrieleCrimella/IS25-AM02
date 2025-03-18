@@ -163,6 +163,13 @@ class AbbandonedStationTest {
         Card abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon);
 
         List<Box> availableBoxes = abbandonedStation.choiceBox(game, game.getPlayers().getFirst(),true );
+
+        //correct avaiableboxesinitial
+        LinkedList<Box> correctAvailableBoxesinitial = new LinkedList<Box>();
+        correctAvailableBoxesinitial.add(redbox1);
+        correctAvailableBoxesinitial.add(redbox2);
+        correctAvailableBoxesinitial.add(bluebox);
+        assertEquals(availableBoxes.equals(correctAvailableBoxesinitial),true);
         abbandonedStation.moveBox(game, game.getPlayers().getFirst(), abbandonedStation.getBoxesWon(), game.getPlayers().getFirst().getSpaceship().getTile(9,7).get().getOccupation(), redbox1, true);
 
 

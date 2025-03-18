@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SpaceshipTest {
 
@@ -113,6 +113,148 @@ class SpaceshipTest {
     }
 
     @Test
+    void test_should_check_that_mask_level_0_is_correct(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getGameboard().initializeGameBoard(players);
+
+        //tile 1 - cabin centrale
+        TileType t1 = TileType.CABIN;
+        ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType1 = RotationType.NORTH;
+        int id1 = 1;
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        //controllo riga vuota 0
+        for (int i=0;i<12;i++){
+           int x=i;
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 0, cabin1);});
+        }
+        //controllo riga vuota 1
+        for (int i=0;i<12;i++){
+            int x=i;
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 1, cabin1);});
+        }
+        //controllo riga vuota 2
+        for (int i=0;i<12;i++){
+            int x=i;
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 2, cabin1);});
+        }
+        //controllo riga vuota 3
+        for (int i=0;i<12;i++){
+            int x=i;
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 3, cabin1);});
+        }
+        //controllo riga vuota 4
+        for (int i=0;i<12;i++){
+            int x=i;
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 4, cabin1);});
+        }
+        //controllo riga 5
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(5, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(6, 5, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(7, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(8, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(9, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 5, cabin1);});
+
+        //controllo riga 6
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(5, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(6, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(7, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(8, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(9, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 6, cabin1);});
+
+        //controllo riga 7
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(5, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(6, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(7, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(8, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(9, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 7, cabin1);});
+
+        //controllo riga 8
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(5, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(6, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(7, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(8, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(9, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 8, cabin1);});
+
+        //controllo riga 9
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(5, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(6, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(7, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(8, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(9, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 9, cabin1);});
+
+        //controllo riga vuota 10
+        for (int i=0;i<12;i++){
+            int x=i;
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 10, cabin1);});
+        }
+        //controllo riga vuota 11
+        for (int i=0;i<12;i++){
+            int x=i;
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 11, cabin1);});
+        }
+
+    }
+
+    //todo anna
+    @Test
+    void test_should_check_that_masl_level_1_is_correct(){
+
+    }
+
+    @Test
     void test_should_check_get_Tiles_By_Type_Battery(){
         Game game = make_a_spaceship();
         assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTilesByType(TileType.BATTERY).size());
@@ -123,6 +265,14 @@ class SpaceshipTest {
         Game game = make_a_spaceship();
         assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTilesByType(TileType.MOTOR).size());
     }
+
+    @Test
+    void test_should_check_if_tiles_are_placed_correctly(){
+        Game game = make_a_spaceship();
+        assertEquals(TileType.SHIELD, game.getPlayers().getFirst().getSpaceship().getTile(6,7).get().getType());
+        assertEquals(TileType.BATTERY, game.getPlayers().getFirst().getSpaceship().getTile(6,8).get().getType());
+    }
+
 
     @Test
     void test_should_check_is_Shielded(){

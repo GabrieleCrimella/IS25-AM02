@@ -21,7 +21,7 @@ class GameTest {
         } catch (IllegalStateException e) {
             System.out.println("Non puoi pescare una tile");
         }
-        assert (game.getCurrentState().getPhase().equals(StateGameType.START));
+        assert (game.getCurrentState().getPhase().equals(StateGameType.BUILD));
     }
 
 
