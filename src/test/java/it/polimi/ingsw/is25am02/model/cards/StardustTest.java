@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.Spaceship;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.is25am02.model.tiles.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,17 +99,71 @@ class StardustTest {
 
         game.addCrew(player1, 7,7, AliveType.HUMAN);
         game.addCrew(player1, 8,7,AliveType.HUMAN);
+
+        //inizializzo spaceship2
+        //tile 1 - cabin centrale
+        TileType t21 = TileType.CABIN;
+        ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType21 = RotationType.NORTH;
+        int id21 = 1;
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        spaceship2.addTile(7,7, cabin21);
+
+        game.addCrew(player2, 7,7, AliveType.HUMAN);
+
+        //inizializzo spaceship3
+        //tile 1 - cabin centrale
+        TileType t31 = TileType.CABIN;
+        ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType31 = RotationType.NORTH;
+        int id31 = 1;
+        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
+        spaceship3.addTile(7,7, cabin31);
+
+        game.addCrew(player3, 7,7, AliveType.HUMAN);
+
+        //inizializzo spaceship4
+        //tile 1 - cabin centrale
+        TileType t41 = TileType.CABIN;
+        ConnectorType[] connectors41 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType41 = RotationType.NORTH;
+        int id41 = 1;
+        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, id41);
+        spaceship4.addTile(7,7, cabin41);
+
+        game.addCrew(player4, 7,7, AliveType.HUMAN);
         return game;
     }
 
     @Test
     void test_Stardust() {
         Game game = make_a_spaceship();
+        int calcul1 = game.getPlayers().getFirst().getSpaceship().calculateExposedConnectors();
+        int calcul2 = game.getPlayers().get(1).getSpaceship().calculateExposedConnectors();
+        int calcul3 = game.getPlayers().get(2).getSpaceship().calculateExposedConnectors();
+        int calcul4 = game.getPlayers().get(3).getSpaceship().calculateExposedConnectors();
 
 
+        assertEquals(calcul1, 2);
+        assertEquals(calcul2, 4);
+        assertEquals(calcul3, 4);
+        assertEquals(calcul4, 4);
 
+        HashMap<Player,Integer> correct = new HashMap<>();
+        correct.put(game.getPlayers().getFirst(), 2);
+        correct.put(game.getPlayers().get(1), -2);
+        correct.put(game.getPlayers().get(2), -3);
+        correct.put(game.getPlayers().get(3), -4);
 
+        //create card
+        int level = 0;
+        Card stardust = new Stardust(level);
+        game.getCurrentState().setCurrentCard(stardust);
+        game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
 
+        stardust.effect(game);
+
+        assertEquals(true, game.getGameboard().getPositions().equals(correct));
     }
 
 

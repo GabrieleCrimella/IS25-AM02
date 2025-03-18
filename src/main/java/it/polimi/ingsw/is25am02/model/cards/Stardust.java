@@ -22,7 +22,7 @@ public class Stardust extends Card {
         Iterator<Player> it = game.getGameboard().getRanking().descendingIterator();
         while (it.hasNext()) {
             Player player = it.next();
-            game.getGameboard().move((-1) * player.getSpaceship().calculateExposedConnectors(), it.next());
+            game.getGameboard().move((-1) * player.getSpaceship().calculateExposedConnectors(), player );
         }
         setStateCard(StateCardType.FINISH);
     }
