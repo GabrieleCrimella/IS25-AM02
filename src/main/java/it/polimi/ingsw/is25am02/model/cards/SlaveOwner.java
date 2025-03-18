@@ -25,11 +25,6 @@ public class SlaveOwner extends Enemies{
         this.AliveRemoved = 0;
     }
 
-    public SlaveOwner createCard(){
-        //Here the code for reading on file the card's values
-        return new SlaveOwner(getLevel(), getCannonPowers(), getDaysLost(), getCredit(), AliveLost);
-    }
-
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> whichDCannon){
         List<DoubleCannon> dCannon = new ArrayList<>();

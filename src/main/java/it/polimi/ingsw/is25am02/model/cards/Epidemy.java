@@ -10,10 +10,6 @@ public class Epidemy extends Card {
         super(level, StateCardType.DECISION);
     }
 
-    public Epidemy createCard(){
-        return new Epidemy(getLevel());
-    }
-
     @Override
     public void effect(Game game){
         for(Player p : game.getGameboard().getRanking()){

@@ -22,11 +22,6 @@ public class AbbandonedShip extends Card{
         this.AliveRemoved = 0;
     }
 
-    public AbbandonedShip createCard(){
-        //Here the code for reading on file the card's values
-        return new AbbandonedShip(getLevel(), AliveLost, creditWin, flyBack);
-    }
-
     @Override
     public void choice(Game game, Player player, boolean choice){
         if (choice){

@@ -16,10 +16,6 @@ public class OpenSpace extends Card {
         super(level, StateCardType.CHOICE_ATTRIBUTES);
     }
 
-    public OpenSpace createCard(){
-        return new OpenSpace(getLevel());
-    }
-
     @Override
     public void choiceDoubleMotor( Game game, Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> whichDMotor){
         List<DoubleMotor> dMotors = new ArrayList<>();

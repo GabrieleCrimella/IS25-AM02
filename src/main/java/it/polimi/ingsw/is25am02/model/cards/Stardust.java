@@ -13,10 +13,6 @@ public class Stardust extends Card {
         super(level, StateCardType.DECISION);
     }
 
-    public Stardust createCard(){
-        return new Stardust(getLevel());
-    }
-
     @Override
     public void effect(Game game){
         Iterator<Player> it = game.getGameboard().getRanking().descendingIterator();

@@ -30,11 +30,6 @@ public class Pirate extends Enemies{
         this.phase = 1;
     }
 
-    public Pirate createCard(){
-        //Here the code for reading on file the card's values
-        return new Pirate(getLevel(), getCannonPowers(), getDaysLost(), getCredit(), shots);
-    }
-
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices){
         if(phase == 1) {

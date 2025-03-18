@@ -33,11 +33,6 @@ public class Trafficker extends Card_with_box{
         this.boxesRemove = 0;
     }
 
-    public Trafficker createCard(){
-        //Here the code for reading on file the card's values
-        return new Trafficker(getLevel(), getBoxStore(), cannonPowers, daysLost, boxesLost, boxesWon);
-    }
-
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException {
         //Calcolo potenza Player

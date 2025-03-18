@@ -22,11 +22,6 @@ public class AbbandonedStation extends Card_with_box {
         this.boxesWon = boxesWon;
     }
 
-    public AbbandonedStation createCard(){
-        //Here the code for reading on file the card's values
-        return new AbbandonedStation(getLevel(), getBoxStore(), AliveNeeded, daysLost, boxesWon);
-    }
-
     public LinkedList<Box> getBoxesWon() {
         return boxesWon;
     }

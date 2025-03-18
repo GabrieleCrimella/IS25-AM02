@@ -41,12 +41,6 @@ public class WarZone_II extends Card{
         this.declarationMotor = new LinkedHashMap<>();
     }
 
-    public WarZone_II createCard(){
-        //Here the code for reading on file the card's values
-        return new WarZone_II(getLevel(), flyback, boxesLost, shots);
-    }
-
-
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
         if (currentPhase == 1) {

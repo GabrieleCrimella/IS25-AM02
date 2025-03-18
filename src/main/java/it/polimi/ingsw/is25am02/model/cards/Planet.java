@@ -37,12 +37,6 @@ public class Planet extends Card_with_box{
         return planetOffers;
     }
 
-    public Planet createCard(){
-        //Here the code for reading on file the card's values
-        return new Planet(getLevel(), getBoxStore(), daysLost, planetOffers);
-    }
-
-
     @Override
     public List<Box> choicePlanet(Game game, Player player, int index){
         //index = -1 if you don't want to land

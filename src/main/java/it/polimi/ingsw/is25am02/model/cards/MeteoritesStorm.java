@@ -20,11 +20,6 @@ public class MeteoritesStorm extends Card {
         currentIndex = 0;
     }
 
-    public MeteoritesStorm createCard(){
-        //Here the code for reading on file the card's values
-        return new MeteoritesStorm(getLevel(), meteorites);
-    }
-
     @Override
     public void holdSpaceship(Game game, Player player, int x, int y){
         player.getSpaceship().holdSpaceship(x,y);

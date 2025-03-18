@@ -19,10 +19,6 @@ public abstract class Card {
         this.stateCard = stateCard;
     }
 
-    public Card newCard() {
-        return createCard();
-    }
-
     public int getLevel() {
         return level;
     }
@@ -34,8 +30,6 @@ public abstract class Card {
     public void setStateCard(StateCardType stateCardType) {
         this.stateCard = stateCardType;
     }
-
-    public abstract Card createCard();
 
     public void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");

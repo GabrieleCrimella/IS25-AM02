@@ -9,8 +9,4 @@ public class InitialCard extends Card {
         super(level, stateCard);
     }
 
-    public InitialCard createCard(){
-        //Here the code for reading on file the card's values
-        return new InitialCard(getLevel(), StateCardType.FINISH);
-    }
 }

@@ -40,11 +40,6 @@ public class WarZone_I extends Card {
         this.currentPhase = 1;
     }
 
-    public WarZone_I createCard(){
-        //Here the code for reading on file the card's values
-        return new WarZone_I(getLevel(), flyback, aliveLost, shots);
-    }
-
     public int getCurrentPhase() {
         return currentPhase;
     }
