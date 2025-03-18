@@ -2,9 +2,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
-import java.util.Optional;
 
 public class Epidemy extends Card {
 

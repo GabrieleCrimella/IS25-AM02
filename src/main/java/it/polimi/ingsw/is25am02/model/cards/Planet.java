@@ -18,8 +18,8 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION
 public class Planet extends Card_with_box{
     private final int daysLost;
     private final ArrayList<ArrayList<Box>> planetOffers;
-    private ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
-    private LinkedList<Player> landed;
+    private final ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
+    private final LinkedList<Player> landed;
 
     public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers) {
         super(level, store, StateCardType.DECISION);
