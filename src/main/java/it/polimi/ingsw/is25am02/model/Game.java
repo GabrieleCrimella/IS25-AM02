@@ -145,20 +145,26 @@ public class Game implements Game_Interface {
                 heapTile.addTile(tile, true);
                 return player.getSpaceship().getCurrentTile();
             }
-        }else throw new IllegalStateException("Non è il momento di pescare una tile");
+        } else throw new IllegalStateException("Non è il momento di pescare una tile");
     }
 
     //il giocatore "scarta" la tile che stava guardando.
     @Override
     public void returnTile(Player player, Tile tile) {
-        Tile temp = player.getSpaceship().getCurrentTile();
-        heapTile.addTile(temp, true);
-        player.getSpaceship().returnTile();
+        //State Control
+        if (getCurrentState().getPhase() == BUILD) {
+            Tile temp = player.getSpaceship().getCurrentTile();
+            heapTile.addTile(temp, true);
+            player.getSpaceship().returnTile();
+        } else throw new IllegalStateException("Non è il momento di scartare una tile");
     }
 
     @Override
     public void addTile(Player player, Tile tile, int x, int y) {
-        player.getSpaceship().addTile(x, y, tile);
+        //State Control
+        if (getCurrentState().getPhase() == BUILD) {
+            player.getSpaceship().addTile(x, y, tile);
+        } else throw new IllegalStateException("Non è il momento di aggiungere una tile");
     }
 
     //player passa alla fase di finish, se è la 4 volta che viene chiamato allora cambio lo stato di tutti gli altri
