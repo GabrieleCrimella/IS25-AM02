@@ -34,6 +34,8 @@ public class Game implements Game_Interface {
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
         this.currentState = new State(p);
+        this.deck = new CardDeck();
+        this.currentState.setPhase(BUILD);
     }
 
     //getter
