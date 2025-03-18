@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
@@ -19,10 +20,10 @@ public class WarZone_I extends Card {
     private final int flyback;
     private final int aliveLost;
     private int aliveRemoved;
-    private ArrayList<Pair<Integer, RotationType>> shots;
-    private LinkedHashMap<Player, Integer> declarationCrew;
-    private LinkedHashMap<Player, Double> declarationCannon;
-    private LinkedHashMap<Player, Integer> declarationMotor;
+    private final ArrayList<Pair<Integer, RotationType>> shots;
+    private final LinkedHashMap<Player, Integer> declarationCrew;
+    private final LinkedHashMap<Player, Double> declarationCannon;
+    private final LinkedHashMap<Player, Integer> declarationMotor;
     private int currentIndex;
     private int currentPhase;
 
@@ -105,9 +106,11 @@ public class WarZone_I extends Card {
     public void removeCrew(Game game, Player player, Cabin cabin){
         if(currentPhase == 2) {
             try {
-                cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
+                cabin.removeCrew();
                 aliveRemoved++;
-            } catch (IllegalStateException e) {  //todo qui sarà IllegalRemoveException()
+            } catch (IllegalRemoveException e) {
+                System.out.println("Error" + e.getMessage());
+                return;
                 //gestisco eccezione non c'è equipaggio sulla cabin passata
             }
 

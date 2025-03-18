@@ -41,8 +41,7 @@ public interface Game_Interface {
     void playNextCard(Player player);
 
     //Phase EFFECT_ON_PLAYERS
-    HashMap<Integer, Player> getPosition();
-    HashMap<Player, StatePlayerType> getState();
+    HashMap<Player, Integer> getPosition();
     List<Tile> possibleChoice(Player player, TileType type);
     void choice(Player player, boolean choice);
     void removeCrew(Player player, Cabin cabin);

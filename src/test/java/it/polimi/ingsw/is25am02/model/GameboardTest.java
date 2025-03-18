@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,6 +71,44 @@ class GameboardTest {
         correct.put(player4, -3);
         assertEquals(true, game.getGameboard().getPositions().equals(correct));
 
+    }
+
+    @Test
+    void test_should_check_correct_ranking() {
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        Game game = new Game(players,0);
+        game.getGameboard().initializeGameBoard(players);
+        game.getGameboard().move(-2, player1);
+        game.getGameboard().move(1, player2);
+        game.getGameboard().move(-1, player3);
+        game.getGameboard().move(-1, player4);
+        //correct
+        HashMap<Player, Integer> correct = new HashMap<Player, Integer>();
+        correct.put(player1, -1);
+        correct.put(player2, 3);
+        correct.put(player3, -2);
+        correct.put(player4, -3);
+
+        LinkedList<Player> correctRanking = new LinkedList<Player>();
+        correctRanking.add(player2);
+        correctRanking.add(player1);
+        correctRanking.add(player3);
+        correctRanking.add(player4);
+
+        assertEquals(true, game.getGameboard().getPositions().equals(correct));
+        assertEquals(true, game.getGameboard().getRanking().equals(correctRanking));
     }
 
     @Test

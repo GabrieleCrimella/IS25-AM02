@@ -1,9 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
@@ -74,7 +71,6 @@ public class Spaceship {
         return false;
     }
 
- //todo se ci sono alieni deve aumentare
     public double calculateCannonPower(List<DoubleCannon> doubleCannons) {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
@@ -97,11 +93,19 @@ public class Spaceship {
                 }
             }
         }
+        if(power >0){ //ci deve essere almeno un cannone
+            for(Tile cabin : getTilesByType(TileType.CABIN)){
+                for(Alive alive : cabin.getCrew()){//cerco tra le cabine se c'è una con un alieno
+                    if(alive.getRace().equals(AliveType.PURPLE_ALIEN)){
+                        power = power + 2;
+                    }
+                }
+            }
 
+        }
         return power;
     }
 
-//todo se ci sono alieni deve aumentare
     public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
         int power = 0;
 
@@ -110,12 +114,19 @@ public class Spaceship {
                 power++;
             }
         }
-
+        if(power >0 || !doubleMotors.isEmpty()){ //ci deve essere almeno un cannone singolo o doppio
+            for(Tile cabin : getTilesByType(TileType.CABIN)){
+                for(Alive alive : cabin.getCrew()){//cerco tra le cabine se c'è una con un alieno
+                    if(alive.getRace().equals(AliveType.BROWN_ALIEN)){
+                        power = power + 2;
+                    }
+                }
+            }
+        }
         return power + doubleMotors.size() * 2;
     }
 
     public int calculateExposedConnectors() {
-        //Gabri non so come si usa iterator
         //Quello che deve fare questo metodo e iterare per tutti i tile.
         //Per ogni tile se quello sopra di lui è vuoto [x][y+1] devi chiamare connectorsOnSide(RotationType.NORTH)
         //Se questo metodo ti ritorna ConnectorType.NONE non devi aggiungere 1, se no aggiungi 1.

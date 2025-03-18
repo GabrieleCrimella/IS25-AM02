@@ -1,13 +1,12 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Game;
-import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleMotor;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -68,9 +67,11 @@ public class SlaveOwner extends Enemies{
     @Override
     public void removeCrew(Game game, Player player, Cabin cabin){
         try {
-            cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
+            cabin.removeCrew();
             AliveRemoved++;
-        } catch (IllegalStateException e) {  //todo qui sarà IllegalRemoveException()
+        } catch (IllegalRemoveException e) {
+            System.out.println("Error" + e.getMessage());
+            return;
             //gestisco eccezione non c'è equipaggio sulla cabin passata
         }
 

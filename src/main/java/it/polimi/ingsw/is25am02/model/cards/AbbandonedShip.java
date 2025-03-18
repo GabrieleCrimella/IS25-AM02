@@ -2,11 +2,9 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
-
-import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
-import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.IN_GAME;
 
 public class AbbandonedShip extends Card{
     private final int AliveLost;
@@ -46,9 +44,11 @@ public class AbbandonedShip extends Card{
     @Override
     public void removeCrew(Game game, Player player, Cabin cabin){
         try {
-            cabin.remove(1);            //todo togliere il parametro dalla remove di cabin
+            cabin.removeCrew();
             AliveRemoved++;
-        } catch (IllegalStateException e) {  //todo qui sarà IllegalRemoveException()
+        } catch (IllegalRemoveException e) {
+            System.out.println("Error" + e.getMessage());
+            return;
             //gestisco eccezione non c'è equipaggio sulla cabin passata
         }
 

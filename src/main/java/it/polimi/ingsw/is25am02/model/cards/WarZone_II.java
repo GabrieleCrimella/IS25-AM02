@@ -2,7 +2,6 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
-import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
@@ -22,12 +21,12 @@ public class WarZone_II extends Card{
     private final int flyback;
     private final int boxesLost;
     private int boxesRemoved;
-    private LinkedHashMap<Player, Integer> declarationCrew;
-    private LinkedHashMap<Player, Double> declarationCannon;
-    private LinkedHashMap<Player, Integer> declarationMotor;
+    private final LinkedHashMap<Player, Integer> declarationCrew;
+    private final LinkedHashMap<Player, Double> declarationCannon;
+    private final LinkedHashMap<Player, Integer> declarationMotor;
     private int currentIndex;
     private int currentPhase;
-    private ArrayList<Pair<Integer, RotationType>> shots;
+    private final ArrayList<Pair<Integer, RotationType>> shots;
 
     public WarZone_II(int level, int flyback, int boxesLost, ArrayList<Pair<Integer, RotationType>> shots) {
         super(level, StateCardType.DECISION);

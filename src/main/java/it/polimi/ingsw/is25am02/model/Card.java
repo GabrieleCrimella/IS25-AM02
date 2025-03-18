@@ -6,6 +6,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +87,10 @@ public abstract class Card {
 
     public void effect(Game game) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
+    }
+
+    public LinkedList<Box> getBoxesWon() {
+        return new LinkedList<Box>();
     }
 
 }
