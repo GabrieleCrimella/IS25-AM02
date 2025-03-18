@@ -9,8 +9,7 @@ import javafx.util.Pair;
 import java.util.*;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.*;
-import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.EFFECT_ON_PLAYER;
-import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.*;
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.*;
 
 public class Game implements Game_Interface {
@@ -97,7 +96,7 @@ public class Game implements Game_Interface {
     public void nextPlayer() {
         int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
 
-        if (getGameboard().getRanking().indexOf(getCurrentPlayer()) == getGameboard().getRanking().size()-1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
+        if (getGameboard().getRanking().indexOf(getCurrentPlayer()) == getGameboard().getRanking().size() - 1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(FINISH);
         } else if (getGameboard().getRanking().get(index + 1).getStatePlayer() == IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
@@ -117,15 +116,20 @@ public class Game implements Game_Interface {
 
     @Override
     public Tile takeTile(Player player) {
-        Tile temp = heapTile.drawTile();
-        try {
-            player.getSpaceship().setCurrentTile(temp);
-        } catch (AlreadyViewingTileException e) {
-            //se il giocatore sta già guardando una tile, la tile pescata viene rimessa nel mazzo (in modo ancora invisibile) e viene in realtà restituita la tile che il giocatore stava guardando
-            heapTile.addTile(temp, false);
-            temp = player.getSpaceship().getCurrentTile();
-        }
-        return temp;
+        Tile temp;
+
+        //State Control
+        if (getCurrentState().getPhase() == BUILD) {
+            temp = heapTile.drawTile();
+            try {
+                player.getSpaceship().setCurrentTile(temp);
+            } catch (AlreadyViewingTileException e) {
+                //se il giocatore sta già guardando una tile, la tile pescata viene rimessa nel mazzo (in modo ancora invisibile) e viene in realtà restituita la tile che il giocatore stava guardando
+                heapTile.addTile(temp, false);
+                temp = player.getSpaceship().getCurrentTile();
+            }
+            return temp;
+        } else throw new IllegalStateException("Non è il momento di pescare una tile");
     }
 
     @Override
@@ -160,27 +164,27 @@ public class Game implements Game_Interface {
     public void shipFinished(Player player) {
         int[] position = getGameboard().getStartingPosition();
         player.setStatePlayer(FINISHED);
-        alreadyFinished ++;
-        getGameboard().positions.put(player,position[players.size() - alreadyFinished - 1]);
-        if(alreadyFinished == players.size()) { //se tutti i giocatori sono nella fase di finish allora passo alla fase di check
+        alreadyFinished++;
+        getGameboard().positions.put(player, position[players.size() - alreadyFinished - 1]);
+        if (alreadyFinished == players.size()) { //se tutti i giocatori sono nella fase di finish allora passo alla fase di check
             this.currentState.setPhase(StateGameType.CHECK);
         }
     }
 
     @Override
     public boolean checkSpaceship(Player player) {
-        if(player.getSpaceship().checkSpaceship()){//se è corretta il player passa nello stato CORRECT
+        if (player.getSpaceship().checkSpaceship()) {//se è corretta il player passa nello stato CORRECT
             player.setStatePlayer(CORRECT_SHIP);
-            alreadyChecked ++;
+            alreadyChecked++;
         } else {
             player.setStatePlayer(WRONG_SHIP);//se la nave è sbagliata passo nello stato di wrong
         }
-        if(alreadyChecked == players.size()) { //se tutti i giocatori hanno la nave corretta allora passo alla fase successiva
+        if (alreadyChecked == players.size()) { //se tutti i giocatori hanno la nave corretta allora passo alla fase successiva
             this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
             return true;
         }
-        for(Player p : players){//se c'è anche un solo giocatore che è in wrong_ship allora si passa alla fase di correction
-            if(p.getStatePlayer().equals(WRONG_SHIP)){
+        for (Player p : players) {//se c'è anche un solo giocatore che è in wrong_ship allora si passa alla fase di correction
+            if (p.getStatePlayer().equals(WRONG_SHIP)) {
                 this.currentState.setPhase(StateGameType.CORRECTION);
             }
         }
@@ -196,58 +200,56 @@ public class Game implements Game_Interface {
     //per inizializzazione delle cabine
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
-        if (type.equals(AliveType.HUMAN) && player.getSpaceship().getTile(x,y).isPresent()){ // faccio l'istruzione due volte perchè aggiungo due umani
-            player.getSpaceship().getTile(x,y).get().addCrew(type);
-            player.getSpaceship().getTile(x,y).get().addCrew(type);
-        }
-        else if (type.equals(AliveType.BROWN_ALIEN)){ //devo controllare se c'è una cabina brown collegata ad almeno una cabina normale
-            for(Optional<Tile> tile : player.getSpaceship().getSpaceshipIterator()){
-                if(tile.isPresent() && tile.get().getType().equals(TileType.BROWN_CABIN)){
-                    if(player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+        if (type.equals(AliveType.HUMAN) && player.getSpaceship().getTile(x, y).isPresent()) { // faccio l'istruzione due volte perchè aggiungo due umani
+            player.getSpaceship().getTile(x, y).get().addCrew(type);
+            player.getSpaceship().getTile(x, y).get().addCrew(type);
+        } else if (type.equals(AliveType.BROWN_ALIEN)) { //devo controllare se c'è una cabina brown collegata ad almeno una cabina normale
+            for (Optional<Tile> tile : player.getSpaceship().getSpaceshipIterator()) {
+                if (tile.isPresent() && tile.get().getType().equals(TileType.BROWN_CABIN)) {
+                    if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
-                    if(player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+                    if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
-                    if(player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+                    if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
-                    if(player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+                    if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
                 }
 
             }
-        }
-        else { //caso dei purple alien
-            for(Optional<Tile> tile : player.getSpaceship().getSpaceshipIterator()){
-                if(tile.isPresent() && tile.get().getType().equals(TileType.PURPLE_CABIN)){
-                    if(player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+        } else { //caso dei purple alien
+            for (Optional<Tile> tile : player.getSpaceship().getSpaceshipIterator()) {
+                if (tile.isPresent() && tile.get().getType().equals(TileType.PURPLE_CABIN)) {
+                    if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
-                    if(player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+                    if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
-                    if(player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+                    if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
-                    if(player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).get().getType().equals(TileType.CABIN)){// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x,y).get().addCrew(type);
+                    if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).isPresent() &&
+                            player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
+                        player.getSpaceship().getTile(x, y).get().addCrew(type);
                         return;
                     }
                 }
@@ -257,16 +259,16 @@ public class Game implements Game_Interface {
 
     @Override
     public void playNextCard(Player player) {
-        if(!player.equals(getGameboard().getRanking().getFirst())){ //se il player non è un leader allora lancio eccezione
+        if (!player.equals(getGameboard().getRanking().getFirst())) { //se il player non è un leader allora lancio eccezione
             throw new IllegalStateException("Il player non è il leader");
         }
-        if(!player.getStatePlayer().equals(IN_GAME)){ //se il player non è in game allora lancio eccezione
+        if (!player.getStatePlayer().equals(IN_GAME)) { //se il player non è in game allora lancio eccezione
             throw new IllegalStateException("Il player non è IN GAME");
         }
-        if(!getCurrentCard().getStateCard().equals(FINISH)){
+        if (!getCurrentCard().getStateCard().equals(FINISH)) {
             throw new IllegalStateException("La carta prima non è finita");
         }
-        if(!getCurrentState().getPhase().equals(TAKE_CARD)){
+        if (!getCurrentState().getPhase().equals(TAKE_CARD)) {
             throw new IllegalStateException("Il gioco non è in stato di take card");
         }
 
@@ -274,7 +276,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public HashMap<Player,Integer> getPosition() {
+    public HashMap<Player, Integer> getPosition() {
         return getGameboard().getPositions();
     }
 
@@ -409,11 +411,11 @@ public class Game implements Game_Interface {
     @Override
     public ArrayList<Player> getWinners() {
         ArrayList<Player> winners = new ArrayList<>();
-        if(getPlayers() == null){
+        if (getPlayers() == null) {
             throw new IllegalArgumentException("La lista dei giocatori è vuota");
         }
-        for(Player p : getPlayers()){
-            if(p.getSpaceship().getCosmicCredits()>0){
+        for (Player p : getPlayers()) {
+            if (p.getSpaceship().getCosmicCredits() > 0) {
                 winners.add(p);
             }
         }
