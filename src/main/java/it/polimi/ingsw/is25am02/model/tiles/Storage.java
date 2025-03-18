@@ -37,8 +37,11 @@ public final class Storage extends Tile {
 
     @Override
     public void addBox(Box box) {
-        if (!box.getType().isSpecial())
+        if (!box.getType().isSpecial()){
             occupation.add(box);
+            occupation.sort((b1, b2) -> Integer.compare(b2.getType().getPower(), b1.getType().getPower())); //i box dentro occupation sono ordinati da quello più importante al meno importante
+        }
+        else
+            throw new IllegalArgumentException("Box cannot be special box in normal storage");
     }
-
 }

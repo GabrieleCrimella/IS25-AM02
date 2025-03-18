@@ -284,6 +284,7 @@ public class Spaceship {
         return currentTile;
     }// è la tile che sto guardando
 
+    //todo bisogna gestire il fatto che se viene colpito un supporto vitale allora va rimosso l'alieno nella cabina vicino
     //calcola la distruzione della nave in base a dove è arrivato il meteorite
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
@@ -454,13 +455,14 @@ public class Spaceship {
             }
             else if(t.isPresent() && t.get().getType().equals(TileType.STORAGE)){
                 if(numBestType < BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType())){
-                    numBestType = BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType());//todo controllare che getOccupation sia lista ordinata
+                    numBestType = BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType());//getOccupation ritorna una lista ordinata dal box più pregiato al meno
                 }
             }
         }
         return BoxType.getBoxTypeByNum(numBestType).equals(type);
     }
 
+    //todo controllare che sia corretto
     public void epidemyRemove() {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
         for (Optional<Tile> t : spaceshipIterator) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
