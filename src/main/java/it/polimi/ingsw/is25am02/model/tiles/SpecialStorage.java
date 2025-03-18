@@ -21,7 +21,9 @@ public final class SpecialStorage extends Tile{
 
     @Override
     public void addBox(Box box){
-        occupation.add(box);
+        if(box.getType().isSpecial()) occupation.add(box);
+        else
+            throw new IllegalArgumentException("Box must be a special box");
     }
 
     @Override

@@ -455,7 +455,7 @@ public class Spaceship {
             }
             else if(t.isPresent() && t.get().getType().equals(TileType.STORAGE)){
                 if(numBestType < BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType())){
-                    numBestType = BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType());//todo controllare che getOccupation sia lista ordinata
+                    numBestType = BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType());//getOccupation ritorna una lista ordinata dal box più pregiato al meno
                 }
             }
         }
