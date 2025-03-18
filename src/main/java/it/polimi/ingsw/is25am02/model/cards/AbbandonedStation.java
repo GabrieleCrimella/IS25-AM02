@@ -3,19 +3,17 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
 public class AbbandonedStation extends Card_with_box {
     private final int AliveNeeded;
     private final int daysLost;
-    private LinkedList<Box> boxesWon;
+    private final LinkedList<Box> boxesWon;
 
     public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon) {
         super(level, store, StateCardType.DECISION);
