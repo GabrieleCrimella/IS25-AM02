@@ -124,20 +124,42 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         throw new NoSuchElementException();
     }
 
+
+    //todo fare metodo che ritorna coordinate da una tile. e usarlo per i metodi seguenti
+    public int getX(Tile t){
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (spaceshipBoard[i][j].isPresent() && spaceshipBoard[i][j].get().equals(t))
+                    return i;
+            }
+        }
+        throw new NoSuchElementException();
+    }
+
+    public int getY(Tile t){
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (spaceshipBoard[i][j].isPresent() && spaceshipBoard[i][j].get().equals(t))
+                    return j;
+            }
+        }
+        throw new NoSuchElementException();
+    }
+
     public Optional<Tile> getUpTile(Tile t) {
-        return spaceshipBoard[x_current - 1][y_current];
+        return spaceshipBoard[getX(t)][getY(t)-1];
     }
 
     public Optional<Tile> getDownTile(Tile t) {
-        return spaceshipBoard[x_current + 1][y_current];
+        return spaceshipBoard[getX(t)][getY(t)+1];
     }
 
     public Optional<Tile> getLeftTile(Tile t) {
-        return spaceshipBoard[x_current][y_current - 1];
+        return spaceshipBoard[getX(t)-1][getY(t)];
     }
 
     public Optional<Tile> getRightTile(Tile t) {
-        return spaceshipBoard[x_current][y_current + 1];
+        return spaceshipBoard[getX(t)+1][getY(t)];
     }
 
     public Optional<Tile> getFrontTile(Tile t) {
