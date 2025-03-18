@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Game_Interface {
-    //Phase START
-    Game GameCreator(List<Player> p, int level);
-
     //Phase INITIALIZATION_GAME
     //Nothing
 
