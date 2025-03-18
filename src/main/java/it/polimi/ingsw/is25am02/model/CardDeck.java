@@ -8,8 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CardDeck {
-    private final HashMap<Integer , Pair<List<Card>,Boolean>> deck; //l'intero è il numero di deck, il boolean è vero se è occupato
+    private HashMap<Integer , Pair<List<Card>,Boolean>> deck; //l'intero è il numero di deck, il boolean è vero se è occupato
     private List<Card> finalDeck;
+
+    public void addCard(Card card){
+        //todo
+    }
 
     public CardDeck(){
         this.deck = new HashMap<>();

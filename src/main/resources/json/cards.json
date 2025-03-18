@@ -352,7 +352,7 @@
     "image": ""
   },
   {
-    "type": "WARZONE",
+    "type": "WARZONE1",
     "level": 1,
     "daysLost": 3,
     "aliveLost": 2,
@@ -363,7 +363,7 @@
     "image": ""
   },
   {
-    "type": "WARZONE",
+    "type": "WARZONE2",
     "level": 2,
     "daysLost": 4,
     "boxLost": 3,
