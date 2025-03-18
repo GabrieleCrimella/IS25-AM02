@@ -1,0 +1,351 @@
+[
+  {
+    "type": "ABANDONED_SHIP",
+    "level": 1,
+    "aliveLost" : 2,
+    "creditWin"  : 3 ,
+    "flyBack": 1,
+    "image": ""
+  },
+  {
+    "type": "ABANDONED_SHIP",
+    "level": 1,
+    "aliveLost" : 3,
+    "creditWin"  : 4,
+    "flyBack": 1,
+    "image": ""
+  },
+  {
+    "type": "ABANDONED_SHIP",
+    "level": 2,
+    "aliveLost" : 5,
+    "creditWin"  : 8,
+    "flyBack": 2,
+    "image": ""
+  },
+  {
+    "type": "ABANDONED_SHIP",
+    "level": 2,
+    "aliveLost" : 4,
+    "creditWin"  : 6,
+    "flyBack": 1,
+    "image": ""
+  },
+  {
+    "type": "ABANDONED_STATION",
+    "level": 1,
+    "aliveNeeded" : 5,
+    "daysLost": 1,
+    "box": {
+      "YELLOW": 1,
+      "GREEN": 1
+    },
+    "image": ""
+  },
+  {
+    "type": "ABANDONED_STATION",
+    "level": 1,
+    "aliveNeeded" : 6,
+    "daysLost": 1,
+    "box": {
+      "RED": 2
+    },
+    "image": ""
+  },
+  {
+    "type": "ABANDONED_STATION",
+    "level": 2,
+    "aliveNeeded" : 7,
+    "daysLost": 1,
+    "box": {
+      "RED": 1,
+      "YELLOW": 1
+    },
+    "image": ""
+  },
+  {
+    "type": "ABANDONED_STATION",
+    "level": 2,
+    "aliveNeeded" : 8,
+    "daysLost": 2,
+    "box": {
+      "YELLOW": 2,
+      "GREEN": 1
+    },
+    "image": ""
+  },
+  {
+    "type": "PIRATE",
+    "level": 1,
+    "cannonPower": 5,
+    "creditWin"  : 4,
+    "daysLost": 1,
+    "shots":  [
+      [0, "north"],
+      [1, "south"],
+      [0, "east"],
+      [1, "west"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PIRATE",
+    "level": 2,
+    "cannonPower": 6,
+    "creditWin"  : 7,
+    "daysLost": 2,
+    "shots":  [
+      [1, "north"],
+      [0, "north"],
+      [1, "north"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "TRAFFICKER",
+    "level": 1,
+    "cannonPower": 4,
+    "daysLost": 1,
+    "boxesLost": 2,
+    "box": {
+      "YELLOW": 1,
+      "GREEN": 1,
+      "BLUE": 1
+    },
+    "image": ""
+  },
+  {
+    "type": "TRAFFICKER",
+    "level": 2,
+    "cannonPower": 8,
+    "daysLost": 1,
+    "boxesLost": 3,
+    "box": {
+      "RED": 1,
+      "YELLOW": 2
+    },
+    "image": ""
+  },
+  {
+    "type": "SLAVEOWNER",
+    "level": 1,
+    "cannonPower": 6,
+    "daysLost": 1,
+    "aliveLost": 3,
+    "creditWin"  : 5,
+    "image": ""
+  },
+  {
+    "type": "SLAVEOWNER",
+    "level": 2,
+    "cannonPower": 7,
+    "daysLost": 2,
+    "aliveLost": 4,
+    "creditWin"  : 8,
+    "image": ""
+  },
+  {
+    "type": "OPENSPACE",
+    "level": 1,
+    "image": ""
+  },
+  {
+    "type": "OPENSPACE",
+    "level": 2,
+    "image": ""
+  },
+  {
+    "type": "STARDUST",
+    "level": 1,
+    "image": ""
+  },
+  {
+    "type": "STARDUST",
+    "level": 2,
+    "image": ""
+  },
+  {
+    "type": "EPIDEMY",
+    "level": 2,
+    "image": ""
+  },
+  {
+    "type": "METEORITES",
+    "level": 1,
+    "meteorites":  [
+      [0, "north"],
+      [0, "north"],
+      [0, "west"],
+      [0, "east"],
+      [1, "south"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "METEORITES",
+    "level": 1,
+    "meteorites":  [
+      [1, "north"],
+      [0, "west"],
+      [0, "east"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "METEORITES",
+    "level": 1,
+    "meteorites":  [
+      [1, "north"],
+      [0, "north"],
+      [1, "north"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "METEORITES",
+    "level": 2,
+    "meteorites":  [
+      [0, "north"],
+      [0, "north"],
+      [1, "east"],
+      [0, "east"],
+      [0, "east"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "METEORITES",
+    "level": 2,
+    "meteorites":  [
+      [0, "north"],
+      [0, "north"],
+      [1, "west"],
+      [0, "west"],
+      [0, "west"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "METEORITES",
+    "level": 2,
+    "meteorites":  [
+      [1, "north"],
+      [1, "north"],
+      [0, "south"],
+      [0, "south"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 1,
+    "daysLost": 2,
+    "boxes":  [
+      ["RED", "RED"],
+      ["RED", "BLUE", "BLUE"],
+      ["YELLOW"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 1,
+    "daysLost": 3,
+    "boxes":  [
+      ["YELLOW", "GREEN", "BLUE", "BLUE"],
+      ["YELLOW", "YELLOW"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 1,
+    "daysLost": 1,
+    "boxes":  [
+      ["GREEN", "GREEN"],
+      ["YELLOW"],
+      ["BLUE", "BLUE", "BLUE"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 1,
+    "daysLost": 3,
+    "boxes":  [
+      ["RED", "GREEN", "BLUE", "BLUE", "BLUE"],
+      ["RED", "YELLOW","BLUE"],
+      ["RED","BLUE", "BLUE", "BLUE"],
+      ["RED", "GREEN"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 2,
+    "daysLost": 3,
+    "boxes":  [
+      ["RED", "RED"],
+      ["GREEN", "GREEN","GREEN", "GREEN"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 2,
+    "daysLost": 4,
+    "boxes":  [
+      ["RED", "RED", "RED", "YELLOW"],
+      ["RED", "RED","GREEN", "GREEN"],
+      ["RED","BLUE", "BLUE", "BLUE", "BLUE"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 2,
+    "daysLost": 2,
+    "boxes":  [
+      ["RED", "YELLOW"],
+      ["YELLOW", "GREEN", "BLUE"],
+      ["GREEN","GREEN"],
+      ["YELLOW"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "PLANETS",
+    "level": 2,
+    "daysLost": 3,
+    "boxes":  [
+      ["GREEN", "GREEN", "GREEN", "GREEN"],
+      ["YELLOW", "YELLOW"],
+      ["BLUE", "BLUE", "BLUE", "BLUE"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "WARZONE",
+    "level": 1,
+    "daysLost": 3,
+    "aliveLost": 2,
+    "shots":  [
+      [0, "south"],
+      [1, "south"]
+    ],
+    "image": ""
+  },
+  {
+    "type": "WARZONE",
+    "level": 2,
+    "daysLost": 4,
+    "boxLost": 3,
+    "shots":  [
+      [0, "north"],
+      [0, "west"],
+      [0, "est"],
+      [1, "south"]
+    ],
+    "image": ""
+  }
+]
