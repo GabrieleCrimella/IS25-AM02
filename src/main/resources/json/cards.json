@@ -36,10 +36,10 @@
     "level": 1,
     "aliveNeeded" : 5,
     "daysLost": 1,
-    "box": {
-      "YELLOW": 1,
-      "GREEN": 1
-    },
+    "box": [
+      "YELLOW",
+      "GREEN"
+    ],
     "image": ""
   },
   {
@@ -47,9 +47,10 @@
     "level": 1,
     "aliveNeeded" : 6,
     "daysLost": 1,
-    "box": {
-      "RED": 2
-    },
+    "box": [
+      "RED",
+      "RED"
+    ],
     "image": ""
   },
   {
@@ -57,10 +58,10 @@
     "level": 2,
     "aliveNeeded" : 7,
     "daysLost": 1,
-    "box": {
-      "RED": 1,
-      "YELLOW": 1
-    },
+    "box": [
+      "RED",
+      "YELLOW"
+    ],
     "image": ""
   },
   {
@@ -68,10 +69,11 @@
     "level": 2,
     "aliveNeeded" : 8,
     "daysLost": 2,
-    "box": {
-      "YELLOW": 2,
-      "GREEN": 1
-    },
+    "box": [
+      "YELLOW",
+      "YELLOW",
+      "GREEN"
+    ],
     "image": ""
   },
   {
@@ -82,9 +84,8 @@
     "daysLost": 1,
     "shots":  [
       [0, "north"],
-      [1, "south"],
-      [0, "east"],
-      [1, "west"]
+      [1, "north"],
+      [0, "north"]
     ],
     "image": ""
   },
@@ -107,11 +108,11 @@
     "cannonPower": 4,
     "daysLost": 1,
     "boxesLost": 2,
-    "box": {
-      "YELLOW": 1,
-      "GREEN": 1,
-      "BLUE": 1
-    },
+    "box": [
+      "YELLOW",
+      "GREEN",
+      "BLUE"
+    ],
     "image": ""
   },
   {
@@ -120,10 +121,11 @@
     "cannonPower": 8,
     "daysLost": 1,
     "boxesLost": 3,
-    "box": {
-      "RED": 1,
-      "YELLOW": 2
-    },
+    "box": [
+      "RED",
+      "YELLOW",
+      "YELLow"
+    ],
     "image": ""
   },
   {
@@ -147,6 +149,31 @@
   {
     "type": "OPENSPACE",
     "level": 1,
+    "image": ""
+  },
+  {
+    "type": "OPENSPACE",
+    "level": 1,
+    "image": ""
+  },
+  {
+    "type": "OPENSPACE",
+    "level": 1,
+    "image": ""
+  },
+  {
+    "type": "OPENSPACE",
+    "level": 1,
+    "image": ""
+  },
+  {
+    "type": "OPENSPACE",
+    "level": 2,
+    "image": ""
+  },
+  {
+    "type": "OPENSPACE",
+    "level": 2,
     "image": ""
   },
   {
@@ -177,7 +204,7 @@
       [0, "north"],
       [0, "west"],
       [0, "east"],
-      [1, "south"]
+      [0, "south"]
     ],
     "image": ""
   },
