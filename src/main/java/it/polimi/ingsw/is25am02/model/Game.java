@@ -24,6 +24,7 @@ public class Game implements Game_Interface {
     private HeapTiles heapTile;
     private Gameboard globalBoard;
     private State currentState;
+    private int ciao;
 
     //todo: dove sono tutte le "instanziazioni" degli attributi?
     public Game(List<Player> p, int level) {
