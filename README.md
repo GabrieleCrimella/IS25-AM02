@@ -16,16 +16,21 @@ Currently, the development is in progress, with all core functionalities planned
 
 ## Status of the work
 
-| Functionality  | Status            | 
-|----------------|-------------------|
-| Basic rules    | :white_check_mark: |
-| Complete rules | ⬜ |
-| Socket connection | ⬜ |
-| RMI connection | ⬜ |
-| CLI            | ⬜ |
-| GUI            | ⬜ |
-| Multiple games |  |
-| Persistence    |  |
-| Resilience     |  |
-| Chat           |  |
-| VisionOS       |  |
+| Functionality  | Status           | 
+|----------------|------------------|
+| Basic rules    |✅|
+| Complete rules |🟧|
+| Socket connection |⬜|
+| RMI connection |⬜|
+| CLI            |⬜|
+| GUI            |⬜|
+| Multiple games |⬜|
+| Persistence    |⬜|
+| Resilience     |⬜|
+| Chat           |⬜|
+
+⬜ = Not yet implemented
+
+🟧 = In progress
+
+✅ = Completed
