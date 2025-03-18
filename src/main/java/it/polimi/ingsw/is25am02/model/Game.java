@@ -134,15 +134,18 @@ public class Game implements Game_Interface {
 
     @Override
     public Tile takeTile(Player player, Tile tile) {
-        heapTile.removeVisibleTile(tile);
-        try {
-            player.getSpaceship().setCurrentTile(tile);
-            return tile;
-        } catch (AlreadyViewingTileException e) {
-            //se l'utente sta già guardando una tile, rimetto quella che ha passato come parametro nel mucchio e ritorno quella che sta già guardando
-            heapTile.addTile(tile, true);
-            return player.getSpaceship().getCurrentTile();
-        }
+        //State Control
+        if (getCurrentState().getPhase() == BUILD) {
+            heapTile.removeVisibleTile(tile);
+            try {
+                player.getSpaceship().setCurrentTile(tile);
+                return tile;
+            } catch (AlreadyViewingTileException e) {
+                //se l'utente sta già guardando una tile, rimetto quella che ha passato come parametro nel mucchio e ritorno quella che sta già guardando
+                heapTile.addTile(tile, true);
+                return player.getSpaceship().getCurrentTile();
+            }
+        }else throw new IllegalStateException("Non è il momento di pescare una tile");
     }
 
     //il giocatore "scarta" la tile che stava guardando.
