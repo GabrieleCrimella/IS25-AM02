@@ -29,6 +29,10 @@ public class AbbandonedStation extends Card_with_box {
         return new AbbandonedStation(getLevel(), getBoxStore(), AliveNeeded, daysLost, boxesWon);
     }
 
+    public LinkedList<Box> getBoxesWon() {
+        return boxesWon;
+    }
+
     @Override
     public List<Box> choiceBox(Game game, Player player, boolean choice){
         if(player.getSpaceship().calculateNumAlive() >= AliveNeeded && choice){ //se ho abbastanza giocatori per salire sulla nave
