@@ -12,6 +12,7 @@ import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,9 +23,9 @@ public class Trafficker extends Card_with_box{
     private final int daysLost;
     private final int boxesLost;
     private int boxesRemove;
-    private final ArrayList<Box> boxesWon;
+    private final LinkedList<Box> boxesWon;
 
-    public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, ArrayList<Box> boxesWon) {
+    public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList boxesWon) {
         super(level, store, StateCardType.CHOICE_ATTRIBUTES);
         this.cannonPowers = cannonPowers;
         this.daysLost = daysLost;

@@ -4,7 +4,7 @@
     "level": 1,
     "aliveLost" : 2,
     "creditWin"  : 3 ,
-    "flyBack": 1,
+    "daysLost": 1,
     "image": ""
   },
   {
@@ -12,7 +12,7 @@
     "level": 1,
     "aliveLost" : 3,
     "creditWin"  : 4,
-    "flyBack": 1,
+    "daysLost": 1,
     "image": ""
   },
   {
@@ -20,7 +20,7 @@
     "level": 2,
     "aliveLost" : 5,
     "creditWin"  : 8,
-    "flyBack": 2,
+    "daysLost": 2,
     "image": ""
   },
   {
@@ -28,7 +28,7 @@
     "level": 2,
     "aliveLost" : 4,
     "creditWin"  : 6,
-    "flyBack": 1,
+    "daysLost": 1,
     "image": ""
   },
   {

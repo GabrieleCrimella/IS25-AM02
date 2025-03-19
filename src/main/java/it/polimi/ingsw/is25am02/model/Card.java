@@ -2,14 +2,15 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.is25am02.model.cards.AbbandonedShip;
-import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.cards.*;
+import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -33,12 +34,20 @@ public abstract class Card {
             rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
         } catch (IOException e) {
             System.out.println("Error in reading Card JSON file");
-            e.printStackTrace();
         }
         int level;
         int aliveLost;
+        int aliveNeeded;
         int creditWin;
-        int flyBack;
+        int daysLost;
+        int cannonPower;
+        int boxesLost;
+        LinkedList<Box> boxesWon = new LinkedList<>();
+        BoxStore store = new BoxStore();
+        ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
+        ArrayList<Pair<Integer, RotationType>> meteorites = new ArrayList<>();
+        ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
+
         for (JsonNode levelNode : rootNode) {  //foreach JSON node
             level = levelNode.get("level").asInt();
 
@@ -46,45 +55,160 @@ public abstract class Card {
                 case "ABANDONED_SHIP":
                     aliveLost = levelNode.get("aliveLost").asInt();
                     creditWin = levelNode.get("creditWin").asInt();
-                    flyBack = levelNode.get("flyBack").asInt();
-                    deck.addCard(new AbbandonedShip(level, aliveLost, creditWin, flyBack));
+                    daysLost = levelNode.get("daysLost").asInt();
+                    deck.addCard(new AbbandonedShip(level, aliveLost, creditWin, daysLost));
                     break;
                 case "ABANDONED_STATION":
-                    setTiles.add(new Structural(TileType.STRUCTURAL, pos, RotationType.NORTH, 1));
+                    aliveNeeded = levelNode.get("aliveNeeded").asInt();
+                    daysLost = levelNode.get("daysLost").asInt();
+                    for(JsonNode node: levelNode.get("box")){
+                        Box box;
+                        if(node.asText().equals("RED")){
+                            box = new RedBox(BoxType.RED);
+                        } else if(node.asText().equals("BLUE")){
+                            box = new BlueBox(BoxType.BLUE);
+                        } else if(node.asText().equals("YELLOW")){
+                            box = new YellowBox(BoxType.YELLOW);
+                        } else if(node.asText().equals("GREEN")){
+                            box = new GreenBox(BoxType.GREEN);
+                        } else throw new IllegalArgumentException("I cannot add a box");
+                        boxesWon.add(box);
+                    }
+                    //todo store
+                    deck.addCard(new AbbandonedStation(level, store, aliveNeeded, daysLost,boxesWon));
                     break;
                 case "PIRATE":
-                    maxBattery = levelNode.get("maxBattery").asInt();
-                    setTiles.add(new BatteryStorage(TileType.BATTERY, pos, RotationType.NORTH, 1, maxBattery));
+                    cannonPower = levelNode.get("cannonPower").asInt();
+                    creditWin = levelNode.get("creditWin").asInt();
+                    daysLost = levelNode.get("daysLost").asInt();
+                    for (JsonNode shotNode : levelNode.get("shots")) {
+                        int smallOrBig = shotNode.get(0).asInt();
+                        RotationType rotation;
+                        if(shotNode.get(1).asText().equals("north")){
+                            rotation = RotationType.NORTH;
+                        } else if(shotNode.get(1).asText().equals("south")){
+                            rotation = RotationType.SOUTH;
+                        } else if(shotNode.get(1).asText().equals("east")) {
+                            rotation = RotationType.EAST;
+                        }else if(shotNode.get(1).asText().equals("west")){
+                            rotation = RotationType.WEST;
+                        } else throw new IllegalArgumentException("I cannot add a shot from JSON");
+                        shots.add(new Pair<>(smallOrBig, rotation));
+                    }
+                    deck.addCard(new Pirate(level, cannonPower, daysLost, creditWin, shots));
                     break;
                 case "TRAFFICKER":
-                    setTiles.add(new BrownCabin(TileType.BROWN_CABIN, pos, RotationType.NORTH, 1));
+                    cannonPower = levelNode.get("cannonPower").asInt();
+                    daysLost = levelNode.get("daysLost").asInt();
+                    boxesLost = levelNode.get("boxesLost").asInt();
+                    for(JsonNode node: levelNode.get("box")){
+                        Box box;
+                        if(node.asText().equals("RED")){
+                            box = new RedBox(BoxType.RED);
+                        } else if(node.asText().equals("BLUE")){
+                            box = new BlueBox(BoxType.BLUE);
+                        } else if(node.asText().equals("YELLOW")){
+                            box = new YellowBox(BoxType.YELLOW);
+                        } else if(node.asText().equals("GREEN")){
+                            box = new GreenBox(BoxType.GREEN);
+                        } else throw new IllegalArgumentException("I cannot add a box");
+                        boxesWon.add(box);
+                    }
+                    //todo store
+                    deck.addCard(new Trafficker(level,store,cannonPower, daysLost, boxesLost, boxesWon));
                     break;
                 case "SLAVEOWNER":
-                    setTiles.add(new PurpleCabin(TileType.PURPLE_CABIN, pos, RotationType.NORTH, 1));
+                    cannonPower = levelNode.get("cannonPower").asInt();
+                    daysLost = levelNode.get("daysLost").asInt();
+                    aliveLost = levelNode.get("aliveLost").asInt();
+                    creditWin = levelNode.get("creditWin").asInt();
+                    deck.addCard(new SlaveOwner(level, cannonPower, daysLost,creditWin,aliveLost));
                     break;
                 case "OPENSPACE":
-                    setTiles.add(new Cabin(TileType.CABIN, pos, RotationType.NORTH, 1));
+                    deck.addCard(new OpenSpace(level));
                     break;
                 case "STARDUST":
-                    setTiles.add(new Cannon(TileType.CANNON, pos, RotationType.NORTH, 1));
+                    deck.addCard(new Stardust(level));
                     break;
                 case "EPIDEMY":
-                    setTiles.add(new Motors(TileType.MOTOR, pos, RotationType.NORTH, 1));
+                    deck.addCard(new Epidemy(level));
                     break;
                 case "METEORITES":
-                    setTiles.add(new DoubleMotor(TileType.D_MOTOR, pos, RotationType.NORTH, 1));
+                    for (JsonNode node : levelNode.get("meteorites")) {
+                        int smallOrBig = node.get(0).asInt();
+                        RotationType rotation;
+                        if(node.get(1).asText().equals("north")){
+                            rotation = RotationType.NORTH;
+                        } else if(node.get(1).asText().equals("south")){
+                            rotation = RotationType.SOUTH;
+                        } else if(node.get(1).asText().equals("east")) {
+                            rotation = RotationType.EAST;
+                        }else if(node.get(1).asText().equals("west")){
+                            rotation = RotationType.WEST;
+                        } else throw new IllegalArgumentException("I cannot add a meteorites from JSON");
+                        meteorites.add(new Pair<>(smallOrBig, rotation));
+                    }
+                    deck.addCard(new MeteoritesStorm(level,meteorites));
                     break;
                 case "PLANETS":
-                    maxBox = levelNode.get("maxBox").asInt();
-                    setTiles.add(new SpecialStorage(TileType.SPECIAL_STORAGE, pos, RotationType.NORTH, 1, maxBox));
+                    daysLost = levelNode.get("daysLost").asInt();
+                    for (JsonNode boxListNode : levelNode.get("boxes")) {
+                        ArrayList<Box> boxList = new ArrayList<>();
+                        for (JsonNode boxNode : boxListNode) {
+                            Box box;
+                            if(boxNode.asText().equals("RED")){
+                                box = new RedBox(BoxType.RED);
+                            } else if(boxNode.asText().equals("BLUE")){
+                                box = new BlueBox(BoxType.BLUE);
+                            } else if(boxNode.asText().equals("YELLOW")){
+                                box = new YellowBox(BoxType.YELLOW);
+                            } else if(boxNode.asText().equals("GREEN")){
+                                box = new GreenBox(BoxType.GREEN);
+                            } else throw new IllegalArgumentException("I cannot add a box to planetoffer from JSON");
+                            boxList.add(box);
+                        }
+
+                        planetOffers.add(boxList); // Aggiungi la lista alla lista principale
+                    }
+                    deck.addCard(new Planet(level,store,daysLost,planetOffers));
                     break;
                 case "WARZONE1":
-                    maxBox = levelNode.get("maxBox").asInt();
-                    setTiles.add(new Storage(TileType.STORAGE, pos, RotationType.NORTH, 1, maxBox));
+                    daysLost = levelNode.get("daysLost").asInt();
+                    aliveLost = levelNode.get("aliveLost").asInt();
+                    for (JsonNode shotNode : levelNode.get("shots")) {
+                        int smallOrBig = shotNode.get(0).asInt();
+                        RotationType rotation;
+                        if(shotNode.get(1).asText().equals("north")){
+                            rotation = RotationType.NORTH;
+                        } else if(shotNode.get(1).asText().equals("south")){
+                            rotation = RotationType.SOUTH;
+                        } else if(shotNode.get(1).asText().equals("east")) {
+                            rotation = RotationType.EAST;
+                        }else if(shotNode.get(1).asText().equals("west")){
+                            rotation = RotationType.WEST;
+                        } else throw new IllegalArgumentException("I cannot add a shot from JSON");
+                        shots.add(new Pair<>(smallOrBig, rotation));
+                    }
+                    deck.addCard(new WarZone_I(level,daysLost,aliveLost, shots));
                     break;
                 case "WARZONE2":
-                    color = levelNode.get("color").asText();
-                    cabinStartPlayer.put(color, new Cabin(TileType.CABIN, pos, RotationType.NORTH, 1));
+                    daysLost = levelNode.get("daysLost").asInt();
+                    boxesLost = levelNode.get("boxesLost").asInt();
+                    for (JsonNode shotNode : levelNode.get("shots")) {
+                        int smallOrBig = shotNode.get(0).asInt();
+                        RotationType rotation;
+                        if(shotNode.get(1).asText().equals("north")){
+                            rotation = RotationType.NORTH;
+                        } else if(shotNode.get(1).asText().equals("south")){
+                            rotation = RotationType.SOUTH;
+                        } else if(shotNode.get(1).asText().equals("east")) {
+                            rotation = RotationType.EAST;
+                        }else if(shotNode.get(1).asText().equals("west")){
+                            rotation = RotationType.WEST;
+                        } else throw new IllegalArgumentException("I cannot add a shot from JSON");
+                        shots.add(new Pair<>(smallOrBig, rotation));
+                    }
+                    deck.addCard(new WarZone_II(level,daysLost,boxesLost, shots));
                     break;
             }
         }
