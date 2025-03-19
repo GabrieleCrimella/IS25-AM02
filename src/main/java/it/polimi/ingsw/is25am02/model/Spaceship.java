@@ -23,7 +23,7 @@ public class Spaceship {
     }
 
     public SpaceshipIterator getSpaceshipIterator() {
-        return spaceshipIterator;
+        return spaceshipIterator.reference();
     }
 
     //serve solo per il testing, per vedere che la legge correttamente da json
@@ -75,7 +75,7 @@ public class Spaceship {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
 
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && t.get().getType().equals(TileType.CANNON)) {
                 // se è rivolto davanti ha punteggio pieno
                 if (t.get().getRotationType() == RotationType.NORTH) {
@@ -109,7 +109,7 @@ public class Spaceship {
     public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
         int power = 0;
 
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && t.get().getType().equals(TileType.MOTOR)) {
                 power++;
             }
@@ -132,7 +132,7 @@ public class Spaceship {
         //Se questo metodo ti ritorna ConnectorType.NONE non devi aggiungere 1, se no aggiungi 1.
         //Uguale per tutti gli altri lati
         int exposedConnectors = 0;
-        for(Optional<Tile> optionalTile : spaceshipIterator){
+        for(Optional<Tile> optionalTile : spaceshipIterator.reference()){
             if(optionalTile.isPresent()){
                 Tile tile = optionalTile.get();
                 //north
@@ -184,28 +184,28 @@ public class Spaceship {
     public boolean checkSpaceship() {
 
         //controllo delle connessioni delle varie tiles
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && spaceshipIterator.getUpTile(t.get()).isPresent()) {
                 if (!t.get().checkConnectors(spaceshipIterator.getUpTile(t.get()).get(), RotationType.NORTH)) {
                     return false;
                 }
             }
         }
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && spaceshipIterator.getDownTile(t.get()).isPresent()) {
                 if (!t.get().checkConnectors(spaceshipIterator.getDownTile(t.get()).get(), RotationType.SOUTH)) {
                     return false;
                 }
             }
         }
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && spaceshipIterator.getRightTile(t.get()).isPresent()) {
                 if (!t.get().checkConnectors(spaceshipIterator.getRightTile(t.get()).get(), RotationType.EAST)) {
                     return false;
                 }
             }
         }
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && spaceshipIterator.getLeftTile(t.get()).isPresent()) {
                 if (!t.get().checkConnectors(spaceshipIterator.getLeftTile(t.get()).get(), RotationType.WEST)) {
                     return false;
@@ -233,7 +233,7 @@ public class Spaceship {
         }
 
         //controlla che davanti ai cannoni non ci sia nulla
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && (t.get().getType().equals(TileType.D_CANNON) || t.get().getType().equals(TileType.CANNON))) {
                 if (spaceshipIterator.getFrontTile(t.get()).isPresent()) {
                     return false;
@@ -435,7 +435,7 @@ public class Spaceship {
 
     //Mi dice se la tile appartiene alla nave
     public boolean own(Tile tile) {
-        for(Optional<Tile> t : spaceshipIterator){
+        for(Optional<Tile> t : spaceshipIterator.reference()){
             if(t.isPresent() && t.get().equals(tile)){
                 return true;
             }
@@ -449,7 +449,7 @@ public class Spaceship {
     public boolean isMostExpensive(BoxType type) {
         int numType = BoxType.getNumByTypeBox(type);
         int numBestType = BoxType.getNumByTypeBox(BoxType.BLUE);
-        for(Optional<Tile> t : spaceshipIterator){
+        for(Optional<Tile> t : spaceshipIterator.reference()){
             if(t.isPresent() && t.get().getType().equals(TileType.SPECIAL_STORAGE) && t.get().getOccupation()!=null){
                 return type.equals(BoxType.RED);
             }
@@ -464,7 +464,7 @@ public class Spaceship {
 
     //todo controllare che sia corretto
     public void epidemyRemove() {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
                 if(spaceshipIterator.getUpTile(t.get()).isPresent() && (spaceshipIterator.getUpTile(t.get()).get().getType().equals(TileType.CABIN)) ||
                         spaceshipIterator.getDownTile(t.get()).isPresent() && (spaceshipIterator.getDownTile(t.get()).get().getType().equals(TileType.CABIN))  ||
@@ -495,7 +495,7 @@ public class Spaceship {
 
     public List<Tile> getTilesByType(TileType type) {
         List<Tile> temp = new ArrayList<>();
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.get().getType().equals(type)) {
                 temp.add(t.get());
             }
