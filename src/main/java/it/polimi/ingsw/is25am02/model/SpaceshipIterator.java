@@ -35,6 +35,8 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public SpaceshipIterator reference() {
+        x_current = 0;
+        y_current = 0;
         return this;
     }
 
