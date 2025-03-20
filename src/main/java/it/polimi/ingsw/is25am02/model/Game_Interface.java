@@ -21,8 +21,8 @@ public interface Game_Interface {
     void flipHourglass();
     Tile takeTile(Player player);
     Tile takeTile(Player player, Tile tile);
-    void returnTile(Player player, Tile tile);
-    void addTile(Player player, Tile tile, int x, int y);
+    void returnTile(Player player);
+    void addTile(Player player, int x, int y);
     void shipFinished(Player player);
 
     //Phase CHECK
@@ -54,10 +54,6 @@ public interface Game_Interface {
     void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage);
     void holdSpaceship(Player player, int x, int y);
 
-
-    //Phase CHANGE_CONDITION
-    //Nothing
-    
     //Phase RESULT
     ArrayList<Player> getWinners();
 

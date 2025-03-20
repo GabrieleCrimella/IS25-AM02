@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
+import it.polimi.ingsw.is25am02.model.exception.WrongStateException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
@@ -113,22 +114,28 @@ public class Game implements Game_Interface {
 
     @Override
     public Tile takeTile(Player player) {
-        Tile temp;
+        Tile temp = null;
+        try {
+            //State Control
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
-        //State Control
-        if (getCurrentState().getPhase() == BUILD) {
             temp = heapTile.drawTile();
-            try {
-                player.getSpaceship().setCurrentTile(temp);
-            } catch (AlreadyViewingTileException e) {
-                //se il giocatore sta già guardando una tile, la tile pescata viene rimessa nel mazzo (in modo ancora invisibile) e viene in realtà restituita la tile che il giocatore stava guardando
-                heapTile.addTile(temp, false);
-                temp = player.getSpaceship().getCurrentTile();
-            }
-            return temp;
-        } else throw new IllegalStateException("Non è il momento di pescare una tile");
+
+            //Viewing Control
+            player.getSpaceship().setCurrentTile(temp);
+
+        } catch (WrongStateException e) {
+            e.getMessage();
+        } catch (AlreadyViewingTileException e) {
+            //if the player is already looking at a tile, the drawn tile is put back into
+            //the deck (still invisibly) and the tile the player was looking at is returned
+            heapTile.addTile(temp, false);
+            temp = player.getSpaceship().getCurrentTile();
+        }
+        return temp;
     }
 
+    //todo Eccezioni
     @Override
     public Tile takeTile(Player player, Tile tile) {
         //State Control
@@ -145,39 +152,50 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException("Non è il momento di pescare una tile");
     }
 
-    //il giocatore "scarta" la tile che stava guardando.
+    //the player "discard" the tile he was looking at
     @Override
-    public void returnTile(Player player, Tile tile) {
-        //State Control
-        if (getCurrentState().getPhase() == BUILD) {
-            Tile temp = player.getSpaceship().getCurrentTile();
-            heapTile.addTile(temp, true);
+    public void returnTile(Player player) {
+        try {
+            //State Control
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+
+            heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile();
-        } else throw new IllegalStateException("Non è il momento di scartare una tile");
+
+        } catch (WrongStateException e) {
+            e.getMessage();
+        }
     }
 
+    //todo eccezioni
     @Override
-    public void addTile(Player player, Tile tile, int x, int y) {
+    public void addTile(Player player, int x, int y) {
         //State Control
         if (getCurrentState().getPhase() == BUILD) {
-            player.getSpaceship().addTile(x, y, tile);
+            player.getSpaceship().addTile(x, y, player.getSpaceship().getCurrentTile());
         } else throw new IllegalStateException("Non è il momento di aggiungere una tile");
     }
 
-    //player passa alla fase di finish, se è la 4 volta che viene chiamato allora cambio lo stato di tutti gli altri
-    //aggiungo i giocatori alla gameboard
+
+    //player goes to the FINISH phase, if he's the last one I change the  game state to CHECK
+    //I add the players to the gameboard
     @Override
     public void shipFinished(Player player) {
-        //State Control
-        if (getCurrentState().getPhase() == BUILD) {
+        try {
+            //State Control
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+
             int[] position = getGameboard().getStartingPosition();
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
             getGameboard().positions.put(player, position[players.size() - alreadyFinished - 1]);
-            if (alreadyFinished == players.size()) { //CAMBIO DI STATO: se tutti i giocatori sono nella fase di finish allora passo alla fase di check
+
+            if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
             }
-        } else throw new IllegalStateException("Non è il momento per finire la tua nave");
+        } catch (WrongStateException e) {
+            e.getMessage();
+        }
     }
 
     @Override
@@ -429,5 +447,17 @@ public class Game implements Game_Interface {
             }
         }
         return winners;
+    }
+
+    private void stateControl(StateGameType stateGame, StatePlayerType statePlayer, StateCardType stateCard, Player player) throws WrongStateException {
+        if (!player.getStatePlayer().equals(statePlayer)){
+            throw new WrongStateException("Wrong player state, expected state : " + statePlayer + ", actual state : " + player.getStatePlayer());
+        }
+        if (!getCurrentCard().getStateCard().equals(stateCard)) {
+            throw new WrongStateException("Wrong card state, expected state : " + stateCard + ", actual state : " + getCurrentCard().getStateCard());
+        }
+        if (!getCurrentState().getPhase().equals(stateGame)) {
+            throw new WrongStateException("Wrong game state, expected state : " + stateGame + "  actual state : " + getCurrentState().getPhase());
+        }
     }
 }
