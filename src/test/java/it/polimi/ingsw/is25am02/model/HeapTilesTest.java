@@ -1,5 +1,8 @@
 package it.polimi.ingsw.is25am02.model;
 
+import com.sun.jdi.connect.Connector;
+import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
+import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import org.junit.jupiter.api.Test;
 
@@ -32,5 +35,29 @@ class HeapTilesTest {
         Set<Tile> sT2 = heapTiles.getVisibleTiles();
         assertEquals(0, sT2.size());
     }
+/*"NORTH": 3,
+      "EAST": 2,
+      "SOUTH": 0,
+      "WEST": 3*/
 
+    @Test
+    void loadTilesTest() {
+        HeapTiles heapTiles = new HeapTiles();
+        boolean foundStructural = false;
+        for (Tile tile : heapTiles.getVisibleTiles()) { //todo getvisiblettiles è vuota
+            ConnectorType[] connectors = new ConnectorType[4];
+            if (tile.getType().equals(TileType.STRUCTURAL)) {
+                foundStructural = true;
+                assertEquals(TileType.STRUCTURAL, tile.getType());
+                connectors[0] = ConnectorType.UNIVERSAL;
+                connectors[1] = ConnectorType.DOUBLE;
+                connectors[2] = ConnectorType.NONE;
+                connectors[3] = ConnectorType.UNIVERSAL;
+                assertEquals(connectors, tile.getConnectors());
+            }
+        }
+        assertEquals(true, foundStructural);
+
+    }
 }
+
