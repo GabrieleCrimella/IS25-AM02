@@ -198,6 +198,7 @@ public class Game implements Game_Interface {
         }
     }
 
+    //todo Eccezioni, da cambiare
     @Override
     public boolean checkSpaceship(Player player) {
         if (player.getSpaceship().checkSpaceship()) {//se è corretta il player passa nello stato CORRECT
@@ -218,12 +219,14 @@ public class Game implements Game_Interface {
         return false;
     }
 
+    //todo Eccezioni
     @Override
     public void removeTile(Player player, int x, int y) {
         player.getSpaceship().removeTile(x, y);
 
     }
 
+    //todo Eccezioni
     //per inizializzazione delle cabine
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
@@ -286,32 +289,30 @@ public class Game implements Game_Interface {
 
     @Override
     public void playNextCard(Player player) {
-        if (!player.equals(getGameboard().getRanking().getFirst())) { //se il player non è un leader allora lancio eccezione
-            throw new IllegalStateException("Il player non è il leader");
-        }
-        if (!player.getStatePlayer().equals(IN_GAME)) { //se il player non è in game allora lancio eccezione
-            throw new IllegalStateException("Il player non è IN GAME");
-        }
-        if (!getCurrentCard().getStateCard().equals(FINISH)) {
-            throw new IllegalStateException("La carta prima non è finita");
-        }
-        if (!getCurrentState().getPhase().equals(TAKE_CARD)) {
-            throw new IllegalStateException("Il gioco non è in stato di take card");
-        }
+        if(leaderControl(player)) {
+            try {
+                stateControl(TAKE_CARD, IN_GAME, FINISH, player);
+                getDeck().playnextCard();
 
-        getDeck().playnextCard();
+            } catch (WrongStateException e) {
+                e.getMessage();
+            }
+        }
     }
 
+    //todo Eccezioni
     @Override
     public HashMap<Player, Integer> getPosition() {
         return getGameboard().getPositions();
     }
 
+    //todo Eccezioni
     @Override
     public List<Tile> possibleChoice(Player player, TileType type) {
         return player.getSpaceship().getTilesByType(type);
     }
 
+    //todo Eccezioni
     @Override
     public void choice(Player player, boolean choice) {
         //State Control
@@ -321,6 +322,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void removeCrew(Player player, Cabin cabin) {
         //StateControl
@@ -331,6 +333,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public List<Box> choiceBox(Player player, boolean choice) {
         //State Control
@@ -341,6 +344,7 @@ public class Game implements Game_Interface {
         throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) {
         //State Control
@@ -352,6 +356,7 @@ public class Game implements Game_Interface {
         throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public List<Box> choicePlanet(Player player, int index) {
         //State Control
@@ -361,6 +366,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void choiceDoubleMotor(Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices) {
         //State Control
@@ -370,6 +376,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void choiceDoubleCannon(Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
         //State Control
@@ -379,6 +386,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void choiceCrew(Player player) {
         //State Control
@@ -388,6 +396,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void removeBox(Player player, SpecialStorage storage, BoxType type) {
         //State Control
@@ -398,6 +407,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void removeBattery(Player player, BatteryStorage storage) {
         //State Control
@@ -407,6 +417,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void rollDice(Player player) {
         //State Control
@@ -417,6 +428,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage) {
         //State Control
@@ -426,6 +438,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public void holdSpaceship(Player player, int x, int y) {
         //State Control
@@ -435,6 +448,7 @@ public class Game implements Game_Interface {
         } else throw new IllegalStateException();
     }
 
+    //todo Eccezioni
     @Override
     public ArrayList<Player> getWinners() {
         ArrayList<Player> winners = new ArrayList<>();
@@ -459,5 +473,9 @@ public class Game implements Game_Interface {
         if (!getCurrentState().getPhase().equals(stateGame)) {
             throw new WrongStateException("Wrong game state, expected state : " + stateGame + "  actual state : " + getCurrentState().getPhase());
         }
+    }
+
+    private boolean leaderControl(Player player){
+        return player.equals(getCurrentPlayer());
     }
 }
