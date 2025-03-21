@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.cards.boxes.BlueBox;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.tiles.*;
@@ -377,16 +378,43 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo Da rifare lo fa anna
     @Override
     public ArrayList<Player> getWinners() {
+        Player pBestShip = null;
         if(getCurrentState().getPhase() == RESULT && getPlayers() != null){
             ArrayList<Player> winners = new ArrayList<>();
+
             for (Player p : getPlayers()) {
+                int position = getGameboard().getPositions().get(p);
+                int exposedConnectors;
+                int minExposedConnectors = Integer.MAX_VALUE;
+
+                int valueBox = 0;
+                //aggiungo crediti in base alla posizione che ho raggiunto
+                p.getSpaceship().addCosmicCredits(position*getGameboard().getRanking().indexOf(p));
+                //va trovato giocatore con meno connettori esposti
+                exposedConnectors = p.getSpaceship().calculateExposedConnectors();
+                if(exposedConnectors < minExposedConnectors){
+                    minExposedConnectors = exposedConnectors;
+                    pBestShip = p;
+                }
+                valueBox= 4*p.getSpaceship().getTilesByType(TileType.SPECIAL_STORAGE).size();
+                for(Tile storage : p.getSpaceship().getTilesByType(TileType.STORAGE)){
+                    for(Box box : storage.getOccupation()){
+                        valueBox += box.getValue();
+                    }
+                }
+                p.getSpaceship().addCosmicCredits(valueBox); //aggiungo crediti dovuti alla vendita delle merci
+                p.getSpaceship().addCosmicCredits(-p.getSpaceship().getNumOfWastedTiles()); //tolgo crediti quanti sono gli scarti
+            }
+            pBestShip.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
+
+            for(Player p : getPlayers()){
                 if (p.getSpaceship().getCosmicCredits() > 0) {
                     winners.add(p);
                 }
             }
+
             return winners;
         }
         return null;
