@@ -68,33 +68,29 @@ public class Spaceship {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
 
-        for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().getType().equals(TileType.CANNON)) {
-                // se è rivolto davanti ha punteggio pieno
-                if (t.get().getRotationType() == RotationType.NORTH) {
-                    power++;
-                } else if(t.get().getRotationType() == RotationType.SOUTH || t.get().getRotationType() == RotationType.EAST || t.get().getRotationType() == RotationType.WEST) {
-                    power+=0.5;
-                }
-            }
-            else if (t.isPresent() && t.get().getType().equals(TileType.D_CANNON)) {
-                // se è rivolto davanti ha punteggio pieno
-                if (t.get().getRotationType() == RotationType.NORTH) {
-                    power+= 2.0;
-                } else if(t.get().getRotationType() == RotationType.SOUTH || t.get().getRotationType() == RotationType.EAST || t.get().getRotationType() == RotationType.WEST) {
-                    power++;
-                }
+        List<Tile> cannons = getTilesByType(TileType.CANNON);
+        for(Tile cannon : cannons){
+            if (cannon.getRotationType() == RotationType.NORTH) {
+                power++;
+            } else power+=0.5;
+        }
+
+        if(!doubleCannons.isEmpty()){
+            for(DoubleCannon doubleCannon : doubleCannons){
+                if(doubleCannon.getRotationType() == RotationType.NORTH){
+                    power += 2.0;
+                } else power += 1.0;
             }
         }
+
         if(power >0){ //ci deve essere almeno un cannone
-            for(Tile cabin : getTilesByType(TileType.CABIN)){
-                for(Alive alive : cabin.getCrew()){//cerco tra le cabine se c'è una con un alieno
-                    if(alive.getRace().equals(AliveType.PURPLE_ALIEN)){
-                        power = power + 2;
-                    }
+            List<Tile> cabins = getTilesByType(TileType.CABIN);
+            for(Tile cabin : cabins){
+                if(cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)){
+                    power = power + 2;
+                    break;
                 }
             }
-
         }
         return power;
     }
@@ -102,21 +98,19 @@ public class Spaceship {
     public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
         int power = 0;
 
-        for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().getType().equals(TileType.MOTOR)) {
-                power++;
-            }
-        }
-        if(power >0 || !doubleMotors.isEmpty()){ //ci deve essere almeno un cannone singolo o doppio
-            for(Tile cabin : getTilesByType(TileType.CABIN)){
-                for(Alive alive : cabin.getCrew()){//cerco tra le cabine se c'è una con un alieno
-                    if(alive.getRace().equals(AliveType.BROWN_ALIEN)){
-                        power = power + 2;
-                    }
+        List<Tile> motors = getTilesByType(TileType.MOTOR);
+        power += motors.size() + doubleMotors.size() * 2;
+
+        if(power > 0){
+            List<Tile> cabins = getTilesByType(TileType.CABIN);
+            for(Tile cabin : cabins){
+                if(cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)){
+                    power = power + 2;
+                    break;
                 }
             }
         }
-        return power + doubleMotors.size() * 2;
+        return power;
     }
 
     public int calculateExposedConnectors() {
