@@ -221,7 +221,7 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo Eccezioni sta facendo erica aspetta a toccare
+    //todo DAVIDE qui manca la parte del problema
     //per inizializzazione delle cabine
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
@@ -243,67 +243,9 @@ public class Game implements Game_Interface {
             }
         }
         else{
-            //c'è un problema
+            //to do davide qui c'è un problema
         }
 
-        /*
-        if (type.equals(AliveType.HUMAN) && player.getSpaceship().getTile(x, y).isPresent()) { // faccio l'istruzione due volte perchè aggiungo due umani
-            player.getSpaceship().getTile(x, y).get().addCrew(type);
-            player.getSpaceship().getTile(x, y).get().addCrew(type);
-        } else if (type.equals(AliveType.BROWN_ALIEN)) { //devo controllare se c'è una cabina brown collegata ad almeno una cabina normale
-            for (Optional<Tile> tile : player.getSpaceship().getSpaceshipIterator()) {
-                if (tile.isPresent() && tile.get().getType().equals(TileType.BROWN_CABIN)) {
-                    if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                    if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                    if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                    if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                }
-
-            }
-        } else { //caso dei purple alien
-            for (Optional<Tile> tile : player.getSpaceship().getSpaceshipIterator()) {
-                if (tile.isPresent() && tile.get().getType().equals(TileType.PURPLE_CABIN)) {
-                    if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getUpTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                    if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getDownTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                    if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getRightTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                    if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).isPresent() &&
-                            player.getSpaceship().getSpaceshipIterator().getLeftTile(tile.get()).get().getType().equals(TileType.CABIN)) {// se c'è una cabina collegata, allora posso aggiungere un alieno brown
-                        player.getSpaceship().getTile(x, y).get().addCrew(type);
-                        return;
-                    }
-                }
-            }
-        }
-
-         */
     }
 
     @Override
