@@ -124,7 +124,7 @@
     "box": [
       "RED",
       "YELLOW",
-      "YELLow"
+      "YELLOW"
     ],
     "image": ""
   },
@@ -366,11 +366,11 @@
     "type": "WARZONE2",
     "level": 2,
     "daysLost": 4,
-    "boxLost": 3,
+    "boxesLost": 3,
     "shots":  [
       [0, "north"],
       [0, "west"],
-      [0, "est"],
+      [0, "east"],
       [1, "south"]
     ],
     "image": ""
