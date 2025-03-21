@@ -16,11 +16,13 @@ public class CardDeck {
     private HashMap<Integer , Pair<List<Card>,Boolean>> deck; //l'intero è il numero di deck, il boolean è vero se è occupato
     private List<Card> finalDeck;
     private List<Card> initialDeck;
+    private BoxStore store;
 
     public CardDeck(){
         this.deck = new HashMap<>();
         this.finalDeck = new ArrayList<>();
         this.initialDeck = new ArrayList<>();
+        this.store = new BoxStore();
         loadCard();
     }
 
@@ -81,10 +83,12 @@ public class CardDeck {
         int cannonPower;
         int boxesLost;
         LinkedList<Box> boxesWon = new LinkedList<>();
-        BoxStore store = new BoxStore();
+        LinkedList<BoxType> boxesWonType = new LinkedList<>();
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
         ArrayList<Pair<Integer, RotationType>> meteorites = new ArrayList<>();
         ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
+
 
         for (JsonNode levelNode : rootNode) {  //foreach JSON node
             level = levelNode.get("level").asInt();
@@ -100,20 +104,19 @@ public class CardDeck {
                     aliveNeeded = levelNode.get("aliveNeeded").asInt();
                     daysLost = levelNode.get("daysLost").asInt();
                     for(JsonNode node: levelNode.get("box")){
-                        Box box;
+                        BoxType box;
                         if(node.asText().equals("RED")){
-                            box = new RedBox(BoxType.RED);
+                            box = BoxType.RED;
                         } else if(node.asText().equals("BLUE")){
-                            box = new BlueBox(BoxType.BLUE);
+                            box = BoxType.BLUE;
                         } else if(node.asText().equals("YELLOW")){
-                            box = new YellowBox(BoxType.YELLOW);
+                            box = BoxType.YELLOW;
                         } else if(node.asText().equals("GREEN")){
-                            box = new GreenBox(BoxType.GREEN);
+                            box = BoxType.GREEN;
                         } else throw new IllegalArgumentException("I cannot add a box");
-                        boxesWon.add(box);
+                        boxesWonType.add(box);
                     }
-                    //todo store
-                    initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost,boxesWon));
+                    initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost,boxesWon, boxesWonType));
                     break;
                 case "PIRATE":
                     cannonPower = levelNode.get("cannonPower").asInt();
@@ -140,20 +143,19 @@ public class CardDeck {
                     daysLost = levelNode.get("daysLost").asInt();
                     boxesLost = levelNode.get("boxesLost").asInt();
                     for(JsonNode node: levelNode.get("box")){
-                        Box box;
+                        BoxType box;
                         if(node.asText().equals("RED")){
-                            box = new RedBox(BoxType.RED);
+                            box = BoxType.RED;
                         } else if(node.asText().equals("BLUE")){
-                            box = new BlueBox(BoxType.BLUE);
+                            box = BoxType.BLUE;
                         } else if(node.asText().equals("YELLOW")){
-                            box = new YellowBox(BoxType.YELLOW);
+                            box = BoxType.YELLOW;
                         } else if(node.asText().equals("GREEN")){
-                            box = new GreenBox(BoxType.GREEN);
+                            box = BoxType.GREEN;
                         } else throw new IllegalArgumentException("I cannot add a box");
-                        boxesWon.add(box);
+                        boxesWonType.add(box);
                     }
-                    //todo store
-                    initialDeck.add(new Trafficker(level,store,cannonPower, daysLost, boxesLost, boxesWon));
+                    initialDeck.add(new Trafficker(level,store,cannonPower, daysLost, boxesLost, boxesWon, boxesWonType));
                     break;
                 case "SLAVEOWNER":
                     cannonPower = levelNode.get("cannonPower").asInt();
@@ -191,24 +193,24 @@ public class CardDeck {
                 case "PLANETS":
                     daysLost = levelNode.get("daysLost").asInt();
                     for (JsonNode boxListNode : levelNode.get("boxes")) {
-                        ArrayList<Box> boxList = new ArrayList<>();
+                        ArrayList<BoxType> boxList = new ArrayList<>();
                         for (JsonNode boxNode : boxListNode) {
-                            Box box;
+                            BoxType box;
                             if(boxNode.asText().equals("RED")){
-                                box = new RedBox(BoxType.RED);
+                                box = BoxType.RED;
                             } else if(boxNode.asText().equals("BLUE")){
-                                box = new BlueBox(BoxType.BLUE);
+                                box = BoxType.BLUE;
                             } else if(boxNode.asText().equals("YELLOW")){
-                                box = new YellowBox(BoxType.YELLOW);
+                                box = BoxType.YELLOW;
                             } else if(boxNode.asText().equals("GREEN")){
-                                box = new GreenBox(BoxType.GREEN);
+                                box = BoxType.GREEN;
                             } else throw new IllegalArgumentException("I cannot add a box to planetoffer from JSON");
                             boxList.add(box);
                         }
 
-                        planetOffers.add(boxList); // Aggiungi la lista alla lista principale
+                        planetOffersTypes.add(boxList); // Aggiungi la lista alla lista principale
                     }
-                    initialDeck.add(new Planet(level,store,daysLost,planetOffers));
+                    initialDeck.add(new Planet(level,store,daysLost,planetOffers,planetOffersTypes));
                     break;
                 case "WARZONE1":
                     daysLost = levelNode.get("daysLost").asInt();
@@ -272,7 +274,37 @@ public class CardDeck {
         deck.computeIfPresent(numDeck, (k, pair) -> new Pair<>(pair.getKey(), false));
     }
     public Card playnextCard(){//deve prendere la prossima carta da final deck
-        return finalDeck.removeFirst();
+        Card nextCard;
+        //se la carta corrente è una di quelle con le box metto gli scarti in store
+        if(finalDeck.getFirst() instanceof AbbandonedStation || finalDeck.getFirst() instanceof Trafficker){
+            if(!finalDeck.getFirst().getBoxesWon().isEmpty()){
+                for(Box box : finalDeck.getFirst().getBoxesWon()){
+                    store.addBox(box);
+                }
+            }
+        } else if (finalDeck.getFirst() instanceof Planet) {
+            if(!( finalDeck.getFirst()).getPlanetOffers().isEmpty()){
+                for(ArrayList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()){
+                    for(Box box : boxlist){
+                        store.addBox(box);
+                    }
+                }
+            }
+        }
+        nextCard = finalDeck.removeFirst();
+        //todo se quello che sto rimuovendo è una di quelle con i box allora devo riempirle con i box effettivi
+        if(nextCard instanceof AbbandonedStation || nextCard instanceof Trafficker){
+            for(BoxType boxType : nextCard.get){}
+        } else if (nextCard instanceof Planet) {
+            if(!( finalDeck.getFirst()).getPlanetOffers().isEmpty()){
+                for(ArrayList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()){
+                    for(Box box : boxlist){
+                        store.addBox(box);
+                    }
+                }
+            }
+        }
+        return nextCard;
 
     }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
+import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
 
@@ -18,15 +19,18 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION
 public class Planet extends Card_with_box{
     private final int daysLost;
     private final ArrayList<ArrayList<Box>> planetOffers;
+    private final ArrayList<ArrayList<BoxType>> planetOffersTypes;
     private final ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
     private final LinkedList<Player> landed;
 
-    public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers) {
+
+    public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers, ArrayList<ArrayList<BoxType>> planetOffersTypes) {
         super(level, store, StateCardType.DECISION);
         this.daysLost = daysLost;
         this.planetOffers = planetOffers;
         this.occupied = new ArrayList<>();
         this.landed = new LinkedList<>();
+        this.planetOffersTypes = planetOffersTypes;
 
         for(ArrayList<Box> boxes : planetOffers) {
             occupied.add(0);

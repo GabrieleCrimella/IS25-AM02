@@ -92,4 +92,8 @@ public abstract class Card {
         return new LinkedList<Box>();
     }
 
+    public ArrayList<ArrayList<Box>> getPlanetOffers() {
+        return new ArrayList<ArrayList<Box>>();
+    }
+
 }
