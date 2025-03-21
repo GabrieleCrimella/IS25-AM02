@@ -65,17 +65,17 @@ public class WarZone_I extends Card {
     }
 
     @Override
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices){
+    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices){ //primo è dmotor secondo è batterystorage
         if(currentPhase == 2) {
-            ArrayList<DoubleMotor> doubleMotors = new ArrayList<>();
+            ArrayList<Tile> doubleMotors = new ArrayList<>();
             if(choices.isPresent()){
-                for(Pair<DoubleMotor, BatteryStorage> pair: choices.get()){
+                for(Pair<Tile, Tile> pair: choices.get()){
                     doubleMotors.add(pair.getKey());
                     pair.getValue().removeBattery();
                 }
                 declarationMotor.put(player, player.getSpaceship().calculateMotorPower(doubleMotors));
             }
-            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<DoubleMotor>()));
+            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<Tile>()));
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;

@@ -17,13 +17,14 @@ public class Game implements Game_Interface {
     private int maxAllowedPlayers;
     private final List<Player> players;
     private final int level;
-    private CardDeck deck;
+    private final CardDeck deck;
     private Hourglass hourglass;
     private final HeapTiles heapTile;
     private final Gameboard globalBoard;
     private final State currentState;
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0; //tiene conto dei giocatori che hanno la nave già controllata
+    private int readyPlayer = 0;
 
     //todo: dove sono tutte le "instanziazioni" degli attributi?
     public Game(List<Player> p, int level) {
@@ -175,58 +176,53 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo Eccezioni, da cambiare
     @Override
-    public boolean checkSpaceship(Player player) {
-        if (player.getSpaceship().checkSpaceship()) {//se è corretta il player passa nello stato CORRECT
-            player.setStatePlayer(CORRECT_SHIP);
+    public void checkSpaceship(Player player) {
+        if(stateControl(CHECK, FINISHED, FINISH, player)) {
+            if (player.getSpaceship().checkSpaceship()) {
+                player.setStatePlayer(CORRECT_SHIP);
+            } else {
+                player.setStatePlayer(WRONG_SHIP);
+            }
             alreadyChecked++;
-        } else {
-            player.setStatePlayer(WRONG_SHIP);//se la nave è sbagliata passo nello stato di wrong
-        }
-        if (alreadyChecked == players.size()) { //se tutti i giocatori hanno la nave corretta allora passo alla fase successiva
-            this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-            return true;
-        }
-        for (Player p : players) {//se c'è anche un solo giocatore che è in wrong_ship allora si passa alla fase di correction
-            if (p.getStatePlayer().equals(WRONG_SHIP)) {
-                this.currentState.setPhase(StateGameType.CORRECTION);
+
+            if (alreadyChecked == players.size()) {
+                for (Player p : players) {
+                    if (p.getStatePlayer().equals(WRONG_SHIP)) {
+                        this.currentState.setPhase(StateGameType.CORRECTION);
+                        alreadyChecked--;
+                    }
+                }
+                this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
             }
         }
-        return false;
     }
 
     @Override
     public void removeTile(Player player, int x, int y) {
-        player.getSpaceship().removeTile(x, y);
-
-    }
-
-    private boolean checkTileNear(Player player, int x, int y, TileType type) {
-        Tile tile = player.getSpaceship().getTile(x, y).get();
-        if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile).isPresent() &&
-                player.getSpaceship().getSpaceshipIterator().getUpTile(tile).get().getType().equals(type)) {
-            return true;
-        } else if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile).isPresent() &&
-                player.getSpaceship().getSpaceshipIterator().getRightTile(tile).get().getType().equals(type)) {
-            return true;
-        } else if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).isPresent() &&
-                player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).get().getType().equals(type)) {
-            return true;
-        } else if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile).isPresent() &&
-                player.getSpaceship().getSpaceshipIterator().getDownTile(tile).get().getType().equals(type)) {
-            return true;
-        } else {
-            return false;
+        if(stateControl(CORRECTION, WRONG_SHIP, FINISH, player)){
+            player.getSpaceship().removeTile(x, y);
         }
     }
 
-    //todo DAVIDE qui manca la parte del problema
-    //per inizializzazione delle cabine
+    @Override
+    public void checkWrongSpaceship(Player player) {
+        if(stateControl(CORRECTION, WRONG_SHIP, FINISH, player)) {
+            if (player.getSpaceship().checkSpaceship()) {
+                player.setStatePlayer(CORRECT_SHIP);
+                alreadyChecked++;
+            }
+
+            if (alreadyChecked == players.size()) {
+                this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+            }
+        }
+    }
+
+    //cabin initialization
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
-        if (player.getSpaceship().getTile(x,y).isPresent() &&
-                player.getSpaceship().getTile(x,y).get().getType().equals(TileType.CABIN)) { //controllo che il tile esista e che sia di tipo cabin
+        if(stateControl(INITIALIZATION_SPACESHIP, CORRECT_SHIP, FINISH, player) && initializationCabinControl(player, x, y)){
             if (type.equals(AliveType.HUMAN)) { //se type è human aggiungo due umani
                 player.getSpaceship().getTile(x, y).get().addCrew(type);
                 player.getSpaceship().getTile(x, y).get().addCrew(type);
@@ -242,10 +238,29 @@ public class Game implements Game_Interface {
                 }
             }
         }
-        else{
-            //to do davide qui c'è un problema
-        }
+    }
 
+    //the player has finished the initialization phase and is ready to play
+    @Override
+    public void ready(Player player) {
+        if(stateControl(INITIALIZATION_GAME, CORRECT_SHIP, FINISH, player)){
+            player.setStatePlayer(IN_GAME);
+            readyPlayer++;
+
+            //in case the player doesn't want to initialize all the cabins by himself
+            List<Tile> cabins = player.getSpaceship().getTilesByType(TileType.CABIN);
+            for (Tile c : cabins) {
+                if(c.getCrew().isEmpty()){
+                    c.addCrew(AliveType.HUMAN);
+                    c.addCrew(AliveType.HUMAN);
+                }
+            }
+
+            //when all players are ready the game starts
+            if(readyPlayer == players.size()){
+                getCurrentState().setPhase(TAKE_CARD);
+            }
+        }
     }
 
     @Override
@@ -306,7 +321,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void choiceDoubleMotor(Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices) {
+    public void choiceDoubleMotor(Player player, Optional<List<Pair<Tile, Tile>>> choices) {
         if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player) && currentPlayerControl(player)){
             getCurrentCard().choiceDoubleMotor(this, player, choices);
         }
@@ -362,7 +377,7 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo Da rifare
+    //todo Da rifare lo fa anna
     @Override
     public ArrayList<Player> getWinners() {
         if(getCurrentState().getPhase() == RESULT && getPlayers() != null){
@@ -399,5 +414,40 @@ public class Game implements Game_Interface {
             return false;
         }
         return true;
+    }
+
+    private boolean initializationCabinControl(Player player, int x, int y){
+        if(player.getSpaceship().getTile(x,y).isEmpty()){
+            System.out.println("No Tile in position ( " + x + ", " + y + " )");
+            return false;
+        }
+        if(!player.getSpaceship().getTile(x,y).get().getType().equals(TileType.CABIN)){
+            System.out.println("Different TileType, expected " +TileType.CABIN +", actual " + player.getSpaceship().getTile(x,y).get().getType());
+            return false;
+        }
+        if(!player.getSpaceship().getTile(x,y).get().getCrew().isEmpty()){
+            System.out.println("Cabin already full");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkTileNear(Player player, int x, int y, TileType type) {
+        Tile tile = player.getSpaceship().getTile(x, y).get();
+        if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getUpTile(tile).get().getType().equals(type)) {
+            return true;
+        } else if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getRightTile(tile).get().getType().equals(type)) {
+            return true;
+        } else if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).get().getType().equals(type)) {
+            return true;
+        } else if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getDownTile(tile).get().getType().equals(type)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

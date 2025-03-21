@@ -26,13 +26,15 @@ public interface Game_Interface {
     void shipFinished(Player player);
 
     //Phase CHECK
-    boolean checkSpaceship(Player player);
+    void checkSpaceship(Player player);
 
     //Phase CORRECTION
     void removeTile(Player player, int x, int y);
+    void checkWrongSpaceship(Player player);
 
     //Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
     void addCrew(Player player, int x, int y, AliveType type);
+    void ready(Player player);
 
     //Phase TAKE_CARD
     void playNextCard(Player player);
@@ -45,7 +47,7 @@ public interface Game_Interface {
     List<Box> choiceBox(Player player, boolean choice) throws Exception;
     void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception;
     List<Box> choicePlanet(Player player, int index);
-    void choiceDoubleMotor(Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices);
+    void choiceDoubleMotor(Player player, Optional<List<Pair<Tile, Tile>>> choices);
     void choiceDoubleCannon(Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices);
     void choiceCrew(Player player);
     void removeBox(Player player, SpecialStorage storage, BoxType type);

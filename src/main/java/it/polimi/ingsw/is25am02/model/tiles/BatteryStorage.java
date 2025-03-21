@@ -20,6 +20,11 @@ public final class BatteryStorage extends Tile {
     }
 
     @Override
+    public int getBattery() {
+        return battery;
+    }
+
+    @Override
     public void removeBattery(){
         battery = battery -1;
     }
