@@ -328,6 +328,7 @@ public class Spaceship {
             default:
                 return false;
         }
+
     }
 
     public int calculateNumAlive() {
