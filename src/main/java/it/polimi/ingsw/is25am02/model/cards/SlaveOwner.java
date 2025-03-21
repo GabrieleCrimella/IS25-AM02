@@ -28,7 +28,7 @@ public class SlaveOwner extends Enemies{
 
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> whichDCannon){
-        List<DoubleCannon> dCannon = new ArrayList<>();
+        List<Tile> dCannon = new ArrayList<>();
         double playerPower;
         if(whichDCannon.isPresent()){  // il giocatore ha scelto di usare almeno un motore doppio
             for(Pair<DoubleCannon, BatteryStorage> pair: whichDCannon.get()){
@@ -37,7 +37,7 @@ public class SlaveOwner extends Enemies{
             }
             playerPower= player.getSpaceship().calculateCannonPower(dCannon);
         }
-        else playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<DoubleCannon>()); //se uso solo motori singoli
+        else playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<Tile>()); //se uso solo motori singoli
 
         if(playerPower > getCannonPowers()){ //se il giocatore è piu forte dei schiavisti allora li sconfigge
             setStateCard(StateCardType.DECISION);

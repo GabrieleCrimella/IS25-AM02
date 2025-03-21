@@ -379,13 +379,13 @@ public class Game implements Game_Interface {
 
     @Override
     public ArrayList<Player> getWinners() {
-        Player pBestShip = null;
+        int minExposedConnectors = Integer.MAX_VALUE;
         if(getCurrentState().getPhase() == RESULT && getPlayers() != null){
             ArrayList<Player> winners = new ArrayList<>();
 
             for (Player p : getPlayers()) {
                 int exposedConnectors;
-                int minExposedConnectors = Integer.MAX_VALUE;
+
 
                 int valueBox = 0;
                 //aggiungo crediti in base alla posizione che ho raggiunto
@@ -394,7 +394,6 @@ public class Game implements Game_Interface {
                 exposedConnectors = p.getSpaceship().calculateExposedConnectors();
                 if(exposedConnectors < minExposedConnectors){
                     minExposedConnectors = exposedConnectors;
-                    pBestShip = p;
                 }
                 for(Tile s_storage : p.getSpaceship().getTilesByType(TileType.SPECIAL_STORAGE)){
                     for(Box box : s_storage.getOccupation()){
@@ -407,9 +406,13 @@ public class Game implements Game_Interface {
                     }
                 }
                 p.getSpaceship().addCosmicCredits(valueBox); //aggiungo crediti dovuti alla vendita delle merci
-                p.getSpaceship().addCosmicCredits(-p.getSpaceship().getNumOfWastedTiles()); //tolgo crediti quanti sono gli scarti
+                p.getSpaceship().removeCosmicCredits(p.getSpaceship().getNumOfWastedTiles()); //tolgo crediti quanti sono gli scarti
             }
-            pBestShip.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
+            for (Player p : getPlayers()) {
+                if (p.getSpaceship().calculateExposedConnectors() == minExposedConnectors) {
+                    p.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
+                }
+            }
 
             for(Player p : getPlayers()){
                 if (p.getSpaceship().getCosmicCredits() > 0) {

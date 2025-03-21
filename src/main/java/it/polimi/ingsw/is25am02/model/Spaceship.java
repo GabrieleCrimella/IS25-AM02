@@ -63,7 +63,7 @@ public class Spaceship {
         return false;
     }
 
-    public double calculateCannonPower(List<DoubleCannon> doubleCannons) {
+    public double calculateCannonPower(List<Tile> doubleCannons) {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
 
@@ -74,7 +74,7 @@ public class Spaceship {
         }
 
         if(!doubleCannons.isEmpty()){
-            for(DoubleCannon doubleCannon : doubleCannons){
+            for(Tile doubleCannon : doubleCannons){
                 if(doubleCannon.getRotationType() == RotationType.NORTH){
                     power += 2.0;
                 } else power += 1.0;

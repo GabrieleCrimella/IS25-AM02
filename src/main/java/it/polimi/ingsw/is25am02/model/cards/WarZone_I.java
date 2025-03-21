@@ -118,7 +118,7 @@ public class WarZone_I extends Card {
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices){
         if(currentPhase == 3) {
-            List<DoubleCannon> dCannon = new ArrayList<>();
+            List<Tile> dCannon = new ArrayList<>();
             if (choices.isPresent()) {
                 for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
                     dCannon.add(pair.getKey());
@@ -126,7 +126,7 @@ public class WarZone_I extends Card {
                 }
                 declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
             }
-            else declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<DoubleCannon>()));
+            else declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<Tile>()));
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;

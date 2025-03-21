@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
 import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class Pirate extends Enemies{
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices){
         if(phase == 1) {
-            List<DoubleCannon> dCannon = new ArrayList<>();
+            List<Tile> dCannon = new ArrayList<>();
             double playerPower;
             if (choices.isPresent()) {
                 for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
@@ -42,7 +43,7 @@ public class Pirate extends Enemies{
                 }
                 playerPower = player.getSpaceship().calculateCannonPower(dCannon);
             } else
-                playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<DoubleCannon>()); //se uso solo motori singoli
+                playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<Tile>()); //se uso solo motori singoli
 
             if (playerPower > getCannonPowers()) {
                 setStateCard(StateCardType.DECISION);

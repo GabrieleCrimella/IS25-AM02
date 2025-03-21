@@ -9,6 +9,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
 import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
 import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -40,14 +41,14 @@ public class Trafficker extends Card_with_box{
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException {
         //Calcolo potenza Player
         if(choices.isPresent()) {
-            ArrayList<DoubleCannon> doubleCannons = new ArrayList<>();
+            ArrayList<Tile> doubleCannons = new ArrayList<>();
             for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
                 doubleCannons.add(pair.getKey());
                 pair.getValue().removeBattery();
             }
             double playerPower = player.getSpaceship().calculateCannonPower(doubleCannons);
         }
-        double playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<DoubleCannon>());
+        double playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<Tile>());
 
         //Paragoni
         if(playerPower > cannonPowers){
