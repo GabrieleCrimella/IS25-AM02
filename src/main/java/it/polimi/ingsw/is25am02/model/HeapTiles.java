@@ -134,7 +134,6 @@ public class HeapTiles {
     }
 
     public void removeVisibleTile(Tile t) {
-
         setTiles.remove(t);
     }
 
