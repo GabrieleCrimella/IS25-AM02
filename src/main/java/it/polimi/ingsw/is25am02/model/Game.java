@@ -151,6 +151,7 @@ public class Game implements Game_Interface {
         }
     }
 
+
     @Override
     public void addTile(Player player, int x, int y) {
         if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
