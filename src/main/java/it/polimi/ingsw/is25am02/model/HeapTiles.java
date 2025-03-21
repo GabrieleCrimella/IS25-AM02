@@ -84,6 +84,9 @@ public class HeapTiles {
                 case "CANNON":
                     setTiles.add(new Cannon(TileType.CANNON, pos, RotationType.NORTH, 1));
                     break;
+                case "D_CANNON":
+                    setTiles.add(new DoubleMotor(TileType.D_CANNON, pos, RotationType.NORTH, 1));
+                    break;
                 case "MOTOR":
                     setTiles.add(new Motors(TileType.MOTOR, pos, RotationType.NORTH, 1));
                     break;
