@@ -25,6 +25,10 @@ public class HeapTiles {
         loadTiles();
     }
 
+    public Set<Tile> getSetTiles() {
+        return setTiles;
+    }
+
     //todo: sistema gli ID, per ora li hai messi a 1 per test
     private void loadTiles() {
         ObjectMapper objectMapper = new ObjectMapper();
