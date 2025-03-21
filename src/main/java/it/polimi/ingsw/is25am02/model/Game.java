@@ -203,24 +203,20 @@ public class Game implements Game_Interface {
     }
 
     private boolean checkTileNear(Player player, int x, int y, TileType type) {
-        Tile tile = player.getSpaceship().getTile(x,y).get();
+        Tile tile = player.getSpaceship().getTile(x, y).get();
         if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile).isPresent() &&
                 player.getSpaceship().getSpaceshipIterator().getUpTile(tile).get().getType().equals(type)) {
             return true;
-        }
-        else if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile).isPresent() &&
+        } else if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile).isPresent() &&
                 player.getSpaceship().getSpaceshipIterator().getRightTile(tile).get().getType().equals(type)) {
             return true;
-        }
-        else if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).isPresent() &&
+        } else if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).isPresent() &&
                 player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).get().getType().equals(type)) {
             return true;
-        }
-        else if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile).isPresent() &&
+        } else if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile).isPresent() &&
                 player.getSpaceship().getSpaceshipIterator().getDownTile(tile).get().getType().equals(type)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
