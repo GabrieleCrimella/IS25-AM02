@@ -384,13 +384,12 @@ public class Game implements Game_Interface {
             ArrayList<Player> winners = new ArrayList<>();
 
             for (Player p : getPlayers()) {
-                int position = getGameboard().getPositions().get(p);
                 int exposedConnectors;
                 int minExposedConnectors = Integer.MAX_VALUE;
 
                 int valueBox = 0;
                 //aggiungo crediti in base alla posizione che ho raggiunto
-                p.getSpaceship().addCosmicCredits(position*getGameboard().getRanking().indexOf(p));
+                p.getSpaceship().addCosmicCredits(getGameboard().getRewardPosition()[getGameboard().getRanking().indexOf(p)]);
                 //va trovato giocatore con meno connettori esposti
                 exposedConnectors = p.getSpaceship().calculateExposedConnectors();
                 if(exposedConnectors < minExposedConnectors){
