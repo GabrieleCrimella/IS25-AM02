@@ -4,6 +4,8 @@ import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
+
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
 public class AbbandonedShip extends Card{
@@ -37,7 +39,7 @@ public class AbbandonedShip extends Card{
     }
 
     @Override
-    public void removeCrew(Game game, Player player, Cabin cabin){
+    public void removeCrew(Game game, Player player, Tile cabin){
         try {
             cabin.removeCrew();
             AliveRemoved++;

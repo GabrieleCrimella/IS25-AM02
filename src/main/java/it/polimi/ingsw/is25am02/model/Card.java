@@ -40,7 +40,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void removeCrew(Game game, Player player, Cabin cabin) throws UnsupportedOperationException{
+    public void removeCrew(Game game, Player player, Tile cabin) throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }
 

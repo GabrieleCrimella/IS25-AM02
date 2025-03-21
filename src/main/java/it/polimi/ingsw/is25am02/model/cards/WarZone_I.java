@@ -6,10 +6,7 @@ import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
-import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
-import it.polimi.ingsw.is25am02.model.tiles.Cabin;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleMotor;
+import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -98,7 +95,7 @@ public class WarZone_I extends Card {
     }
 
     @Override
-    public void removeCrew(Game game, Player player, Cabin cabin){
+    public void removeCrew(Game game, Player player, Tile cabin){
         if(currentPhase == 2) {
             try {
                 cabin.removeCrew();
