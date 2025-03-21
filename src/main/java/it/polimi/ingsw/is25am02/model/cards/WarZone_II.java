@@ -7,10 +7,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
-import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleMotor;
-import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
+import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -71,17 +68,17 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices){
+    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices){
         if(currentPhase == 2) {
-            ArrayList<DoubleMotor> doubleMotors = new ArrayList<>();
+            ArrayList<Tile> doubleMotors = new ArrayList<>();
             if(choices.isPresent()){
-                for(Pair<DoubleMotor, BatteryStorage> pair: choices.get()){
+                for(Pair<Tile, Tile> pair: choices.get()){
                     doubleMotors.add(pair.getKey());
                     pair.getValue().removeBattery();
                 }
                 declarationMotor.put(player, player.getSpaceship().calculateMotorPower(doubleMotors));
             }
-            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<DoubleMotor>()));
+            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<Tile>()));
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;

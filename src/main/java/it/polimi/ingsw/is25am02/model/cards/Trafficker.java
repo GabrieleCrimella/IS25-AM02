@@ -24,13 +24,15 @@ public class Trafficker extends Card_with_box{
     private final int boxesLost;
     private int boxesRemove;
     private final LinkedList<Box> boxesWon;
+    private final LinkedList<BoxType> boxesWonTypes;
 
-    public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList boxesWon) {
+    public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
         super(level, store, StateCardType.CHOICE_ATTRIBUTES);
         this.cannonPowers = cannonPowers;
         this.daysLost = daysLost;
         this.boxesLost = boxesLost;
         this.boxesWon = boxesWon;
+        this.boxesWonTypes = boxesWonTypes;
         this.boxesRemove = 0;
     }
 
@@ -58,6 +60,11 @@ public class Trafficker extends Card_with_box{
             setStateCard(StateCardType.REMOVE);
         }
 
+    }
+
+    @Override
+    public LinkedList<BoxType> getBoxesWonTypes() {
+        return boxesWonTypes;
     }
 
     @Override

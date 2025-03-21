@@ -10,23 +10,41 @@ public class Gameboard {
     HashMap<Player,Integer> positions;
     Dice dice;
 
+    private final int[] rewardPosition; //ci sono le posizioni scritte sulla plancia dei crediti che vengono assegnati
+    private final int bestShip;
+
     //chidi se va bene mettere
     public Gameboard(int level) {
         if ( level == 0 ){
             this.numStep = 18;
             startingPosition = new int[] {0, 1, 2, 4};
+            rewardPosition = new int[] {4, 3, 2, 1};
+            bestShip = 2;
+
         }
         else if (level == 1){
             this.numStep = 18;
             startingPosition = new int[] {0,1,2,4};
+            rewardPosition = new int[] {4, 3, 2, 1};
+            bestShip = 2;
         }
         else{
             this.numStep = 24;
             startingPosition = new int[] {0,1, 3, 6};
+            rewardPosition = new int[] {8, 6, 4, 2};
+            bestShip = 4;
         }
         this.positions = new HashMap<>();
         this.dice = new Dice();
 
+    }
+
+    public int[] getRewardPosition() {
+        return rewardPosition;
+    }
+
+    public int getBestShip() {
+        return bestShip;
     }
 
     public int getNumStep() {

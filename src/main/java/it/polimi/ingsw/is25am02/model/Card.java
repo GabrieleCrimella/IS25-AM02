@@ -56,7 +56,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices) throws UnsupportedOperationException{
+    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException{// il primo tile è dmotor, il secondo battery storage
         throw new UnsupportedOperationException("Not supported method");
     }
 
@@ -91,5 +91,15 @@ public abstract class Card {
     public LinkedList<Box> getBoxesWon() {
         return new LinkedList<Box>();
     }
+
+    public ArrayList<ArrayList<Box>> getPlanetOffers() {
+        return new ArrayList<ArrayList<Box>>();
+    }
+
+    public LinkedList<BoxType> getBoxesWonTypes() {
+        return new LinkedList<BoxType>();
+    }
+
+    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ return new ArrayList<ArrayList<BoxType>>();}
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.cards.boxes.BlueBox;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.tiles.*;
@@ -255,7 +256,6 @@ public class Game implements Game_Interface {
                     c.addCrew(AliveType.HUMAN);
                 }
             }
-
             //when all players are ready the game starts
             if(readyPlayer == players.size()){
                 getCurrentState().setPhase(TAKE_CARD);
@@ -321,7 +321,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void choiceDoubleMotor(Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices) {
+    public void choiceDoubleMotor(Player player, Optional<List<Pair<Tile, Tile>>> choices) {
         if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player) && currentPlayerControl(player)){
             getCurrentCard().choiceDoubleMotor(this, player, choices);
         }
@@ -377,16 +377,46 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo Da rifare lo fa anna
     @Override
     public ArrayList<Player> getWinners() {
+        Player pBestShip = null;
         if(getCurrentState().getPhase() == RESULT && getPlayers() != null){
             ArrayList<Player> winners = new ArrayList<>();
+
             for (Player p : getPlayers()) {
+                int exposedConnectors;
+                int minExposedConnectors = Integer.MAX_VALUE;
+
+                int valueBox = 0;
+                //aggiungo crediti in base alla posizione che ho raggiunto
+                p.getSpaceship().addCosmicCredits(getGameboard().getRewardPosition()[getGameboard().getRanking().indexOf(p)]);
+                //va trovato giocatore con meno connettori esposti
+                exposedConnectors = p.getSpaceship().calculateExposedConnectors();
+                if(exposedConnectors < minExposedConnectors){
+                    minExposedConnectors = exposedConnectors;
+                    pBestShip = p;
+                }
+                for(Tile s_storage : p.getSpaceship().getTilesByType(TileType.SPECIAL_STORAGE)){
+                    for(Box box : s_storage.getOccupation()){
+                        valueBox += box.getValue();
+                    }
+                }
+                for(Tile storage : p.getSpaceship().getTilesByType(TileType.STORAGE)){
+                    for(Box box : storage.getOccupation()){
+                        valueBox += box.getValue();
+                    }
+                }
+                p.getSpaceship().addCosmicCredits(valueBox); //aggiungo crediti dovuti alla vendita delle merci
+                p.getSpaceship().addCosmicCredits(-p.getSpaceship().getNumOfWastedTiles()); //tolgo crediti quanti sono gli scarti
+            }
+            pBestShip.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
+
+            for(Player p : getPlayers()){
                 if (p.getSpaceship().getCosmicCredits() > 0) {
                     winners.add(p);
                 }
             }
+
             return winners;
         }
         return null;
