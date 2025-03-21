@@ -1,12 +1,9 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.*;
-import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.util.*;
-
-import static java.lang.Integer.min;
 
 public class Spaceship {
     private final SpaceshipIterator spaceshipIterator;
@@ -54,12 +51,8 @@ public class Spaceship {
         currentTile = null;
     }
 
-    public void setCurrentTile(Tile t) throws AlreadyViewingTileException {
-        if (currentTile == null) {
-            currentTile = t;
-        } else {
-            throw new AlreadyViewingTileException();
-        }
+    public void setCurrentTile(Tile t){
+        currentTile = t;
     }
 
     public boolean isShielded(RotationType side) {

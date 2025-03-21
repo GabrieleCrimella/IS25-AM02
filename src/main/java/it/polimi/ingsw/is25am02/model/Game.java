@@ -2,8 +2,6 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
-import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
-import it.polimi.ingsw.is25am02.model.exception.WrongStateException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
@@ -114,66 +112,50 @@ public class Game implements Game_Interface {
 
     @Override
     public Tile takeTile(Player player) {
-        Tile temp = null;
-        try {
-            //State Control
-            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+        if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
+            Tile temp = heapTile.drawTile();
 
-            temp = heapTile.drawTile();
-
-            //Viewing Control
-            player.getSpaceship().setCurrentTile(temp);
-
-        } catch (WrongStateException e) {
-            e.getMessage();
-        } catch (AlreadyViewingTileException e) {
-            //if the player is already looking at a tile, the drawn tile is put back into
-            //the deck (still invisibly) and the tile the player was looking at is returned
-            heapTile.addTile(temp, false);
-            temp = player.getSpaceship().getCurrentTile();
+            if(player.getSpaceship().getCurrentTile() == null){
+                player.getSpaceship().setCurrentTile(temp);
+            } else{
+                //if the player is already looking at a tile, the drawn tile is put back into
+                //the deck (still invisibly) and the tile the player was looking at is returned
+                heapTile.addTile(temp, false);
+            }
         }
-        return temp;
+        return player.getSpaceship().getCurrentTile();
     }
 
-    //todo Eccezioni
     @Override
     public Tile takeTile(Player player, Tile tile) {
-        //State Control
-        if (getCurrentState().getPhase() == BUILD) {
+        if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
             heapTile.removeVisibleTile(tile);
-            try {
+
+            if(player.getSpaceship().getCurrentTile() == null){
                 player.getSpaceship().setCurrentTile(tile);
-                return tile;
-            } catch (AlreadyViewingTileException e) {
-                //se l'utente sta già guardando una tile, rimetto quella che ha passato come parametro nel mucchio e ritorno quella che sta già guardando
+            } else{
+                //if the player is already looking at a tile, the drawn tile is put back into
+                //the deck (still visibly) and the tile the player was looking at is returned
                 heapTile.addTile(tile, true);
-                return player.getSpaceship().getCurrentTile();
             }
-        } else throw new IllegalStateException("Non è il momento di pescare una tile");
+        }
+        return player.getSpaceship().getCurrentTile();
     }
 
     //the player "discard" the tile he was looking at
     @Override
     public void returnTile(Player player) {
-        try {
-            //State Control
-            stateControl(BUILD, NOT_FINISHED, FINISH, player);
-
+        if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile();
-
-        } catch (WrongStateException e) {
-            e.getMessage();
         }
     }
 
-    //todo eccezioni
     @Override
     public void addTile(Player player, int x, int y) {
-        //State Control
-        if (getCurrentState().getPhase() == BUILD) {
+        if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
             player.getSpaceship().addTile(x, y, player.getSpaceship().getCurrentTile());
-        } else throw new IllegalStateException("Non è il momento di aggiungere una tile");
+        }
     }
 
 
@@ -181,10 +163,7 @@ public class Game implements Game_Interface {
     //I add the players to the gameboard
     @Override
     public void shipFinished(Player player) {
-        try {
-            //State Control
-            stateControl(BUILD, NOT_FINISHED, FINISH, player);
-
+        if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
             int[] position = getGameboard().getStartingPosition();
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
@@ -193,8 +172,6 @@ public class Game implements Game_Interface {
             if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
             }
-        } catch (WrongStateException e) {
-            e.getMessage();
         }
     }
 
@@ -219,14 +196,14 @@ public class Game implements Game_Interface {
         return false;
     }
 
-    //todo Eccezioni
     @Override
     public void removeTile(Player player, int x, int y) {
-        player.getSpaceship().removeTile(x, y);
-
+        if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
+            player.getSpaceship().removeTile(x, y);
+        }
     }
 
-    //todo Eccezioni
+    //todo Eccezioni sta facendo erica aspetta a toccare
     //per inizializzazione delle cabine
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
@@ -289,193 +266,154 @@ public class Game implements Game_Interface {
 
     @Override
     public void playNextCard(Player player) {
-        if(leaderControl(player)) {
-            try {
-                stateControl(TAKE_CARD, IN_GAME, FINISH, player);
-                getDeck().playnextCard();
-
-            } catch (WrongStateException e) {
-                e.getMessage();
-            }
+        if(stateControl(TAKE_CARD, IN_GAME, FINISH, player) && currentPlayerControl(player)){
+            getDeck().playnextCard();
         }
     }
 
-    //todo Eccezioni
     @Override
     public HashMap<Player, Integer> getPosition() {
         return getGameboard().getPositions();
     }
 
-    //todo Eccezioni
     @Override
     public List<Tile> possibleChoice(Player player, TileType type) {
-        return player.getSpaceship().getTilesByType(type);
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player)){
+            return player.getSpaceship().getTilesByType(type);
+        }
+        return null;
     }
 
-    //todo Eccezioni
     @Override
     public void choice(Player player, boolean choice) {
-        //State Control
-        if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player) && currentPlayerControl(player)){
             getCurrentCard().choice(this, player, choice);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void removeCrew(Player player, Cabin cabin) {
-        //StateControl
-        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
-                player.getSpaceship().own(cabin)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, REMOVE, player) && currentPlayerControl(player) && player.getSpaceship().own(cabin)){
             getCurrentCard().removeCrew(this, player, cabin);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public List<Box> choiceBox(Player player, boolean choice) {
-        //State Control
-        if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player) && currentPlayerControl(player)){
             return getCurrentCard().choiceBox(this, player, choice);
         }
-        throw new IllegalStateException();
+        else return null;
     }
 
-    //todo Eccezioni
     @Override
     public void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) {
-        //State Control
-        if (getCurrentCard().getStateCard() == BOXMANAGEMENT && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
-                start.contains(box)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, BOXMANAGEMENT, player) && currentPlayerControl(player) && start.contains(box)){
             getCurrentCard().moveBox(this, player, start, end, box, on);
         }
-        throw new IllegalStateException();
     }
 
-    //todo Eccezioni
     @Override
     public List<Box> choicePlanet(Player player, int index) {
-        //State Control
-        if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER,IN_GAME, DECISION, player) && currentPlayerControl(player)){
             return getCurrentCard().choicePlanet(this, player, index);
-        } else throw new IllegalStateException();
+        }
+        else return null;
     }
 
-    //todo Eccezioni
     @Override
     public void choiceDoubleMotor(Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices) {
-        //State Control
-        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player) && currentPlayerControl(player)){
             getCurrentCard().choiceDoubleMotor(this, player, choices);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void choiceDoubleCannon(Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
-        //State Control
-        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player) && currentPlayerControl(player)){
             getCurrentCard().choiceDoubleCannon(this, player, choices);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void choiceCrew(Player player) {
-        //State Control
-        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player) && currentPlayerControl(player)){
             getCurrentCard().choiceCrew(this, player);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void removeBox(Player player, SpecialStorage storage, BoxType type) {
-        //State Control
-        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player) &&
-                player.getSpaceship().own(storage)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, REMOVE, player) && currentPlayerControl(player) && player.getSpaceship().own(storage)){
             getCurrentCard().removeBox(this, player, storage, type);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void removeBattery(Player player, BatteryStorage storage) {
-        //State Control
-        if (getCurrentCard().getStateCard() == REMOVE && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, REMOVE, player) && currentPlayerControl(player) && player.getSpaceship().own(storage)){
             getCurrentCard().removeBattery(this, player, storage);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void rollDice(Player player) {
-        //State Control
-        if (getCurrentCard().getStateCard() == ROLL && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, ROLL, player) && currentPlayerControl(player)){
             setDiceResult();
             getCurrentCard().setStateCard(CHOICE_ATTRIBUTES);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage) {
-        //State Control
-        if (getCurrentCard().getStateCard() == CHOICE_ATTRIBUTES && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player) && currentPlayerControl(player)){
             getCurrentCard().calculateDamage(this, player, batteryStorage);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
     @Override
     public void holdSpaceship(Player player, int x, int y) {
-        //State Control
-        if (getCurrentCard().getStateCard() == DECISION && player.getStatePlayer() == IN_GAME &&
-                getCurrentState().getPhase() == EFFECT_ON_PLAYER && getCurrentPlayer().equals(player)) {
+        if(stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player) && currentPlayerControl(player)){
             getCurrentCard().holdSpaceship(this, player, x, y);
-        } else throw new IllegalStateException();
+        }
     }
 
-    //todo Eccezioni
+    //todo Da rifare
     @Override
     public ArrayList<Player> getWinners() {
-        ArrayList<Player> winners = new ArrayList<>();
-        if (getPlayers() == null) {
-            throw new IllegalArgumentException("La lista dei giocatori è vuota");
-        }
-        for (Player p : getPlayers()) {
-            if (p.getSpaceship().getCosmicCredits() > 0) {
-                winners.add(p);
+        if(getCurrentState().getPhase() == RESULT && getPlayers() != null){
+            ArrayList<Player> winners = new ArrayList<>();
+            for (Player p : getPlayers()) {
+                if (p.getSpaceship().getCosmicCredits() > 0) {
+                    winners.add(p);
+                }
             }
+            return winners;
         }
-        return winners;
+        return null;
     }
 
-    private void stateControl(StateGameType stateGame, StatePlayerType statePlayer, StateCardType stateCard, Player player) throws WrongStateException {
+    private boolean stateControl(StateGameType stateGame, StatePlayerType statePlayer, StateCardType stateCard, Player player) {
         if (!player.getStatePlayer().equals(statePlayer)){
-            throw new WrongStateException("Wrong player state, expected state : " + statePlayer + ", actual state : " + player.getStatePlayer());
+            System.out.println("Wrong player state, expected state : " + statePlayer + ", actual state : " + player.getStatePlayer());
+            return false;
         }
         if (!getCurrentCard().getStateCard().equals(stateCard)) {
-            throw new WrongStateException("Wrong card state, expected state : " + stateCard + ", actual state : " + getCurrentCard().getStateCard());
+            System.out.println("Wrong card state, expected state : " + stateCard + ", actual state : " + getCurrentCard().getStateCard());
+            return false;
         }
         if (!getCurrentState().getPhase().equals(stateGame)) {
-            throw new WrongStateException("Wrong game state, expected state : " + stateGame + "  actual state : " + getCurrentState().getPhase());
+            System.out.println("Wrong game state, expected state : " + stateGame + "  actual state : " + getCurrentState().getPhase());
+            return false;
         }
+        return true;
     }
 
-    private boolean leaderControl(Player player){
-        return player.equals(getCurrentPlayer());
+    private boolean currentPlayerControl(Player player){
+        if (!player.equals(getCurrentPlayer())) {
+            System.out.println("Wrong leader, actual leader : " + getCurrentState().getCurrentPlayer());
+            return false;
+        }
+        return true;
     }
 }
