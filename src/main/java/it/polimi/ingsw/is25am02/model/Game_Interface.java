@@ -26,13 +26,15 @@ public interface Game_Interface {
     void shipFinished(Player player);
 
     //Phase CHECK
-    boolean checkSpaceship(Player player);
+    void checkSpaceship(Player player);
 
     //Phase CORRECTION
     void removeTile(Player player, int x, int y);
+    void checkWrongSpaceship(Player player);
 
     //Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
     void addCrew(Player player, int x, int y, AliveType type);
+    void ready(Player player);
 
     //Phase TAKE_CARD
     void playNextCard(Player player);
