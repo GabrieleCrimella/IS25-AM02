@@ -36,9 +36,14 @@ public class Planet extends Card_with_box{
             occupied.add(0);
         }
     }
-
+    @Override
     public ArrayList<ArrayList<Box>> getPlanetOffers() {
         return planetOffers;
+    }
+
+    @Override
+    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes() {
+        return planetOffersTypes;
     }
 
     @Override

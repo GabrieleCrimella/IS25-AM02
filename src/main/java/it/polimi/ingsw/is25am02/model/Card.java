@@ -96,4 +96,10 @@ public abstract class Card {
         return new ArrayList<ArrayList<Box>>();
     }
 
+    public LinkedList<BoxType> getBoxesWonTypes() {
+        return new LinkedList<BoxType>();
+    }
+
+    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ return new ArrayList<ArrayList<BoxType>>();}
+
 }

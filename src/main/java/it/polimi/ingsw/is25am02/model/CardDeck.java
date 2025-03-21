@@ -273,6 +273,7 @@ public class CardDeck {
     public void returnDeck(int numDeck){ //il deck viene liberato
         deck.computeIfPresent(numDeck, (k, pair) -> new Pair<>(pair.getKey(), false));
     }
+
     public Card playnextCard(){//deve prendere la prossima carta da final deck
         Card nextCard;
         //se la carta corrente è una di quelle con le box metto gli scarti in store
@@ -292,16 +293,37 @@ public class CardDeck {
             }
         }
         nextCard = finalDeck.removeFirst();
-        //todo se quello che sto rimuovendo è una di quelle con i box allora devo riempirle con i box effettivi
+        //se quello che sto rimuovendo è una di quelle con i box allora devo riempirle con i box effettivi
         if(nextCard instanceof AbbandonedStation || nextCard instanceof Trafficker){
-            for(BoxType boxType : nextCard.get){}
+            for(BoxType boxType : nextCard.getBoxesWonTypes()){
+                Box box;
+                if(boxType.equals(BoxType.RED)){
+                    box = new RedBox(BoxType.RED);
+                } else if(boxType.equals(BoxType.BLUE)){
+                    box = new BlueBox(BoxType.BLUE);
+                } else if(boxType.equals(BoxType.GREEN)){
+                    box = new GreenBox(BoxType.GREEN);
+                } else if(boxType.equals(BoxType.YELLOW)){
+                    box = new YellowBox(BoxType.YELLOW);
+                } else throw new IllegalArgumentException("I cannot add a box");
+                nextCard.getBoxesWon().add(box);
+            }
         } else if (nextCard instanceof Planet) {
-            if(!( finalDeck.getFirst()).getPlanetOffers().isEmpty()){
-                for(ArrayList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()){
-                    for(Box box : boxlist){
-                        store.addBox(box);
-                    }
+            for (List<BoxType> boxTypeList : nextCard.getPlanetOffersTypes()) {
+                ArrayList<Box> boxList = new ArrayList<>();
+                for (BoxType type : boxTypeList) {
+                    Box box;
+                    if(type.equals(BoxType.RED)){
+                        box = new RedBox(BoxType.RED);
+                    } else if(type.equals(BoxType.BLUE)){
+                        box = new RedBox(BoxType.BLUE);
+                    } else if(type.equals(BoxType.YELLOW)){
+                        box = new RedBox(BoxType.YELLOW);
+                    } else if(type.equals(BoxType.GREEN)){
+                        box = new RedBox(BoxType.GREEN);
+                    } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
                 }
+                nextCard.getPlanetOffers().add(boxList); // Aggiungi la lista alla lista principale
             }
         }
         return nextCard;

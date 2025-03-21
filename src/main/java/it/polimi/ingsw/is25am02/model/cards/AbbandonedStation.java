@@ -25,8 +25,14 @@ public class AbbandonedStation extends Card_with_box {
         this.boxesWonTypes = boxesWonTypes;
     }
 
+    @Override
     public LinkedList<Box> getBoxesWon() {
         return boxesWon;
+    }
+
+    @Override
+    public LinkedList<BoxType> getBoxesWonTypes() {
+        return boxesWonTypes;
     }
 
     @Override
