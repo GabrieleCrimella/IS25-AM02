@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class GameTest {
 
     @Test
@@ -43,4 +45,113 @@ class GameTest {
         //game di livello 0 con i 4 players
         return new Game(players, 0);
     }
+
+    public Game make_a_spaceship_no_players() {
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players, 0);
+        game.getGameboard().initializeGameBoard(players);
+        return game;
+
+    }
+
+
+
+
+    @Test
+    void test_should_check_addCrew_works_for_Humans_and_Purple_Aliens(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players, 0);
+        game.getGameboard().initializeGameBoard(players);
+
+        //inizializzo spaceship1 - 2 cabin normali con persone
+        //tile 1 - cabin centrale
+        TileType t1 = TileType.CABIN;
+        ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType1 = RotationType.NORTH;
+        int id1 = 1;
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        spaceship1.addTile(7,7, cabin1);
+
+        //tile 2 - cabin
+        TileType t2 = TileType.CABIN;
+        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        RotationType rotationType2 = RotationType.NORTH;
+        int id2 = 1;
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        spaceship1.addTile(8,7, cabin2);
+
+        game.addCrew(player1, 7,7, AliveType.HUMAN);
+        game.addCrew(player1, 8,7, AliveType.HUMAN);
+        assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(7,7).get().getCrew().size());
+        assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,7).get().getCrew().size());
+
+        //inizializzo spaceship2 - 2 cabine normali, una con alieni una con persone
+        //tile 1 - cabin centrale 7 7
+        TileType t21 = TileType.CABIN;
+        ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType21 = RotationType.NORTH;
+        int id21 = 1;
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        spaceship2.addTile(7,7, cabin21);
+
+        //tile 2 -cabin viola 7 8
+        TileType t22 = TileType.PURPLE_CABIN;
+        ConnectorType[] connectors22 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType22 = RotationType.NORTH;
+        int id22 = 1;
+        Tile purplecabin22 = new PurpleCabin(t22, connectors22, rotationType22, id22);
+        spaceship2.addTile(7,8, purplecabin22);
+
+        //tile 3 - cabin 8 8
+        TileType t23 = TileType.CABIN;
+        ConnectorType[] connectors23 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType23 = RotationType.NORTH;
+        int id23 = 1;
+        Tile cabin23 = new Cabin(t23, connectors23, rotationType23, id23);
+        spaceship2.addTile(8,8, cabin23);
+
+        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        assertEquals(2, game.getPlayers().get(1).getSpaceship().getTile(7,7).get().getCrew().size());
+        game.addCrew(player2, 8,8, AliveType.PURPLE_ALIEN);
+        assertEquals(1, game.getPlayers().get(1).getSpaceship().getTile(8,8).get().getCrew().size());
+    }
+
 }

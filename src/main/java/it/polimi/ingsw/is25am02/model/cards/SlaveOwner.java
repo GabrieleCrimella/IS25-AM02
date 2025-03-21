@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class SlaveOwner extends Enemies{
     }
 
     @Override
-    public void removeCrew(Game game, Player player, Cabin cabin){
+    public void removeCrew(Game game, Player player, Tile cabin){
         try {
             cabin.removeCrew();
             AliveRemoved++;

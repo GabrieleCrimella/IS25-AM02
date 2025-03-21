@@ -151,7 +151,6 @@ public class Game implements Game_Interface {
         }
     }
 
-
     @Override
     public void addTile(Player player, int x, int y) {
         if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
@@ -199,8 +198,30 @@ public class Game implements Game_Interface {
 
     @Override
     public void removeTile(Player player, int x, int y) {
-        if(stateControl(BUILD, NOT_FINISHED, FINISH, player)){
-            player.getSpaceship().removeTile(x, y);
+        player.getSpaceship().removeTile(x, y);
+
+    }
+
+    private boolean checkTileNear(Player player, int x, int y, TileType type) {
+        Tile tile = player.getSpaceship().getTile(x,y).get();
+        if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getUpTile(tile).get().getType().equals(type)) {
+            return true;
+        }
+        else if (player.getSpaceship().getSpaceshipIterator().getRightTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getRightTile(tile).get().getType().equals(type)) {
+            return true;
+        }
+        else if (player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getLeftTile(tile).get().getType().equals(type)) {
+            return true;
+        }
+        else if (player.getSpaceship().getSpaceshipIterator().getDownTile(tile).isPresent() &&
+                player.getSpaceship().getSpaceshipIterator().getDownTile(tile).get().getType().equals(type)) {
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -208,6 +229,28 @@ public class Game implements Game_Interface {
     //per inizializzazione delle cabine
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
+        if (player.getSpaceship().getTile(x,y).isPresent() &&
+                player.getSpaceship().getTile(x,y).get().getType().equals(TileType.CABIN)) { //controllo che il tile esista e che sia di tipo cabin
+            if (type.equals(AliveType.HUMAN)) { //se type è human aggiungo due umani
+                player.getSpaceship().getTile(x, y).get().addCrew(type);
+                player.getSpaceship().getTile(x, y).get().addCrew(type);
+            }
+            else if(type.equals(AliveType.BROWN_ALIEN)) { // se type è brown_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
+                if (checkTileNear(player, x, y, TileType.BROWN_CABIN)) {
+                    player.getSpaceship().getTile(x, y).get().addCrew(type);
+                }
+            }
+            else if(type.equals(AliveType.PURPLE_ALIEN)){ // se type è pruple_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
+                if (checkTileNear(player, x, y,TileType.PURPLE_CABIN)) {
+                    player.getSpaceship().getTile(x, y).get().addCrew(type);
+                }
+            }
+        }
+        else{
+            //c'è un problema
+        }
+
+        /*
         if (type.equals(AliveType.HUMAN) && player.getSpaceship().getTile(x, y).isPresent()) { // faccio l'istruzione due volte perchè aggiungo due umani
             player.getSpaceship().getTile(x, y).get().addCrew(type);
             player.getSpaceship().getTile(x, y).get().addCrew(type);
@@ -263,6 +306,8 @@ public class Game implements Game_Interface {
                 }
             }
         }
+
+         */
     }
 
     @Override
