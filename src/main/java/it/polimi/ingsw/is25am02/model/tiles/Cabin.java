@@ -31,7 +31,7 @@ public final class Cabin extends Tile{
 
     @Override
     public void removeCrew(){
-        if(!crew.isEmpty()){
+        if(crew.isEmpty()){
             throw new IllegalRemoveException("This cabin is empty");
         }
 
