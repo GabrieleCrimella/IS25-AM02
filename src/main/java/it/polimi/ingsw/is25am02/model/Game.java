@@ -256,7 +256,6 @@ public class Game implements Game_Interface {
                     c.addCrew(AliveType.HUMAN);
                 }
             }
-
             //when all players are ready the game starts
             if(readyPlayer == players.size()){
                 getCurrentState().setPhase(TAKE_CARD);
