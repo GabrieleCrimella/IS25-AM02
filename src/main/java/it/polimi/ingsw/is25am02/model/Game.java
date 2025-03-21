@@ -321,7 +321,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void choiceDoubleMotor(Player player, Optional<List<Pair<DoubleMotor, BatteryStorage>>> choices) {
+    public void choiceDoubleMotor(Player player, Optional<List<Pair<Tile, Tile>>> choices) {
         if(stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player) && currentPlayerControl(player)){
             getCurrentCard().choiceDoubleMotor(this, player, choices);
         }

@@ -86,7 +86,7 @@ public class Spaceship {
         if(power >0){ //ci deve essere almeno un cannone
             List<Tile> cabins = getTilesByType(TileType.CABIN);
             for(Tile cabin : cabins){
-                if(cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)){
+                if(!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)){
                     power = power + 2;
                     break;
                 }
@@ -95,7 +95,7 @@ public class Spaceship {
         return power;
     }
 
-    public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
+    public int calculateMotorPower(List<Tile> doubleMotors) {
         int power = 0;
 
         List<Tile> motors = getTilesByType(TileType.MOTOR);
@@ -104,7 +104,7 @@ public class Spaceship {
         if(power > 0){
             List<Tile> cabins = getTilesByType(TileType.CABIN);
             for(Tile cabin : cabins){
-                if(cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)){
+                if(!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)){
                     power = power + 2;
                     break;
                 }

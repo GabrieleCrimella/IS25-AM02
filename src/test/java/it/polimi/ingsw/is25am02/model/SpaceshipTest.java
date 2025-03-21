@@ -467,4 +467,66 @@ class SpaceshipTest {
 
      */
 
+
+
+    @Test
+    void test_calculateMotorPower(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getGameboard().initializeGameBoard(players);
+        //inizializzo spaceship1
+        //tile 1 - cabin centrale
+        TileType t1 = TileType.CABIN;
+        ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType1 = RotationType.NORTH;
+        int id1 = 1;
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        spaceship1.addTile(7,7, cabin1);
+        //tile 2 - motor 7 8
+        TileType t2 = TileType.MOTOR;
+        ConnectorType[] connectors2 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
+        RotationType rotationType2 = RotationType.NORTH;
+        int id2 = 1;
+        Tile motor1 = new Motors(t2, connectors2, rotationType2, id2);
+        spaceship1.addTile(7,8, motor1);
+        //tile 3 - dmotor 8 8
+        TileType t3 = TileType.D_MOTOR;
+        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.SINGLE};
+        RotationType rotationType3 = RotationType.NORTH;
+        int id3 = 1;
+        Tile dmotor1 = new DoubleMotor(t3, connectors3, rotationType3, id3);
+        spaceship1.addTile(8,8, dmotor1);
+        //tile 4 - motor 7 8
+        TileType t4 = TileType.D_MOTOR;
+        ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        RotationType rotationType4 = RotationType.NORTH;
+        int id4 = 1;
+        Tile dmotor2 = new DoubleMotor(t4, connectors4, rotationType4, id4);
+        spaceship1.addTile(6,8, dmotor2);
+        List<Tile> listaDoppiMotoriAttivi = new ArrayList<>();
+        listaDoppiMotoriAttivi.add(dmotor2);
+
+        assertEquals(3,spaceship1.calculateMotorPower(listaDoppiMotoriAttivi));
+
+        //accendo anche l'altro cannone
+        listaDoppiMotoriAttivi.add(dmotor1);
+        assertEquals(5,spaceship1.calculateMotorPower(listaDoppiMotoriAttivi));
+
+    }
 }
