@@ -205,7 +205,6 @@ class HeapTilesTest {
                     assertEquals(connectors, tile.getConnectors());
                 }
             }
-
         }
         assertTrue(foundStructural);
         assertTrue(foundShield);
