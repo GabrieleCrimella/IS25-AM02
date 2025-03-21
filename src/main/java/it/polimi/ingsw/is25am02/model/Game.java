@@ -396,7 +396,11 @@ public class Game implements Game_Interface {
                     minExposedConnectors = exposedConnectors;
                     pBestShip = p;
                 }
-                valueBox= 4*p.getSpaceship().getTilesByType(TileType.SPECIAL_STORAGE).size();
+                for(Tile s_storage : p.getSpaceship().getTilesByType(TileType.SPECIAL_STORAGE)){
+                    for(Box box : s_storage.getOccupation()){
+                        valueBox += box.getValue();
+                    }
+                }
                 for(Tile storage : p.getSpaceship().getTilesByType(TileType.STORAGE)){
                     for(Box box : storage.getOccupation()){
                         valueBox += box.getValue();
