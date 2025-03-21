@@ -10,7 +10,8 @@ public class Spaceship {
     private int numOfWastedTiles;
     private int cosmicCredits;
     private Tile currentTile;
-    private int x_start, y_start;
+    private int targetTileX;
+    private int targetTileY;
 
     public Spaceship(int level) {
         this.spaceshipIterator = new SpaceshipIterator(level);
@@ -51,12 +52,10 @@ public class Spaceship {
         currentTile = null;
     }
 
-    public void setCurrentTile(Tile t){
-        currentTile = t;
-    }
+    public void setCurrentTile(Tile t){ currentTile = t; }
 
     public boolean isShielded(RotationType side) {
-        for(Tile t:getTilesByType(TileType.SHIELD)){
+        for(Tile t : getTilesByType(TileType.SHIELD)){
             if(t.isShielded(side)){
                 return true;
             }
@@ -68,8 +67,7 @@ public class Spaceship {
         //calcola la potenza singola dei cannoni singoli contando l'orientazione e quella dei cannoni doppi contando l'orientazione
         double power = 0.0;
 
-        List<Tile> cannons = getTilesByType(TileType.CANNON);
-        for(Tile cannon : cannons){
+        for(Tile cannon : getTilesByType(TileType.CANNON)){
             if (cannon.getRotationType() == RotationType.NORTH) {
                 power++;
             } else power+=0.5;
@@ -84,8 +82,7 @@ public class Spaceship {
         }
 
         if(power >0){ //ci deve essere almeno un cannone
-            List<Tile> cabins = getTilesByType(TileType.CABIN);
-            for(Tile cabin : cabins){
+            for(Tile cabin : getTilesByType(TileType.CABIN)){
                 if(cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)){
                     power = power + 2;
                     break;
@@ -98,12 +95,10 @@ public class Spaceship {
     public int calculateMotorPower(List<DoubleMotor> doubleMotors) {
         int power = 0;
 
-        List<Tile> motors = getTilesByType(TileType.MOTOR);
-        power += motors.size() + doubleMotors.size() * 2;
+        power += getTilesByType(TileType.MOTOR).size() + doubleMotors.size() * 2;
 
         if(power > 0){
-            List<Tile> cabins = getTilesByType(TileType.CABIN);
-            for(Tile cabin : cabins){
+            for(Tile cabin : getTilesByType(TileType.CABIN)){
                 if(cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)){
                     power = power + 2;
                     break;
@@ -114,10 +109,10 @@ public class Spaceship {
     }
 
     public int calculateExposedConnectors() {
-        //Quello che deve fare questo metodo e iterare per tutti i tile.
-        //Per ogni tile se quello sopra di lui è vuoto [x][y+1] devi chiamare connectorsOnSide(RotationType.NORTH)
-        //Se questo metodo ti ritorna ConnectorType.NONE non devi aggiungere 1, se no aggiungi 1.
-        //Uguale per tutti gli altri lati
+        //What this method should do is iterate for all the tiles.
+        //For each tile if the one above it is empty [x][y+1] you should call connectorsOnSide(RotationType.NORTH)
+        //If this method returns ConnectorType.NONE you shouldn't add 1, if not add 1.
+        //Same for all the other sides
         int exposedConnectors = 0;
         for(Optional<Tile> optionalTile : spaceshipIterator.reference()){
             if(optionalTile.isPresent()){
@@ -142,7 +137,6 @@ public class Spaceship {
                         tile.connectorOnSide(RotationType.WEST)!= ConnectorType.NONE){
                     exposedConnectors++;
                 }
-
             }
         }
         return exposedConnectors;
@@ -169,7 +163,6 @@ public class Spaceship {
     }
 
     public boolean checkSpaceship() {
-
         //controllo delle connessioni delle varie tiles
         for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && spaceshipIterator.getUpTile(t.get()).isPresent()) {
@@ -238,28 +231,36 @@ public class Spaceship {
     public boolean isExposed(RotationType rotationType, int num) {
         if(rotationType==RotationType.NORTH){
             for(int t=0; t<12;t++){
-                if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.NORTH)!=ConnectorType.NONE){
+                if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.NORTH)!=ConnectorType.NONE){
+                    targetTileX = num;
+                    targetTileY = t;
                     return true;
                 }
             }
         }
         else if(rotationType==RotationType.SOUTH){
             for(int t=12; t>0;t--){
-                if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.SOUTH)!=ConnectorType.NONE){
+                if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.SOUTH)!=ConnectorType.NONE){
+                    targetTileX = num;
+                    targetTileY = t;
                     return true;
                 }
             }
         }
         else if(rotationType==RotationType.EAST){
             for(int t=12; t>0;t--){
-                if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.EAST)!=ConnectorType.NONE){
+                if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.EAST)!=ConnectorType.NONE){
+                    targetTileX = t;
+                    targetTileY = num;
                     return true;
                 }
             }
         }
         else if(rotationType==RotationType.WEST){
             for(int t=0; t<12;t++){
-                if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.WEST)!=ConnectorType.NONE){
+                if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.WEST)!=ConnectorType.NONE){
+                    targetTileX = t;
+                    targetTileY = num;
                     return true;
                 }
             }
@@ -269,147 +270,63 @@ public class Spaceship {
 
     public Tile getCurrentTile() {
         return currentTile;
-    }// è la tile che sto guardando
+    }
 
+
+    //todo da controllare
     //todo bisogna gestire il fatto che se viene colpito un supporto vitale allora va rimosso l'alieno nella cabina vicino
-    //calcola la distruzione della nave in base a dove è arrivato il meteorite
-    //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
     //ritorna 1 se la nave si è divisa in varie parti
     public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
-        //ho un meteorite piccolo
-        if(bigOrSmall==0){
-            if(!isExposed(rotationType,num)){
-                return false; //se il lato non ha cavi esposti non succede niente
-            }
-            else if(isShielded(rotationType) && storage.isPresent()){ //se c'è uno scudo su quel lato e il layer vuole usarlo
-                removeBattery(storage.get());
+        switch(bigOrSmall){
+            case 0: //Small
+                if(isExposed(rotationType,num)){
+                    if(isShielded(rotationType) && storage.isPresent() ){
+                        storage.get().removeBattery();
+                        removeTile(targetTileX, targetTileY);
+                        return DividedSpaceship();
+                    }
+                } else return false;
+            case 1: //Big
+                Optional<Tile> target = targetTile(rotationType,num);
+                if(target.isPresent()){
+                    Optional<Tile> cannon = CoveredByWhatCannon(rotationType,num);
+                    if(cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)){
+                        return false;
+                    }
+                    else if(cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON)){
+                        return false;
+                    }
+                    else{
+                        removeTile(targetTileX, targetTileY);
+                        return DividedSpaceship();
+                    }
+                }
+                else return false;
+            default:
                 return false;
-            }
         }
-        else{ //ho un meteorite grande
-            // devo controllare se c'è un cannone e se voglio attivarlo nel caso sia doppio
-            // se non c'è un cannone allora devo togliere la prima tile che incontro ed eventualmente tutti i pezzi attaccati ad esso
-            if(rotationType==RotationType.NORTH){
-                for(int t=0; t<12;t++){
-                    if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
-                        return false;
-                    } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
-                        removeBattery(storage.get());
-                        return false;
-                    } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
-                        removeTile(t, num);
-                        return true;
-                    }
-                }
-            }
-            else if(rotationType==RotationType.SOUTH){
-                for(int t=12; t>0;t--){
-                    if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
-                        return false;
-                    } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
-                        removeBattery(storage.get());
-                        return false;
-                    } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
-                        removeTile(t, num);
-                        return true;
-                    }
-                }
-            }
-            else if(rotationType==RotationType.EAST) {
-                for (int t = 12; t > 0; t--) {
-                    if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
-                        return false;
-                    } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
-                        removeBattery(storage.get());
-                        return false;
-                    } else if (getTile(num, t).isPresent()) {
-                        removeTile(num, t);
-                        return true;
-                    }
-                }
-            }
-            if(rotationType==RotationType.WEST){
-                for(int t=0; t<12;t++){
-                    if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
-                        return false;
-                    } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
-                        removeBattery(storage.get());
-                        return false;
-                    } else if (getTile(num, t).isPresent()) {
-                        removeTile(num, t);
-                        return true;
-                    }
-                }
-            }
-
-        }
-
-        return false;
     }
 
+    //todo controllare batterie
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
-        //ho un colpo piccolo
-        if(bigOrSmall==0) {
-            if (isShielded(rotationType) && storage.isPresent()) { //se c'è lo scudo
-                removeBattery(storage.get());
+        Optional<Tile> target = targetTile(rotationType,num);
+        switch(bigOrSmall) {
+            case 0: //Small
+                if(target.isPresent()) {
+                    if (!isShielded(rotationType)) {
+                        removeTile(targetTileX, targetTileY);
+                        return DividedSpaceship();
+                    }
+                } else return false;
+            case 1: //Big
+                if(target.isPresent()){
+                    removeTile(targetTileX, targetTileY);
+                    return DividedSpaceship();
+                } else return false;
+            default:
                 return false;
-            }
         }
-         //se non c'è lo scudo oppure se c'è un colpo grande allora fa danno
-        if(rotationType==RotationType.NORTH){
-            for(int t=0; t<12;t++){
-                if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
-                    return false;
-                } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
-                    removeBattery(storage.get());
-                    return false;
-                } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
-                    removeTile(t, num);
-                    return true;
-                }
-            }
-        }
-        else if(rotationType==RotationType.SOUTH){
-            for(int t=12; t>0;t--){
-                if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)){ //ho un cannone singolo in quel punto
-                    return false;
-                } else if(getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.D_CANNON)&& storage.isPresent()){ //Ho un cannone doppio e voglio usarlo
-                    removeBattery(storage.get());
-                    return false;
-                } else if(getTile(t, num).isPresent()){ //si distrugge la prima cosa che incontro
-                    removeTile(t, num);
-                    return true;
-                }
-            }
-        }
-        else if(rotationType==RotationType.EAST) {
-            for (int t = 12; t > 0; t--) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
-                    return false;
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
-                    removeBattery(storage.get());
-                    return false;
-                } else if (getTile(num, t).isPresent()) {
-                    removeTile(num, t);
-                    return true;
-                }
-            }
-        }
-        if(rotationType==RotationType.WEST){
-            for(int t=0; t<12;t++){
-                if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
-                    return false;
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
-                    removeBattery(storage.get());
-                    return false;
-                } else if (getTile(num, t).isPresent()) {
-                    removeTile(num, t);
-                    return true;
-                }
-            }
-        }
-        return true;
     }
 
     public int calculateNumAlive() {
@@ -488,5 +405,58 @@ public class Spaceship {
             }
         }
         return temp;
+    }
+
+    //A fronte della rimozione di una tile mi dice se ho vari rami o solo 1
+    private boolean DividedSpaceship(){
+        return false;
+    }
+
+    private Optional<Tile> targetTile(RotationType type, int num) {
+        targetTileX = 0;
+        targetTileY = 0;
+
+        if(type == RotationType.NORTH){
+            for(int t=0; t<12;t++){
+                if(getTile(num,t).isPresent()){
+                    targetTileX = num;
+                    targetTileY = t;
+                    return getTile(num,t);
+                }
+            }
+        }
+        else if(type==RotationType.SOUTH){
+            for(int t=12; t>0;t--){
+                if(getTile(num,t).isPresent()){
+                    targetTileX = num;
+                    targetTileY = t;
+                    return getTile(num,t);
+                }
+            }
+        }
+        else if(type==RotationType.EAST){
+            for(int t=12; t>0;t--){
+                if(getTile(t,num).isPresent()){
+                    targetTileX = t;
+                    targetTileY = num;
+                    return getTile(t,num);
+                }
+            }
+        }
+        else if(type==RotationType.WEST){
+            for(int t=0; t<12;t++){
+                if(getTile(t,num).isPresent()){
+                    targetTileX = t;
+                    targetTileY = num;
+                    return getTile(t,num);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    //Mi dice se ho un cannone che può sparare al meteorite e mi passa il cannone
+    private Optional<Tile> CoveredByWhatCannon(RotationType type, int num) {
+        return Optional.empty();
     }
 }

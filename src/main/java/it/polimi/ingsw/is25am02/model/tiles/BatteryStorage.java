@@ -20,7 +20,10 @@ public final class BatteryStorage extends Tile {
     }
 
     @Override
-    public void removeBattery(){
-        battery = battery -1;
+    public void removeBattery() {
+        if (battery > 0) {
+            battery--;
+        }
+        else System.out.println("BatteryStorage empty");
     }
 }
