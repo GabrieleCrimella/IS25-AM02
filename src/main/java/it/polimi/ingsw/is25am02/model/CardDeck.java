@@ -19,7 +19,13 @@ public class CardDeck {
 
     public CardDeck(){
         this.deck = new HashMap<>();
+        this.finalDeck = new ArrayList<>();
+        this.initialDeck = new ArrayList<>();
         loadCard();
+    }
+
+    public List<Card> getInitialDeck() {
+        return initialDeck;
     }
 
     public HashMap<Integer , Pair<List<Card>,Boolean>> createDecks(){//il metodo crea i mazzetti usando initial deck in cui sono presenti tutte le carte
