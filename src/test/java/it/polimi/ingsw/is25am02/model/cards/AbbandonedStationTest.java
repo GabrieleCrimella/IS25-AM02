@@ -104,6 +104,8 @@ class AbbandonedStationTest {
 
         game.addCrew(player1, 7,7,AliveType.HUMAN);
         game.addCrew(player1, 8,7,AliveType.HUMAN);
+        game.addCrew(player1, 7,7,AliveType.HUMAN);
+        game.addCrew(player1, 8,7,AliveType.HUMAN);
         return game;
     }
 
@@ -120,10 +122,11 @@ class AbbandonedStationTest {
         BlueBox bluebox = new BlueBox(BoxType.BLUE);
         //lista di boxesWon con 2 rossi e un blu
         LinkedList<Box> boxesWon = new LinkedList<Box>();
+        LinkedList<BoxType> boxesWonTypes = new LinkedList<>();
         boxesWon.add(redbox1);
         boxesWon.add(redbox2);
         boxesWon.add(bluebox);
-        AbbandonedStation abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon);
+        AbbandonedStation abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes);
 
         List<Box> availableBoxes = abbandonedStation.choiceBox(game, game.getPlayers().getFirst(),true );
 
@@ -157,10 +160,11 @@ class AbbandonedStationTest {
         BlueBox bluebox = new BlueBox(BoxType.BLUE);
         //lista di boxesWon con 2 rossi e un blu
         LinkedList<Box> boxesWon = new LinkedList<Box>();
+        LinkedList<BoxType> boxesWonTypes = new LinkedList<>();
         boxesWon.add(redbox1);
         boxesWon.add(redbox2);
         boxesWon.add(bluebox);
-        Card abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon);
+        Card abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes);
 
         List<Box> availableBoxes = abbandonedStation.choiceBox(game, game.getPlayers().getFirst(),true );
 
