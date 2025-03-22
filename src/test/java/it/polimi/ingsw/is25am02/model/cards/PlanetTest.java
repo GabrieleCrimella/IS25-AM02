@@ -70,11 +70,12 @@ class PlanetTest {
         ArrayList<Box> planet2boxes = new ArrayList<Box>();
         planet2boxes.add(planet2bluebox);
         ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
         planetOffers.add(planet1boxes);
         planetOffers.add(planet2boxes);
         //Nel pianeta 1 ci sono due box rossi
         //Nel pianeta 2 c'è un box blu
-        Planet planet = new Planet(level, store, daysLost, planetOffers);
+        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes);
 
         planet.moveBox(game, player1, planetOffers.get(0), storage1.getOccupation(), planet1redbox1, true );
 
@@ -140,11 +141,12 @@ class PlanetTest {
         ArrayList<Box> planet2boxes = new ArrayList<Box>();
         planet2boxes.add(planet2bluebox);
         ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
         planetOffers.add(planet1boxes);
         planetOffers.add(planet2boxes);
         //Nel pianeta 1 ci sono due box rossi
         //Nel pianeta 2 c'è un box blu
-        Planet planet = new Planet(level, store, daysLost, planetOffers);
+        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes);
         game.getCurrentState().setCurrentCard(planet);
         game.getCurrentState().setCurrentPlayer(player1);
 
@@ -235,11 +237,12 @@ class PlanetTest {
         ArrayList<Box> planet2boxes = new ArrayList<Box>();
         planet2boxes.add(planet2bluebox);
         ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
         planetOffers.add(planet1boxes);
         planetOffers.add(planet2boxes);
         //Nel pianeta 1 ci sono due box rossi
         //Nel pianeta 2 c'è un box blu
-        Planet planet = new Planet(level, store, daysLost, planetOffers);
+        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes);
         game.getCurrentState().setCurrentCard(planet);
         game.getCurrentState().setCurrentPlayer(player1);
 
