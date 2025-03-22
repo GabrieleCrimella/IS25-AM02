@@ -3,6 +3,8 @@ package it.polimi.ingsw.is25am02.model;
 import it.polimi.ingsw.is25am02.model.cards.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardDeckTest {
@@ -146,5 +148,20 @@ class CardDeckTest {
         assertTrue(foundWar1);
         assertTrue(foundWar2);
         assertTrue(foundOSpace);
+    }
+
+    @Test
+    public void playnextCardTest() {
+        CardDeck cardDeck = new CardDeck();
+        List<Card> finaldeck = cardDeck.createFinalDeck(cardDeck.createDecks());
+        Card nextCard = cardDeck.playnextCard();
+        while(nextCard!=null) {
+            if(nextCard instanceof Trafficker || nextCard instanceof AbbandonedStation) {
+                assertNotNull(nextCard.getBoxesWon());
+            } else if (nextCard instanceof Planet) {
+                assertNotNull(nextCard.getPlanetOffers());
+            }
+            nextCard = cardDeck.playnextCard();
+        }
     }
 }

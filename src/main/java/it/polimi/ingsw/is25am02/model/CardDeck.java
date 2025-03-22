@@ -254,7 +254,7 @@ public class CardDeck {
         }
     }
 
-    public List<Card> createFinalDeck(){
+    public List<Card> createFinalDeck(HashMap<Integer , Pair<List<Card>,Boolean>> deck){
         finalDeck = new ArrayList<>();
         for(Pair<List<Card>,Boolean> cards : deck.values()){
             finalDeck.addAll(cards.getKey());
@@ -292,7 +292,11 @@ public class CardDeck {
                 }
             }
         }
-        nextCard = finalDeck.removeFirst();
+        finalDeck.removeFirst();
+        if(finalDeck.isEmpty()){
+            return null;
+        }
+        nextCard = finalDeck.getFirst();
         //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi
         if(nextCard instanceof AbbandonedStation || nextCard instanceof Trafficker){
             for(BoxType boxType : nextCard.getBoxesWonTypes()){
