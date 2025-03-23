@@ -1,8 +1,11 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.*;
+import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +42,19 @@ class CardDeckTest {
             else if (card instanceof AbbandonedStation) {
                 foundAbSta = true;
                 if (level == 1) {
+                    LinkedList<BoxType> typesExpected = new LinkedList<>();
+                    typesExpected.add(BoxType.YELLOW);
+                    typesExpected.add(BoxType.GREEN);
                     assertEquals(1, level);
+                    if(typesExpected.equals(card.getBoxesWonTypes())){
+                        assertEquals(typesExpected, card.getBoxesWonTypes());
+                    }
+                    typesExpected.clear();
+                    typesExpected.add(BoxType.RED);
+                    typesExpected.add(BoxType.RED);
+                    if(typesExpected.equals(card.getBoxesWonTypes())){
+                        assertEquals(typesExpected, card.getBoxesWonTypes());
+                    }
                 } else if (level == 2) {
                     assertEquals(2, level);
                 }
@@ -156,9 +171,9 @@ class CardDeckTest {
         List<Card> finaldeck = cardDeck.createFinalDeck(cardDeck.createDecks());
         Card nextCard = cardDeck.playnextCard();
         while(nextCard!=null) {
-            if(nextCard instanceof Trafficker || nextCard instanceof AbbandonedStation) {
+            if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
                 assertNotNull(nextCard.getBoxesWon());
-            } else if (nextCard instanceof Planet) {
+            } else if (nextCard.getCardType().equals(CardType.PLANET) ) {
                 assertNotNull(nextCard.getPlanetOffers());
             }
             nextCard = cardDeck.playnextCard();
