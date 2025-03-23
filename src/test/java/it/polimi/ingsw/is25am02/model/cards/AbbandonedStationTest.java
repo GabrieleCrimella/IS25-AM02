@@ -29,9 +29,13 @@ class AbbandonedStationTest {
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -39,6 +43,7 @@ class AbbandonedStationTest {
         players.add(player4);
         //game di livello 0 con i 4 players
         Game game = new Game(players,0);
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
 
