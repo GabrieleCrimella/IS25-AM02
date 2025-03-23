@@ -61,9 +61,8 @@ public class Planet extends Card_with_box{
     }
 
     @Override
-    public List<Box> choicePlanet(Game game, Player player, int index){
-        //index = -1 if you don't want to land
-        if(index>=0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
+    public List<Box> choicePlanet(Game game, Player player, int index) throws IllegalArgumentException{
+        if(index >= 0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
             setStateCard(StateCardType.BOXMANAGEMENT);
@@ -79,9 +78,12 @@ public class Planet extends Card_with_box{
             game.nextPlayer();
             return null;
         }
-        else{
+        else if(index == -1){ //The player doesn't want to land
             game.nextPlayer();
             return null;
+        }
+        else{
+            throw new IllegalArgumentException("Index out of bounds");
         }
 
     }

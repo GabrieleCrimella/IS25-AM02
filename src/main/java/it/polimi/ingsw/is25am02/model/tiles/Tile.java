@@ -6,6 +6,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +151,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void removeCrew() throws UnsupportedOperationException {
+    public void removeCrew() throws UnsupportedOperationException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method");
     }
 
