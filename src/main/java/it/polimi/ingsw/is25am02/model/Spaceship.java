@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.util.*;
@@ -10,8 +11,8 @@ public class Spaceship {
     private int numOfWastedTiles;
     private int cosmicCredits;
     private Tile currentTile;
-    private int targetTileX;
-    private int targetTileY;
+    private int x_start, y_start;
+    private int targetTileX, targetTileY;
 
     public Spaceship(int level) {
         this.spaceshipIterator = new SpaceshipIterator(level);
@@ -40,10 +41,39 @@ public class Spaceship {
         return spaceshipIterator.getTile(x, y);
     }
 
+    //mi dovrebbe tornare una lista di liste di tile che compongono blocchi indipendenti della nave.
     //todo vedere se la tile che rimuovo fa togliere altre tiles e poi aumentare wastedtiles, controllare se si stacca un pezzo di nave e capire diq aunte tiles è fatto questo pezzo
-    public void removeTile(int x, int y) { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
-        spaceshipIterator.removeTile(x, y); //tolgo la tile colpita
-        numOfWastedTiles++; //todo da togliere
+    public List<List<Tile>> removeTile(int x, int y) { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
+        List<List<Tile>> blocks = new LinkedList<>();
+        int numBlocks = 0;
+
+        List<Tile> remainingTiles = spaceshipIterator.returnAllTiles();
+        Optional<Tile> current = spaceshipIterator.getFirstTile();
+
+        List<Tile> willBeVisitedInAMoment = new LinkedList<>();
+        while (remainingTiles.size() > 0) {
+            List<Tile> block = new LinkedList<>();
+            block.add(current.get());
+            remainingTiles.remove(current.get());
+            spaceshipIterator.getConnectedNearTiles(current.get()).forEach(t -> willBeVisitedInAMoment.add(t));
+            while (willBeVisitedInAMoment.size() > 0) {
+                Tile t = willBeVisitedInAMoment.get(0);
+                willBeVisitedInAMoment.remove(0);
+                for (RotationType r : RotationType.values()) {
+                    Optional<Tile> next = spaceshipIterator.getTileInDirection(t, r);
+                    if (next.isPresent() && remainingTiles.contains(next.get())) {
+                        block.add(next.get());
+                        willBeVisitedInAMoment.add(next.get());
+                        remainingTiles.remove(next.get());
+                    }
+                }
+            }
+            blocks.add(block);
+            numBlocks++;
+            if (remainingTiles.size() > 0) {
+                current = remainingTiles.get(0);
+            }
+        }
     }
 
     //todo durante la fase di costruzione se scarto una carta, rimetto la current tile nel heaptile
@@ -52,7 +82,13 @@ public class Spaceship {
         currentTile = null;
     }
 
-    public void setCurrentTile(Tile t){ currentTile = t; }
+    public void setCurrentTile(Tile t) throws AlreadyViewingTileException {
+        if (currentTile == null) {
+            currentTile = t;
+        } else {
+            throw new AlreadyViewingTileException();
+        }
+    }
 
     public boolean isShielded(RotationType side) {
         for(Tile t : getTilesByType(TileType.SHIELD)){
@@ -89,6 +125,7 @@ public class Spaceship {
                     break;
                 }
             }
+
         }
         return power;
     }
@@ -115,27 +152,27 @@ public class Spaceship {
         //If this method returns ConnectorType.NONE you shouldn't add 1, if not add 1.
         //Same for all the other sides
         int exposedConnectors = 0;
-        for(Optional<Tile> optionalTile : spaceshipIterator.reference()){
-            if(optionalTile.isPresent()){
+        for (Optional<Tile> optionalTile : spaceshipIterator.reference()) {
+            if (optionalTile.isPresent()) {
                 Tile tile = optionalTile.get();
                 //north
-                if(spaceshipIterator.getUpTile(tile).isEmpty() &&
-                        tile.connectorOnSide(RotationType.NORTH)!= ConnectorType.NONE){
+                if (spaceshipIterator.getUpTile(tile).isEmpty() &&
+                        tile.connectorOnSide(RotationType.NORTH) != ConnectorType.NONE) {
                     exposedConnectors++;
                 }
                 //south
-                if(spaceshipIterator.getDownTile(tile).isEmpty() &&
-                        tile.connectorOnSide(RotationType.SOUTH)!= ConnectorType.NONE){
+                if (spaceshipIterator.getDownTile(tile).isEmpty() &&
+                        tile.connectorOnSide(RotationType.SOUTH) != ConnectorType.NONE) {
                     exposedConnectors++;
                 }
                 //east
-                if(spaceshipIterator.getRightTile(tile).isEmpty() &&
-                        tile.connectorOnSide(RotationType.EAST)!= ConnectorType.NONE){
+                if (spaceshipIterator.getRightTile(tile).isEmpty() &&
+                        tile.connectorOnSide(RotationType.EAST) != ConnectorType.NONE) {
                     exposedConnectors++;
                 }
                 //west
-                if(spaceshipIterator.getLeftTile(tile).isEmpty() &&
-                        tile.connectorOnSide(RotationType.WEST)!= ConnectorType.NONE){
+                if (spaceshipIterator.getLeftTile(tile).isEmpty() &&
+                        tile.connectorOnSide(RotationType.WEST) != ConnectorType.NONE) {
                     exposedConnectors++;
                 }
             }
@@ -271,11 +308,13 @@ public class Spaceship {
 
     public Tile getCurrentTile() {
         return currentTile;
-    }
+    }// è la tile che sto guardando
 
 
     //todo da controllare
     //todo bisogna gestire il fatto che se viene colpito un supporto vitale allora va rimosso l'alieno nella cabina vicino
+    //calcola la distruzione della nave in base a dove è arrivato il meteorite
+    //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
     //ritorna 1 se la nave si è divisa in varie parti
     public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
@@ -341,8 +380,8 @@ public class Spaceship {
 
     //Mi dice se la tile appartiene alla nave
     public boolean own(Tile tile) {
-        for(Optional<Tile> t : spaceshipIterator.reference()){
-            if(t.isPresent() && t.get().equals(tile)){
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
+            if (t.isPresent() && t.get().equals(tile)) {
                 return true;
             }
         }
@@ -385,13 +424,14 @@ public class Spaceship {
 
     //todo mantiene il pezzo di nave con la tile nella posizione (x,y), tutti i pezzi rimossi sono messi eliminati e si
     //aggiunge +1 per ogni pezzo al contatore degli scarti
-    public void holdSpaceship(int x, int y) {}
+    public void holdSpaceship(int x, int y) {
+    }
 
 
     // ritorno 1 se non ci sono box sulla nave, 0 altrimenti
-    public boolean noBox(){
-        for(Tile t: getTilesByType(TileType.STORAGE)){
-            if(t.getOccupation()!=null){
+    public boolean noBox() {
+        for (Tile t : getTilesByType(TileType.STORAGE)) {
+            if (t.getOccupation() != null) {
                 return false;
             }
         }

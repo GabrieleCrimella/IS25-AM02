@@ -2,14 +2,13 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Optional<Tile>> {
     private final Optional<Tile>[][] spaceshipBoard;
@@ -84,10 +83,33 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         }
     }
 
-    public void removeTile(int x, int y) {
+    public void removeOneTile(int x, int y) {
         if (spaceshipMask[x][y])
             spaceshipBoard[x][y] = Optional.empty();
         else throw new IllegalArgumentException("Invalid tile position");
+    }
+
+    public List<Tile> returnAllTiles() {
+        List<Tile> temp = new LinkedList<>();
+        for (Optional<Tile> t : this.reference())
+            if (t.isPresent())
+                temp.add(t.get());
+        return temp;
+    }
+
+    public List<Tile> getConnectedNearTiles(Tile t) {
+        List<Tile> connectedNear = new LinkedList<>();
+
+        if (getUpTile(t).isPresent() && t.checkConnectors(getUpTile(t).get(), RotationType.NORTH))
+            connectedNear.add(getUpTile(t).get());
+        if (getDownTile(t).isPresent() && t.checkConnectors(getRightTile(t).get(), RotationType.EAST))
+            connectedNear.add(getDownTile(t).get());
+        if (getLeftTile(t).isPresent() && t.checkConnectors(getDownTile(t).get(), RotationType.SOUTH))
+            connectedNear.add(getLeftTile(t).get());
+        if (getRightTile(t).isPresent() && t.checkConnectors(getLeftTile(t).get(), RotationType.WEST))
+            connectedNear.add(getRightTile(t).get());
+
+        return connectedNear;
     }
 
     //todo: il controllo di correttezza con la maschera andrebbe fatto forse SOLO durante il check della spaceship. DISCUTIAMONE E CAPIAMO.
@@ -95,6 +117,15 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         if (spaceshipMask[x][y])
             spaceshipBoard[x][y] = Optional.of(tile);
         else throw new IllegalArgumentException("Invalid tile position");
+    }
+
+    public Optional<Tile> getFirstTile() {
+        for (Optional<Tile> t : this.reference()) {
+            if (t.isPresent()) {
+                return t;
+            }
+        }
+        return Optional.empty();
     }
 
     public Optional<Tile> getTile(int x, int y) {
