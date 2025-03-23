@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
@@ -13,6 +14,7 @@ public class AbbandonedShip extends Card{
     private final int creditWin;
     private final int flyBack;
     private int AliveRemoved;    //Crew eliminate from Spaceship
+    private CardType cardType;
 
     //Phase: DECISION e REMOVE
 
@@ -22,6 +24,12 @@ public class AbbandonedShip extends Card{
         this.creditWin = creditWin;
         this.flyBack = flyBack;
         this.AliveRemoved = 0;
+        this.cardType = CardType.ABANDONED_SHIP;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     @Override

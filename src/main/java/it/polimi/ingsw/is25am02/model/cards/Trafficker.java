@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
@@ -26,6 +27,7 @@ public class Trafficker extends Card_with_box{
     private int boxesRemove;
     private final LinkedList<Box> boxesWon;
     private final LinkedList<BoxType> boxesWonTypes;
+    private CardType cardType;
 
     public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
         super(level, store, StateCardType.CHOICE_ATTRIBUTES);
@@ -35,6 +37,12 @@ public class Trafficker extends Card_with_box{
         this.boxesWon = boxesWon;
         this.boxesWonTypes = boxesWonTypes;
         this.boxesRemove = 0;
+        this.cardType = CardType.TRAFFICKER;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     @Override

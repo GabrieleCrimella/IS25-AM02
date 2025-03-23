@@ -102,4 +102,6 @@ public abstract class Card {
 
     public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ return new ArrayList<ArrayList<BoxType>>();}
 
+    public CardType getCardType() { return null;}
+
 }

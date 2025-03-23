@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
@@ -19,11 +20,18 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CAR
 public class SlaveOwner extends Enemies{
     private final int AliveLost;
     private int AliveRemoved;
+    private CardType cardType;
 
     public SlaveOwner(int level, int cannonPowers, int daysLost, int credit, int humanLost) {
         super(level, cannonPowers, daysLost, credit, StateCardType.DECISION);
         this.AliveLost = humanLost;
         this.AliveRemoved = 0;
+        this.cardType = CardType.SLAVE_OWNER;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     @Override

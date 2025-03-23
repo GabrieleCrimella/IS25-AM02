@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
@@ -23,6 +24,7 @@ public class WarZone_I extends Card {
     private final LinkedHashMap<Player, Integer> declarationMotor;
     private int currentIndex;
     private int currentPhase;
+    private CardType cardType;
 
     public WarZone_I(int level, int flyback, int aliveLost, ArrayList<Pair<Integer, RotationType>> shots) {
         super(level, StateCardType.CHOICE_ATTRIBUTES);
@@ -35,6 +37,12 @@ public class WarZone_I extends Card {
         this.declarationMotor = new LinkedHashMap<>();
         this.currentIndex = 0;
         this.currentPhase = 1;
+        this.cardType = CardType.WARZONE1;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     public int getCurrentPhase() {

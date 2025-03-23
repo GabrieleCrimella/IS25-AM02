@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
@@ -24,6 +25,7 @@ public class WarZone_II extends Card{
     private int currentIndex;
     private int currentPhase;
     private final ArrayList<Pair<Integer, RotationType>> shots;
+    private CardType cardType;
 
     public WarZone_II(int level, int flyback, int boxesLost, ArrayList<Pair<Integer, RotationType>> shots) {
         super(level, StateCardType.DECISION);
@@ -36,6 +38,12 @@ public class WarZone_II extends Card{
         this.declarationCrew = new LinkedHashMap<>();
         this.declarationCannon = new LinkedHashMap<>();
         this.declarationMotor = new LinkedHashMap<>();
+        this.cardType = CardType.WARZONE2;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     @Override

@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 import java.util.LinkedList;
@@ -16,6 +17,7 @@ public class AbbandonedStation extends Card_with_box {
     private final int daysLost;
     private final LinkedList<Box> boxesWon;
     private final LinkedList<BoxType> boxesWonTypes;
+    private CardType cardType;
 
     public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
         super(level, store, StateCardType.DECISION);
@@ -23,6 +25,12 @@ public class AbbandonedStation extends Card_with_box {
         this.daysLost = daysLost;
         this.boxesWon = boxesWon;
         this.boxesWonTypes = boxesWonTypes;
+        this.cardType = CardType.ABANDONED_STATION;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     @Override

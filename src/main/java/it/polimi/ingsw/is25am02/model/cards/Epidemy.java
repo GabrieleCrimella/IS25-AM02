@@ -1,13 +1,22 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 
 public class Epidemy extends Card {
 
+    private CardType cardType;
+
     public Epidemy(int level) {
         super(level, StateCardType.DECISION);
+        this.cardType = CardType.EPIDEMY;
+    }
+
+    @Override
+    public CardType getCardType(){
+        return cardType;
     }
 
     @Override

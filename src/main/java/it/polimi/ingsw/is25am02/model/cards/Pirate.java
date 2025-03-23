@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
@@ -22,6 +23,7 @@ public class Pirate extends Enemies{
     private int currentIndex;
     private ArrayList<Player> losers;
     private int phase;
+    private CardType cardType;
 
     public Pirate(int level, int cannonPowers, int daysLost, int credit, ArrayList<Pair<Integer, RotationType>> shots) {
         super(level, cannonPowers, daysLost, credit, CHOICE_ATTRIBUTES);
@@ -29,6 +31,12 @@ public class Pirate extends Enemies{
         this.losers = new ArrayList<>();
         this.currentIndex = 0;
         this.phase = 1;
+        this.cardType = CardType.PIRATE;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
@@ -12,12 +13,19 @@ import java.util.Optional;
 public class MeteoritesStorm extends Card {
     private final ArrayList<Pair<Integer, RotationType>> meteorites;
     private int currentIndex;
+    private CardType cardType;
 
 
     public MeteoritesStorm(int level, ArrayList<Pair<Integer,RotationType>> meteorites) {
         super(level,StateCardType.ROLL);
         this.meteorites = meteorites;
         currentIndex = 0;
+        this.cardType = CardType.METEORITES_STORM;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return cardType;
     }
 
     @Override
