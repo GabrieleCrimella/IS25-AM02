@@ -46,6 +46,11 @@ public class Planet extends Card_with_box{
     }
 
     @Override
+    public void addPlanetOffers(ArrayList<Box> boxes) {
+        planetOffers.add(boxes);
+    }
+
+    @Override
     public ArrayList<ArrayList<Box>> getPlanetOffers() {
         return planetOffers;
     }

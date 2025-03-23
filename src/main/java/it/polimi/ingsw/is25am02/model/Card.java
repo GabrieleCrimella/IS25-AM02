@@ -104,4 +104,8 @@ public abstract class Card {
 
     public CardType getCardType() { return null;}
 
+    public void addBoxWon(Box box){}
+
+    public void addPlanetOffers(ArrayList<Box> boxes){}
+
 }

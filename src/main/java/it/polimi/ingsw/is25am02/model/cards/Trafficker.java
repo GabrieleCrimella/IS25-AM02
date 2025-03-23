@@ -41,6 +41,9 @@ public class Trafficker extends Card_with_box{
     }
 
     @Override
+    public void addBoxWon(Box box){boxesWon.add(box);}
+
+    @Override
     public CardType getCardType() {
         return cardType;
     }

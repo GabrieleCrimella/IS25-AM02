@@ -27,6 +27,8 @@ public class AbbandonedStation extends Card_with_box {
         this.boxesWonTypes = boxesWonTypes;
         this.cardType = CardType.ABANDONED_STATION;
     }
+    @Override
+    public void addBoxWon(Box box){boxesWon.add(box);}
 
     @Override
     public CardType getCardType() {

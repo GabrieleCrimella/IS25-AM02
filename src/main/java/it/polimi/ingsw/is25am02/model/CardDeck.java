@@ -311,7 +311,7 @@ public class CardDeck {
                 } else if(boxType.equals(BoxType.YELLOW)){
                     box = new YellowBox(BoxType.YELLOW);
                 } else throw new IllegalArgumentException("I cannot add a box");
-                nextCard.getBoxesWon().add(box);
+                nextCard.addBoxWon(box);
             }
         } else if (nextCard.getCardType().equals(CardType.PLANET) ) {
             for (List<BoxType> boxTypeList : nextCard.getPlanetOffersTypes()) {
@@ -329,7 +329,7 @@ public class CardDeck {
                     } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
                     boxList.add(box);
                 }
-                nextCard.getPlanetOffers().add(boxList); // Aggiungi la lista alla lista principale
+                nextCard.addPlanetOffers(boxList); // Aggiungi la lista alla lista principale
             }
         }
         return nextCard;
