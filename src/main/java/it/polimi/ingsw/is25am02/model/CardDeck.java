@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.is25am02.model.cards.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import javafx.util.Pair;
 
@@ -277,13 +278,13 @@ public class CardDeck {
     public Card playnextCard(){//deve prendere la prossima carta da final deck
         Card nextCard;
         //se la carta corrente è una di quelle con le box metto gli scarti in store
-        if(finalDeck.getFirst() instanceof AbbandonedStation || finalDeck.getFirst() instanceof Trafficker){
+        if(finalDeck.getFirst().getCardType().equals(CardType.ABANDONED_STATION) || finalDeck.getFirst().getCardType().equals(CardType.TRAFFICKER)){
             if(!finalDeck.getFirst().getBoxesWon().isEmpty()){
                 for(Box box : finalDeck.getFirst().getBoxesWon()){
                     store.addBox(box);
                 }
             }
-        } else if (finalDeck.getFirst() instanceof Planet) {
+        } else if (finalDeck.getFirst().getCardType().equals(CardType.PLANET)) {
             if(!( finalDeck.getFirst()).getPlanetOffers().isEmpty()){
                 for(ArrayList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()){
                     for(Box box : boxlist){
@@ -298,7 +299,7 @@ public class CardDeck {
         }
         nextCard = finalDeck.getFirst();
         //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi
-        if(nextCard instanceof AbbandonedStation || nextCard instanceof Trafficker){
+        if(nextCard.getCardType().equals(CardType.ABANDONED_STATION) || nextCard.getCardType().equals(CardType.TRAFFICKER) ){
             for(BoxType boxType : nextCard.getBoxesWonTypes()){
                 Box box;
                 if(boxType.equals(BoxType.RED)){
@@ -312,7 +313,7 @@ public class CardDeck {
                 } else throw new IllegalArgumentException("I cannot add a box");
                 nextCard.getBoxesWon().add(box);
             }
-        } else if (nextCard instanceof Planet) {
+        } else if (nextCard.getCardType().equals(CardType.PLANET) ) {
             for (List<BoxType> boxTypeList : nextCard.getPlanetOffersTypes()) {
                 ArrayList<Box> boxList = new ArrayList<>();
                 for (BoxType type : boxTypeList) {
