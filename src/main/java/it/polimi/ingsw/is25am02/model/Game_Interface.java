@@ -29,7 +29,8 @@ public interface Game_Interface {
     void checkSpaceship(Player player);
 
     //Phase CORRECTION
-    void removeTile(Player player, int x, int y);
+    Optional<List<boolean[][]>> removeTile(Player player, int x, int y);
+    void keepBlock(Player player, boolean[][] tilesToKeep);
     void checkWrongSpaceship(Player player);
 
     //Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
