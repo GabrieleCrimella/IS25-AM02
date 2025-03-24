@@ -89,23 +89,23 @@ public abstract class Card {
     }
 
     public LinkedList<Box> getBoxesWon() {
-        return new LinkedList<Box>();
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public ArrayList<ArrayList<Box>> getPlanetOffers() {
-        return new ArrayList<ArrayList<Box>>();
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public LinkedList<BoxType> getBoxesWonTypes() {
-        return new LinkedList<BoxType>();
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ return new ArrayList<ArrayList<BoxType>>();}
+    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
-    public CardType getCardType() { return null;}
+    public CardType getCardType() { throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
-    public void addBoxWon(Box box){}
+    public void addBoxWon(Box box){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
-    public void addPlanetOffers(ArrayList<Box> boxes){}
+    public void addPlanetOffers(ArrayList<Box> boxes){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
 }
