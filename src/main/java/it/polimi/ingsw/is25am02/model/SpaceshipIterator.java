@@ -208,4 +208,13 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     public Iterator<Optional<Tile>> iterator() {
         return this;
     }
+
+    public Optional<Tile> getTileInDirection(Tile t, RotationType rotationType) {
+        return switch (rotationType) {
+            case NORTH -> getUpTile(t);
+            case EAST -> getRightTile(t);
+            case SOUTH -> getDownTile(t);
+            case WEST -> getLeftTile(t);
+        };
+    }
 }
