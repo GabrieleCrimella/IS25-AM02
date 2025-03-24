@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
@@ -133,8 +134,13 @@ public class HeapTiles {
         return visibleTiles;
     }
 
-    public void removeVisibleTile(Tile t) {
-        setTiles.remove(t);
+    public void removeVisibleTile(Tile t) throws IllegalRemoveException {
+        if(!t.isVisible()){
+            throw new IllegalRemoveException("The tile: " + t.getType() + " isn't visible");
+        }
+        if(!setTiles.remove(t)) {
+            throw new IllegalRemoveException("The tile: " + t.getType() + " isn't in heaptiles");
+        }
     }
 
     public void addTile(Tile t, boolean visible) {

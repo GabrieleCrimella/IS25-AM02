@@ -30,11 +30,10 @@ public final class Cabin extends Tile{
     }
 
     @Override
-    public void removeCrew(){
+    public void removeCrew() throws IllegalRemoveException {
         if(crew.isEmpty()){
             throw new IllegalRemoveException("This cabin is empty");
         }
-
         crew.removeLast();
     }
 }

@@ -74,9 +74,7 @@ public class SlaveOwner extends Enemies{
             cabin.removeCrew();
             AliveRemoved++;
         } catch (IllegalRemoveException e) {
-            System.out.println("Error" + e.getMessage());
-            return;
-            //gestisco eccezione non c'è equipaggio sulla cabin passata
+            System.out.println(e.getMessage());
         }
 
         if (AliveRemoved == AliveLost) {

@@ -2,6 +2,8 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 //import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.util.*;
@@ -33,7 +35,7 @@ public class Spaceship {
      */
 
 
-    public void addTile(int x, int y, Tile t) {
+    public void addTile(int x, int y, Tile t) throws IllegalAddException {
         spaceshipIterator.addTile(t, x, y);
     }
 
@@ -457,7 +459,7 @@ public class Spaceship {
     }
 
     //todo controllare che sia corretto
-    public void epidemyRemove() {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
+    public void epidemyRemove() throws IllegalRemoveException {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
         for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
                 if (spaceshipIterator.getUpTile(t.get()).isPresent() && (spaceshipIterator.getUpTile(t.get()).get().getType().equals(TileType.CABIN)) ||
@@ -491,7 +493,7 @@ public class Spaceship {
     public List<Tile> getTilesByType(TileType type) {
         List<Tile> temp = new ArrayList<>();
         for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.get().getType().equals(type)) {
+            if (t.isPresent() && t.get().getType().equals(type)) {
                 temp.add(t.get());
             }
         }

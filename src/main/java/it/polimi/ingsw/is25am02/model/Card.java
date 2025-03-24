@@ -37,75 +37,75 @@ public abstract class Card {
     }
 
     public void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method for " + this.getCardType());
     }
 
     public void removeCrew(Game game, Player player, Tile cabin) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public List<Box> choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+    public List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException, IllegalArgumentException{
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException{// il primo tile è dmotor, il secondo battery storage
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void choiceCrew(Game game, Player player) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void removeBox(Game game, Player player, SpecialStorage storage, BoxType type) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void removeBattery(Game game, Player player, BatteryStorage storage) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void calculateDamage(Game game, Player player, Optional<BatteryStorage> storage) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void holdSpaceship(Game game, Player player, int x, int y) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void effect(Game game) throws UnsupportedOperationException{
-        throw new UnsupportedOperationException("Not supported method");
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public LinkedList<Box> getBoxesWon() {
-        return new LinkedList<Box>();
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public ArrayList<ArrayList<Box>> getPlanetOffers() {
-        return new ArrayList<ArrayList<Box>>();
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public LinkedList<BoxType> getBoxesWonTypes() {
-        return new LinkedList<BoxType>();
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ return new ArrayList<ArrayList<BoxType>>();}
+    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
-    public CardType getCardType() { return null;}
+    public CardType getCardType() { throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
-    public void addBoxWon(Box box){}
+    public void addBoxWon(Box box){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
-    public void addPlanetOffers(ArrayList<Box> boxes){}
+    public void addPlanetOffers(ArrayList<Box> boxes){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
 }

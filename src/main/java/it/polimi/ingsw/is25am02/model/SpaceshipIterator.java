@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
@@ -113,10 +114,10 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     //todo: il controllo di correttezza con la maschera andrebbe fatto forse SOLO durante il check della spaceship. DISCUTIAMONE E CAPIAMO.
-    public void addTile(Tile tile, int x, int y) {
-        if (spaceshipMask[x][y])
+    public void addTile(Tile tile, int x, int y) throws IllegalAddException {
+        if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty())
             spaceshipBoard[x][y] = Optional.of(tile);
-        else throw new IllegalArgumentException("Invalid tile position");
+        else throw new IllegalAddException("Invalid tile position or occupied");
     }
 
     public Optional<Tile> getFirstTile() {
