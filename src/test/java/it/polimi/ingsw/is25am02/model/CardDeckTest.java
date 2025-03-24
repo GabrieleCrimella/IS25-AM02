@@ -172,8 +172,10 @@ class CardDeckTest {
         Card nextCard = cardDeck.playnextCard();
         while(nextCard!=null) {
             if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
+                assertTrue(nextCard.getBoxesWonTypes().size() <7);
                 assertNotNull(nextCard.getBoxesWon());
             } else if (nextCard.getCardType().equals(CardType.PLANET) ) {
+                assertTrue(nextCard.getPlanetOffers().size() <6);
                 assertNotNull(nextCard.getPlanetOffers());
             }
             nextCard = cardDeck.playnextCard();

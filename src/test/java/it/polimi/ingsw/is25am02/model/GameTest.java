@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BlueBox;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import org.junit.jupiter.api.Test;
 
@@ -113,7 +114,11 @@ class GameTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
-        spaceship1.addTile(7,7, cabin1);
+        try {
+            spaceship1.addTile(7,7, cabin1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
         game.addCrew(player2, 7,7, AliveType.HUMAN);
 
         //tile 2 - Storage 7 6
@@ -123,7 +128,11 @@ class GameTest {
         int id2 = 1;
         int maxNum = 2;
         Tile storage1 = new SpecialStorage(t2, connectors2, rotationType2, id2, maxNum);
-        spaceship1.addTile(7,6, storage1);
+        try {
+            spaceship1.addTile(7,6, storage1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
         Box blueBox = new BlueBox(BoxType.BLUE);
         Box redBox = new RedBox(BoxType.RED);
         storage1.addBox(blueBox);
@@ -136,7 +145,11 @@ class GameTest {
         int id3 = 1;
         int maxNum3 = 2;
         Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
-        spaceship1.addTile(8,7, battery3);
+        try {
+            spaceship1.addTile(8,7, battery3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 4 - cannon 7 5
         TileType t4 = TileType.CANNON;
@@ -144,7 +157,11 @@ class GameTest {
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
         Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
-        spaceship1.addTile(7,5, cannon1);
+        try {
+            spaceship1.addTile(7,5, cannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 5 - dcannon 8 6
         TileType t5 = TileType.D_CANNON;
@@ -152,7 +169,11 @@ class GameTest {
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
-        spaceship1.addTile(8,6, dcannon1);
+        try {
+            spaceship1.addTile(8,6, dcannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 6 - dcannon 6 6
         TileType t6 = TileType.D_CANNON;
@@ -160,7 +181,11 @@ class GameTest {
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
         Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
-        spaceship1.addTile(6,6, dcannon2);
+        try {
+            spaceship1.addTile(6,6, dcannon2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //inizializzo spaceship2
         //tile 1 - cabin centrale
@@ -169,7 +194,11 @@ class GameTest {
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
         Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
-        spaceship2.addTile(7,7, cabin21);
+        try {
+            spaceship2.addTile(7,7, cabin21);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         game.addCrew(player2, 7,7, AliveType.HUMAN);
 
@@ -180,7 +209,11 @@ class GameTest {
         RotationType rotationType31 = RotationType.NORTH;
         int id31 = 1;
         Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
-        spaceship3.addTile(7,7, cabin31);
+        try {
+            spaceship3.addTile(7,7, cabin31);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         game.addCrew(player3, 7,7, AliveType.HUMAN);
 
@@ -191,7 +224,11 @@ class GameTest {
         RotationType rotationType41 = RotationType.NORTH;
         int id41 = 1;
         Tile cabin41 = new Cabin(t41, connectors41, rotationType41, id41);
-        spaceship4.addTile(7,7, cabin41);
+        try {
+            spaceship4.addTile(7,7, cabin41);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         game.addCrew(player4, 7,7, AliveType.HUMAN);
         game.getCurrentState().setPhase(StateGameType.RESULT);
@@ -244,7 +281,11 @@ class GameTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
-        spaceship1.addTile(7,7, cabin1);
+        try {
+            spaceship1.addTile(7,7, cabin1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 2 - cabin
         TileType t2 = TileType.CABIN;
@@ -252,7 +293,11 @@ class GameTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
-        spaceship1.addTile(8,7, cabin2);
+        try {
+            spaceship1.addTile(8,7, cabin2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         game.addCrew(player1, 7,7, AliveType.HUMAN);
         game.addCrew(player1, 8,7, AliveType.HUMAN);
@@ -266,7 +311,11 @@ class GameTest {
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
         Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
-        spaceship2.addTile(7,7, cabin21);
+        try {
+            spaceship2.addTile(7,7, cabin21);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 2 -cabin viola 7 8
         TileType t22 = TileType.PURPLE_CABIN;
@@ -274,7 +323,11 @@ class GameTest {
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 1;
         Tile purplecabin22 = new PurpleCabin(t22, connectors22, rotationType22, id22);
-        spaceship2.addTile(7,8, purplecabin22);
+        try {
+            spaceship2.addTile(7,8, purplecabin22);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 3 - cabin 8 8
         TileType t23 = TileType.CABIN;
@@ -282,7 +335,11 @@ class GameTest {
         RotationType rotationType23 = RotationType.NORTH;
         int id23 = 1;
         Tile cabin23 = new Cabin(t23, connectors23, rotationType23, id23);
-        spaceship2.addTile(8,8, cabin23);
+        try {
+            spaceship2.addTile(8,8, cabin23);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         game.addCrew(player2, 7,7, AliveType.HUMAN);
         assertEquals(2, game.getPlayers().get(1).getSpaceship().getTile(7,7).get().getCrew().size());

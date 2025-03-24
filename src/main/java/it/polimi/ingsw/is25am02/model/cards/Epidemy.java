@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 
 public class Epidemy extends Card {
@@ -22,7 +23,11 @@ public class Epidemy extends Card {
     @Override
     public void effect(Game game){
         for(Player p : game.getGameboard().getRanking()){
-            p.getSpaceship().epidemyRemove();
+            try {
+                p.getSpaceship().epidemyRemove();
+            } catch (IllegalRemoveException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }

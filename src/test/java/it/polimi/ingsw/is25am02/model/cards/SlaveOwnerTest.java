@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +53,11 @@ class SlaveOwnerTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
-        spaceship1.addTile(7,7, cabin1);
+        try {
+            spaceship1.addTile(7,7, cabin1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 2 - Storage 7 6
         TileType t2 = TileType.STORAGE;
@@ -61,7 +66,11 @@ class SlaveOwnerTest {
         int id2 = 1;
         int maxNum = 2;
         Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
-        spaceship1.addTile(7,6, storage1);
+        try {
+            spaceship1.addTile(7,6, storage1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 3 - battery 8 7
         TileType t3 = TileType.BATTERY;
@@ -70,7 +79,11 @@ class SlaveOwnerTest {
         int id3 = 1;
         int maxNum3 = 2;
         Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
-        spaceship1.addTile(8,7, battery3);
+        try {
+            spaceship1.addTile(8,7, battery3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 4 - cannon 7 5
         TileType t4 = TileType.CANNON;
@@ -78,7 +91,11 @@ class SlaveOwnerTest {
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
         Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
-        spaceship1.addTile(7,5, cannon1);
+        try {
+            spaceship1.addTile(7,5, cannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 5 - dcannon 8 6
         TileType t5 = TileType.D_CANNON;
@@ -86,7 +103,11 @@ class SlaveOwnerTest {
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
-        spaceship1.addTile(8,6, dcannon1);
+        try {
+            spaceship1.addTile(8,6, dcannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 6 - dcannon 6 6
         TileType t6 = TileType.D_CANNON;
@@ -94,7 +115,11 @@ class SlaveOwnerTest {
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
         Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
-        spaceship1.addTile(6,6, dcannon2);
+        try {
+            spaceship1.addTile(6,6, dcannon2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         List<Tile> listaDoppiCannoniAttivi = new ArrayList<>();
         listaDoppiCannoniAttivi.add(dcannon1);

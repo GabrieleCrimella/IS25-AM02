@@ -80,6 +80,11 @@ public class Trafficker extends Card_with_box{
     }
 
     @Override
+    public LinkedList<Box> getBoxesWon() {
+        return boxesWon;
+    }
+
+    @Override
     public List<Box> choiceBox(Game game, Player player, boolean choice){
         if(choice){
             setStateCard(StateCardType.BOXMANAGEMENT);
