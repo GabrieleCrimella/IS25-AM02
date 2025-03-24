@@ -218,14 +218,13 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo Aspetto Il push di gabri per lavorarci
     @Override
     public Optional<List<boolean[][]>> removeTile(Player player, int x, int y) {
         try {
             stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
 
             return player.getSpaceship().removeTile(x, y);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IllegalRemoveException e) {
             System.out.println(e.getMessage());
             return Optional.empty();
         }

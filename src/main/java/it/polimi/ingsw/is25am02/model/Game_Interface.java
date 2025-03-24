@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Game_Interface {
-    //Phase INITIALIZATION_GAME
-    //Nothing
 
     //Phase BUILD
     void flipHourglass();

@@ -13,11 +13,11 @@ import java.util.List;
 
 public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Cannon, DoubleCannon, DoubleMotor, Motors, PurpleCabin, Shield, SpecialStorage, Storage, Structural{
 //todo: ricordiamoci di mettere che all'inizio della preparazione della nave i giocatori trovano già posizionata la "tile iniziale" colorata al centro della loro nave
-    private TileType tType;
-    private ConnectorType[] connectors;
+    private final TileType tType;
+    private final ConnectorType[] connectors;
     private RotationType rotationType;
     private boolean visible;
-    private int id;
+    private final int id;
 
     //Constructor
     public Tile(TileType t, ConnectorType[] connectors, RotationType rotationType, int id) {

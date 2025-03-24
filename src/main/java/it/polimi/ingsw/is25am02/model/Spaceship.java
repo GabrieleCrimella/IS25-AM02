@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 //import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
+import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
@@ -45,46 +46,50 @@ public class Spaceship {
 
     //mi dovrebbe tornare una lista di liste di tile che compongono blocchi indipendenti della nave.
     //vedere se la tile che rimuovo fa togliere altre tiles e poi aumentare wastedtiles, controllare se si stacca un pezzo di nave e capire di qaunte tiles è fatto questo pezzo
-    public Optional<List<boolean[][]>> removeTile(int x, int y) { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
-        Tile toRemove = spaceshipIterator.getTile(x, y).get(); //e se la tile non esiste?
-        List<Tile> up = new ArrayList<>();
-        List<Tile> right = new ArrayList<>();
-        List<Tile> down = new ArrayList<>();
-        List<Tile> left = new ArrayList<>();
+    public Optional<List<boolean[][]>> removeTile(int x, int y) throws IllegalRemoveException { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
+        if(spaceshipIterator.getTile(x, y).isEmpty()) {
+            throw new IllegalRemoveException("There is no tile on (" + x + ", " + y + ")");
+        }
+        else {
+            Tile toRemove = spaceshipIterator.getTile(x, y).get();
+            List<Tile> up = new ArrayList<>();
+            List<Tile> right = new ArrayList<>();
+            List<Tile> down = new ArrayList<>();
+            List<Tile> left = new ArrayList<>();
 
-        if (spaceshipIterator.getUpTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getUpTile(toRemove).get(), RotationType.NORTH)) {
-            up = startVisit(toRemove, RotationType.NORTH);
-        }
-        if (spaceshipIterator.getRightTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getRightTile(toRemove).get(), RotationType.EAST)) {
-            right = startVisit(toRemove, RotationType.EAST);
-        }
-        if (spaceshipIterator.getDownTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getDownTile(toRemove).get(), RotationType.SOUTH)) {
-            down = startVisit(toRemove, RotationType.SOUTH);
-        }
-        if (spaceshipIterator.getLeftTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getLeftTile(toRemove).get(), RotationType.SOUTH)) {
-            left = startVisit(toRemove, RotationType.WEST);
-        }
-
-        List<List<Tile>> effectiveBlocks = new LinkedList<>();
-        generateBlocks(up, effectiveBlocks);
-        generateBlocks(right, effectiveBlocks);
-        generateBlocks(down, effectiveBlocks);
-        generateBlocks(left, effectiveBlocks);
-
-        List<boolean[][]> booleanBlocks = new LinkedList<>();
-        for (List<Tile> block : effectiveBlocks) {
-            boolean[][] booleanBlock = new boolean[12][12];
-            for (Tile t : block) {
-                booleanBlock[spaceshipIterator.getX(t)][spaceshipIterator.getY(t)] = true;
+            if (spaceshipIterator.getUpTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getUpTile(toRemove).get(), RotationType.NORTH)) {
+                up = startVisit(toRemove, RotationType.NORTH);
             }
-            booleanBlocks.add(booleanBlock);
-        }
-        if (booleanBlocks.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(booleanBlocks);
-        }
+            if (spaceshipIterator.getRightTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getRightTile(toRemove).get(), RotationType.EAST)) {
+                right = startVisit(toRemove, RotationType.EAST);
+            }
+            if (spaceshipIterator.getDownTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getDownTile(toRemove).get(), RotationType.SOUTH)) {
+                down = startVisit(toRemove, RotationType.SOUTH);
+            }
+            if (spaceshipIterator.getLeftTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getLeftTile(toRemove).get(), RotationType.SOUTH)) {
+                left = startVisit(toRemove, RotationType.WEST);
+            }
 
+            List<List<Tile>> effectiveBlocks = new LinkedList<>();
+            generateBlocks(up, effectiveBlocks);
+            generateBlocks(right, effectiveBlocks);
+            generateBlocks(down, effectiveBlocks);
+            generateBlocks(left, effectiveBlocks);
+
+            List<boolean[][]> booleanBlocks = new LinkedList<>();
+            for (List<Tile> block : effectiveBlocks) {
+                boolean[][] booleanBlock = new boolean[12][12];
+                for (Tile t : block) {
+                    booleanBlock[spaceshipIterator.getX(t)][spaceshipIterator.getY(t)] = true;
+                }
+                booleanBlocks.add(booleanBlock);
+            }
+            if (booleanBlocks.isEmpty()) {
+                return Optional.empty();
+            } else {
+                return Optional.of(booleanBlocks);
+            }
+        }
     }
 
     private void generateBlocks(List<Tile> toAdd, List<List<Tile>> containers) {
@@ -133,18 +138,15 @@ public class Spaceship {
         }
     }
 
-
-    //todo durante la fase di costruzione se scarto una carta, rimetto la current tile nel heaptile
-    //todo questo metodo però non vede heaptiles, è Game che deve gestire l'operazione: questo metodo ritorna currentTile, il Game lo rimette nell'heapTile
     public void returnTile() {
         currentTile = null;
     }
 
-    public void setCurrentTile(Tile t) /*throws AlreadyViewingTileException */ {
+    public void setCurrentTile(Tile t) throws AlreadyViewingException{
         if (currentTile == null) {
             currentTile = t;
         } else {
-            //throw new AlreadyViewingTileException();
+            throw new AlreadyViewingException("CurrentTile already set");
         }
     }
 
@@ -375,55 +377,62 @@ public class Spaceship {
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
     //ritorna 1 se la nave si è divisa in varie parti
-    public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
-        switch(bigOrSmall){
-            case 0: //Small
-                if(isExposed(rotationType,num)){
-                    if(isShielded(rotationType) && storage.isPresent() ){
-                        storage.get().removeBattery();
-                        removeTile(targetTileX, targetTileY);
-                        return DividedSpaceship();
-                    }
-                } else return false;
-            case 1: //Big
-                Optional<Tile> target = targetTile(rotationType,num);
-                if(target.isPresent()){
-                    Optional<Tile> cannon = CoveredByWhatCannon(rotationType,num);
-                    if(cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)){
-                        return false;
-                    }
-                    else if(cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON)){
-                        return false;
-                    }
-                    else{
-                        removeTile(targetTileX, targetTileY);
-                        return DividedSpaceship();
-                    }
-                }
-                else return false;
-            default:
-                return false;
+    public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage){
+        try {
+            switch (bigOrSmall) {
+                case 0: //Small
+                    if (isExposed(rotationType, num)) {
+                        if (isShielded(rotationType) && storage.isPresent()) {
+                            storage.get().removeBattery();
+                            removeTile(targetTileX, targetTileY);
+                            return DividedSpaceship();
+                        }
+                    } else return false;
+                case 1: //Big
+                    Optional<Tile> target = targetTile(rotationType, num);
+                    if (target.isPresent()) {
+                        Optional<Tile> cannon = CoveredByWhatCannon(rotationType, num);
+                        if (cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)) {
+                            return false;
+                        } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON)) {
+                            return false;
+                        } else {
+                            removeTile(targetTileX, targetTileY);
+                            return DividedSpaceship();
+                        }
+                    } else return false;
+                default:
+                    return false;
+            }
+        } catch (IllegalRemoveException e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 
     //todo controllare batterie
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
-        Optional<Tile> target = targetTile(rotationType,num);
-        switch(bigOrSmall) {
-            case 0: //Small
-                if(target.isPresent()) {
-                    if (!isShielded(rotationType)) {
+        try {
+            Optional<Tile> target = targetTile(rotationType, num);
+            switch (bigOrSmall) {
+                case 0: //Small
+                    if (target.isPresent()) {
+                        if (!isShielded(rotationType)) {
+                            removeTile(targetTileX, targetTileY);
+                            return DividedSpaceship();
+                        }
+                    } else return false;
+                case 1: //Big
+                    if (target.isPresent()) {
                         removeTile(targetTileX, targetTileY);
                         return DividedSpaceship();
-                    }
-                } else return false;
-            case 1: //Big
-                if(target.isPresent()){
-                    removeTile(targetTileX, targetTileY);
-                    return DividedSpaceship();
-                } else return false;
-            default:
-                return false;
+                    } else return false;
+                default:
+                    return false;
+            }
+        } catch (IllegalRemoveException e){
+            System.out.println(e.getMessage());
+            return false;
         }
 
     }

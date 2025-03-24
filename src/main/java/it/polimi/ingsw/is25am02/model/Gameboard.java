@@ -13,7 +13,7 @@ public class Gameboard {
     private final int[] rewardPosition; //ci sono le posizioni scritte sulla plancia dei crediti che vengono assegnati
     private final int bestShip;
 
-    //chidi se va bene mettere
+    //chiedi se va bene mettere
     public Gameboard(int level) {
         if ( level == 0 ){
             this.numStep = 18;

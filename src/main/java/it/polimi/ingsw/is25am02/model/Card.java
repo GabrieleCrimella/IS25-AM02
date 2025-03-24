@@ -1,15 +1,10 @@
 package it.polimi.ingsw.is25am02.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.is25am02.model.cards.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
