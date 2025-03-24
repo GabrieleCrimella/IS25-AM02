@@ -44,7 +44,7 @@ public class Spaceship {
     }
 
     //mi dovrebbe tornare una lista di liste di tile che compongono blocchi indipendenti della nave.
-    //todo vedere se la tile che rimuovo fa togliere altre tiles e poi aumentare wastedtiles, controllare se si stacca un pezzo di nave e capire di qaunte tiles è fatto questo pezzo
+    //vedere se la tile che rimuovo fa togliere altre tiles e poi aumentare wastedtiles, controllare se si stacca un pezzo di nave e capire di qaunte tiles è fatto questo pezzo
     public Optional<List<boolean[][]>> removeTile(int x, int y) { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
         Tile toRemove = spaceshipIterator.getTile(x, y).get(); //e se la tile non esiste?
         List<Tile> up = new ArrayList<>();
@@ -123,7 +123,7 @@ public class Spaceship {
         return visited;
     }
 
-    //todo: tiene le tiles passate come parametro sulla spaceshipe e aumenta le wastedTiles. Rimuovi i tiles
+    //tiene le tiles passate come parametro sulla spaceshipe e aumenta le wastedTiles. Rimuovi i tiles
     public void keepBlock(boolean[][] tilesToKeep) {
         for(Optional<Tile> t : spaceshipIterator.reference()){
             if(t.isPresent() && !tilesToKeep[spaceshipIterator.getX(t.get())][spaceshipIterator.getY(t.get())]){
