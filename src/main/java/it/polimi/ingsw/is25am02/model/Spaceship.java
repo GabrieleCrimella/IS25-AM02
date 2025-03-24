@@ -325,33 +325,36 @@ public class Spaceship {
 
     //il metodo controlla se è esposto un certo lato nella riga/colonna num
     public boolean isExposed(RotationType rotationType, int num) {
-        if (rotationType == RotationType.NORTH) {
-            for (int t = 0; t < 12; t++) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) != ConnectorType.NONE) {
+        if(rotationType==RotationType.NORTH){
+            for(int t=0; t<12;t++){
+                if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.NORTH)!=ConnectorType.NONE){
                     targetTileX = num;
                     targetTileY = t;
                     return true;
                 }
             }
-        } else if (rotationType == RotationType.SOUTH) {
-            for (int t = 12; t > 0; t--) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.SOUTH) != ConnectorType.NONE) {
+        }
+        else if(rotationType==RotationType.SOUTH){
+            for(int t=12; t>0;t--){
+                if(getTile(num,t).isPresent() && getTile(num,t).get().connectorOnSide(RotationType.SOUTH)!=ConnectorType.NONE){
                     targetTileX = num;
                     targetTileY = t;
                     return true;
                 }
             }
-        } else if (rotationType == RotationType.EAST) {
-            for (int t = 12; t > 0; t--) {
-                if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.EAST) != ConnectorType.NONE) {
+        }
+        else if(rotationType==RotationType.EAST){
+            for(int t=12; t>0;t--){
+                if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.EAST)!=ConnectorType.NONE){
                     targetTileX = t;
                     targetTileY = num;
                     return true;
                 }
             }
-        } else if (rotationType == RotationType.WEST) {
-            for (int t = 0; t < 12; t++) {
-                if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.WEST) != ConnectorType.NONE) {
+        }
+        else if(rotationType==RotationType.WEST){
+            for(int t=0; t<12;t++){
+                if(getTile(t,num).isPresent() && getTile(t,num).get().connectorOnSide(RotationType.WEST)!=ConnectorType.NONE){
                     targetTileX = t;
                     targetTileY = num;
                     return true;
@@ -373,28 +376,31 @@ public class Spaceship {
     //ritorna 0 se la nave non è stata divisa in sotto parti
     //ritorna 1 se la nave si è divisa in varie parti
     public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
-        switch (bigOrSmall) {
+        switch(bigOrSmall){
             case 0: //Small
-                if (isExposed(rotationType, num)) {
-                    if (isShielded(rotationType) && storage.isPresent()) {
+                if(isExposed(rotationType,num)){
+                    if(isShielded(rotationType) && storage.isPresent() ){
                         storage.get().removeBattery();
                         removeTile(targetTileX, targetTileY);
                         return DividedSpaceship();
                     }
                 } else return false;
             case 1: //Big
-                Optional<Tile> target = targetTile(rotationType, num);
-                if (target.isPresent()) {
-                    Optional<Tile> cannon = CoveredByWhatCannon(rotationType, num);
-                    if (cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)) {
+                Optional<Tile> target = targetTile(rotationType,num);
+                if(target.isPresent()){
+                    Optional<Tile> cannon = CoveredByWhatCannon(rotationType,num);
+                    if(cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)){
                         return false;
-                    } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON)) {
+                    }
+                    else if(cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON)){
                         return false;
-                    } else {
+                    }
+                    else{
                         removeTile(targetTileX, targetTileY);
                         return DividedSpaceship();
                     }
-                } else return false;
+                }
+                else return false;
             default:
                 return false;
         }
@@ -402,17 +408,17 @@ public class Spaceship {
 
     //todo controllare batterie
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
-        Optional<Tile> target = targetTile(rotationType, num);
-        switch (bigOrSmall) {
+        Optional<Tile> target = targetTile(rotationType,num);
+        switch(bigOrSmall) {
             case 0: //Small
-                if (target.isPresent()) {
+                if(target.isPresent()) {
                     if (!isShielded(rotationType)) {
                         removeTile(targetTileX, targetTileY);
                         return DividedSpaceship();
                     }
                 } else return false;
             case 1: //Big
-                if (target.isPresent()) {
+                if(target.isPresent()){
                     removeTile(targetTileX, targetTileY);
                     return DividedSpaceship();
                 } else return false;
@@ -501,7 +507,7 @@ public class Spaceship {
     }
 
     //A fronte della rimozione di una tile mi dice se ho vari rami o solo 1
-    private boolean DividedSpaceship() {
+    private boolean DividedSpaceship(){
         return false;
     }
 
@@ -509,36 +515,39 @@ public class Spaceship {
         targetTileX = 0;
         targetTileY = 0;
 
-        if (type == RotationType.NORTH) {
-            for (int t = 0; t < 12; t++) {
-                if (getTile(num, t).isPresent()) {
+        if(type == RotationType.NORTH){
+            for(int t=0; t<12;t++){
+                if(getTile(num,t).isPresent()){
                     targetTileX = num;
                     targetTileY = t;
-                    return getTile(num, t);
+                    return getTile(num,t);
                 }
             }
-        } else if (type == RotationType.SOUTH) {
-            for (int t = 12; t > 0; t--) {
-                if (getTile(num, t).isPresent()) {
+        }
+        else if(type==RotationType.SOUTH){
+            for(int t=12; t>0;t--){
+                if(getTile(num,t).isPresent()){
                     targetTileX = num;
                     targetTileY = t;
-                    return getTile(num, t);
+                    return getTile(num,t);
                 }
             }
-        } else if (type == RotationType.EAST) {
-            for (int t = 12; t > 0; t--) {
-                if (getTile(t, num).isPresent()) {
+        }
+        else if(type==RotationType.EAST){
+            for(int t=12; t>0;t--){
+                if(getTile(t,num).isPresent()){
                     targetTileX = t;
                     targetTileY = num;
-                    return getTile(t, num);
+                    return getTile(t,num);
                 }
             }
-        } else if (type == RotationType.WEST) {
-            for (int t = 0; t < 12; t++) {
-                if (getTile(t, num).isPresent()) {
+        }
+        else if(type==RotationType.WEST){
+            for(int t=0; t<12;t++){
+                if(getTile(t,num).isPresent()){
                     targetTileX = t;
                     targetTileY = num;
-                    return getTile(t, num);
+                    return getTile(t,num);
                 }
             }
         }

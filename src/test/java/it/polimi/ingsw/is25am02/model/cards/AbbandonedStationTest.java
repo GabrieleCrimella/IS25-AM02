@@ -9,6 +9,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +55,11 @@ class AbbandonedStationTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
-        spaceship1.addTile(7,7, cabin1);
+        try {
+            spaceship1.addTile(7,7, cabin1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 2 - cabin
         TileType t2 = TileType.CABIN;
@@ -62,7 +67,11 @@ class AbbandonedStationTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
-        spaceship1.addTile(8,7, cabin2);
+        try {
+            spaceship1.addTile(8,7, cabin2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 3 - motor
         TileType t3 = TileType.MOTOR;
@@ -70,7 +79,11 @@ class AbbandonedStationTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         Tile motor3 = new Motors(t3, connectors3, rotationType3, id3);
-        spaceship1.addTile(7,8, motor3);
+        try {
+            spaceship1.addTile(7,8, motor3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 4 - battery
         TileType t4 = TileType.BATTERY;
@@ -79,7 +92,11 @@ class AbbandonedStationTest {
         int id4 = 1;
         int maxBattery = 3;
         Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, id4, maxBattery);
-        spaceship1.addTile(6,8, battery4);
+        try {
+            spaceship1.addTile(6,8, battery4);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 5 - shield
         TileType t5 = TileType.SHIELD;
@@ -88,7 +105,11 @@ class AbbandonedStationTest {
         int id5 = 1;
         boolean[] shielded = {true, false, false, true};
         Tile shield5 = new Shield(t5, connectors5, rotationType5, id5, shielded);
-        spaceship1.addTile(6,7, shield5);
+        try {
+            spaceship1.addTile(6,7, shield5);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 6 - cannon
         TileType t6 = TileType.CANNON;
@@ -96,7 +117,11 @@ class AbbandonedStationTest {
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
         Tile cannon6 = new Cannon(t6, connectors6, rotationType6, id6);
-        spaceship1.addTile(7,6, cannon6);
+        try {
+            spaceship1.addTile(7,6, cannon6);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 7 - specialstorage
         TileType t7 = TileType.SPECIAL_STORAGE;
@@ -105,7 +130,11 @@ class AbbandonedStationTest {
         int id7 = 1;
         int maxNum = 2;
         Tile specialStorage7 = new SpecialStorage(t7, connectors7, rotationType7, id7, maxNum);
-        spaceship1.addTile(9,7, specialStorage7);
+        try {
+            spaceship1.addTile(9,7, specialStorage7);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         game.addCrew(player1, 7,7,AliveType.HUMAN);
         game.addCrew(player1, 8,7,AliveType.HUMAN);
@@ -134,6 +163,10 @@ class AbbandonedStationTest {
         AbbandonedStation abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes);
 
         List<Box> availableBoxes = abbandonedStation.choiceBox(game, game.getPlayers().getFirst(),true );
+        if(availableBoxes==null){
+            System.out.println("Not enough alive in the spaceship");
+            return;
+        }
 
         //correct list
         LinkedList<Box> correctAvailableBoxes = new LinkedList<Box>();

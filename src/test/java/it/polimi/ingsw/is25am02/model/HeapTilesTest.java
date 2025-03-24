@@ -4,6 +4,7 @@ import com.sun.jdi.connect.Connector;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +33,11 @@ class HeapTilesTest {
         assertTrue(sT.size() == 1 && sT.contains(tile));
 
         //tolgo un elemento visibile dal mucchio
-        heapTiles.removeVisibleTile(sT.iterator().next());
+        try {
+            heapTiles.removeVisibleTile(sT.iterator().next());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
 
         //verifico che non ci siano più carte visibili
         Set<Tile> sT2 = heapTiles.getVisibleTiles();
