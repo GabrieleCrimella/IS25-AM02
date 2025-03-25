@@ -53,6 +53,7 @@ public interface Game_Interface {
     void removeBox(Player player, SpecialStorage storage, BoxType type);
     void removeBattery(Player player, BatteryStorage storage);
     void rollDice(Player player);
+    void effect(Game game);
     void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage);
     void holdSpaceship(Player player, int x, int y);
 

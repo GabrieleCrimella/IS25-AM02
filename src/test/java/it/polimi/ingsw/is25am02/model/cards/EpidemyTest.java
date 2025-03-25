@@ -97,9 +97,11 @@ class EpidemyTest {
 
         game.getCurrentState().setCurrentCard(epidemy);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
+        game.getPlayers().getFirst().setStatePlayer(StatePlayerType.IN_GAME);
         game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
 
-        epidemy.effect(game);
+        game.effect(game);
+        //epidemy.effect(game);
         List<AliveType> cabinAffected = new ArrayList<>();
         cabinAffected.add(AliveType.HUMAN);
 
