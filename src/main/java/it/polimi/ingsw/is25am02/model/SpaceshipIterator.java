@@ -103,12 +103,12 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
 
         if (getUpTile(t).isPresent() && t.checkConnectors(getUpTile(t).get(), RotationType.NORTH))
             connectedNear.add(getUpTile(t).get());
-        if (getDownTile(t).isPresent() && t.checkConnectors(getRightTile(t).get(), RotationType.EAST))
-            connectedNear.add(getDownTile(t).get());
-        if (getLeftTile(t).isPresent() && t.checkConnectors(getDownTile(t).get(), RotationType.SOUTH))
-            connectedNear.add(getLeftTile(t).get());
-        if (getRightTile(t).isPresent() && t.checkConnectors(getLeftTile(t).get(), RotationType.WEST))
+        if (getRightTile(t).isPresent() && t.checkConnectors(getRightTile(t).get(), RotationType.EAST))
             connectedNear.add(getRightTile(t).get());
+        if (getDownTile(t).isPresent() && t.checkConnectors(getDownTile(t).get(), RotationType.SOUTH))
+            connectedNear.add(getDownTile(t).get());
+        if (getLeftTile(t).isPresent() && t.checkConnectors(getLeftTile(t).get(), RotationType.WEST))
+            connectedNear.add(getLeftTile(t).get());
 
         return connectedNear;
     }

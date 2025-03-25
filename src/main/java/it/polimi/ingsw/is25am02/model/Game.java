@@ -221,7 +221,9 @@ public class Game implements Game_Interface {
     @Override
     public Optional<List<boolean[][]>> removeTile(Player player, int x, int y) {
         try {
-            stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
+            //stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
+
 
             return player.getSpaceship().removeTile(x, y);
         } catch (IllegalStateException | IllegalRemoveException e) {
@@ -233,7 +235,8 @@ public class Game implements Game_Interface {
     @Override
     public void keepBlock(Player player, boolean[][] tilesToKeep) {
         try {
-            stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
+            //stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
 
             player.getSpaceship().keepBlock(tilesToKeep);
         } catch (IllegalStateException e) {

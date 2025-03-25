@@ -86,7 +86,8 @@ public class Spaceship {
             }
             if (booleanBlocks.isEmpty()) {
                 return Optional.empty();
-            } else {
+            }
+            else {
                 return Optional.of(booleanBlocks);
             }
         }
@@ -109,21 +110,25 @@ public class Spaceship {
 
     private List<Tile> startVisit(Tile toRemove, RotationType rotationType) {
         List<Tile> visited = new LinkedList<>();
-        visited.add(spaceshipIterator.getTileInDirection(toRemove, rotationType).get());
-        Tile current = visited.getFirst();
+        //visited.add(spaceshipIterator.getTileInDirection(toRemove, rotationType).get());
+        Tile current = spaceshipIterator.getTileInDirection(toRemove, rotationType).get();
 
-        List<Tile> toVisit = spaceshipIterator.getConnectedNearTiles(current);
+        List<Tile> toVisit = new ArrayList<>();
+        toVisit.add(current);
+        toVisit.addAll(spaceshipIterator.getConnectedNearTiles(current));
         toVisit.remove(toRemove);
         while (!toVisit.isEmpty()) {
             visited.add(current);
             toVisit.remove(current);
-            current = toVisit.getFirst();
-            List<Tile> newTiles = spaceshipIterator.getConnectedNearTiles(current);
-            newTiles.forEach(t -> {
-                if (!visited.contains(t) && !toVisit.contains(t)) {
-                    toVisit.add(t);
-                }
-            });
+            if (!toVisit.isEmpty()) {
+                current = toVisit.getFirst();
+                List<Tile> newTiles = spaceshipIterator.getConnectedNearTiles(current);
+                newTiles.forEach(t -> {
+                    if (!visited.contains(t) && !toVisit.contains(t)) {
+                        toVisit.add(t);
+                    }
+                });
+            }
         }
         return visited;
     }
@@ -136,6 +141,12 @@ public class Spaceship {
                 addNumOfWastedTiles(1);
             }
         }
+        //controllare che gli alieni valgono
+        if (calculateNumAlive()<=0){
+            //todo eccezione che è morta la nave
+            //todo ma non qui, bisogna controllare da qualche parte se la nave non ha più tiles
+        }
+
     }
 
     public void returnTile() {
