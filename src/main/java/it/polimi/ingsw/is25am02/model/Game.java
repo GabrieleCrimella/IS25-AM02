@@ -329,9 +329,9 @@ public class Game implements Game_Interface {
     public void playNextCard(Player player) {
         try {
             stateControl(TAKE_CARD, IN_GAME, FINISH, player);
+            outOfGame();
             currentPlayerControl(player);
 
-            outOfGame();
             if(getDeck().playnextCard(getCurrentState()) == null) {
                 this.getCurrentState().setPhase(RESULT);
             } else {
