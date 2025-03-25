@@ -3,8 +3,10 @@ package it.polimi.ingsw.is25am02.model;
 import it.polimi.ingsw.is25am02.model.cards.*;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
+import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -166,11 +168,16 @@ class CardDeckTest {
     }
 
     @Test
-    public void playnextCardTest() {
+    public void playNextCardTest() {
         CardDeck cardDeck = new CardDeck();
+        List<Player> players = new ArrayList<>();
+        players.add(new Player(null, "mario", PlayerColor.YELLOW));
+        State state = new State(players);
         cardDeck.createDecks();
         cardDeck.createFinalDeck();
-        Card nextCard = cardDeck.playnextCard();
+
+        cardDeck.playnextCard(state);
+        Card nextCard = state.getCurrentCard();
         while(nextCard!=null) {
             if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
                 assertEquals(nextCard.getBoxesWonTypes().size(), nextCard.getBoxesWon().size());
@@ -179,7 +186,8 @@ class CardDeckTest {
                 assertEquals(nextCard.getPlanetOffersTypes().size(), nextCard.getPlanetOffers().size());
                 assertNotNull(nextCard.getPlanetOffers());
             }
-            nextCard = cardDeck.playnextCard();
+            cardDeck.playnextCard(state);
+            nextCard = state.getCurrentCard();
         }
     }
 }

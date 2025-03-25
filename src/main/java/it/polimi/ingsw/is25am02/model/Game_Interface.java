@@ -37,6 +37,7 @@ public interface Game_Interface {
 
     //Phase TAKE_CARD
     void playNextCard(Player player);
+    void earlyLanding(Player player);
 
     //Phase EFFECT_ON_PLAYERS
     HashMap<Player, Integer> getPosition();

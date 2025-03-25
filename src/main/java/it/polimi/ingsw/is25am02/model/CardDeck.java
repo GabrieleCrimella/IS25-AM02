@@ -283,7 +283,7 @@ public class CardDeck {
         deck.computeIfPresent(numDeck, (k, pair) -> new Pair<>(pair.getKey(), false));
     }
 
-    public Card playnextCard(){//deve prendere la prossima carta da final deck
+    public Card playnextCard(State state){//deve prendere la prossima carta da final deck
         Card nextCard;
         //se la carta corrente è una di quelle con le box metto gli scarti in store
         if(finalDeck.getFirst().getCardType().equals(CardType.ABANDONED_STATION) || finalDeck.getFirst().getCardType().equals(CardType.TRAFFICKER)){
@@ -305,10 +305,11 @@ public class CardDeck {
         }
         finalDeck.removeFirst();
         if(finalDeck.isEmpty()){
-            System.out.println("E' finito il mazzo"); //todo cambia lo stato di gioco
             return null;
         }
         nextCard = finalDeck.getFirst();
+        state.setCurrentCard(nextCard);
+
         //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi
         if(nextCard.getCardType().equals(CardType.ABANDONED_STATION) || nextCard.getCardType().equals(CardType.TRAFFICKER) ){
             for(BoxType boxType : nextCard.getBoxesWonTypes()){
@@ -370,6 +371,5 @@ public class CardDeck {
             }
         }
         return nextCard;
-
     }
 }

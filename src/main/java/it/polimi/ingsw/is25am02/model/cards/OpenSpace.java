@@ -9,16 +9,18 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 public class OpenSpace extends Card {
-
-    private CardType cardType;
+    private final CardType cardType;
+    HashMap<Player,Integer> fly;
 
     public OpenSpace(int level) {
         super(level, StateCardType.CHOICE_ATTRIBUTES);
         this.cardType = CardType.OPENSPACE;
+        this.fly = new HashMap<>();
     }
 
     @Override
@@ -39,7 +41,12 @@ public class OpenSpace extends Card {
         }
         else flyForward = player.getSpaceship().calculateMotorPower(new ArrayList<Tile>()); //se uso solo motori singoli
 
+        fly.put(player,flyForward);
         game.getGameboard().move(flyForward, player);
         game.nextPlayer();
+    }
+
+    public HashMap<Player,Integer> getFly(){
+        return fly;
     }
 }

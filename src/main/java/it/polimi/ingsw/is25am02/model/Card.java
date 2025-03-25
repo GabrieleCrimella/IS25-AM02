@@ -5,10 +5,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class Card {
     private final int level;
@@ -97,7 +94,7 @@ public abstract class Card {
 
     public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
-    public CardType getCardType() { throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public CardType getCardType() {throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
     public void addBoxWon(Box box){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
@@ -107,4 +104,5 @@ public abstract class Card {
 
     public void clearPlanetOffers(){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
+    public HashMap<Player,Integer> getFly(){ throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 }

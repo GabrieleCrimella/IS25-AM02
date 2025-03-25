@@ -312,13 +312,30 @@ public class Game implements Game_Interface {
     }
 
     @Override
+    public void earlyLanding(Player player) {
+        try{
+            stateControl(TAKE_CARD, IN_GAME, FINISH, player);
+
+            getGameboard().getPositions().remove(player);
+            player.setStatePlayer(OUT_GAME);
+
+            getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
     public void playNextCard(Player player) {
         try {
             stateControl(TAKE_CARD, IN_GAME, FINISH, player);
             currentPlayerControl(player);
 
-            if( getDeck().playnextCard()== null) {
+            outOfGame();
+            if(getDeck().playnextCard(getCurrentState()) == null) {
                 this.getCurrentState().setPhase(RESULT);
+            } else {
+                this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
             }
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
@@ -511,22 +528,17 @@ public class Game implements Game_Interface {
 
     @Override
     public ArrayList<Player> getWinners() {
-        int minExposedConnectors = Integer.MAX_VALUE;
-        if (getCurrentState().getPhase() == RESULT && getPlayers() != null) {
+        try{
+            if(getCurrentState().getPhase() != RESULT){
+                throw new IllegalStateException("Wrong State");
+            }
+
+            int minExposedConnectors = Integer.MAX_VALUE;
             ArrayList<Player> winners = new ArrayList<>();
 
             for (Player p : getPlayers()) {
-                int exposedConnectors;
-
-
+                //Boxes Values
                 int valueBox = 0;
-                //aggiungo crediti in base alla posizione che ho raggiunto
-                p.getSpaceship().addCosmicCredits(getGameboard().getRewardPosition()[getGameboard().getRanking().indexOf(p)]);
-                //va trovato giocatore con meno connettori esposti
-                exposedConnectors = p.getSpaceship().calculateExposedConnectors();
-                if (exposedConnectors < minExposedConnectors) {
-                    minExposedConnectors = exposedConnectors;
-                }
                 for (Tile s_storage : p.getSpaceship().getTilesByType(TileType.SPECIAL_STORAGE)) {
                     for (Box box : s_storage.getOccupation()) {
                         valueBox += box.getValue();
@@ -537,11 +549,34 @@ public class Game implements Game_Interface {
                         valueBox += box.getValue();
                     }
                 }
-                p.getSpaceship().addCosmicCredits(valueBox); //aggiungo crediti dovuti alla vendita delle merci
-                p.getSpaceship().removeCosmicCredits(p.getSpaceship().getNumOfWastedTiles()); //tolgo crediti quanti sono gli scarti
+
+                if(p.getStatePlayer() == IN_GAME){
+                    int exposedConnectors;
+                    //Ranking points
+                    p.getSpaceship().addCosmicCredits(getGameboard().getRewardPosition()[getGameboard().getRanking().indexOf(p)]);
+
+                    exposedConnectors = p.getSpaceship().calculateExposedConnectors();
+                    if (exposedConnectors < minExposedConnectors) {
+                        minExposedConnectors = exposedConnectors;
+                    }
+                    //Sale of boxes
+                    p.getSpaceship().addCosmicCredits(valueBox);
+                }
+                else{
+                    //Sale of boxes
+                    if(valueBox%2 == 0){
+                        p.getSpaceship().addCosmicCredits(valueBox/2);
+                    } else {
+                        p.getSpaceship().addCosmicCredits((valueBox/2) + 1);
+                    }
+                }
+                //Payment of damages
+                p.getSpaceship().removeCosmicCredits(p.getSpaceship().getNumOfWastedTiles());
             }
+
+            //Best Spaceship
             for (Player p : getPlayers()) {
-                if (p.getSpaceship().calculateExposedConnectors() == minExposedConnectors) {
+                if (p.getStatePlayer() == IN_GAME && p.getSpaceship().calculateExposedConnectors() == minExposedConnectors) {
                     p.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
                 }
             }
@@ -552,9 +587,13 @@ public class Game implements Game_Interface {
                 }
             }
 
+            winners.sort((p1, p2) -> Integer.compare(p1.getSpaceship().getCosmicCredits(), p2.getSpaceship().getCosmicCredits()));
             return winners;
+
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
-        return null;
     }
 
     private void stateControl(StateGameType stateGame, StatePlayerType statePlayer, StateCardType stateCard, Player player) throws IllegalStateException {
@@ -616,5 +655,31 @@ public class Game implements Game_Interface {
         } else {
             throw new IllegalAddException("There is no AlienCabin near (" + x + "," + y + ")");
         }
+    }
+
+    private void outOfGame(){
+        HashMap<Player,Integer> positions = getGameboard().getPositions();
+        for (Player p : getPlayers()) {
+            //0 Human on my spaceship
+            if(p.getSpaceship().calculateNumHuman() == 0){
+                getGameboard().getPositions().remove(p);
+                p.setStatePlayer(OUT_GAME);
+            }
+
+            //0 motorPower in OpenSpace
+            if(getCurrentCard().getCardType() == CardType.OPENSPACE){
+                if(getCurrentCard().getFly().get(p) == 0){
+                    getGameboard().getPositions().remove(p);
+                    p.setStatePlayer(OUT_GAME);
+                }
+            }
+
+            //lapped
+            if(positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()){
+                getGameboard().getPositions().remove(p);
+                p.setStatePlayer(OUT_GAME);
+            }
+        }
+        getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
     }
 }

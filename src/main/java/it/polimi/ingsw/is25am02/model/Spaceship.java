@@ -456,6 +456,18 @@ public class Spaceship {
         return alive;
     }
 
+    public int calculateNumHuman() {
+        int human = 0;
+        for (Tile cabin : getTilesByType(TileType.CABIN)) {
+            for(Alive alive : cabin.getCrew()){
+                if(alive.getRace().equals(AliveType.HUMAN)){
+                    human++;
+                }
+            }
+        }
+        return human;
+    }
+
     //Mi dice se la tile appartiene alla nave
     public boolean own(Tile tile) {
         for (Optional<Tile> t : spaceshipIterator.reference()) {
