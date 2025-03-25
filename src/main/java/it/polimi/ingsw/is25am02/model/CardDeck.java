@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import javafx.util.Pair;
 
 import java.io.File;
@@ -18,6 +19,7 @@ public class CardDeck {
     private final List<Card> finalDeck;
     private final List<Card> initialDeck;
     private final BoxStore store;
+    private StateCardType currentState;
 
     public CardDeck(){
         this.deck = new HashMap<>();
@@ -311,33 +313,59 @@ public class CardDeck {
         //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi
         if(nextCard.getCardType().equals(CardType.ABANDONED_STATION) || nextCard.getCardType().equals(CardType.TRAFFICKER) ){
             for(BoxType boxType : nextCard.getBoxesWonTypes()){
-                Box box;
-                if(boxType.equals(BoxType.RED)){
-                    box = new RedBox(BoxType.RED);
-                } else if(boxType.equals(BoxType.BLUE)){
-                    box = new BlueBox(BoxType.BLUE);
-                } else if(boxType.equals(BoxType.GREEN)){
-                    box = new GreenBox(BoxType.GREEN);
-                } else if(boxType.equals(BoxType.YELLOW)){
-                    box = new YellowBox(BoxType.YELLOW);
-                } else throw new IllegalArgumentException("I cannot add a box");
-                nextCard.addBoxWon(box);
+                if(!store.getStore().isEmpty()){
+                    Box box;
+                    if(boxType.equals(BoxType.RED)){
+                        if(store.getStore().containsKey(BoxType.RED)){
+                            box = new RedBox(BoxType.RED);
+                            nextCard.addBoxWon(box);
+                        }
+                    } else if(boxType.equals(BoxType.BLUE)){
+                        if(store.getStore().containsKey(BoxType.BLUE)){
+                            box = new BlueBox(BoxType.BLUE);
+                            nextCard.addBoxWon(box);
+                        }
+                    } else if(boxType.equals(BoxType.GREEN)){
+                        if(store.getStore().containsKey(BoxType.GREEN)){
+                            box = new GreenBox(BoxType.GREEN);
+                            nextCard.addBoxWon(box);
+                        }
+                    } else if(boxType.equals(BoxType.YELLOW)){
+                        if(store.getStore().containsKey(BoxType.YELLOW)){
+                            box = new YellowBox(BoxType.YELLOW);
+                            nextCard.addBoxWon(box);
+                        }
+                    } else throw new IllegalArgumentException("I cannot add a box");
+                }
             }
-        } else if (nextCard.getCardType().equals(CardType.PLANET) ) { //todo lo riempio da store
+        } else if (nextCard.getCardType().equals(CardType.PLANET) ) { //lo riempio da store
             for (List<BoxType> boxTypeList : nextCard.getPlanetOffersTypes()) {
                 ArrayList<Box> boxList = new ArrayList<>();
                 for (BoxType type : boxTypeList) {
-                    Box box;
-                    if(type.equals(BoxType.RED)){
-                        box = new RedBox(BoxType.RED);
-                    } else if(type.equals(BoxType.BLUE)){
-                        box = new BlueBox(BoxType.BLUE);
-                    } else if(type.equals(BoxType.YELLOW)){
-                        box = new YellowBox(BoxType.YELLOW);
-                    } else if(type.equals(BoxType.GREEN)){
-                        box = new GreenBox(BoxType.GREEN);
-                    } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
-                    boxList.add(box);
+                    if(!store.getStore().isEmpty()){
+                        Box box;
+                        if(type.equals(BoxType.RED)){
+                            if(store.getStore().containsKey(BoxType.RED)){
+                                box = new RedBox(BoxType.RED);
+                                boxList.add(box);
+                            }
+                        } else if(type.equals(BoxType.BLUE)){
+                            if(store.getStore().containsKey(BoxType.BLUE)){
+                                box = new BlueBox(BoxType.BLUE);
+                                boxList.add(box);
+                            }
+                        } else if(type.equals(BoxType.GREEN)){
+                            if(store.getStore().containsKey(BoxType.GREEN)){
+                                box = new GreenBox(BoxType.GREEN);
+                                boxList.add(box);
+                            }
+                        } else if(type.equals(BoxType.YELLOW)){
+                            if(store.getStore().containsKey(BoxType.YELLOW)){
+                                box = new YellowBox(BoxType.YELLOW);
+                                boxList.add(box);
+                            }
+                        } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
+                    }
                 }
                 nextCard.addPlanetOffers(boxList); // Aggiungi la lista alla lista principale
             }
