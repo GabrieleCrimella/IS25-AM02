@@ -64,7 +64,6 @@ public class CardDeck {
                 mazzetto.add(livello2.removeFirst());
                 mazzetto.add(livello2.removeFirst());
             }
-
             deck.put(i, new Pair<>(mazzetto, false)); //di default metto a false l'occupazione del mazzetto
         }
     }
