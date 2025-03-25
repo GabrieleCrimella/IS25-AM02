@@ -65,7 +65,7 @@ public class Spaceship {
             if (spaceshipIterator.getDownTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getDownTile(toRemove).get(), RotationType.SOUTH)) {
                 down = startVisit(toRemove, RotationType.SOUTH);
             }
-            if (spaceshipIterator.getLeftTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getLeftTile(toRemove).get(), RotationType.SOUTH)) {
+            if (spaceshipIterator.getLeftTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getLeftTile(toRemove).get(), RotationType.WEST)) {
                 left = startVisit(toRemove, RotationType.WEST);
             }
 
@@ -486,16 +486,38 @@ public class Spaceship {
         return BoxType.getBoxTypeByNum(numBestType).equals(type);
     }
 
-    //todo controllare che sia corretto
     public void epidemyRemove() throws IllegalRemoveException {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
+        //per ogni cabina piena controlla se ha una cabina piena affiancata, se si e non è già nella lista, allora insierisci nella lista
+        //dopo togli un umano/alieno da ogni cabina nella lista
+        List<Tile> cabinAffected = new ArrayList<>();
+
         for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().getType().equals(TileType.CABIN)) {
-                if (spaceshipIterator.getUpTile(t.get()).isPresent() && (spaceshipIterator.getUpTile(t.get()).get().getType().equals(TileType.CABIN)) ||
-                        spaceshipIterator.getDownTile(t.get()).isPresent() && (spaceshipIterator.getDownTile(t.get()).get().getType().equals(TileType.CABIN)) ||
-                        spaceshipIterator.getLeftTile(t.get()).isPresent() && (spaceshipIterator.getLeftTile(t.get()).get().getType().equals(TileType.CABIN)) ||
-                        spaceshipIterator.getRightTile(t.get()).isPresent() && (spaceshipIterator.getRightTile(t.get()).get().getType().equals(TileType.CABIN))) {
-                    t.get().removeCrew();
+            if (t.isPresent() && t.get().getType().equals(TileType.CABIN) && !t.get().getCrew().isEmpty()) {
+                if (spaceshipIterator.getUpTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getUpTile(t.get()).get(), RotationType.NORTH)
+                        && spaceshipIterator.getUpTile(t.get()).get().getType().equals(TileType.CABIN) &&
+                        !spaceshipIterator.getUpTile(t.get()).get().getCrew().isEmpty()) {
+                    cabinAffected.add(t.get());
                 }
+                if (spaceshipIterator.getRightTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getRightTile(t.get()).get(), RotationType.EAST)
+                        && spaceshipIterator.getRightTile(t.get()).get().getType().equals(TileType.CABIN) &&
+                        !spaceshipIterator.getRightTile(t.get()).get().getCrew().isEmpty()) {
+                    cabinAffected.add(t.get());
+                }
+                if (spaceshipIterator.getDownTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getDownTile(t.get()).get(), RotationType.SOUTH)
+                        && spaceshipIterator.getDownTile(t.get()).get().getType().equals(TileType.CABIN) &&
+                        !spaceshipIterator.getDownTile(t.get()).get().getCrew().isEmpty()) {
+                    cabinAffected.add(t.get());
+                }
+                if (spaceshipIterator.getLeftTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getLeftTile(t.get()).get(), RotationType.WEST)
+                        && spaceshipIterator.getLeftTile(t.get()).get().getType().equals(TileType.CABIN) &&
+                        !spaceshipIterator.getLeftTile(t.get()).get().getCrew().isEmpty()) {
+                    cabinAffected.add(t.get());
+                }
+            }
+        }
+        if(!cabinAffected.isEmpty()){
+            for(Tile cabin : cabinAffected){
+                cabin.removeCrew();
             }
         }
     }

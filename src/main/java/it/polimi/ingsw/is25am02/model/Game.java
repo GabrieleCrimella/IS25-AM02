@@ -500,6 +500,18 @@ public class Game implements Game_Interface {
     }
 
     @Override
+    public void effect(Game game) {
+        try {
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, getCurrentPlayer());
+            currentPlayerControl(getCurrentPlayer());
+            getCurrentCard().effect(game);
+
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
     public void holdSpaceship(Player player, int x, int y) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
