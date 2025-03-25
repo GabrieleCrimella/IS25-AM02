@@ -54,11 +54,11 @@ public class Trafficker extends Card_with_box{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException {
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile,Tile>>> choices) throws UnsupportedOperationException {
         //Calcolo potenza Player
         if(choices.isPresent()) {
             ArrayList<Tile> doubleCannons = new ArrayList<>();
-            for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
+            for (Pair<Tile, Tile> pair : choices.get()) {
                 doubleCannons.add(pair.getKey());
                 pair.getValue().removeBattery();
             }

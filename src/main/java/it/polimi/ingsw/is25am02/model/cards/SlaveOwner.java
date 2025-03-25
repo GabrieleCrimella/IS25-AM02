@@ -35,11 +35,11 @@ public class SlaveOwner extends Enemies{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> whichDCannon){
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> whichDCannon){
         List<Tile> dCannon = new ArrayList<>();
         double playerPower;
         if(whichDCannon.isPresent()){  // il giocatore ha scelto di usare almeno un motore doppio
-            for(Pair<DoubleCannon, BatteryStorage> pair: whichDCannon.get()){
+            for(Pair<Tile, Tile> pair: whichDCannon.get()){
                 dCannon.add(pair.getKey());
                 pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
             }

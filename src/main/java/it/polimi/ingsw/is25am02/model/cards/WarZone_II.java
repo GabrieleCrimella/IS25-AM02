@@ -47,11 +47,11 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) {
         if (currentPhase == 1) {
             List<Tile> dCannon = new ArrayList<>();
             if (choices.isPresent()) {
-                for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
+                for (Pair<Tile, Tile> pair : choices.get()) {
                     dCannon.add(pair.getKey());
                     pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
                 }

@@ -372,7 +372,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void removeCrew(Player player, Cabin cabin) {
+    public void removeCrew(Player player, Tile cabin) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, REMOVE, player);
             currentPlayerControl(player);
@@ -440,7 +440,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void choiceDoubleCannon(Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
+    public void choiceDoubleCannon(Player player, Optional<List<Pair<Tile, Tile>>> choices) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);

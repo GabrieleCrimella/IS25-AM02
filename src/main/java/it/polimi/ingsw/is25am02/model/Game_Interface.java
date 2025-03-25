@@ -43,12 +43,12 @@ public interface Game_Interface {
     HashMap<Player, Integer> getPosition();
     List<Tile> possibleChoice(Player player, TileType type);
     void choice(Player player, boolean choice);
-    void removeCrew(Player player, Cabin cabin);
+    void removeCrew(Player player, Tile cabin);
     List<Box> choiceBox(Player player, boolean choice) throws Exception;
     void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on) throws Exception;
     List<Box> choicePlanet(Player player, int index);
     void choiceDoubleMotor(Player player, Optional<List<Pair<Tile, Tile>>> choices);
-    void choiceDoubleCannon(Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices);
+    void choiceDoubleCannon(Player player, Optional<List<Pair<Tile, Tile>>> choices);
     void choiceCrew(Player player);
     void removeBox(Player player, SpecialStorage storage, BoxType type);
     void removeBattery(Player player, BatteryStorage storage);
