@@ -317,7 +317,9 @@ public class Game implements Game_Interface {
             stateControl(TAKE_CARD, IN_GAME, FINISH, player);
             currentPlayerControl(player);
 
-            getDeck().playnextCard();
+            if( getDeck().playnextCard()== null) {
+                this.getCurrentState().setPhase(RESULT);
+            }
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }

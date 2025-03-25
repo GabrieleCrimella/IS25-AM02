@@ -58,10 +58,10 @@ public class CardDeck {
 
             if (livello1.size() >= 2) {
                 mazzetto.add(livello1.removeFirst());
-                mazzetto.add(livello1.removeFirst());
             }
 
             if (!livello2.isEmpty()) {
+                mazzetto.add(livello2.removeFirst());
                 mazzetto.add(livello2.removeFirst());
             }
 
