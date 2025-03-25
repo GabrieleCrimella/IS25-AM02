@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class CardDeck {
-    private HashMap<Integer , Pair<List<Card>,Boolean>> deck; //l'intero è il numero di deck, il boolean è vero se è occupato
-    private List<Card> finalDeck;
-    private List<Card> initialDeck;
-    private BoxStore store;
+    private final HashMap<Integer , Pair<List<Card>,Boolean>> deck; //l'intero è il numero di deck, il boolean è vero se è occupato
+    private final List<Card> finalDeck;
+    private final List<Card> initialDeck;
+    private final BoxStore store;
 
     public CardDeck(){
         this.deck = new HashMap<>();
@@ -31,8 +31,11 @@ public class CardDeck {
         return initialDeck;
     }
 
-    public HashMap<Integer , Pair<List<Card>,Boolean>> createDecks(){//il metodo crea i mazzetti usando initial deck in cui sono presenti tutte le carte
-        HashMap<Integer , Pair<List<Card>,Boolean>> deck = new HashMap<>();
+    public List<Card> getFinalDeck() {
+        return finalDeck;
+    }
+
+    public void createDecks(){//il metodo crea i mazzetti usando initial deck in cui sono presenti tutte le carte
 
         List<Card> livello1 = new ArrayList<>();
         List<Card> livello2 = new ArrayList<>();
@@ -62,8 +65,6 @@ public class CardDeck {
 
             deck.put(i, new Pair<>(mazzetto, false)); //di default metto a false l'occupazione del mazzetto
         }
-
-        return deck;
     }
 
 
@@ -104,6 +105,7 @@ public class CardDeck {
                 case "ABANDONED_STATION":
                     aliveNeeded = levelNode.get("aliveNeeded").asInt();
                     daysLost = levelNode.get("daysLost").asInt();
+                    boxesWonType.clear();
                     for(JsonNode node: levelNode.get("box")){
                         BoxType box;
                         if(node.asText().equals("RED")){
@@ -123,6 +125,7 @@ public class CardDeck {
                     cannonPower = levelNode.get("cannonPower").asInt();
                     creditWin = levelNode.get("creditWin").asInt();
                     daysLost = levelNode.get("daysLost").asInt();
+                    shots.clear();
                     for (JsonNode shotNode : levelNode.get("shots")) {
                         int smallOrBig = shotNode.get(0).asInt();
                         RotationType rotation;
@@ -143,6 +146,7 @@ public class CardDeck {
                     cannonPower = levelNode.get("cannonPower").asInt();
                     daysLost = levelNode.get("daysLost").asInt();
                     boxesLost = levelNode.get("boxesLost").asInt();
+                    boxesWonType.clear();
                     for(JsonNode node: levelNode.get("box")){
                         BoxType box;
                         if(node.asText().equals("RED")){
@@ -175,6 +179,7 @@ public class CardDeck {
                     initialDeck.add(new Epidemy(level));
                     break;
                 case "METEORITES":
+                    meteorites.clear();
                     for (JsonNode node : levelNode.get("meteorites")) {
                         int smallOrBig = node.get(0).asInt();
                         RotationType rotation;
@@ -193,6 +198,7 @@ public class CardDeck {
                     break;
                 case "PLANETS":
                     daysLost = levelNode.get("daysLost").asInt();
+                    planetOffersTypes.clear();
                     for (JsonNode boxListNode : levelNode.get("boxes")) {
                         ArrayList<BoxType> boxList = new ArrayList<>();
                         for (JsonNode boxNode : boxListNode) {
@@ -216,6 +222,7 @@ public class CardDeck {
                 case "WARZONE1":
                     daysLost = levelNode.get("daysLost").asInt();
                     aliveLost = levelNode.get("aliveLost").asInt();
+                    shots.clear();
                     for (JsonNode shotNode : levelNode.get("shots")) {
                         int smallOrBig = shotNode.get(0).asInt();
                         RotationType rotation;
@@ -235,6 +242,7 @@ public class CardDeck {
                 case "WARZONE2":
                     daysLost = levelNode.get("daysLost").asInt();
                     boxesLost = levelNode.get("boxesLost").asInt();
+                    shots.clear();
                     for (JsonNode shotNode : levelNode.get("shots")) {
                         int smallOrBig = shotNode.get(0).asInt();
                         RotationType rotation;
@@ -255,14 +263,13 @@ public class CardDeck {
         }
     }
 
-    public List<Card> createFinalDeck(HashMap<Integer , Pair<List<Card>,Boolean>> deck){
-        finalDeck = new ArrayList<>();
+    public void createFinalDeck(){
         for(Pair<List<Card>,Boolean> cards : deck.values()){
             finalDeck.addAll(cards.getKey());
         }
         Collections.shuffle(finalDeck);//mischio le carte
-        return finalDeck;
     }
+
     public Card giveCard(){
         return null;
     }
@@ -283,6 +290,7 @@ public class CardDeck {
                 for(Box box : finalDeck.getFirst().getBoxesWon()){
                     store.addBox(box);
                 }
+                finalDeck.getFirst().clearBoxWon();
             }
         } else if (finalDeck.getFirst().getCardType().equals(CardType.PLANET)) {
             if(!( finalDeck.getFirst()).getPlanetOffers().isEmpty()){
@@ -291,10 +299,12 @@ public class CardDeck {
                         store.addBox(box);
                     }
                 }
+                finalDeck.getFirst().clearPlanetOffers();
             }
         }
         finalDeck.removeFirst();
         if(finalDeck.isEmpty()){
+            System.out.println("E' finito il mazzo"); //todo cambia lo stato di gioco
             return null;
         }
         nextCard = finalDeck.getFirst();
@@ -313,7 +323,7 @@ public class CardDeck {
                 } else throw new IllegalArgumentException("I cannot add a box");
                 nextCard.addBoxWon(box);
             }
-        } else if (nextCard.getCardType().equals(CardType.PLANET) ) {
+        } else if (nextCard.getCardType().equals(CardType.PLANET) ) { //todo lo riempio da store
             for (List<BoxType> boxTypeList : nextCard.getPlanetOffersTypes()) {
                 ArrayList<Box> boxList = new ArrayList<>();
                 for (BoxType type : boxTypeList) {
@@ -321,11 +331,11 @@ public class CardDeck {
                     if(type.equals(BoxType.RED)){
                         box = new RedBox(BoxType.RED);
                     } else if(type.equals(BoxType.BLUE)){
-                        box = new RedBox(BoxType.BLUE);
+                        box = new BlueBox(BoxType.BLUE);
                     } else if(type.equals(BoxType.YELLOW)){
-                        box = new RedBox(BoxType.YELLOW);
+                        box = new YellowBox(BoxType.YELLOW);
                     } else if(type.equals(BoxType.GREEN)){
-                        box = new RedBox(BoxType.GREEN);
+                        box = new GreenBox(BoxType.GREEN);
                     } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
                     boxList.add(box);
                 }

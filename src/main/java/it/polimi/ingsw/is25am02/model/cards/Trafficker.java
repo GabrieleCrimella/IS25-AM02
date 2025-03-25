@@ -49,6 +49,11 @@ public class Trafficker extends Card_with_box{
     }
 
     @Override
+    public void clearBoxWon(){
+        boxesWon.clear();
+    }
+
+    @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException {
         //Calcolo potenza Player
         if(choices.isPresent()) {

@@ -103,4 +103,8 @@ public abstract class Card {
 
     public void addPlanetOffers(ArrayList<Box> boxes){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
 
+    public void clearBoxWon(){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+
+    public void clearPlanetOffers(){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+
 }

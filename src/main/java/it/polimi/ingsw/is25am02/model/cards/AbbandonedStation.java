@@ -31,6 +31,11 @@ public class AbbandonedStation extends Card_with_box {
     public void addBoxWon(Box box){boxesWon.add(box);}
 
     @Override
+    public void clearBoxWon(){
+        boxesWon.clear();
+    }
+
+    @Override
     public CardType getCardType() {
         return cardType;
     }

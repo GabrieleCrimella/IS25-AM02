@@ -168,14 +168,15 @@ class CardDeckTest {
     @Test
     public void playnextCardTest() {
         CardDeck cardDeck = new CardDeck();
-        List<Card> finaldeck = cardDeck.createFinalDeck(cardDeck.createDecks());
+        cardDeck.createDecks();
+        cardDeck.createFinalDeck();
         Card nextCard = cardDeck.playnextCard();
         while(nextCard!=null) {
             if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
-                assertTrue(nextCard.getBoxesWonTypes().size() <7);
+                assertEquals(nextCard.getBoxesWonTypes().size(), nextCard.getBoxesWon().size());
                 assertNotNull(nextCard.getBoxesWon());
             } else if (nextCard.getCardType().equals(CardType.PLANET) ) {
-                assertTrue(nextCard.getPlanetOffers().size() <6);
+                assertEquals(nextCard.getPlanetOffersTypes().size(), nextCard.getPlanetOffers().size());
                 assertNotNull(nextCard.getPlanetOffers());
             }
             nextCard = cardDeck.playnextCard();
