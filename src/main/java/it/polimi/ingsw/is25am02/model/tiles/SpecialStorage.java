@@ -4,9 +4,9 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 //special storage può contenere tutte le box
 public final class SpecialStorage extends Tile{
@@ -30,7 +30,13 @@ public final class SpecialStorage extends Tile{
     }
 
     @Override
-    public void removeBox(Box box){
+    public void removeBox(Box box) throws IllegalRemoveException {
+        if(occupation.isEmpty()){
+            throw new IllegalRemoveException("SpecialStorage empty");
+        }
+        else if(!occupation.contains(box)){
+            throw new IllegalRemoveException("SpecialStorage doesn't contain box : " + box.getType());
+        }
         occupation.remove(box);
     }
 

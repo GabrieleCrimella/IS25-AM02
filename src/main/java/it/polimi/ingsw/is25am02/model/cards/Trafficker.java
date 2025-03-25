@@ -7,9 +7,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
-import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
-import it.polimi.ingsw.is25am02.model.tiles.SpecialStorage;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
@@ -27,7 +25,7 @@ public class Trafficker extends Card_with_box{
     private int boxesRemove;
     private final LinkedList<Box> boxesWon;
     private final LinkedList<BoxType> boxesWonTypes;
-    private CardType cardType;
+    private final CardType cardType;
 
     public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
         super(level, store, StateCardType.CHOICE_ATTRIBUTES);
@@ -54,17 +52,17 @@ public class Trafficker extends Card_with_box{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException {
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalRemoveException {
         //Calcolo potenza Player
         if(choices.isPresent()) {
             ArrayList<Tile> doubleCannons = new ArrayList<>();
-            for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
+            for (Pair<Tile, Tile> pair : choices.get()) {
                 doubleCannons.add(pair.getKey());
                 pair.getValue().removeBattery();
             }
             double playerPower = player.getSpaceship().calculateCannonPower(doubleCannons);
         }
-        double playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<Tile>());
+        double playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<>());
 
         //Paragoni
         if(playerPower > cannonPowers){
@@ -116,9 +114,9 @@ public class Trafficker extends Card_with_box{
     }
 
     @Override
-    public void removeBox(Game game, Player player, SpecialStorage storage, BoxType type){
+    public void removeBox(Game game, Player player, Tile storage, BoxType type) throws IllegalRemoveException {
         if(player.getSpaceship().isMostExpensive(type)){
-            ArrayList<Box> boxes = storage.getOccupation();
+            List<Box> boxes = storage.getOccupation();
             for(Box box : boxes){
                 if(box.getType() == type){
                     storage.removeBox(box);

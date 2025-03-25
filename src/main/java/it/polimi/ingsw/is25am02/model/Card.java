@@ -2,6 +2,8 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
@@ -28,11 +30,11 @@ public abstract class Card {
         this.stateCard = stateCardType;
     }
 
-    public void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException{
+    public void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException, IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method for " + this.getCardType());
     }
 
-    public void removeCrew(Game game, Player player, Tile cabin) throws UnsupportedOperationException{
+    public void removeCrew(Game game, Player player, Tile cabin) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -48,31 +50,31 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException{// il primo tile è dmotor, il secondo battery storage
+    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {// il primo tile è dmotor, il secondo battery storage
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) throws UnsupportedOperationException{
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void choiceCrew(Game game, Player player) throws UnsupportedOperationException{
+    public void choiceCrew(Game game, Player player) throws UnsupportedOperationException, IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void removeBox(Game game, Player player, SpecialStorage storage, BoxType type) throws UnsupportedOperationException{
+    public void removeBox(Game game, Player player, Tile storage, BoxType type) throws UnsupportedOperationException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void removeBattery(Game game, Player player, BatteryStorage storage) throws UnsupportedOperationException{
+    public void removeBattery(Game game, Player player, Tile storage) throws UnsupportedOperationException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void calculateDamage(Game game, Player player, Optional<BatteryStorage> storage) throws UnsupportedOperationException{
+    public void calculateDamage(Game game, Player player, Optional<Tile> batterystorage) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void holdSpaceship(Game game, Player player, int x, int y) throws UnsupportedOperationException{
+    public void holdSpaceship(Game game, Player player, int x, int y) throws UnsupportedOperationException, IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 

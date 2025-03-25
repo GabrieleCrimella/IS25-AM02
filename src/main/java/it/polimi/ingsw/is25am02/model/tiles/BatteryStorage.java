@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model.tiles;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 public final class BatteryStorage extends Tile {
     int battery;
@@ -25,10 +26,10 @@ public final class BatteryStorage extends Tile {
     }
 
     @Override
-    public void removeBattery() {
+    public void removeBattery() throws IllegalRemoveException {
         if (battery > 0) {
             battery--;
         }
-        else System.out.println("BatteryStorage empty");
+        else throw new IllegalRemoveException("BatteryStorage empty");
     }
 }

@@ -6,9 +6,9 @@ import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.NOT_FINISHED;
 
 public class Player {
-    private Spaceship spaceship;
-    private String nickname;
-    private PlayerColor color;
+    private final Spaceship spaceship;
+    private final String nickname;
+    private final PlayerColor color;
     private StatePlayerType statePlayer;
 
     public Player(Spaceship spaceship, String nickname, PlayerColor color) {

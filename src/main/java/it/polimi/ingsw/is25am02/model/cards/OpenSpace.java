@@ -3,8 +3,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
-import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleMotor;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
@@ -29,7 +28,7 @@ public class OpenSpace extends Card {
     }
 
     @Override
-    public void choiceDoubleMotor( Game game, Player player, Optional<List<Pair<Tile, Tile>>> whichDMotor){ //primo tile è double motor il secondo è battery storage
+    public void choiceDoubleMotor( Game game, Player player, Optional<List<Pair<Tile, Tile>>> whichDMotor) throws IllegalRemoveException { //primo tile è double motor il secondo è battery storage
         List<Tile> dMotors = new ArrayList<>();
         int flyForward;
         if(whichDMotor.isPresent()){  // il giocatore ha scelto di usare almeno un motore doppio
@@ -39,7 +38,7 @@ public class OpenSpace extends Card {
             }
             flyForward= player.getSpaceship().calculateMotorPower(dMotors);
         }
-        else flyForward = player.getSpaceship().calculateMotorPower(new ArrayList<Tile>()); //se uso solo motori singoli
+        else flyForward = player.getSpaceship().calculateMotorPower(new ArrayList<>()); //se uso solo motori singoli
 
         fly.put(player,flyForward);
         game.getGameboard().move(flyForward, player);

@@ -4,7 +4,6 @@ import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
-import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
@@ -14,7 +13,7 @@ public class AbbandonedShip extends Card{
     private final int creditWin;
     private final int flyBack;
     private int AliveRemoved;    //Crew eliminate from Spaceship
-    private CardType cardType;
+    private final CardType cardType;
 
     //Phase: DECISION e REMOVE
 
@@ -47,13 +46,9 @@ public class AbbandonedShip extends Card{
     }
 
     @Override
-    public void removeCrew(Game game, Player player, Tile cabin){
-        try {
-            cabin.removeCrew();
-            AliveRemoved++;
-        } catch (IllegalRemoveException e) {
-            System.out.println(e.getMessage());
-        }
+    public void removeCrew(Game game, Player player, Tile cabin) throws IllegalRemoveException {
+        cabin.removeCrew();
+        AliveRemoved++;
 
         if (AliveRemoved == AliveLost) {
             game.getCurrentCard().setStateCard(StateCardType.FINISH);

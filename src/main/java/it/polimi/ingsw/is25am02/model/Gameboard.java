@@ -93,8 +93,7 @@ public class Gameboard {
     }
 
     public LinkedList<Player> getRanking() {
-        LinkedList<Player> ranking = new LinkedList<>();
-        ranking.addAll(positions.keySet()); //metto tutti i giocatori nella lista
+        LinkedList<Player> ranking = new LinkedList<>(positions.keySet()); //metto tutti i giocatori nella lista
         //ordino i giocatori in base alla posizione sulla board
         ranking.sort((p1, p2) -> Integer.compare(positions.get(p2), positions.get(p1)));
         return ranking;

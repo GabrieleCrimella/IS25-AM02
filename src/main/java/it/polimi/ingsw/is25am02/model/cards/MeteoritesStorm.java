@@ -4,7 +4,8 @@ import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
-import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class MeteoritesStorm extends Card {
     private final ArrayList<Pair<Integer, RotationType>> meteorites;
     private int currentIndex;
-    private CardType cardType;
+    private final CardType cardType;
 
 
     public MeteoritesStorm(int level, ArrayList<Pair<Integer,RotationType>> meteorites) {
@@ -47,7 +48,7 @@ public class MeteoritesStorm extends Card {
     }
 
     @Override
-    public void calculateDamage(Game game, Player player, Optional<BatteryStorage> storage){
+    public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException {
         boolean res = player.getSpaceship().meteoriteDamage(meteorites.get(currentIndex).getKey(), meteorites.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
         if(res){

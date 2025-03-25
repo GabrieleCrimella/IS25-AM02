@@ -7,7 +7,6 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import javafx.util.Pair;
 
 import java.io.File;
@@ -19,7 +18,6 @@ public class CardDeck {
     private final List<Card> finalDeck;
     private final List<Card> initialDeck;
     private final BoxStore store;
-    private StateCardType currentState;
 
     public CardDeck(){
         this.deck = new HashMap<>();

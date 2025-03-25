@@ -116,7 +116,6 @@ public class Game implements Game_Interface {
     @Override
     public Tile takeTile(Player player) {
         try {
-            //Check
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
             currentTileControl(player);
 
@@ -131,7 +130,6 @@ public class Game implements Game_Interface {
     @Override
     public Tile takeTile(Player player, Tile tile) {
         try {
-            //Check
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
             currentTileControl(player);
 
@@ -147,7 +145,6 @@ public class Game implements Game_Interface {
     @Override
     public void returnTile(Player player) {
         try {
-            //Check
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
@@ -161,7 +158,6 @@ public class Game implements Game_Interface {
     @Override
     public void addTile(Player player, int x, int y) {
         try {
-            //Check
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().addTile(x, y, player.getSpaceship().getCurrentTile());
@@ -177,7 +173,6 @@ public class Game implements Game_Interface {
     @Override
     public void shipFinished(Player player) {
         try {
-            //Check
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.setStatePlayer(FINISHED);
@@ -221,26 +216,12 @@ public class Game implements Game_Interface {
     @Override
     public Optional<List<boolean[][]>> removeTile(Player player, int x, int y) {
         try {
-            //stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
-            stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
-
+            stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
 
             return player.getSpaceship().removeTile(x, y);
         } catch (IllegalStateException | IllegalRemoveException e) {
             System.out.println(e.getMessage());
             return Optional.empty();
-        }
-    }
-
-    @Override
-    public void keepBlock(Player player, boolean[][] tilesToKeep) {
-        try {
-            //stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
-            stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
-
-            player.getSpaceship().keepBlock(tilesToKeep);
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -366,20 +347,21 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choice(this, player, choice);
-        } catch (IllegalStateException | UnsupportedOperationException e) {
+        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
-    public void removeCrew(Player player, Cabin cabin) {
+    public void removeCrew(Player player, Tile cabin) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, REMOVE, player);
             currentPlayerControl(player);
-            possessionControl(player, cabin);
+            possessionAndTypeControl(player, cabin, TileType.CABIN);
 
             getCurrentCard().removeCrew(this, player, cabin);
-        } catch (IllegalStateException | TileException | UnsupportedOperationException e) {
+        } catch (IllegalStateException | TileException | UnsupportedOperationException | IllegalPhaseException |
+                 IllegalRemoveException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -419,34 +401,36 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             return getCurrentCard().choicePlanet(this, player, index);
-        } catch (IllegalStateException | IllegalArgumentException e) {
+        } catch (IllegalStateException | UnsupportedOperationException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
 
-
-    //todo sono arrivato fino a qui per il controllo delle eccezioni
+    //List<Pair<DoubleMotor, BatteryStorage>>
     @Override
     public void choiceDoubleMotor(Player player, Optional<List<Pair<Tile, Tile>>> choices) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
+            ownChoicesControl(player, choices, TileType.D_MOTOR, TileType.BATTERY);
 
             getCurrentCard().choiceDoubleMotor(this, player, choices);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException | IllegalRemoveException | TileException e) {
             System.out.println(e.getMessage());
         }
     }
 
+    //List<Pair<DoubleCannon, BatteryStorage>>
     @Override
-    public void choiceDoubleCannon(Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
+    public void choiceDoubleCannon(Player player, Optional<List<Pair<Tile, Tile>>> choices) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
+            ownChoicesControl(player, choices, TileType.D_CANNON, TileType.BATTERY);
 
             getCurrentCard().choiceDoubleCannon(this, player, choices);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException | IllegalRemoveException | TileException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -458,33 +442,33 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choiceCrew(this, player);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
-    public void removeBox(Player player, SpecialStorage storage, BoxType type) {
+    public void removeBox(Player player, Tile storage, BoxType type) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, REMOVE, player);
             currentPlayerControl(player);
-            possessionControl(player, storage);
+            possessionAndTypeControl(player, storage, TileType.SPECIAL_STORAGE);
 
             getCurrentCard().removeBox(this, player, storage, type);
-        } catch (IllegalStateException | TileException e) {
+        } catch (IllegalStateException | TileException | UnsupportedOperationException | IllegalRemoveException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @Override
-    public void removeBattery(Player player, BatteryStorage storage) {
+    public void removeBattery(Player player, Tile storage) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, REMOVE, player);
             currentPlayerControl(player);
-            possessionControl(player, storage);
+            possessionAndTypeControl(player, storage, TileType.BATTERY);
 
             getCurrentCard().removeBattery(this, player, storage);
-        } catch (IllegalStateException | TileException e) {
+        } catch (IllegalStateException | TileException | UnsupportedOperationException | IllegalRemoveException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -503,13 +487,14 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void calculateDamage(Player player, Optional<BatteryStorage> batteryStorage) {
+    public void calculateDamage(Player player, Optional<Tile> batteryStorage) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
+            possessionAndTypeControl(player, batteryStorage.get(),TileType.BATTERY);
 
             getCurrentCard().calculateDamage(this, player, batteryStorage);
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IllegalPhaseException | UnsupportedOperationException | IllegalRemoveException | TileException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -521,10 +506,23 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().holdSpaceship(this, player, x, y);
+        } catch (IllegalStateException | IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void keepBlock(Player player, boolean[][] tilesToKeep) {
+        try {
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
+            currentPlayerControl(player);
+
+            player.getSpaceship().keepBlock(tilesToKeep);
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }
     }
+
 
     @Override
     public ArrayList<Player> getWinners() {
@@ -632,9 +630,14 @@ public class Game implements Game_Interface {
         }
     }
 
-    private void possessionControl(Player player, Tile tile) throws TileException {
-        if (!player.getSpaceship().own(tile)) {
-            throw new TileException("Player: " + player.getNickname() + ", doesn't possess Tile: " + tile);
+    private void possessionAndTypeControl(Player player, Tile tile, TileType type) throws TileException {
+        if(tile != null) {
+            if (!player.getSpaceship().own(tile)) {
+                throw new TileException("Player: " + player.getNickname() + ", doesn't possess Tile: " + tile);
+            }
+            if (!tile.getType().equals(type)) {
+                throw new TileException("Tile" + tile.getType() + "doesn't possess Type: " + type);
+            }
         }
     }
 
@@ -654,6 +657,25 @@ public class Game implements Game_Interface {
             return true;
         } else {
             throw new IllegalAddException("There is no AlienCabin near (" + x + "," + y + ")");
+        }
+    }
+
+    private void ownChoicesControl(Player player, Optional<List<Pair<Tile, Tile>>> choices, TileType type1, TileType type2) throws TileException {
+        if(choices.isPresent()) {
+            for(Pair<Tile, Tile> pair : choices.get()) {
+                if(!player.getSpaceship().own(pair.getKey())){
+                    throw new TileException("This tile " + pair.getKey().getType() + " is not owned by " + player.getNickname());
+                }
+                if(!pair.getKey().getType().equals(type1)) {
+                    throw new TileException("Tile " + pair.getKey() + "isn't type of " + type1);
+                }
+                if(!player.getSpaceship().own(pair.getValue())){
+                    throw new TileException("This tile " + pair.getValue().getType() + " is not owned by " + player.getNickname());
+                }
+                if(!pair.getValue().getType().equals(type2)) {
+                    throw new TileException("Tile " + pair.getValue() + "isn't type of " + type2);
+                }
+            }
         }
     }
 

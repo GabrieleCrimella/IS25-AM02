@@ -8,7 +8,7 @@ import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 public class Epidemy extends Card {
 
-    private CardType cardType;
+    private final CardType cardType;
 
     public Epidemy(int level) {
         super(level, StateCardType.DECISION);

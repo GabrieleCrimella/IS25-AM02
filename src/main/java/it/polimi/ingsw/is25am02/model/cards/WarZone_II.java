@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
@@ -25,7 +26,7 @@ public class WarZone_II extends Card{
     private int currentIndex;
     private int currentPhase;
     private final ArrayList<Pair<Integer, RotationType>> shots;
-    private CardType cardType;
+    private final CardType cardType;
 
     public WarZone_II(int level, int flyback, int boxesLost, ArrayList<Pair<Integer, RotationType>> shots) {
         super(level, StateCardType.DECISION);
@@ -47,17 +48,17 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices) {
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalRemoveException {
         if (currentPhase == 1) {
             List<Tile> dCannon = new ArrayList<>();
             if (choices.isPresent()) {
-                for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
+                for (Pair<Tile, Tile> pair : choices.get()) {
                     dCannon.add(pair.getKey());
                     pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
                 }
                 declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
             } else
-                declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<Tile>()));
+                declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<>()));
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
@@ -76,7 +77,7 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices){
+    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalRemoveException {
         if(currentPhase == 2) {
             ArrayList<Tile> doubleMotors = new ArrayList<>();
             if(choices.isPresent()){
@@ -86,7 +87,7 @@ public class WarZone_II extends Card{
                 }
                 declarationMotor.put(player, player.getSpaceship().calculateMotorPower(doubleMotors));
             }
-            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<Tile>()));
+            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<>()));
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
@@ -107,10 +108,10 @@ public class WarZone_II extends Card{
 
 
     @Override
-    public void removeBox(Game game, Player player, SpecialStorage storage, BoxType type){
+    public void removeBox(Game game, Player player, Tile storage, BoxType type) throws IllegalRemoveException {
         if(currentPhase == 2) {
             if(!player.getSpaceship().noBox() && player.getSpaceship().isMostExpensive(type)) {
-                ArrayList<Box> boxes = storage.getOccupation();
+                List<Box> boxes = storage.getOccupation();
                 for (Box box : boxes) {
                     if (box.getType() == type) {
                         storage.removeBox(box);
@@ -130,7 +131,7 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void removeBattery(Game game, Player player, BatteryStorage storage){
+    public void removeBattery(Game game, Player player, Tile storage) throws IllegalRemoveException {
         if(currentPhase == 2) {
             if(player.getSpaceship().noBox()){
                 storage.removeBattery();
@@ -170,7 +171,7 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void calculateDamage(Game game, Player player, Optional<BatteryStorage> storage){
+    public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException {
         if(currentPhase == 4) {
             boolean res = player.getSpaceship().shotDamage(shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
 

@@ -6,7 +6,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
 public class InitialCard extends Card {
 
-    private CardType cardType;
+    private final CardType cardType;
 
     @Override
     public CardType getCardType() {

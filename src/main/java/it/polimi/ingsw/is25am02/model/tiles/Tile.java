@@ -6,6 +6,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 import java.util.ArrayList;
@@ -125,7 +126,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void removeBox(Box box) throws UnsupportedOperationException {
+    public void removeBox(Box box) throws UnsupportedOperationException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method");
     }
 
@@ -133,7 +134,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void addBox(Box box) throws UnsupportedOperationException {
+    public void addBox(Box box) throws UnsupportedOperationException, IllegalAddException {
         throw new UnsupportedOperationException("Not supported method");
     }
 
@@ -165,7 +166,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void removeBattery() throws UnsupportedOperationException {
+    public void removeBattery() throws UnsupportedOperationException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method");
     }
 }

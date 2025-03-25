@@ -6,6 +6,7 @@ import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
@@ -24,7 +25,7 @@ public class WarZone_I extends Card {
     private final LinkedHashMap<Player, Integer> declarationMotor;
     private int currentIndex;
     private int currentPhase;
-    private CardType cardType;
+    private final CardType cardType;
 
     public WarZone_I(int level, int flyback, int aliveLost, ArrayList<Pair<Integer, RotationType>> shots) {
         super(level, StateCardType.CHOICE_ATTRIBUTES);
@@ -45,12 +46,8 @@ public class WarZone_I extends Card {
         return cardType;
     }
 
-    public int getCurrentPhase() {
-        return currentPhase;
-    }
-
     @Override
-    public void choiceCrew(Game game, Player player) {
+    public void choiceCrew(Game game, Player player) throws IllegalPhaseException {
         if(currentPhase == 1) {
             declarationCrew.put(player, player.getSpaceship().calculateNumAlive());
 
@@ -69,11 +66,11 @@ public class WarZone_I extends Card {
             }
             else game.nextPlayer();
         }
-        else throw new IllegalStateException();
+        else throw new IllegalPhaseException("Should be phase 1, instead is " + currentPhase);
     }
 
     @Override
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices){ //primo è dmotor secondo è batterystorage
+    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalPhaseException, IllegalRemoveException { //primo è dmotor secondo è batterystorage
         if(currentPhase == 2) {
             ArrayList<Tile> doubleMotors = new ArrayList<>();
             if(choices.isPresent()){
@@ -83,7 +80,7 @@ public class WarZone_I extends Card {
                 }
                 declarationMotor.put(player, player.getSpaceship().calculateMotorPower(doubleMotors));
             }
-            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<Tile>()));
+            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<>()));
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
@@ -99,11 +96,11 @@ public class WarZone_I extends Card {
             }
             else game.nextPlayer();
         }
-        else throw new IllegalStateException();
+        else throw new IllegalPhaseException("Should be phase 2, instead is " + currentPhase);
     }
 
     @Override
-    public void removeCrew(Game game, Player player, Tile cabin){
+    public void removeCrew(Game game, Player player, Tile cabin) throws IllegalPhaseException {
         if(currentPhase == 2) {
             try {
                 cabin.removeCrew();
@@ -118,21 +115,21 @@ public class WarZone_I extends Card {
                 currentPhase++;
             }
         }
-        else throw new IllegalStateException();
+        else throw new IllegalPhaseException("Should be phase 2, instead is " + currentPhase);
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> choices){
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalPhaseException, IllegalRemoveException {
         if(currentPhase == 3) {
             List<Tile> dCannon = new ArrayList<>();
             if (choices.isPresent()) {
-                for (Pair<DoubleCannon, BatteryStorage> pair : choices.get()) {
+                for (Pair<Tile, Tile> pair : choices.get()) {
                     dCannon.add(pair.getKey());
                     pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
                 }
                 declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
             }
-            else declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<Tile>()));
+            else declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<>()));
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
@@ -149,11 +146,11 @@ public class WarZone_I extends Card {
             }
             else game.nextPlayer();
         }
-        else throw new IllegalStateException();
+        else throw new IllegalPhaseException("Should be phase 3, instead is " + currentPhase);
     }
 
     @Override
-    public void calculateDamage(Game game, Player player, Optional<BatteryStorage> storage){
+    public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalPhaseException, IllegalRemoveException {
         if(currentPhase == 4) {
             boolean res = player.getSpaceship().shotDamage(shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
@@ -169,15 +166,15 @@ public class WarZone_I extends Card {
                 game.getCurrentState().setPhase(TAKE_CARD);
             }
         }
-        else throw new IllegalStateException();
+        else throw new IllegalPhaseException("Should be phase 4, instead is " + currentPhase);
     }
 
     @Override
-    public void holdSpaceship(Game game, Player player, int x, int y){
+    public void holdSpaceship(Game game, Player player, int x, int y) throws IllegalPhaseException {
         if(currentPhase == 4) {
             player.getSpaceship().holdSpaceship(x,y);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
         }
-        else throw new IllegalStateException();
+        else throw new IllegalPhaseException("Should be phase 4, instead is " + currentPhase);
     }
 }

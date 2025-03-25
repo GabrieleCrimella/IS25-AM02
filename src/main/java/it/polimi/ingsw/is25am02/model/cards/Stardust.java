@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 public class Stardust extends Card {
 
-    private CardType cardType;
+    private final CardType cardType;
 
     public Stardust(int level) {
         super(level, StateCardType.DECISION);

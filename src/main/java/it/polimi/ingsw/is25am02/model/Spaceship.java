@@ -1,7 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.*;
-//import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingTileException;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
@@ -332,7 +331,7 @@ public class Spaceship {
         return true;
     }
 
-    public void removeBattery(BatteryStorage t) {
+    public void removeBattery(BatteryStorage t) throws IllegalRemoveException {
         t.removeBattery();
     }
 
@@ -388,8 +387,7 @@ public class Spaceship {
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
     //ritorna 1 se la nave si è divisa in varie parti
-    public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage){
-        try {
+    public boolean meteoriteDamage(int bigOrSmall, RotationType rotationType, int num, Optional<Tile> storage) throws IllegalRemoveException {
             switch (bigOrSmall) {
                 case 0: //Small
                     if (isExposed(rotationType, num)) {
@@ -415,15 +413,10 @@ public class Spaceship {
                 default:
                     return false;
             }
-        } catch (IllegalRemoveException e){
-            System.out.println(e.getMessage());
-            return false;
-        }
     }
 
     //todo controllare batterie
-    public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<BatteryStorage> storage) {
-        try {
+    public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<Tile> storage) throws IllegalRemoveException {
             Optional<Tile> target = targetTile(rotationType, num);
             switch (bigOrSmall) {
                 case 0: //Small
@@ -441,10 +434,7 @@ public class Spaceship {
                 default:
                     return false;
             }
-        } catch (IllegalRemoveException e){
-            System.out.println(e.getMessage());
-            return false;
-        }
+
 
     }
 

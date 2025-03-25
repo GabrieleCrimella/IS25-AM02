@@ -5,9 +5,6 @@ import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
-import it.polimi.ingsw.is25am02.model.tiles.BatteryStorage;
-import it.polimi.ingsw.is25am02.model.tiles.Cabin;
-import it.polimi.ingsw.is25am02.model.tiles.DoubleCannon;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
@@ -20,7 +17,7 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CAR
 public class SlaveOwner extends Enemies{
     private final int AliveLost;
     private int AliveRemoved;
-    private CardType cardType;
+    private final CardType cardType;
 
     public SlaveOwner(int level, int cannonPowers, int daysLost, int credit, int humanLost) {
         super(level, cannonPowers, daysLost, credit, StateCardType.DECISION);
@@ -35,17 +32,17 @@ public class SlaveOwner extends Enemies{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<DoubleCannon, BatteryStorage>>> whichDCannon){
+    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> whichDCannon) throws IllegalRemoveException {
         List<Tile> dCannon = new ArrayList<>();
         double playerPower;
         if(whichDCannon.isPresent()){  // il giocatore ha scelto di usare almeno un motore doppio
-            for(Pair<DoubleCannon, BatteryStorage> pair: whichDCannon.get()){
+            for(Pair<Tile, Tile> pair: whichDCannon.get()){
                 dCannon.add(pair.getKey());
                 pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
             }
             playerPower= player.getSpaceship().calculateCannonPower(dCannon);
         }
-        else playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<Tile>()); //se uso solo motori singoli
+        else playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<>()); //se uso solo motori singoli
 
         if(playerPower > getCannonPowers()){ //se il giocatore è piu forte dei schiavisti allora li sconfigge
             setStateCard(StateCardType.DECISION);
@@ -69,13 +66,9 @@ public class SlaveOwner extends Enemies{
     }
 
     @Override
-    public void removeCrew(Game game, Player player, Tile cabin){
-        try {
-            cabin.removeCrew();
-            AliveRemoved++;
-        } catch (IllegalRemoveException e) {
-            System.out.println(e.getMessage());
-        }
+    public void removeCrew(Game game, Player player, Tile cabin) throws IllegalRemoveException {
+        cabin.removeCrew();
+        AliveRemoved++;
 
         if (AliveRemoved == AliveLost) {
             if(player.equals(game.getGameboard().getRanking().getLast())){

@@ -17,7 +17,7 @@ public class AbbandonedStation extends Card_with_box {
     private final int daysLost;
     private final LinkedList<Box> boxesWon;
     private final LinkedList<BoxType> boxesWonTypes;
-    private CardType cardType;
+    private final CardType cardType;
 
     public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
         super(level, store, StateCardType.DECISION);

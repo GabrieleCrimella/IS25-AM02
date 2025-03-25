@@ -7,7 +7,6 @@ import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
-import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
