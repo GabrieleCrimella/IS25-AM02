@@ -56,6 +56,7 @@ public interface Game_Interface {
     void calculateDamage(Player player, Optional<Tile> batteryStorage);
     void holdSpaceship(Player player, int x, int y);
 
+
     //Phase RESULT
     ArrayList<Player> getWinners();
 
