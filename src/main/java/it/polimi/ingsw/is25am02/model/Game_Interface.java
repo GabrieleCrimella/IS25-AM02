@@ -19,6 +19,8 @@ public interface Game_Interface {
     void flipHourglass();
     Tile takeTile(Player player);
     Tile takeTile(Player player, Tile tile);
+    void bookTile(Player player);
+    void addBookedTile(Player player, int index, int x, int y);
     void returnTile(Player player);
     void addTile(Player player, int x, int y);
     void shipFinished(Player player);

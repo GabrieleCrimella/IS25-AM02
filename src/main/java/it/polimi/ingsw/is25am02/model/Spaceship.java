@@ -13,14 +13,18 @@ public class Spaceship {
     private int numOfWastedTiles;
     private int cosmicCredits;
     private Tile currentTile;
-    private int x_start, y_start;
     private int targetTileX, targetTileY;
+    private HashMap<Integer, Tile> bookedTiles;
 
     public Spaceship(int level) {
         this.spaceshipIterator = new SpaceshipIterator(level);
         this.numOfWastedTiles = 0;
         this.cosmicCredits = 0;
+        this.bookedTiles = new HashMap<>();
         currentTile = null;
+
+        bookedTiles.put(1, null);
+        bookedTiles.put(2, null);
     }
 
     public SpaceshipIterator getSpaceshipIterator() {
@@ -34,9 +38,41 @@ public class Spaceship {
      * }
      */
 
+    public HashMap<Integer, Tile> getBookedTiles() {
+        return bookedTiles;
+    }
 
     public void addTile(int x, int y, Tile t) throws IllegalAddException {
         spaceshipIterator.addTile(t, x, y);
+    }
+
+    public void bookTile(Player player) throws IllegalAddException {
+        if(currentTile == null){
+            throw new IllegalAddException("CurrentTile is empty");
+        }
+        else if(bookedTiles.values().stream().filter(Objects::nonNull).count() == 2){
+            throw new IllegalAddException("BookedTile is full. Player " + player.getNickname() + " has " + bookedTiles.size() + " booked tiles");
+        }
+        else{
+            if(bookedTiles.get(1) == null){
+                bookedTiles.put(1, currentTile);
+                returnTile();
+            }
+            else if(bookedTiles.get(2) == null){
+                bookedTiles.put(2, currentTile);
+                returnTile();
+            }
+        }
+    }
+
+    public void addBookedTile(int index, int x, int y) throws IllegalAddException {
+        if(index < 1 || index > 2){
+            throw new IllegalAddException("index must be between 1 and 2");
+        }
+        else{
+            addTile(x, y, bookedTiles.get(index));
+            bookedTiles.put(index, null);
+        }
     }
 
     public Optional<Tile> getTile(int x, int y) {

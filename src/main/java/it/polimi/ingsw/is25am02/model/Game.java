@@ -167,6 +167,25 @@ public class Game implements Game_Interface {
         }
     }
 
+    public void bookTile(Player player){
+        try{
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+
+            player.getSpaceship().bookTile(player);
+        } catch (IllegalStateException | IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addBookedTile(Player player, int index, int x, int y){
+        try{
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+
+            player.getSpaceship().addBookedTile(index, x, y);
+        } catch (IllegalStateException | IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     //player goes to the FINISH phase, if he's the last one I change the  game state to CHECK
     //I add the players to the gameboard
@@ -178,6 +197,9 @@ public class Game implements Game_Interface {
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
             getGameboard().positions.put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
+            if(player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)){
+                player.getSpaceship().addNumOfWastedTiles((int)player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
+            }
 
             if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
