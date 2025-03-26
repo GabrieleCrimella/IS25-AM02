@@ -8,7 +8,6 @@ public class Hourglass {
     private final long durata;
     private long timeLeft;
     private boolean running;
-    private TimerTask task;
 
     public Hourglass(long durata) {
         this.durata = durata;
@@ -16,11 +15,11 @@ public class Hourglass {
         this.running = false;
     }
 
-    public long getTimeLeft() {
-        return timeLeft;
+    public boolean getRunning() {
+        return running;
     }
 
-    public void flip() {
+    public void flip(Game game) {
         if (running) {
             timer.cancel();
         }
@@ -28,13 +27,16 @@ public class Hourglass {
         timeLeft = durata;
         running = true;
 
-        task = new TimerTask() {
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 timeLeft--;
                 if (timeLeft <= 0) {
                     timer.cancel();
                     running = false;
+                    if(game.getGameboard().getHourGlassFlip() == 0){
+                        game.setBuildTimeIsOver();
+                    }
                 }
             }
         };

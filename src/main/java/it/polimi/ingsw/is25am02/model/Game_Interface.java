@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface Game_Interface {
 
     //Phase BUILD
-    void flipHourglass();
+    void flipHourglass(Player player);
     Tile takeTile(Player player);
     Tile takeTile(Player player, Tile tile);
     void bookTile(Player player);

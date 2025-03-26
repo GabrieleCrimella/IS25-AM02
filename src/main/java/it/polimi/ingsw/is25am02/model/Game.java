@@ -15,12 +15,13 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.*;
 
 public class Game implements Game_Interface {
     private int diceResult;
+    private boolean buildTimeIsOver;
     private String gameName;
     private int maxAllowedPlayers;
     private final List<Player> players;
     private final int level;
     private final CardDeck deck;
-    private Hourglass hourglass;
+    private final Hourglass hourglass;
     private final HeapTiles heapTile;
     private final Gameboard globalBoard;
     private final State currentState;
@@ -33,10 +34,12 @@ public class Game implements Game_Interface {
         this.players = p;
         this.level = level;
         this.diceResult = 0;
+        this.buildTimeIsOver = false;
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
         this.currentState = new State(p);
         this.deck = new CardDeck();
+        this.hourglass = new Hourglass(level);
         this.currentState.setPhase(BUILD);
     }
 
@@ -85,6 +88,8 @@ public class Game implements Game_Interface {
         this.diceResult = getGameboard().getDice().pickRandomNumber();
     }
 
+    public void setBuildTimeIsOver() { buildTimeIsOver = true;}
+
     public Set<Tile> getVisibleTiles() {
         return heapTile.getVisibleTiles();
     }
@@ -109,19 +114,35 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void flipHourglass() {
-        hourglass.flip();
+    public void flipHourglass(Player player) {
+        try{
+            buildControl();
+            if(globalBoard.getHourGlassFlip() > 1 && !hourglass.getRunning()){
+                stateControl(BUILD, NOT_FINISHED, FINISH, player);
+                hourglass.flip(this);
+                globalBoard.decreaseHourGlassFlip();
+
+            }
+            else if(globalBoard.getHourGlassFlip() == 1 && !hourglass.getRunning()){
+                stateControl(BUILD, FINISHED, FINISH, player);
+                hourglass.flip(this);
+                globalBoard.decreaseHourGlassFlip();
+            }
+        } catch (IllegalStateException | IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
     public Tile takeTile(Player player) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
             currentTileControl(player);
 
             player.getSpaceship().setCurrentTile(heapTile.drawTile());
 
-        } catch (IllegalStateException | AlreadyViewingException e) {
+        } catch (IllegalStateException | AlreadyViewingException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
         return player.getSpaceship().getCurrentTile();
@@ -130,13 +151,14 @@ public class Game implements Game_Interface {
     @Override
     public Tile takeTile(Player player, Tile tile) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
             currentTileControl(player);
 
             heapTile.removeVisibleTile(tile);
             player.getSpaceship().setCurrentTile(tile);
 
-        } catch (IllegalStateException | AlreadyViewingException | IllegalRemoveException e) {
+        } catch (IllegalStateException | AlreadyViewingException | IllegalRemoveException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
         return player.getSpaceship().getCurrentTile();
@@ -145,12 +167,13 @@ public class Game implements Game_Interface {
     @Override
     public void returnTile(Player player) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile();
 
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -158,31 +181,34 @@ public class Game implements Game_Interface {
     @Override
     public void addTile(Player player, int x, int y) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().addTile(x, y, player.getSpaceship().getCurrentTile());
 
-        } catch (IllegalStateException | IllegalAddException e) {
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void bookTile(Player player){
         try{
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().bookTile(player);
-        } catch (IllegalStateException | IllegalAddException e) {
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void addBookedTile(Player player, int index, int x, int y){
         try{
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().addBookedTile(index, x, y);
-        } catch (IllegalStateException | IllegalAddException e) {
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -196,7 +222,7 @@ public class Game implements Game_Interface {
 
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
-            getGameboard().positions.put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
+            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
             if(player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)){
                 player.getSpaceship().addNumOfWastedTiles((int)player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
             }
@@ -672,6 +698,12 @@ public class Game implements Game_Interface {
             if (!tile.getType().equals(type)) {
                 throw new TileException("Tile" + tile.getType() + "doesn't possess Type: " + type);
             }
+        }
+    }
+
+    private void buildControl() throws IllegalPhaseException {
+        if(buildTimeIsOver){
+            throw new IllegalPhaseException("the time for building is over, call finishedSpaceship");
         }
     }
 
