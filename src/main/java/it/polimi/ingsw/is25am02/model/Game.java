@@ -105,10 +105,10 @@ public class Game implements Game_Interface {
     public void nextPlayer() {
         int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
 
-        if (getGameboard().getRanking().indexOf(getCurrentPlayer()) == getGameboard().getRanking().size() - 1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
+        if (globalBoard.getRanking().indexOf(getCurrentPlayer()) == globalBoard.getRanking().size() - 1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(FINISH);
-        } else if (getGameboard().getRanking().get(index + 1).getStatePlayer() == IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
+        } else if (globalBoard.getRanking().get(index + 1).getStatePlayer() == IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
             currentState.setCurrentPlayer(getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
         }
     }
@@ -371,7 +371,7 @@ public class Game implements Game_Interface {
             outOfGame();
             currentPlayerControl(player);
 
-            if(deck.playnextCard(getCurrentState()) == null || globalBoard.getPositions().isEmpty()) {
+            if(deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
                 this.getCurrentState().setPhase(RESULT);
             } else {
                 this.getCurrentState().setPhase(EFFECT_ON_PLAYER);

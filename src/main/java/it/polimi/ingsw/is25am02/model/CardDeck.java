@@ -281,7 +281,7 @@ public class CardDeck {
         deck.computeIfPresent(numDeck, (k, pair) -> new Pair<>(pair.getKey(), false));
     }
 
-    public Card playnextCard(State state){//deve prendere la prossima carta da final deck
+    public Card playnextCard(Game game){//deve prendere la prossima carta da final deck
         Card nextCard;
         //se la carta corrente è una di quelle con le box metto gli scarti in store
         if(finalDeck.getFirst().getCardType().equals(CardType.ABANDONED_STATION) || finalDeck.getFirst().getCardType().equals(CardType.TRAFFICKER)){
@@ -306,7 +306,19 @@ public class CardDeck {
             return null;
         }
         nextCard = finalDeck.getFirst();
-        state.setCurrentCard(nextCard);
+        game.getCurrentState().setCurrentCard(nextCard);
+
+
+        //only 1 player is IN_GAME, he skips WarZone
+        if(game.getGameboard().getPositions().size() == 1){
+            while(nextCard.getCardType() == CardType.WARZONE1 || nextCard.getCardType() == CardType.WARZONE2){
+                finalDeck.removeFirst();
+                if(finalDeck.isEmpty()){
+                    return null;
+                }
+                nextCard = finalDeck.getFirst();
+            }
+        }
 
         //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi
         if(nextCard.getCardType().equals(CardType.ABANDONED_STATION) || nextCard.getCardType().equals(CardType.TRAFFICKER) ){
