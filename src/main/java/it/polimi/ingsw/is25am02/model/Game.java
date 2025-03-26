@@ -116,19 +116,24 @@ public class Game implements Game_Interface {
     @Override
     public void flipHourglass(Player player) {
         try{
+            levelControl();
             buildControl();
-            if(globalBoard.getHourGlassFlip() > 1 && !hourglass.getRunning()){
-                stateControl(BUILD, NOT_FINISHED, FINISH, player);
-                hourglass.flip(this);
-                globalBoard.decreaseHourGlassFlip();
+            if(!hourglass.getRunning()) {
+                if (globalBoard.getHourGlassFlip() > 1) {
+                    stateControl(BUILD, NOT_FINISHED, FINISH, player);
+                    hourglass.flip(this);
+                    globalBoard.decreaseHourGlassFlip();
 
+                } else if (globalBoard.getHourGlassFlip() == 1) {
+                    stateControl(BUILD, FINISHED, FINISH, player);
+                    hourglass.flip(this);
+                    globalBoard.decreaseHourGlassFlip();
+                }
             }
-            else if(globalBoard.getHourGlassFlip() == 1 && !hourglass.getRunning()){
-                stateControl(BUILD, FINISHED, FINISH, player);
-                hourglass.flip(this);
-                globalBoard.decreaseHourGlassFlip();
+            else{
+                throw new IllegalStateException("Hourglass already running");
             }
-        } catch (IllegalStateException | IllegalPhaseException e) {
+        } catch (IllegalStateException | IllegalPhaseException | LevelException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -193,22 +198,24 @@ public class Game implements Game_Interface {
 
     public void bookTile(Player player){
         try{
+            levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().bookTile(player);
-        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void addBookedTile(Player player, int index, int x, int y){
         try{
+            levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().addBookedTile(index, x, y);
-        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -294,6 +301,7 @@ public class Game implements Game_Interface {
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
         try {
+            levelControl();
             stateControl(INITIALIZATION_SPACESHIP, CORRECT_SHIP, FINISH, player);
             initializationCabinControl(player, x, y);
 
@@ -309,7 +317,7 @@ public class Game implements Game_Interface {
                     player.getSpaceship().getTile(x, y).get().addCrew(type);
                 }
             }
-        } catch (IllegalStateException | TileException | IllegalAddException e) {
+        } catch (IllegalStateException | TileException | IllegalAddException | LevelException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -323,7 +331,8 @@ public class Game implements Game_Interface {
             player.setStatePlayer(IN_GAME);
             readyPlayer++;
 
-            //in case the player doesn't want to initialize all the cabins by himself
+            //1) in case the player doesn't want to initialize all the cabins by himself
+            //2) it's the tutorial level
             List<Tile> cabins = player.getSpaceship().getTilesByType(TileType.CABIN);
             for (Tile c : cabins) {
                 if (c.getCrew().isEmpty()) {
@@ -343,13 +352,14 @@ public class Game implements Game_Interface {
     @Override
     public void earlyLanding(Player player) {
         try{
+            levelControl();
             stateControl(TAKE_CARD, IN_GAME, FINISH, player);
 
             getGameboard().getPositions().remove(player);
             player.setStatePlayer(OUT_GAME);
 
             getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | LevelException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -361,7 +371,7 @@ public class Game implements Game_Interface {
             outOfGame();
             currentPlayerControl(player);
 
-            if(getDeck().playnextCard(getCurrentState()) == null) {
+            if(deck.playnextCard(getCurrentState()) == null || globalBoard.getPositions().isEmpty()) {
                 this.getCurrentState().setPhase(RESULT);
             } else {
                 this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
@@ -704,6 +714,12 @@ public class Game implements Game_Interface {
     private void buildControl() throws IllegalPhaseException {
         if(buildTimeIsOver){
             throw new IllegalPhaseException("the time for building is over, call finishedSpaceship");
+        }
+    }
+
+    private void levelControl() throws LevelException {
+        if(level == 0){
+            throw new LevelException("functionality for higher levels");
         }
     }
 
