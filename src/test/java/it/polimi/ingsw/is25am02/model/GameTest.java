@@ -138,8 +138,16 @@ class GameTest {
         }
         Box blueBox = new BlueBox(BoxType.BLUE);
         Box redBox = new RedBox(BoxType.RED);
-        storage1.addBox(blueBox);
-        storage1.addBox(redBox);
+        try {
+            storage1.addBox(blueBox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            storage1.addBox(redBox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //tile 3 - battery 8 7
         TileType t3 = TileType.BATTERY;

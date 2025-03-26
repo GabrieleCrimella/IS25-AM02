@@ -6,6 +6,8 @@ import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.Spaceship;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.scene.chart.BarChart;
 import javafx.util.Pair;
@@ -110,7 +112,13 @@ class OpenSpaceTest {
         listaDiCoppieDiDMotorEBattery.add(CoppiaDiMotorEBattery);
         Optional<List<Pair<Tile,Tile>>> optionalListaDiCoppieDiMotorEBattery = Optional.of(listaDiCoppieDiDMotorEBattery);
 
-        openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
+        try {
+            openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
 
         assertEquals(7, game.getGameboard().getPositions().get(player1),7);
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,9).get().getBattery());
@@ -208,7 +216,13 @@ class OpenSpaceTest {
         listaDiCoppieDiDMotorEBattery.add(CoppiaDiMotorEBattery);
         Optional<List<Pair<Tile,Tile>>> optionalListaDiCoppieDiMotorEBattery = Optional.of(listaDiCoppieDiDMotorEBattery);
 
-        openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
+        try {
+            openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
 
         assertEquals(7, game.getGameboard().getPositions().get(player1),7);
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,9).get().getBattery());
@@ -272,7 +286,13 @@ class OpenSpaceTest {
             System.out.println(e.getMessage());
         }
 
-        openSpace.choiceDoubleMotor(game,player2,Optional.empty());
+        try {
+            openSpace.choiceDoubleMotor(game,player2,Optional.empty());
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
 
         assertEquals(3, game.getGameboard().getPositions().get(player2));
         assertEquals(3, game.getPlayers().get(1).getSpaceship().getTile(8,9).get().getBattery());

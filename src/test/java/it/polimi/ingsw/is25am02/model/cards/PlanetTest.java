@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.Storage;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,11 @@ class PlanetTest {
         int maxNum2 = 3;
         Tile storage2 = new Storage(t2, connectors2, rotationType2, id2, maxNum2);
         BlueBox tilebluebox = new BlueBox(BoxType.BLUE);
-        storage2.addBox(tilebluebox);
+        try {
+            storage2.addBox(tilebluebox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //CreateCard
         int level = 0;
@@ -126,7 +131,11 @@ class PlanetTest {
         int maxNum2 = 3;
         Tile storage2 = new Storage(t2, connectors2, rotationType2, id2, maxNum2);
         BlueBox tilebluebox = new BlueBox(BoxType.BLUE);
-        storage2.addBox(tilebluebox);
+        try {
+            storage2.addBox(tilebluebox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //CreateCard
         int level = 0;
@@ -222,7 +231,11 @@ class PlanetTest {
         int maxNum2 = 3;
         Tile storage2 = new Storage(t2, connectors2, rotationType2, id2, maxNum2);
         BlueBox tilebluebox = new BlueBox(BoxType.BLUE);
-        storage2.addBox(tilebluebox);
+        try {
+            storage2.addBox(tilebluebox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         //CreateCard
         int level = 0;

@@ -10,6 +10,8 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import org.junit.jupiter.api.Test;
 
@@ -366,9 +368,25 @@ class AbbandonedShipTest {
         game.getCurrentState().setCurrentCard(abbandonedShip);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
         //First player wants to use the card
-        abbandonedShip.choice(game, game.getPlayers().getFirst(), true);
-        abbandonedShip.removeCrew(game, game.getPlayers().getFirst(), game.getPlayers().getFirst().getSpaceship().getTile(7,7).get());
-        abbandonedShip.removeCrew(game, game.getPlayers().getFirst(), game.getPlayers().getFirst().getSpaceship().getTile(8,7).get());
+        try {
+            abbandonedShip.choice(game, game.getPlayers().getFirst(), true);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            abbandonedShip.removeCrew(game, game.getPlayers().getFirst(), game.getPlayers().getFirst().getSpaceship().getTile(7,7).get());
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            abbandonedShip.removeCrew(game, game.getPlayers().getFirst(), game.getPlayers().getFirst().getSpaceship().getTile(8,7).get());
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
         //Check correct card state
         assertEquals(true, game.getCurrentState().getCurrentCard().getStateCard().equals(StateCardType.FINISH));
         //Check correct number of alive
@@ -392,11 +410,31 @@ class AbbandonedShipTest {
         game.getCurrentState().setCurrentCard(abbandonedShip);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
         //First player wants to use the card
-        abbandonedShip.choice(game, game.getPlayers().getFirst(), false);
+        try {
+            abbandonedShip.choice(game, game.getPlayers().getFirst(), false);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
         assertEquals(true, game.getCurrentState().getCurrentCard().getStateCard().equals(StateCardType.DECISION));
-        abbandonedShip.choice(game, game.getPlayers().get(1), true);
-        abbandonedShip.removeCrew(game, game.getPlayers().get(1), game.getPlayers().get(1).getSpaceship().getTile(7,7).get());
-        abbandonedShip.removeCrew(game, game.getPlayers().get(1), game.getPlayers().get(1).getSpaceship().getTile(7,7).get());
+        try {
+            abbandonedShip.choice(game, game.getPlayers().get(1), true);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            abbandonedShip.removeCrew(game, game.getPlayers().get(1), game.getPlayers().get(1).getSpaceship().getTile(7,7).get());
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            abbandonedShip.removeCrew(game, game.getPlayers().get(1), game.getPlayers().get(1).getSpaceship().getTile(7,7).get());
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
         //Check correct card state
         assertEquals(true, game.getCurrentState().getCurrentCard().getStateCard().equals(StateCardType.FINISH));
         //Check correct number of alive
@@ -424,12 +462,26 @@ class AbbandonedShipTest {
         game.getCurrentState().setCurrentCard(abbandonedShip);
         game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
         //First player wants to use the card
-        abbandonedShip.choice(game, game.getPlayers().getFirst(), false);
+        try {
+            abbandonedShip.choice(game, game.getPlayers().getFirst(), false);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
         //check state
         assertEquals(true, game.getCurrentState().getCurrentCard().getStateCard().equals(StateCardType.DECISION));
         assertEquals(game.getCurrentPlayer(), game.getGameboard().getRanking().get(1));
-        abbandonedShip.choice(game, game.getPlayers().get(1), true);
-        abbandonedShip.removeCrew(game, game.getPlayers().get(1), game.getPlayers().get(1).getSpaceship().getTile(7,7).get());
+        try {
+            abbandonedShip.choice(game, game.getPlayers().get(1), true);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            abbandonedShip.removeCrew(game, game.getPlayers().get(1), game.getPlayers().get(1).getSpaceship().getTile(7,7).get());
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalRemoveException e) {
+            System.out.println(e.getMessage());
+        }
 
         //Check correct card state
         assertEquals(true, game.getCurrentState().equals(StateCardType.FINISH));
