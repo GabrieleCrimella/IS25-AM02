@@ -138,6 +138,39 @@ public class Game implements Game_Interface {
         }
     }
 
+    public List<Card> takeMiniDeck(Player player, int index){
+        try{
+            levelControl();
+            buildControl();
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+            currentTileControl(player);
+            deckAllowedControl(player);
+
+            player.setNumDeck(index);
+            return deck.giveDeck(index);
+
+        } catch (LevelException | IllegalStateException | IllegalPhaseException | AlreadyViewingException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void returnMiniDeck(Player player){
+        try{
+            levelControl();
+            buildControl();
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+            currentTileControl(player);
+            deckAllowedControl(player);
+
+            deck.returnDeck(player.getNumDeck());
+            player.setNumDeck(-1);
+
+        } catch (LevelException | AlreadyViewingException | IllegalStateException | IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @Override
     public Tile takeTile(Player player) {
         try {
@@ -190,6 +223,11 @@ public class Game implements Game_Interface {
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().addTile(x, y, player.getSpaceship().getCurrentTile());
+
+            //player can see the minidecks
+            if(!player.getDeckAllowed()){
+                player.setDeckAllowed();
+            }
 
         } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
@@ -720,6 +758,12 @@ public class Game implements Game_Interface {
     private void levelControl() throws LevelException {
         if(level == 0){
             throw new LevelException("functionality for higher levels");
+        }
+    }
+
+    private void deckAllowedControl(Player player) throws IllegalPhaseException {
+        if(!player.getDeckAllowed()){
+            throw new IllegalPhaseException("the player " + player.getNickname() + " is not allowed to see the minidecks");
         }
     }
 

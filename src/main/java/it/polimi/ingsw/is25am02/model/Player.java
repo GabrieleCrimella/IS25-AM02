@@ -10,12 +10,16 @@ public class Player {
     private final String nickname;
     private final PlayerColor color;
     private StatePlayerType statePlayer;
+    private boolean deckAllowed;
+    private int numDeck;
 
     public Player(Spaceship spaceship, String nickname, PlayerColor color) {
         this.spaceship = spaceship;
         this.nickname = nickname;
         this.color = color;
         this.statePlayer = NOT_FINISHED;
+        this.deckAllowed = false;
+        this.numDeck = -1;
     }
 
     public Spaceship getSpaceship() {
@@ -37,4 +41,12 @@ public class Player {
     public void setStatePlayer(StatePlayerType statePlayer) {
         this.statePlayer = statePlayer;
     }
+
+    public boolean getDeckAllowed() { return deckAllowed; }
+
+    public void setDeckAllowed() { this.deckAllowed = true; }
+
+    public int getNumDeck() { return numDeck; }
+
+    public void setNumDeck(int numDeck) { this.numDeck = numDeck; }
 }

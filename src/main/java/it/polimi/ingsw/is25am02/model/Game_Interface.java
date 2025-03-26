@@ -19,6 +19,8 @@ public interface Game_Interface {
     void flipHourglass(Player player);
     Tile takeTile(Player player);
     Tile takeTile(Player player, Tile tile);
+    List<Card> takeMiniDeck(Player player, int index);
+    void returnMiniDeck(Player player);
     void bookTile(Player player);
     void addBookedTile(Player player, int index, int x, int y);
     void returnTile(Player player);
