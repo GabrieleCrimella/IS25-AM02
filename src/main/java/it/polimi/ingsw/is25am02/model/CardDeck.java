@@ -37,25 +37,25 @@ public class CardDeck {
 
     public void createDecks(){//il metodo crea i mazzetti usando initial deck in cui sono presenti tutte le carte
 
-        List<Card> livello1 = new ArrayList<>();
+        List<Card> livello01 = new ArrayList<>();
         List<Card> livello2 = new ArrayList<>();
 
         for (Card card : initialDeck) {
-            if (card.getLevel() == 1) {
-                livello1.add(card);
+            if (card.getLevel() == 1 || card.getLevel() == 0) {
+                livello01.add(card);
             } else if (card.getLevel() == 2) {
                 livello2.add(card);
             }
         }
 
-        Collections.shuffle(livello1);
+        Collections.shuffle(livello01);
         Collections.shuffle(livello2);
 
         for (int i = 0; i < 4; i++) {
             List<Card> mazzetto = new ArrayList<>();
 
-            if (livello1.size() >= 2) {
-                mazzetto.add(livello1.removeFirst());
+            if (livello01.size() >= 2) {
+                mazzetto.add(livello01.removeFirst());
             }
 
             if (!livello2.isEmpty()) {

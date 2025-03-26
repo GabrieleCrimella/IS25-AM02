@@ -9,7 +9,7 @@
   },
   {
     "type": "ABANDONED_SHIP",
-    "level": 1,
+    "level": 0,
     "aliveLost" : 3,
     "creditWin"  : 4,
     "daysLost": 1,
@@ -33,7 +33,7 @@
   },
   {
     "type": "ABANDONED_STATION",
-    "level": 1,
+    "level": 0,
     "aliveNeeded" : 5,
     "daysLost": 1,
     "box": [
@@ -104,7 +104,7 @@
   },
   {
     "type": "TRAFFICKER",
-    "level": 1,
+    "level": 0,
     "cannonPower": 4,
     "daysLost": 1,
     "boxesLost": 2,
@@ -148,7 +148,7 @@
   },
   {
     "type": "OPENSPACE",
-    "level": 1,
+    "level": 0,
     "image": ""
   },
   {
@@ -183,7 +183,7 @@
   },
   {
     "type": "STARDUST",
-    "level": 1,
+    "level": 0,
     "image": ""
   },
   {
@@ -210,7 +210,7 @@
   },
   {
     "type": "METEORITES",
-    "level": 1,
+    "level": 0,
     "meteorites":  [
       [1, "north"],
       [0, "west"],
@@ -265,7 +265,7 @@
   },
   {
     "type": "PLANETS",
-    "level": 1,
+    "level": 0,
     "daysLost": 2,
     "boxes":  [
       ["RED", "RED"],
@@ -353,7 +353,7 @@
   },
   {
     "type": "WARZONE1",
-    "level": 1,
+    "level": 0,
     "daysLost": 3,
     "aliveLost": 2,
     "shots":  [
