@@ -7,19 +7,21 @@ import java.util.List;
 public class Gameboard {
     private final int numStep;
     private final int[] startingPosition;
-    HashMap<Player,Integer> positions;
-    Dice dice;
+    private final HashMap<Player,Integer> positions;
+    private final Dice dice;
+    private int hourGlassFlip;
 
-    private final int[] rewardPosition; //ci sono le posizioni scritte sulla plancia dei crediti che vengono assegnati
+
+    private final int[] rewardPosition;
     private final int bestShip;
 
-    //chiedi se va bene mettere
     public Gameboard(int level) {
         if ( level == 0 ){
             this.numStep = 18;
             startingPosition = new int[] {0, 1, 2, 4};
             rewardPosition = new int[] {4, 3, 2, 1};
             bestShip = 2;
+            hourGlassFlip = 0;
 
         }
         else if (level == 1){
@@ -27,12 +29,14 @@ public class Gameboard {
             startingPosition = new int[] {0,1,2,4};
             rewardPosition = new int[] {4, 3, 2, 1};
             bestShip = 2;
+            hourGlassFlip = 1;
         }
         else{
             this.numStep = 24;
             startingPosition = new int[] {0,1, 3, 6};
             rewardPosition = new int[] {8, 6, 4, 2};
             bestShip = 4;
+            hourGlassFlip = 2;
         }
         this.positions = new HashMap<>();
         this.dice = new Dice();
@@ -62,6 +66,10 @@ public class Gameboard {
     public Dice getDice() {
         return dice;
     }
+
+    public int getHourGlassFlip() { return hourGlassFlip; }
+
+    public void decreaseHourGlassFlip() { hourGlassFlip--; }
 
     public void initializeGameBoard(List<Player> orderedPlayers) {
         //la lista passata è una lista ordinata in base a quando ogni player ha finito la nave.

@@ -15,12 +15,13 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.*;
 
 public class Game implements Game_Interface {
     private int diceResult;
+    private boolean buildTimeIsOver;
     private String gameName;
     private int maxAllowedPlayers;
     private final List<Player> players;
     private final int level;
     private final CardDeck deck;
-    private Hourglass hourglass;
+    private final Hourglass hourglass;
     private final HeapTiles heapTile;
     private final Gameboard globalBoard;
     private final State currentState;
@@ -33,10 +34,12 @@ public class Game implements Game_Interface {
         this.players = p;
         this.level = level;
         this.diceResult = 0;
+        this.buildTimeIsOver = false;
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
         this.currentState = new State(p);
         this.deck = new CardDeck();
+        this.hourglass = new Hourglass(level);
         this.currentState.setPhase(BUILD);
     }
 
@@ -85,6 +88,8 @@ public class Game implements Game_Interface {
         this.diceResult = getGameboard().getDice().pickRandomNumber();
     }
 
+    public void setBuildTimeIsOver() { buildTimeIsOver = true;}
+
     public Set<Tile> getVisibleTiles() {
         return heapTile.getVisibleTiles();
     }
@@ -100,28 +105,82 @@ public class Game implements Game_Interface {
     public void nextPlayer() {
         int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
 
-        if (getGameboard().getRanking().indexOf(getCurrentPlayer()) == getGameboard().getRanking().size() - 1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
+        if (globalBoard.getRanking().indexOf(getCurrentPlayer()) == globalBoard.getRanking().size() - 1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(FINISH);
-        } else if (getGameboard().getRanking().get(index + 1).getStatePlayer() == IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
+        } else if (globalBoard.getRanking().get(index + 1).getStatePlayer() == IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
             currentState.setCurrentPlayer(getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
         }
     }
 
     @Override
-    public void flipHourglass() {
-        hourglass.flip();
+    public void flipHourglass(Player player) {
+        try{
+            levelControl();
+            buildControl();
+            if(!hourglass.getRunning()) {
+                if (globalBoard.getHourGlassFlip() > 1) {
+                    stateControl(BUILD, NOT_FINISHED, FINISH, player);
+                    hourglass.flip(this);
+                    globalBoard.decreaseHourGlassFlip();
+
+                } else if (globalBoard.getHourGlassFlip() == 1) {
+                    stateControl(BUILD, FINISHED, FINISH, player);
+                    hourglass.flip(this);
+                    globalBoard.decreaseHourGlassFlip();
+                }
+            }
+            else{
+                throw new IllegalStateException("Hourglass already running");
+            }
+        } catch (IllegalStateException | IllegalPhaseException | LevelException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public List<Card> takeMiniDeck(Player player, int index){
+        try{
+            levelControl();
+            buildControl();
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+            currentTileControl(player);
+            deckAllowedControl(player);
+
+            player.setNumDeck(index);
+            return deck.giveDeck(index);
+
+        } catch (LevelException | IllegalStateException | IllegalPhaseException | AlreadyViewingException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void returnMiniDeck(Player player){
+        try{
+            levelControl();
+            buildControl();
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+            currentTileControl(player);
+            deckAllowedControl(player);
+
+            deck.returnDeck(player.getNumDeck());
+            player.setNumDeck(-1);
+
+        } catch (LevelException | AlreadyViewingException | IllegalStateException | IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
     public Tile takeTile(Player player) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
             currentTileControl(player);
 
             player.getSpaceship().setCurrentTile(heapTile.drawTile());
 
-        } catch (IllegalStateException | AlreadyViewingException e) {
+        } catch (IllegalStateException | AlreadyViewingException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
         return player.getSpaceship().getCurrentTile();
@@ -130,13 +189,14 @@ public class Game implements Game_Interface {
     @Override
     public Tile takeTile(Player player, Tile tile) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
             currentTileControl(player);
 
             heapTile.removeVisibleTile(tile);
             player.getSpaceship().setCurrentTile(tile);
 
-        } catch (IllegalStateException | AlreadyViewingException | IllegalRemoveException e) {
+        } catch (IllegalStateException | AlreadyViewingException | IllegalRemoveException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
         return player.getSpaceship().getCurrentTile();
@@ -145,12 +205,13 @@ public class Game implements Game_Interface {
     @Override
     public void returnTile(Player player) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile();
 
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -158,15 +219,44 @@ public class Game implements Game_Interface {
     @Override
     public void addTile(Player player, int x, int y) {
         try {
+            buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().addTile(x, y, player.getSpaceship().getCurrentTile());
 
-        } catch (IllegalStateException | IllegalAddException e) {
+            //player can see the minidecks
+            if(!player.getDeckAllowed()){
+                player.setDeckAllowed();
+            }
+
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
     }
 
+    public void bookTile(Player player){
+        try{
+            levelControl();
+            buildControl();
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+
+            player.getSpaceship().bookTile(player);
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addBookedTile(Player player, int index, int x, int y){
+        try{
+            levelControl();
+            buildControl();
+            stateControl(BUILD, NOT_FINISHED, FINISH, player);
+
+            player.getSpaceship().addBookedTile(index, x, y);
+        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     //player goes to the FINISH phase, if he's the last one I change the  game state to CHECK
     //I add the players to the gameboard
@@ -177,7 +267,10 @@ public class Game implements Game_Interface {
 
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
-            getGameboard().positions.put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
+            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
+            if(player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)){
+                player.getSpaceship().addNumOfWastedTiles((int)player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
+            }
 
             if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
@@ -246,6 +339,7 @@ public class Game implements Game_Interface {
     @Override
     public void addCrew(Player player, int x, int y, AliveType type) {
         try {
+            levelControl();
             stateControl(INITIALIZATION_SPACESHIP, CORRECT_SHIP, FINISH, player);
             initializationCabinControl(player, x, y);
 
@@ -261,7 +355,7 @@ public class Game implements Game_Interface {
                     player.getSpaceship().getTile(x, y).get().addCrew(type);
                 }
             }
-        } catch (IllegalStateException | TileException | IllegalAddException e) {
+        } catch (IllegalStateException | TileException | IllegalAddException | LevelException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -275,7 +369,8 @@ public class Game implements Game_Interface {
             player.setStatePlayer(IN_GAME);
             readyPlayer++;
 
-            //in case the player doesn't want to initialize all the cabins by himself
+            //1) in case the player doesn't want to initialize all the cabins by himself
+            //2) it's the tutorial level
             List<Tile> cabins = player.getSpaceship().getTilesByType(TileType.CABIN);
             for (Tile c : cabins) {
                 if (c.getCrew().isEmpty()) {
@@ -295,13 +390,14 @@ public class Game implements Game_Interface {
     @Override
     public void earlyLanding(Player player) {
         try{
+            levelControl();
             stateControl(TAKE_CARD, IN_GAME, FINISH, player);
 
             getGameboard().getPositions().remove(player);
             player.setStatePlayer(OUT_GAME);
 
             getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | LevelException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -313,7 +409,7 @@ public class Game implements Game_Interface {
             outOfGame();
             currentPlayerControl(player);
 
-            if(getDeck().playnextCard(getCurrentState()) == null) {
+            if(deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
                 this.getCurrentState().setPhase(RESULT);
             } else {
                 this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
@@ -650,6 +746,24 @@ public class Game implements Game_Interface {
             if (!tile.getType().equals(type)) {
                 throw new TileException("Tile" + tile.getType() + "doesn't possess Type: " + type);
             }
+        }
+    }
+
+    private void buildControl() throws IllegalPhaseException {
+        if(buildTimeIsOver){
+            throw new IllegalPhaseException("the time for building is over, call finishedSpaceship");
+        }
+    }
+
+    private void levelControl() throws LevelException {
+        if(level == 0){
+            throw new LevelException("functionality for higher levels");
+        }
+    }
+
+    private void deckAllowedControl(Player player) throws IllegalPhaseException {
+        if(!player.getDeckAllowed()){
+            throw new IllegalPhaseException("the player " + player.getNickname() + " is not allowed to see the minidecks");
         }
     }
 

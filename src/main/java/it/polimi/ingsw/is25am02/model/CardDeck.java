@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import javafx.util.Pair;
 
 import java.io.File;
@@ -269,19 +270,30 @@ public class CardDeck {
         Collections.shuffle(finalDeck);//mischio le carte
     }
 
-    public Card giveCard(){
-        return null;
-    }
-    public List<Card> giveDeck(int numDeck){//il deck viene occupato perchè è nelle mani di qualcun altro
-        Pair<List<Card>, Boolean> pair = deck.get(numDeck);
-        deck.put(numDeck, new Pair<>(pair.getKey(), true));
-        return pair.getKey();
-    }
-    public void returnDeck(int numDeck){ //il deck viene liberato
-        deck.computeIfPresent(numDeck, (k, pair) -> new Pair<>(pair.getKey(), false));
+    public List<Card> giveDeck(int numDeck) throws AlreadyViewingException {
+        if(deck.get(numDeck).getValue()){
+            throw new AlreadyViewingException("someone else is already looking at the deck " + numDeck);
+        }
+        else if(numDeck < 0 || numDeck > 2){
+            throw new AlreadyViewingException("numDeck is out of bounds");
+        }
+        else {
+            Pair<List<Card>, Boolean> pair = deck.get(numDeck);
+            deck.put(numDeck, new Pair<>(pair.getKey(), true));
+            return pair.getKey();
+        }
     }
 
-    public Card playnextCard(State state){//deve prendere la prossima carta da final deck
+    public void returnDeck(int numDeck) throws AlreadyViewingException {
+        if(numDeck < 0 || numDeck > 2){
+            throw new AlreadyViewingException("numDeck is out of bounds");
+        }
+        else {
+            deck.computeIfPresent(numDeck, (k, pair) -> new Pair<>(pair.getKey(), false));
+        }
+    }
+
+    public Card playnextCard(Game game){//deve prendere la prossima carta da final deck
         Card nextCard;
         //se la carta corrente è una di quelle con le box metto gli scarti in store
         if(finalDeck.getFirst().getCardType().equals(CardType.ABANDONED_STATION) || finalDeck.getFirst().getCardType().equals(CardType.TRAFFICKER)){
@@ -306,7 +318,19 @@ public class CardDeck {
             return null;
         }
         nextCard = finalDeck.getFirst();
-        state.setCurrentCard(nextCard);
+        game.getCurrentState().setCurrentCard(nextCard);
+
+
+        //only 1 player is IN_GAME, he skips WarZone
+        if(game.getGameboard().getPositions().size() == 1){
+            while(nextCard.getCardType() == CardType.WARZONE1 || nextCard.getCardType() == CardType.WARZONE2){
+                finalDeck.removeFirst();
+                if(finalDeck.isEmpty()){
+                    return null;
+                }
+                nextCard = finalDeck.getFirst();
+            }
+        }
 
         //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi
         if(nextCard.getCardType().equals(CardType.ABANDONED_STATION) || nextCard.getCardType().equals(CardType.TRAFFICKER) ){

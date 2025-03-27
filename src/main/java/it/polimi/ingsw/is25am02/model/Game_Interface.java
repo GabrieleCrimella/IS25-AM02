@@ -16,9 +16,13 @@ import java.util.Optional;
 public interface Game_Interface {
 
     //Phase BUILD
-    void flipHourglass();
+    void flipHourglass(Player player);
     Tile takeTile(Player player);
     Tile takeTile(Player player, Tile tile);
+    List<Card> takeMiniDeck(Player player, int index);
+    void returnMiniDeck(Player player);
+    void bookTile(Player player);
+    void addBookedTile(Player player, int index, int x, int y);
     void returnTile(Player player);
     void addTile(Player player, int x, int y);
     void shipFinished(Player player);
