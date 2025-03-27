@@ -59,7 +59,7 @@ public interface Game_Interface {
     void rollDice(Player player);
     void effect(Game game);
     void calculateDamage(Player player, Optional<Tile> batteryStorage);
-    void holdSpaceship(Player player, int x, int y);
+    //void holdSpaceship(Player player, int x, int y);
 
 
     //Phase RESULT
