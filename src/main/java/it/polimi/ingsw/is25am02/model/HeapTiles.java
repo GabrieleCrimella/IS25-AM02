@@ -134,10 +134,10 @@ public class HeapTiles {
     }
 
     public void removeVisibleTile(Tile t) throws IllegalRemoveException {
-        if(!t.isVisible()){
+        if (!t.isVisible()) {
             throw new IllegalRemoveException("The tile: " + t.getType() + " isn't visible");
         }
-        if(!setTiles.remove(t)) {
+        if (!setTiles.remove(t)) {
             throw new IllegalRemoveException("The tile: " + t.getType() + " isn't in heaptiles");
         }
     }

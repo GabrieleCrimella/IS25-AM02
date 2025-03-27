@@ -88,7 +88,9 @@ public class Game implements Game_Interface {
         this.diceResult = getGameboard().getDice().pickRandomNumber();
     }
 
-    public void setBuildTimeIsOver() { buildTimeIsOver = true;}
+    public void setBuildTimeIsOver() {
+        buildTimeIsOver = true;
+    }
 
     public Set<Tile> getVisibleTiles() {
         return heapTile.getVisibleTiles();
@@ -115,10 +117,10 @@ public class Game implements Game_Interface {
 
     @Override
     public void flipHourglass(Player player) {
-        try{
+        try {
             levelControl();
             buildControl();
-            if(!hourglass.getRunning()) {
+            if (!hourglass.getRunning()) {
                 if (globalBoard.getHourGlassFlip() > 1) {
                     stateControl(BUILD, NOT_FINISHED, FINISH, player);
                     hourglass.flip(this);
@@ -129,8 +131,7 @@ public class Game implements Game_Interface {
                     hourglass.flip(this);
                     globalBoard.decreaseHourGlassFlip();
                 }
-            }
-            else{
+            } else {
                 throw new IllegalStateException("Hourglass already running");
             }
         } catch (IllegalStateException | IllegalPhaseException | LevelException e) {
@@ -138,8 +139,8 @@ public class Game implements Game_Interface {
         }
     }
 
-    public List<Card> takeMiniDeck(Player player, int index){
-        try{
+    public List<Card> takeMiniDeck(Player player, int index) {
+        try {
             levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -155,8 +156,8 @@ public class Game implements Game_Interface {
         }
     }
 
-    public void returnMiniDeck(Player player){
-        try{
+    public void returnMiniDeck(Player player) {
+        try {
             levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -225,7 +226,7 @@ public class Game implements Game_Interface {
             player.getSpaceship().addTile(x, y, player.getSpaceship().getCurrentTile());
 
             //player can see the minidecks
-            if(!player.getDeckAllowed()){
+            if (!player.getDeckAllowed()) {
                 player.setDeckAllowed();
             }
 
@@ -234,8 +235,8 @@ public class Game implements Game_Interface {
         }
     }
 
-    public void bookTile(Player player){
-        try{
+    public void bookTile(Player player) {
+        try {
             levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -246,8 +247,8 @@ public class Game implements Game_Interface {
         }
     }
 
-    public void addBookedTile(Player player, int index, int x, int y){
-        try{
+    public void addBookedTile(Player player, int index, int x, int y) {
+        try {
             levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -268,8 +269,8 @@ public class Game implements Game_Interface {
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
             getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
-            if(player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)){
-                player.getSpaceship().addNumOfWastedTiles((int)player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
+            if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
+                player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
             }
 
             if (alreadyFinished == players.size()) {
@@ -392,7 +393,7 @@ public class Game implements Game_Interface {
 
     @Override
     public void earlyLanding(Player player) {
-        try{
+        try {
             levelControl();
             stateControl(TAKE_CARD, IN_GAME, FINISH, player);
 
@@ -412,7 +413,7 @@ public class Game implements Game_Interface {
             outOfGame();
             currentPlayerControl(player);
 
-            if(deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
+            if (deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
                 this.getCurrentState().setPhase(RESULT);
             } else {
                 this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
@@ -515,7 +516,8 @@ public class Game implements Game_Interface {
             ownChoicesControl(player, choices, TileType.D_MOTOR, TileType.BATTERY);
 
             getCurrentCard().choiceDoubleMotor(this, player, choices);
-        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException | IllegalRemoveException | TileException e) {
+        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException |
+                 IllegalRemoveException | TileException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -529,7 +531,8 @@ public class Game implements Game_Interface {
             ownChoicesControl(player, choices, TileType.D_CANNON, TileType.BATTERY);
 
             getCurrentCard().choiceDoubleCannon(this, player, choices);
-        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException | IllegalRemoveException | TileException e) {
+        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException |
+                 IllegalRemoveException | TileException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -590,10 +593,11 @@ public class Game implements Game_Interface {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
-            possessionAndTypeControl(player, batteryStorage.get(),TileType.BATTERY);
+            possessionAndTypeControl(player, batteryStorage.get(), TileType.BATTERY);
 
             getCurrentCard().calculateDamage(this, player, batteryStorage);
-        } catch (IllegalStateException | IllegalPhaseException | UnsupportedOperationException | IllegalRemoveException | TileException e) {
+        } catch (IllegalStateException | IllegalPhaseException | UnsupportedOperationException |
+                 IllegalRemoveException | TileException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -637,8 +641,8 @@ public class Game implements Game_Interface {
 
     @Override
     public ArrayList<Player> getWinners() {
-        try{
-            if(getCurrentState().getPhase() != RESULT){
+        try {
+            if (getCurrentState().getPhase() != RESULT) {
                 throw new IllegalStateException("Wrong State");
             }
 
@@ -659,7 +663,7 @@ public class Game implements Game_Interface {
                     }
                 }
 
-                if(p.getStatePlayer() == IN_GAME){
+                if (p.getStatePlayer() == IN_GAME) {
                     int exposedConnectors;
                     //Ranking points
                     p.getSpaceship().addCosmicCredits(getGameboard().getRewardPosition()[getGameboard().getRanking().indexOf(p)]);
@@ -670,13 +674,12 @@ public class Game implements Game_Interface {
                     }
                     //Sale of boxes
                     p.getSpaceship().addCosmicCredits(valueBox);
-                }
-                else{
+                } else {
                     //Sale of boxes
-                    if(valueBox%2 == 0){
-                        p.getSpaceship().addCosmicCredits(valueBox/2);
+                    if (valueBox % 2 == 0) {
+                        p.getSpaceship().addCosmicCredits(valueBox / 2);
                     } else {
-                        p.getSpaceship().addCosmicCredits((valueBox/2) + 1);
+                        p.getSpaceship().addCosmicCredits((valueBox / 2) + 1);
                     }
                 }
                 //Payment of damages
@@ -742,7 +745,7 @@ public class Game implements Game_Interface {
     }
 
     private void possessionAndTypeControl(Player player, Tile tile, TileType type) throws TileException {
-        if(tile != null) {
+        if (tile != null) {
             if (!player.getSpaceship().own(tile)) {
                 throw new TileException("Player: " + player.getNickname() + ", doesn't possess Tile: " + tile);
             }
@@ -753,19 +756,19 @@ public class Game implements Game_Interface {
     }
 
     private void buildControl() throws IllegalPhaseException {
-        if(buildTimeIsOver){
+        if (buildTimeIsOver) {
             throw new IllegalPhaseException("the time for building is over, call finishedSpaceship");
         }
     }
 
     private void levelControl() throws LevelException {
-        if(level == 0){
+        if (level == 0) {
             throw new LevelException("functionality for higher levels");
         }
     }
 
     private void deckAllowedControl(Player player) throws IllegalPhaseException {
-        if(!player.getDeckAllowed()){
+        if (!player.getDeckAllowed()) {
             throw new IllegalPhaseException("the player " + player.getNickname() + " is not allowed to see the minidecks");
         }
     }
@@ -790,43 +793,43 @@ public class Game implements Game_Interface {
     }
 
     private void ownChoicesControl(Player player, Optional<List<Pair<Tile, Tile>>> choices, TileType type1, TileType type2) throws TileException {
-        if(choices.isPresent()) {
-            for(Pair<Tile, Tile> pair : choices.get()) {
-                if(!player.getSpaceship().own(pair.getKey())){
+        if (choices.isPresent()) {
+            for (Pair<Tile, Tile> pair : choices.get()) {
+                if (!player.getSpaceship().own(pair.getKey())) {
                     throw new TileException("This tile " + pair.getKey().getType() + " is not owned by " + player.getNickname());
                 }
-                if(!pair.getKey().getType().equals(type1)) {
+                if (!pair.getKey().getType().equals(type1)) {
                     throw new TileException("Tile " + pair.getKey() + "isn't type of " + type1);
                 }
-                if(!player.getSpaceship().own(pair.getValue())){
+                if (!player.getSpaceship().own(pair.getValue())) {
                     throw new TileException("This tile " + pair.getValue().getType() + " is not owned by " + player.getNickname());
                 }
-                if(!pair.getValue().getType().equals(type2)) {
+                if (!pair.getValue().getType().equals(type2)) {
                     throw new TileException("Tile " + pair.getValue() + "isn't type of " + type2);
                 }
             }
         }
     }
 
-    private void outOfGame(){
-        HashMap<Player,Integer> positions = getGameboard().getPositions();
+    private void outOfGame() {
+        HashMap<Player, Integer> positions = getGameboard().getPositions();
         for (Player p : getPlayers()) {
             //0 Human on my spaceship
-            if(p.getSpaceship().calculateNumHuman() == 0){
+            if (p.getSpaceship().calculateNumHuman() == 0) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(OUT_GAME);
             }
 
             //0 motorPower in OpenSpace
-            if(getCurrentCard().getCardType() == CardType.OPENSPACE){
-                if(getCurrentCard().getFly().get(p) == 0){
+            if (getCurrentCard().getCardType() == CardType.OPENSPACE) {
+                if (getCurrentCard().getFly().get(p) == 0) {
                     getGameboard().getPositions().remove(p);
                     p.setStatePlayer(OUT_GAME);
                 }
             }
 
             //lapped
-            if(positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()){
+            if (positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(OUT_GAME);
             }

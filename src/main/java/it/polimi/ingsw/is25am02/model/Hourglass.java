@@ -34,7 +34,7 @@ public class Hourglass {
                 if (timeLeft <= 0) {
                     timer.cancel();
                     running = false;
-                    if(game.getGameboard().getHourGlassFlip() == 0){
+                    if (game.getGameboard().getHourGlassFlip() == 0) {
                         game.setBuildTimeIsOver();
                     }
                 }
