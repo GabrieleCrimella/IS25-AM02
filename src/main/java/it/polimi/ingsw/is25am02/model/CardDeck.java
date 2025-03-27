@@ -19,13 +19,18 @@ public class CardDeck {
     private final List<Card> finalDeck;
     private final List<Card> initialDeck;
     private final BoxStore store;
+    private int level;
 
-    public CardDeck(){
+    public CardDeck(int level){
         this.deck = new HashMap<>();
         this.finalDeck = new ArrayList<>();
         this.initialDeck = new ArrayList<>();
         this.store = new BoxStore();
+        this.level = level;
         loadCard();
+        if(level == 0){
+            createFinalDeckZero();
+        } else createDecks();
     }
 
     public List<Card> getInitialDeck() {
@@ -34,6 +39,17 @@ public class CardDeck {
 
     public List<Card> getFinalDeck() {
         return finalDeck;
+    }
+
+    public void createFinalDeckZero() { //nel caso del livello di prova
+
+        for (Card card : initialDeck) {
+            if (card.getLevel() == 0) {
+                finalDeck.add(card);
+            }
+
+            Collections.shuffle(finalDeck);
+        }
     }
 
     public void createDecks(){//il metodo crea i mazzetti usando initial deck in cui sono presenti tutte le carte

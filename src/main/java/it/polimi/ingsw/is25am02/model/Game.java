@@ -38,7 +38,7 @@ public class Game implements Game_Interface {
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
         this.currentState = new State(p);
-        this.deck = new CardDeck();
+        this.deck = new CardDeck(level);
         this.hourglass = new Hourglass(level);
         this.currentState.setPhase(BUILD);
     }
@@ -274,6 +274,9 @@ public class Game implements Game_Interface {
 
             if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
+                if(level !=0){
+                    deck.createFinalDeck(); //mischio i mazzetti e creo il deck finale
+                }
             }
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
