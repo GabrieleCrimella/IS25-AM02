@@ -12,10 +12,15 @@ import java.util.*;
 public abstract class Card {
     private final int level;
     private StateCardType stateCard;
+    private boolean testFlight;
 
     public Card(int level, StateCardType stateCard) {
         this.level = level;
         this.stateCard = stateCard;
+    }
+
+    public boolean getTestFlight() {
+        return testFlight;
     }
 
     public int getLevel() {

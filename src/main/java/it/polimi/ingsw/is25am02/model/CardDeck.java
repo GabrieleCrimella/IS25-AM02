@@ -29,7 +29,7 @@ public class CardDeck {
         this.level = level;
         loadCard();
         if(level == 0){
-            createFinalDeckZero();
+            createFinalDeckTestFlight();
         } else createDecks();
     }
 
@@ -41,10 +41,10 @@ public class CardDeck {
         return finalDeck;
     }
 
-    public void createFinalDeckZero() { //nel caso del livello di prova
+    public void createFinalDeckTestFlight() { //nel caso del livello di prova
 
         for (Card card : initialDeck) {
-            if (card.getLevel() == 0) {
+            if (card.getTestFlight()) {
                 finalDeck.add(card);
             }
 
@@ -54,25 +54,25 @@ public class CardDeck {
 
     public void createDecks(){//il metodo crea i mazzetti usando initial deck in cui sono presenti tutte le carte
 
-        List<Card> livello01 = new ArrayList<>();
+        List<Card> livello1 = new ArrayList<>();
         List<Card> livello2 = new ArrayList<>();
 
         for (Card card : initialDeck) {
-            if (card.getLevel() == 1 || card.getLevel() == 0) {
-                livello01.add(card);
+            if (card.getLevel() == 1 ) {
+                livello1.add(card);
             } else if (card.getLevel() == 2) {
                 livello2.add(card);
             }
         }
 
-        Collections.shuffle(livello01);
+        Collections.shuffle(livello1);
         Collections.shuffle(livello2);
 
         for (int i = 0; i < 4; i++) {
             List<Card> mazzetto = new ArrayList<>();
 
-            if (livello01.size() >= 2) {
-                mazzetto.add(livello01.removeFirst());
+            if (livello1.size() >= 2) {
+                mazzetto.add(livello1.removeFirst());
             }
 
             if (!livello2.isEmpty()) {
@@ -100,6 +100,7 @@ public class CardDeck {
         int daysLost;
         int cannonPower;
         int boxesLost;
+        boolean testFlight;
         LinkedList<Box> boxesWon = new LinkedList<>();
         LinkedList<BoxType> boxesWonType = new LinkedList<>();
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
@@ -110,6 +111,7 @@ public class CardDeck {
 
         for (JsonNode levelNode : rootNode) {  //foreach JSON node
             level = levelNode.get("level").asInt();
+            testFlight = levelNode.get("testFlight").asBoolean();
 
             switch (levelNode.get("type").asText()) {
                 case "ABANDONED_SHIP":
