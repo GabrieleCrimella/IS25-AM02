@@ -30,8 +30,8 @@ public class MeteoritesStorm extends Card {
     }
 
     @Override
-    public void holdSpaceship(Game game, Player player, int x, int y){
-        player.getSpaceship().holdSpaceship(x,y);
+    public void keepBlocks(Game game, Player player, boolean[][] mask){
+        player.getSpaceship().keepBlock(mask);
 
         if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
             currentIndex++;

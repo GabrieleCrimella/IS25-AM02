@@ -17,7 +17,7 @@ import java.util.Optional;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.CHOICE_ATTRIBUTES;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION;
 
-public class Pirate extends Enemies{
+public class Pirate extends Enemies {
     private ArrayList<Pair<Integer, RotationType>> shots;
     private int currentIndex;
     private ArrayList<Player> losers;
@@ -40,7 +40,7 @@ public class Pirate extends Enemies{
 
     @Override
     public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalRemoveException, IllegalPhaseException {
-        if(phase == 1) {
+        if (phase == 1) {
             List<Tile> dCannon = new ArrayList<>();
             double playerPower;
             if (choices.isPresent()) {
@@ -68,13 +68,12 @@ public class Pirate extends Enemies{
                     phase++;
                 }
             }
-        }
-        else throw new IllegalPhaseException("Should be phase 1, instead is "+ phase);
+        } else throw new IllegalPhaseException("Should be phase 1, instead is " + phase);
     }
 
     @Override
     public void choice(Game game, Player player, boolean choice) throws IllegalPhaseException {
-        if(phase == 1) {
+        if (phase == 1) {
             if (choice) {
                 //Applico effetti (Volo e Crediti)
                 player.getSpaceship().addCosmicCredits(getCredit());
@@ -89,13 +88,12 @@ public class Pirate extends Enemies{
                 game.getCurrentState().setCurrentPlayer(losers.getFirst());
                 phase++;
             }
-        }
-        else throw new IllegalPhaseException("Should be phase 1, instead is "+ phase);
+        } else throw new IllegalPhaseException("Should be phase 1, instead is " + phase);
     }
 
     @Override
     public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException, IllegalPhaseException {
-        if(losers.contains(player) && phase == 2) {
+        if (losers.contains(player) && phase == 2) {
             boolean res = player.getSpaceship().shotDamage(shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
             if (res) {
@@ -111,14 +109,13 @@ public class Pirate extends Enemies{
                     game.nextPlayer();
                 }
             }
-        }
-        else throw new IllegalPhaseException("Should be phase 2, instead is "+ phase);
+        } else throw new IllegalPhaseException("Should be phase 2, instead is " + phase);
     }
 
     @Override
-    public void holdSpaceship(Game game, Player player, int x, int y) throws IllegalPhaseException {
-        if(losers.contains(player) && phase == 2){
-            player.getSpaceship().holdSpaceship(x, y);
+    public void keepBlocks(Game game, Player player, boolean[][] mask) throws IllegalPhaseException {
+        if (losers.contains(player) && phase == 2) {
+            player.getSpaceship().keepBlock(mask);
 
             if (player.equals(losers.getLast()) && currentIndex < losers.size() - 1) {
                 currentIndex++;
@@ -130,7 +127,6 @@ public class Pirate extends Enemies{
                 game.nextPlayer();
                 game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
             }
-        }
-        else throw new IllegalPhaseException("Should be phase 2, instead is "+ phase);
+        } else throw new IllegalPhaseException("Should be phase 2, instead is " + phase);
     }
 }

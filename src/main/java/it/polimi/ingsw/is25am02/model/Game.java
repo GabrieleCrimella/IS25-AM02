@@ -615,18 +615,6 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void holdSpaceship(Player player, int x, int y) {
-        try {
-            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
-            currentPlayerControl(player);
-
-            getCurrentCard().holdSpaceship(this, player, x, y);
-        } catch (IllegalStateException | IllegalPhaseException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @Override
     public void keepBlock(Player player, boolean[][] tilesToKeep) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);

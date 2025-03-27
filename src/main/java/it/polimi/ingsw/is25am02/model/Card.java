@@ -38,15 +38,15 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public List<Box> choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException{
+    public List<Box> choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException{
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException, IllegalArgumentException{
+    public List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException, IllegalArgumentException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -74,11 +74,15 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void holdSpaceship(Game game, Player player, int x, int y) throws UnsupportedOperationException, IllegalPhaseException {
+    public void holdSpaceship(Game game, Player player, boolean[][] mask) throws UnsupportedOperationException, IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void effect(Game game) throws UnsupportedOperationException{
+    public void effect(Game game) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
+
+    public void keepBlocks(Game game, Player player, boolean[][] mask) throws UnsupportedOperationException, IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -94,17 +98,31 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes(){ throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes() {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
 
-    public CardType getCardType() {throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public CardType getCardType() {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
 
-    public void addBoxWon(Box box){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public void addBoxWon(Box box) {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
 
-    public void addPlanetOffers(ArrayList<Box> boxes){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public void addPlanetOffers(ArrayList<Box> boxes) {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
 
-    public void clearBoxWon(){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public void clearBoxWon() {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
 
-    public void clearPlanetOffers(){throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public void clearPlanetOffers() {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
 
-    public HashMap<Player,Integer> getFly(){ throw new UnsupportedOperationException("Not supported method" + this.getCardType());}
+    public HashMap<Player, Integer> getFly() {
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
 }
