@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.model.cards.InitialCard;
 import it.polimi.ingsw.is25am02.model.cards.MeteoritesStorm;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BlueBox;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
@@ -360,6 +361,7 @@ class GameTest {
 
     @Test
     void test_should_check_remove_single_tile_and_return_rest_of_ship(){
+
         //4 spaceship
         Spaceship spaceship1 = new Spaceship(0);
         Spaceship spaceship2 = new Spaceship(0);
@@ -367,13 +369,10 @@ class GameTest {
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        player1.setStatePlayer(StatePlayerType.FINISHED);
         Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        player2.setStatePlayer(StatePlayerType.FINISHED);
         Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        player3.setStatePlayer(StatePlayerType.FINISHED);
         Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
-        player4.setStatePlayer(StatePlayerType.FINISHED);
+
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -382,6 +381,7 @@ class GameTest {
         //game di livello 0 con i 4 players
         Game game = new Game(players,0);
         //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
         game.getGameboard().initializeGameBoard(players);
 
         //fase di build
@@ -460,24 +460,19 @@ class GameTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-        //finished spaceships and initializing them
-        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
-        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
-        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
-        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player1.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player2.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player3.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player4.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        game.getCurrentState().setPhase(StateGameType.CORRECTION);
 
-        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-        game.addCrew(player1, 7,7,AliveType.HUMAN);
-
-        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
-        player1.setStatePlayer(StatePlayerType.IN_GAME);
-        //Create current card in state choice attributes
+        //Create a random current card and put it in state finish
         Pair<Integer, RotationType> firstPair = new Pair<>(7,RotationType.NORTH);
         ArrayList<Pair<Integer,RotationType>> meteorites = new ArrayList<>();
         meteorites.add(firstPair);
-        Card meteoritesStorm = new MeteoritesStorm(0,meteorites );
-        game.getCurrentState().setCurrentCard(meteoritesStorm);
-        game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+        Card initialCard = new InitialCard(0);
+        game.getCurrentState().setCurrentCard(initialCard);
+
 
         Optional<List<boolean [][]>> resultGame = game.removeTile(player1,7,5);
         game.keepBlock(player1,resultGame.get().get(0));
