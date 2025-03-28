@@ -106,7 +106,7 @@ public class WarZone_II extends Card{
         else throw new IllegalStateException();
     }
 
-
+    //se non ho abbastanza box allora tolgo le batterie
     @Override
     public void removeBox(Game game, Player player, Tile storage, BoxType type) throws IllegalRemoveException {
         if(currentPhase == 2) {
