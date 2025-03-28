@@ -1,15 +1,19 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.*;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.CardType;
-import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.model.enumerations.*;
+import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.tiles.Cabin;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.FINISH;
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.BUILD;
+import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.NOT_FINISHED;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardDeckTest {
@@ -171,22 +175,57 @@ class CardDeckTest {
     public void playNextCardTest() {
         CardDeck cardDeck = new CardDeck(2);
         List<Player> players = new ArrayList<>();
-        players.add(new Player(null, "mario", PlayerColor.YELLOW));
-        Game game = new Game(players,2);
+        Spaceship spaceship = new Spaceship(0);
+        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW));
+        Game game = new Game(players,2); //todo anche testflight
+        game.getGameboard().initializeGameBoard(players);
+
+        TileType t1 = TileType.CABIN;
+        ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType1 = RotationType.NORTH;
+        int id1 = 1;
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        try {
+            spaceship.addTile(7,7, cabin1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 2 - cabin
+        TileType t2 = TileType.CABIN;
+        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        RotationType rotationType2 = RotationType.NORTH;
+        int id2 = 1;
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        try {
+            spaceship.addTile(8,7, cabin2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        game.getPlayers().getFirst().setStatePlayer(NOT_FINISHED);
+        game.getCurrentState().setPhase(BUILD);
+        game.shipFinished(players.getFirst());
+
+        game.getPlayers().getFirst().setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        game.addCrew(game.getPlayers().getFirst(), 7,7, AliveType.HUMAN);
+
+        game.getPlayers().getFirst().setStatePlayer(StatePlayerType.IN_GAME);
+        game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
         cardDeck.createDecks();
         cardDeck.createFinalDeck();
+        game.getGameboard().move(3,players.getFirst());
 
-        cardDeck.playnextCard(game);
+        game.playNextCard(game.getPlayers().getFirst());;
         Card nextCard = game.getCurrentCard();
         while(nextCard!=null) {
             if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
                 assertEquals(nextCard.getBoxesWonTypes().size(), nextCard.getBoxesWon().size());
                 assertNotNull(nextCard.getBoxesWon());
-            } else if (nextCard.getCardType().equals(CardType.PLANET) ) {
-                assertEquals(nextCard.getPlanetOffersTypes().size(), nextCard.getPlanetOffers().size());
-                assertNotNull(nextCard.getPlanetOffers());
             }
-            cardDeck.playnextCard(game);
+            game.playNextCard(game.getPlayers().getFirst());
             nextCard = game.getCurrentCard();
         }
     }

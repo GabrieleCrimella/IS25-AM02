@@ -268,7 +268,7 @@ public class Game implements Game_Interface {
 
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
-            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
+            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished ]);
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
                 player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
             }
@@ -817,7 +817,7 @@ public class Game implements Game_Interface {
             }
 
             //lapped
-            if (positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()) {
+            if (players.size()>1 && positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(OUT_GAME);
             }
