@@ -1,9 +1,9 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
-import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
+import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
@@ -15,17 +15,19 @@ import java.util.List;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION;
 
-public class Planet extends Card_with_box{
+public class Planet extends Card {
     private final int daysLost;
     private final ArrayList<ArrayList<Box>> planetOffers;
     private final ArrayList<ArrayList<BoxType>> planetOffersTypes;
     private final ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
     private final LinkedList<Player> landed;
     private final CardType cardType;
+    private final BoxStore store;
 
 
     public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers, ArrayList<ArrayList<BoxType>> planetOffersTypes) {
-        super(level, store, StateCardType.DECISION);
+        super(level, StateCardType.DECISION);
+        this.store = store;
         this.daysLost = daysLost;
         this.planetOffers = planetOffers;
         this.occupied = new ArrayList<>();
@@ -64,6 +66,50 @@ public class Planet extends Card_with_box{
         if(index >= 0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
+            for(ArrayList<BoxType> boxTypeList : planetOffersTypes) {
+                ArrayList<Box> boxList = new ArrayList<>();
+                for(BoxType type : boxTypeList){
+                    if(!store.getStore().isEmpty()){
+                        Box box;
+                        if(type.equals(BoxType.RED)){
+                            if(store.getStore().containsKey(BoxType.RED)){
+                                box = new RedBox(BoxType.RED);
+                                boxList.add(box);
+                            }
+                        } else if(type.equals(BoxType.BLUE)){
+                            if(store.getStore().containsKey(BoxType.BLUE)){
+                                box = new BlueBox(BoxType.BLUE);
+                                boxList.add(box);
+                            }
+                        } else if(type.equals(BoxType.GREEN)){
+                            if(store.getStore().containsKey(BoxType.GREEN)){
+                                box = new GreenBox(BoxType.GREEN);
+                                boxList.add(box);
+                            }
+                        } else if(type.equals(BoxType.YELLOW)){
+                            if(store.getStore().containsKey(BoxType.YELLOW)){
+                                box = new YellowBox(BoxType.YELLOW);
+                                boxList.add(box);
+                            }
+                        } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
+                    } else { //se lo store è vuoto rimuovo i blocchetti rimasti sui pianeti già occupati
+                        for (int i : occupied) { //vedo sui pianeti occupati
+                            for (Box box : planetOffers.get(i)) {
+                                if (box.getType().equals(BoxType.RED)) {
+                                    boxList.add(box);
+                                } else if (box.getType().equals(BoxType.BLUE)) {
+                                    boxList.add(box);
+                                } else if (box.getType().equals(BoxType.GREEN)) {
+                                    boxList.add(box);
+                                } else if (box.getType().equals(BoxType.YELLOW)) {
+                                    boxList.add(box);
+                                } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
+                            }
+                        }
+                    }
+                }
+                addPlanetOffers(boxList);
+            }
             setStateCard(StateCardType.BOXMANAGEMENT);
             return planetOffers.get(index);
         }
@@ -84,7 +130,6 @@ public class Planet extends Card_with_box{
         else{
             throw new IllegalArgumentException("Index out of bounds");
         }
-
     }
 
     @Override
