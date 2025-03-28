@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CardDeckTest {
     @Test
     public void loadCardTest() {
-        CardDeck cardDeck = new CardDeck();
+        CardDeck cardDeck = new CardDeck(2);
 
         boolean foundAbShip = false;
         boolean foundAbSta = false;
@@ -169,15 +169,15 @@ class CardDeckTest {
 
     @Test
     public void playNextCardTest() {
-        CardDeck cardDeck = new CardDeck();
+        CardDeck cardDeck = new CardDeck(2);
         List<Player> players = new ArrayList<>();
         players.add(new Player(null, "mario", PlayerColor.YELLOW));
-        State state = new State(players);
+        Game game = new Game(players,2);
         cardDeck.createDecks();
         cardDeck.createFinalDeck();
 
-        cardDeck.playnextCard(state);
-        Card nextCard = state.getCurrentCard();
+        cardDeck.playnextCard(game);
+        Card nextCard = game.getCurrentCard();
         while(nextCard!=null) {
             if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
                 assertEquals(nextCard.getBoxesWonTypes().size(), nextCard.getBoxesWon().size());
@@ -186,8 +186,8 @@ class CardDeckTest {
                 assertEquals(nextCard.getPlanetOffersTypes().size(), nextCard.getPlanetOffers().size());
                 assertNotNull(nextCard.getPlanetOffers());
             }
-            cardDeck.playnextCard(state);
-            nextCard = state.getCurrentCard();
+            cardDeck.playnextCard(game);
+            nextCard = game.getCurrentCard();
         }
     }
 }
