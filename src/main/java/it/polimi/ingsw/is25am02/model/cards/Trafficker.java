@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
-public class Trafficker extends Card_with_box{
+public class Trafficker extends Card {
     private final int cannonPowers;
     private final int daysLost;
     private final int boxesLost;
@@ -28,7 +29,7 @@ public class Trafficker extends Card_with_box{
     private final CardType cardType;
 
     public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
-        super(level, store, StateCardType.CHOICE_ATTRIBUTES);
+        super(level, StateCardType.CHOICE_ATTRIBUTES);
         this.cannonPowers = cannonPowers;
         this.daysLost = daysLost;
         this.boxesLost = boxesLost;

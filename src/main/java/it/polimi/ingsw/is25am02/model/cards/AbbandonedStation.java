@@ -12,7 +12,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
-public class AbbandonedStation extends Card_with_box {
+public class AbbandonedStation extends Card {
     private final int AliveNeeded;
     private final int daysLost;
     private final LinkedList<Box> boxesWon;
@@ -20,7 +20,7 @@ public class AbbandonedStation extends Card_with_box {
     private final CardType cardType;
 
     public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
-        super(level, store, StateCardType.DECISION);
+        super(level, StateCardType.DECISION);
         this.AliveNeeded = AliveNeeded;
         this.daysLost = daysLost;
         this.boxesWon = boxesWon;
