@@ -1,9 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
-import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Game;
-import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.Spaceship;
+import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BlueBox;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
@@ -132,8 +129,10 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player1, 7,7, AliveType.HUMAN);
-        game.addCrew(player1, 8,7,AliveType.HUMAN);
+        Coordinate pos1 = new Coordinate(7,7);
+        game.addCrew(player1, pos1, AliveType.HUMAN);
+        Coordinate pos2 = new Coordinate(8,7);
+        game.addCrew(player1, pos2,AliveType.HUMAN);
 
         //inizializzo spaceship2
         //tile 1 - cabin centrale
@@ -148,7 +147,8 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        Coordinate pos3 = new Coordinate(7,7);
+        game.addCrew(player2, pos3, AliveType.HUMAN);
 
         //inizializzo spaceship3
         //tile 1 - cabin centrale
@@ -162,8 +162,8 @@ class AbbandonedShipTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-
-        game.addCrew(player3, 7,7, AliveType.HUMAN);
+        Coordinate pos4 = new Coordinate(7,7);
+        game.addCrew(player3, pos4, AliveType.HUMAN);
 
         //inizializzo spaceship4
         //tile 1 - cabin centrale
@@ -178,7 +178,8 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player4, 7,7, AliveType.HUMAN);
+        Coordinate pos5 = new Coordinate(7,7);
+        game.addCrew(player4, pos5, AliveType.HUMAN);
         return game;
     }
 
@@ -292,9 +293,10 @@ class AbbandonedShipTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-
-        game.addCrew(player1, 7,7, AliveType.HUMAN);
-        game.addCrew(player1, 8,7,AliveType.HUMAN);
+        Coordinate pos5 = new Coordinate(7,7);
+        game.addCrew(player1, pos5, AliveType.HUMAN);
+        Coordinate pos6 = new Coordinate(8,7);
+        game.addCrew(player1, pos6,AliveType.HUMAN);
 
         //inizializzo spaceship2
         //tile 1 - cabin centrale
@@ -320,8 +322,8 @@ class AbbandonedShipTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-
-        game.addCrew(player2, 7,7, AliveType.PURPLE_ALIEN);
+        Coordinate pos7 = new Coordinate(7,7);
+        game.addCrew(player2, pos7, AliveType.PURPLE_ALIEN);
 
         //inizializzo spaceship3
         //tile 1 - cabin centrale
@@ -336,7 +338,8 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player3, 7,7, AliveType.HUMAN);
+        Coordinate pos9 = new Coordinate(7,7);
+        game.addCrew(player3, pos9, AliveType.HUMAN);
 
         //inizializzo spaceship4
         //tile 1 - cabin centrale
@@ -351,7 +354,8 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player4, 7,7, AliveType.HUMAN);
+        Coordinate pos8 = new Coordinate(7,7);
+        game.addCrew(player4, pos8, AliveType.HUMAN);
         return game;
     }
 
