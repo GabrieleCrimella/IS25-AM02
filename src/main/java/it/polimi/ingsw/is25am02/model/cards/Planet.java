@@ -24,7 +24,6 @@ public class Planet extends Card {
     private final CardType cardType;
     private final BoxStore store;
 
-
     public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers, ArrayList<ArrayList<BoxType>> planetOffersTypes) {
         super(level, StateCardType.DECISION);
         this.store = store;

@@ -26,7 +26,7 @@ public class Game implements Game_Interface {
     private final Gameboard globalBoard;
     private final State currentState;
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
-    private int alreadyChecked = 0; //tiene conto dei giocatori che hanno la nave già controllata
+    private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
 
     //todo: dove sono tutte le "instanziazioni" degli attributi?
@@ -39,8 +39,7 @@ public class Game implements Game_Interface {
         this.heapTile = new HeapTiles();
         this.currentState = new State(p);
         this.deck = new CardDeck(level);
-        this.hourglass = new Hourglass(level);
-        this.currentState.setPhase(BUILD);
+        this.hourglass = new Hourglass();
     }
 
     //getter
@@ -85,7 +84,7 @@ public class Game implements Game_Interface {
     }
 
     public void setDiceResult() {
-        this.diceResult = getGameboard().getDice().pickRandomNumber();
+        this.diceResult = globalBoard.getDice().pickRandomNumber();
     }
 
     public void setBuildTimeIsOver() {
@@ -268,7 +267,7 @@ public class Game implements Game_Interface {
 
             player.setStatePlayer(FINISHED);
             alreadyFinished++;
-            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished - 1]);
+            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
                 player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
             }

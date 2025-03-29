@@ -34,6 +34,7 @@ public class BoxStore {
             store.get(BoxType.BLUE).add(blueBox);
         }
 
+        //inizializzo array di rossi
         for (int i=0; i < 12; i++){
             RedBox redBox = new RedBox(BoxType.RED);
             store.get(BoxType.RED).add(redBox);

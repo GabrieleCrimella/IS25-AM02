@@ -32,7 +32,6 @@ public interface Game_Interface {
 
     //Phase CORRECTION
     Optional<List<boolean[][]>> removeTile(Player player, int x, int y);
-    void keepBlock(Player player, boolean[][] tilesToKeep);
     void checkWrongSpaceship(Player player);
 
     //Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
@@ -59,8 +58,9 @@ public interface Game_Interface {
     void rollDice(Player player);
     void effect(Game game);
     void calculateDamage(Player player, Optional<Tile> batteryStorage);
+    void keepBlock(Player player, boolean[][] tilesToKeep);
     //void holdSpaceship(Player player, int x, int y);
-
+    //void holdSpaceship(Player player, int x, int y);
 
     //Phase RESULT
     ArrayList<Player> getWinners();

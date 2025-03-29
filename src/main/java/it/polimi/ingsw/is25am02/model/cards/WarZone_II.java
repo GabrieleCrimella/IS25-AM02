@@ -143,6 +143,7 @@ public class WarZone_II extends Card{
                     currentPhase++;
                 }
             }
+            //todo eccezione nel caso ho ancora dei box sulla nave
         }
         else throw new IllegalStateException();
     }
