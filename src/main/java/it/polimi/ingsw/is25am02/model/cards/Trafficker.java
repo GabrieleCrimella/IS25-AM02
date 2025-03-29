@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
+import it.polimi.ingsw.is25am02.model.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
@@ -53,17 +54,16 @@ public class Trafficker extends Card {
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalRemoveException {
-        //Calcolo potenza Player
-        if(choices.isPresent()) {
-            ArrayList<Tile> doubleCannons = new ArrayList<>();
-            for (Pair<Tile, Tile> pair : choices.get()) {
-                doubleCannons.add(pair.getKey());
-                pair.getValue().removeBattery();
-            }
-            double playerPower = player.getSpaceship().calculateCannonPower(doubleCannons);
+    public void choiceDoubleCannon(Game game, Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws UnsupportedOperationException, IllegalRemoveException {
+        //Calculate Player Power
+        List<Tile> dCannon = new ArrayList<>();
+        for(Coordinate cannon : cannons) {
+            dCannon.add(player.getSpaceship().getTile(cannon.getX(), cannon.getY()).get());
         }
-        double playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<>());
+        double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
+        for(Coordinate battery : batteries) {
+            player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+        }
 
         //Paragoni
         if(playerPower > cannonPowers){

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
+import it.polimi.ingsw.is25am02.model.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
@@ -48,17 +49,16 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalRemoveException {
+    public void choiceDoubleCannon(Game game, Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws IllegalRemoveException {
         if (currentPhase == 1) {
             List<Tile> dCannon = new ArrayList<>();
-            if (choices.isPresent()) {
-                for (Pair<Tile, Tile> pair : choices.get()) {
-                    dCannon.add(pair.getKey());
-                    pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
-                }
-                declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
-            } else
-                declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<>()));
+            for(Coordinate cannon : cannons) {
+                dCannon.add(player.getSpaceship().getTile(cannon.getX(), cannon.getY()).get());
+            }
+            declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
+            for(Coordinate battery : batteries) {
+                player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+            }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
@@ -77,17 +77,16 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalRemoveException {
+    public void choiceDoubleMotor(Game game, Player player, List<Coordinate> motors, List<Coordinate> batteries) throws IllegalRemoveException {
         if(currentPhase == 2) {
-            ArrayList<Tile> doubleMotors = new ArrayList<>();
-            if(choices.isPresent()){
-                for(Pair<Tile, Tile> pair: choices.get()){
-                    doubleMotors.add(pair.getKey());
-                    pair.getValue().removeBattery();
-                }
-                declarationMotor.put(player, player.getSpaceship().calculateMotorPower(doubleMotors));
+            ArrayList<Tile> dMotors = new ArrayList<>();
+            for(Coordinate motor : motors) {
+                dMotors.add(player.getSpaceship().getTile(motor.getX(), motor.getY()).get());
             }
-            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<>()));
+            declarationMotor.put(player, player.getSpaceship().calculateMotorPower(dMotors));
+            for(Coordinate battery : batteries) {
+                player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+            }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;

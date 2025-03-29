@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.model.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
@@ -39,19 +40,19 @@ public class Pirate extends Enemies {
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalRemoveException, IllegalPhaseException {
+    public void choiceDoubleCannon(Game game, Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws IllegalRemoveException, IllegalPhaseException {
         if (phase == 1) {
+            //Calculate Player Power
             List<Tile> dCannon = new ArrayList<>();
-            double playerPower;
-            if (choices.isPresent()) {
-                for (Pair<Tile, Tile> pair : choices.get()) {
-                    dCannon.add(pair.getKey());
-                    pair.getValue().removeBattery();
-                }
-                playerPower = player.getSpaceship().calculateCannonPower(dCannon);
-            } else
-                playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<Tile>()); //se uso solo motori singoli
+            for(Coordinate cannon : cannons) {
+                dCannon.add(player.getSpaceship().getTile(cannon.getX(), cannon.getY()).get());
+            }
+            double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
+            for(Coordinate battery : batteries) {
+                player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+            }
 
+            //Paragoni
             if (playerPower > getCannonPowers()) {
                 setStateCard(StateCardType.DECISION);
             } else if (playerPower == getCannonPowers()) {

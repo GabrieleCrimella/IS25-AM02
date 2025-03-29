@@ -55,11 +55,11 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {// il primo tile è dmotor, il secondo battery storage
+    public void choiceDoubleMotor(Game game, Player player, List<Coordinate> motors, List<Coordinate> batteries) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {// il primo tile è dmotor, il secondo battery storage
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {
+    public void choiceDoubleCannon(Game game, Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 

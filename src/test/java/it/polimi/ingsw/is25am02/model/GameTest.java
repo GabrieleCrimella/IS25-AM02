@@ -123,7 +123,8 @@ class GameTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        Coordinate pos = new Coordinate(7,7);
+        game.addCrew(player2, pos, AliveType.HUMAN);
 
         //tile 2 - Storage 7 6
         TileType t2 = TileType.SPECIAL_STORAGE;
@@ -212,7 +213,8 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        Coordinate pos2 = new Coordinate(7,7);
+        game.addCrew(player2, pos2, AliveType.HUMAN);
 
         //inizializzo spaceship3
         //tile 1 - cabin centrale
@@ -227,7 +229,8 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player3, 7,7, AliveType.HUMAN);
+        Coordinate pos3 = new Coordinate(7,7);
+        game.addCrew(player3, pos3, AliveType.HUMAN);
 
         //inizializzo spaceship4
         //tile 1 - cabin centrale
@@ -242,7 +245,8 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player4, 7,7, AliveType.HUMAN);
+        Coordinate pos4 = new Coordinate(7,7);
+        game.addCrew(player4, pos4, AliveType.HUMAN);
         game.getCurrentState().setPhase(StateGameType.RESULT);
 
         game.getPlayers().getFirst().getSpaceship().addNumOfWastedTiles(2);
@@ -311,8 +315,10 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player1, 7,7, AliveType.HUMAN);
-        game.addCrew(player1, 8,7, AliveType.HUMAN);
+        Coordinate pos = new Coordinate(7,7);
+        Coordinate pos2 = new Coordinate(8,7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        game.addCrew(player1, pos2, AliveType.HUMAN);
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(7,7).get().getCrew().size());
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,7).get().getCrew().size());
 
@@ -353,9 +359,11 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        Coordinate pos3 = new Coordinate(7,7);
+        game.addCrew(player2, pos3, AliveType.HUMAN);
         assertEquals(2, game.getPlayers().get(1).getSpaceship().getTile(7,7).get().getCrew().size());
-        game.addCrew(player2, 8,8, AliveType.PURPLE_ALIEN);
+        Coordinate pos4 = new Coordinate(8,8);
+        game.addCrew(player2, pos4, AliveType.PURPLE_ALIEN);
         assertEquals(1, game.getPlayers().get(1).getSpaceship().getTile(8,8).get().getCrew().size());
     }
 
@@ -474,7 +482,8 @@ class GameTest {
         game.getCurrentState().setCurrentCard(initialCard);
 
 
-        Optional<List<boolean [][]>> resultGame = game.removeTile(player1,7,5);
+        Coordinate pos = new Coordinate(7,5);
+        Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
         game.keepBlock(player1,resultGame.get().get(0));
 
 
