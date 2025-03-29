@@ -617,7 +617,8 @@ public class Game implements Game_Interface {
     @Override
     public void keepBlock(Player player, boolean[][] tilesToKeep) {
         try {
-            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
+            //stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
+            stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
             currentPlayerControl(player);
 
             player.getSpaceship().keepBlock(tilesToKeep);
