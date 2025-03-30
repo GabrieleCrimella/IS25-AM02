@@ -359,8 +359,32 @@ public class Spaceship {
             }
         }
 
-        //TODO: IMPLEMENT THE FINAL PART OF THE CHECK METHOD
+        if(spaceshipIterator.getTileInStartingPosition().isEmpty())
+            return false;
 
+        Tile current = spaceshipIterator.getTileInStartingPosition().get();
+        List<Tile> visited = new LinkedList<>();
+        List<Tile> toVisit = new ArrayList<>();
+
+        toVisit.add(current);
+        toVisit.addAll(spaceshipIterator.getConnectedNearTiles(current));
+        while (!toVisit.isEmpty()) {
+            visited.add(current);
+            toVisit.remove(current);
+            if (!toVisit.isEmpty()) {
+                current = toVisit.getFirst();
+                List<Tile> newTiles = spaceshipIterator.getConnectedNearTiles(current);
+                newTiles.forEach(t -> {
+                    if (!visited.contains(t) && !toVisit.contains(t)) {
+                        toVisit.add(t);
+                    }
+                });
+            }
+        }
+
+        if(visited.size()==spaceshipIterator.returnAllTiles().size()){
+            return false;
+        }
 
         return true;
     }
