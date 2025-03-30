@@ -359,25 +359,7 @@ public class Spaceship {
             }
         }
 
-        //check that there is ONLY ONE tiles block in the spaceship
-        for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent()) {
-                List<Tile> near = spaceshipIterator.getNearTile(t.get());
-                List<Tile> cNear = spaceshipIterator.getConnectedNearTiles(t.get());
-
-                if (near.size() != cNear.size() ||
-                        near.isEmpty() || cNear.isEmpty()) {) {
-                    return false;
-                }
-                if (!near.containsAll(cNear) || !cNear.containsAll(near)) {
-                    return false;
-                }
-            }
-        }
-
-        //check that the starting position is not empty
-        if (spaceshipIterator.getTileInStartingPosition().isEmpty())
-            return false;
+        //TODO: IMPLEMENT THE FINAL PART OF THE CHECK METHOD
 
 
         return true;
