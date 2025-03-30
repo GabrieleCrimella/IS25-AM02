@@ -365,7 +365,8 @@ public class Spaceship {
                 List<Tile> near = spaceshipIterator.getNearTile(t.get());
                 List<Tile> cNear = spaceshipIterator.getConnectedNearTiles(t.get());
 
-                if (near.size() != cNear.size()) {
+                if (near.size() != cNear.size() ||
+                        near.isEmpty() || cNear.isEmpty()) {) {
                     return false;
                 }
                 if (!near.containsAll(cNear) || !cNear.containsAll(near)) {
