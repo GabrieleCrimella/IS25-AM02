@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
+import it.polimi.ingsw.is25am02.model.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
@@ -70,17 +71,17 @@ public class WarZone_I extends Card {
     }
 
     @Override
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalPhaseException, IllegalRemoveException { //primo è dmotor secondo è batterystorage
+    public void choiceDoubleMotor(Game game, Player player, List<Coordinate> motors, List<Coordinate> batteries) throws IllegalPhaseException, IllegalRemoveException { //primo è dmotor secondo è batterystorage
         if(currentPhase == 2) {
-            ArrayList<Tile> doubleMotors = new ArrayList<>();
-            if(choices.isPresent()){
-                for(Pair<Tile, Tile> pair: choices.get()){
-                    doubleMotors.add(pair.getKey());
-                    pair.getValue().removeBattery();
-                }
-                declarationMotor.put(player, player.getSpaceship().calculateMotorPower(doubleMotors));
+            ArrayList<Tile> dMotors = new ArrayList<>();
+
+            for(Coordinate motor : motors) {
+                dMotors.add(player.getSpaceship().getTile(motor.x(), motor.y()).get());
             }
-            else declarationMotor.put(player, player.getSpaceship().calculateMotorPower(new ArrayList<>()));
+            declarationMotor.put(player, player.getSpaceship().calculateMotorPower(dMotors));
+            for(Coordinate battery : batteries) {
+                player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+            }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
@@ -119,17 +120,16 @@ public class WarZone_I extends Card {
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws IllegalPhaseException, IllegalRemoveException {
+    public void choiceDoubleCannon(Game game, Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws IllegalPhaseException, IllegalRemoveException {
         if(currentPhase == 3) {
             List<Tile> dCannon = new ArrayList<>();
-            if (choices.isPresent()) {
-                for (Pair<Tile, Tile> pair : choices.get()) {
-                    dCannon.add(pair.getKey());
-                    pair.getValue().removeBattery();  //rimuovo la batteria che è stata usata
-                }
-                declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
+            for(Coordinate cannon : cannons) {
+                dCannon.add(player.getSpaceship().getTile(cannon.x(), cannon.y()).get());
             }
-            else declarationCannon.put(player, player.getSpaceship().calculateCannonPower(new ArrayList<>()));
+            declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
+            for(Coordinate battery : batteries) {
+                player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+            }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;

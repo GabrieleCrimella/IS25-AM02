@@ -5,7 +5,6 @@ import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
-import javafx.util.Pair;
 
 import java.util.*;
 
@@ -47,7 +46,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) throws UnsupportedOperationException {
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, BoxType boxType, boolean on) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -55,11 +54,11 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void choiceDoubleMotor(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {// il primo tile è dmotor, il secondo battery storage
+    public void choiceDoubleMotor(Game game, Player player, List<Coordinate> motors, List<Coordinate> batteries) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {// il primo tile è dmotor, il secondo battery storage
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {
+    public void choiceDoubleCannon(Game game, Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -95,7 +94,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public ArrayList<ArrayList<Box>> getPlanetOffers() {
+    public ArrayList<LinkedList<Box>> getPlanetOffers() {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -103,7 +102,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes() {
+    public ArrayList<LinkedList<BoxType>> getPlanetOffersTypes() {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -115,7 +114,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void addPlanetOffers(ArrayList<Box> boxes) {
+    public void addPlanetOffers(LinkedList<Box> boxes) {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 

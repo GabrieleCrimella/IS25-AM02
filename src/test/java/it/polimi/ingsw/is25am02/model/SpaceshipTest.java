@@ -109,8 +109,10 @@ class SpaceshipTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player1, 7,7,AliveType.HUMAN);
-        game.addCrew(player1, 8,7,AliveType.HUMAN);
+        Coordinate pos1 = new Coordinate(7,7);
+        game.addCrew(player1, pos1,AliveType.HUMAN);
+        Coordinate pos2 = new Coordinate(8,7);
+        game.addCrew(player1, pos2,AliveType.HUMAN);
         return game;
     }
     @Test

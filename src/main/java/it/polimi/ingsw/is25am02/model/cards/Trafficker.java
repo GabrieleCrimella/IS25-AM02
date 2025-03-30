@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
+import it.polimi.ingsw.is25am02.model.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
@@ -10,12 +11,8 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
-import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
@@ -53,17 +50,16 @@ public class Trafficker extends Card {
     }
 
     @Override
-    public void choiceDoubleCannon(Game game, Player player, Optional<List<Pair<Tile, Tile>>> choices) throws UnsupportedOperationException, IllegalRemoveException {
-        //Calcolo potenza Player
-        if(choices.isPresent()) {
-            ArrayList<Tile> doubleCannons = new ArrayList<>();
-            for (Pair<Tile, Tile> pair : choices.get()) {
-                doubleCannons.add(pair.getKey());
-                pair.getValue().removeBattery();
-            }
-            double playerPower = player.getSpaceship().calculateCannonPower(doubleCannons);
+    public void choiceDoubleCannon(Game game, Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws UnsupportedOperationException, IllegalRemoveException {
+        //Calculate Player Power
+        List<Tile> dCannon = new ArrayList<>();
+        for(Coordinate cannon : cannons) {
+            dCannon.add(player.getSpaceship().getTile(cannon.x(), cannon.y()).get());
         }
-        double playerPower = player.getSpaceship().calculateCannonPower(new ArrayList<>());
+        double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
+        for(Coordinate battery : batteries) {
+            player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+        }
 
         //Paragoni
         if(playerPower > cannonPowers){
@@ -103,10 +99,17 @@ public class Trafficker extends Card {
     }
 
     @Override
-    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on){
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, BoxType boxType, boolean on){
         if(on) {
-            start.remove(box);
-            end.add(box);
+            Iterator<Box> it = start.iterator();
+            while (it.hasNext()) {
+                Box box = it.next();
+                if (box.getType().equals(boxType)) {
+                    it.remove();
+                    end.add(box);
+                    break;
+                }
+            }
         }
         else {
             game.getCurrentCard().setStateCard(StateCardType.FINISH);

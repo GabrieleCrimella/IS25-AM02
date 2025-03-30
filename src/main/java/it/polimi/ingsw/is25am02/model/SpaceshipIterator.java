@@ -34,6 +34,24 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         }
     }
 
+    public Optional<Tile> getTileInStartingPosition() {
+        return spaceshipBoard[start_pos.getKey()][start_pos.getValue()];
+    }
+
+    public List<Tile> getNearTile(Tile t) {
+        List<Tile> nearTiles = new LinkedList<>();
+        if (getUpTile(t).isPresent())
+            nearTiles.add(getUpTile(t).get());
+        if (getRightTile(t).isPresent())
+            nearTiles.add(getRightTile(t).get());
+        if (getDownTile(t).isPresent())
+            nearTiles.add(getDownTile(t).get());
+        if (getLeftTile(t).isPresent())
+            nearTiles.add(getLeftTile(t).get());
+
+        return nearTiles;
+    }
+
     public SpaceshipIterator reference() {
         x_current = 0;
         y_current = 0;

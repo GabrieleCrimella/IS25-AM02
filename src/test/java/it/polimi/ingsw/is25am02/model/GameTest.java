@@ -123,7 +123,8 @@ class GameTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        Coordinate pos = new Coordinate(7,7);
+        game.addCrew(player2, pos, AliveType.HUMAN);
 
         //tile 2 - Storage 7 6
         TileType t2 = TileType.SPECIAL_STORAGE;
@@ -212,7 +213,8 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        Coordinate pos2 = new Coordinate(7,7);
+        game.addCrew(player2, pos2, AliveType.HUMAN);
 
         //inizializzo spaceship3
         //tile 1 - cabin centrale
@@ -227,7 +229,8 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player3, 7,7, AliveType.HUMAN);
+        Coordinate pos3 = new Coordinate(7,7);
+        game.addCrew(player3, pos3, AliveType.HUMAN);
 
         //inizializzo spaceship4
         //tile 1 - cabin centrale
@@ -242,7 +245,8 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player4, 7,7, AliveType.HUMAN);
+        Coordinate pos4 = new Coordinate(7,7);
+        game.addCrew(player4, pos4, AliveType.HUMAN);
         game.getCurrentState().setPhase(StateGameType.RESULT);
 
         game.getPlayers().getFirst().getSpaceship().addNumOfWastedTiles(2);
@@ -311,8 +315,10 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player1, 7,7, AliveType.HUMAN);
-        game.addCrew(player1, 8,7, AliveType.HUMAN);
+        Coordinate pos = new Coordinate(7,7);
+        Coordinate pos2 = new Coordinate(8,7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        game.addCrew(player1, pos2, AliveType.HUMAN);
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(7,7).get().getCrew().size());
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,7).get().getCrew().size());
 
@@ -353,9 +359,11 @@ class GameTest {
             System.out.println(e.getMessage());
         }
 
-        game.addCrew(player2, 7,7, AliveType.HUMAN);
+        Coordinate pos3 = new Coordinate(7,7);
+        game.addCrew(player2, pos3, AliveType.HUMAN);
         assertEquals(2, game.getPlayers().get(1).getSpaceship().getTile(7,7).get().getCrew().size());
-        game.addCrew(player2, 8,8, AliveType.PURPLE_ALIEN);
+        Coordinate pos4 = new Coordinate(8,8);
+        game.addCrew(player2, pos4, AliveType.PURPLE_ALIEN);
         assertEquals(1, game.getPlayers().get(1).getSpaceship().getTile(8,8).get().getCrew().size());
     }
 
@@ -466,28 +474,153 @@ class GameTest {
         player4.setStatePlayer(StatePlayerType.WRONG_SHIP);
         game.getCurrentState().setPhase(StateGameType.CORRECTION);
 
-        //Create a random current card and put it in state finish
-        Pair<Integer, RotationType> firstPair = new Pair<>(7,RotationType.NORTH);
-        ArrayList<Pair<Integer,RotationType>> meteorites = new ArrayList<>();
-        meteorites.add(firstPair);
-        Card initialCard = new InitialCard(0);
-        game.getCurrentState().setCurrentCard(initialCard);
+        Coordinate pos = new Coordinate(7,5);
 
-
-        Optional<List<boolean [][]>> resultGame = game.removeTile(player1,7,5);
+        Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
         game.keepBlock(player1,resultGame.get().get(0));
 
 
         assertEquals(true, spaceship1.getTile(7,5).isEmpty());
         assertEquals(false, spaceship1.getTile(7,6).isEmpty());
 
+    }
+
+    @Test
+    void test_should_check_remove_single_tile_and_return_two_options_when_hit_in_the_middle(){
+
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        //fase di build
+        //inizializzo spaceship1
+        //tile 1 - cabin centrale 7 7
+        TileType t1 = TileType.CABIN;
+        ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType1 = RotationType.NORTH;
+        int id1 = 1;
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        try {
+            spaceship1.addTile(7,7, cabin1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
 
+        //tile 2 - Storage 5 8
+        TileType t2 = TileType.STORAGE;
+        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
+        RotationType rotationType2 = RotationType.NORTH;
+        int id2 = 1;
+        int maxNum = 3;
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        try {
+            spaceship1.addTile(5,8, storage1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 3 - battery 6 7
+        TileType t3 = TileType.BATTERY;
+        ConnectorType[] connectors3 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        RotationType rotationType3 = RotationType.NORTH;
+        int id3 = 1;
+        int maxNum3 = 2;
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        try {
+            spaceship1.addTile(6,7, battery3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 4 - cannon 9 7
+        TileType t4 = TileType.CANNON;
+        ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
+        RotationType rotationType4 = RotationType.NORTH;
+        int id4 = 1;
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        try {
+            spaceship1.addTile(9,7, cannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 5 - cabin 8 7
+        TileType t5 = TileType.CABIN;
+        ConnectorType[] connectors5 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.SINGLE};
+        RotationType rotationType5 = RotationType.NORTH;
+        int id5 = 1;
+        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, id5);
+        try {
+            spaceship1.addTile(8,7, cabin2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 6 - cabin 5 7
+        TileType t6 = TileType.CABIN;
+        ConnectorType[] connectors6 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType6 = RotationType.NORTH;
+        int id6 = 1;
+        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
+        try {
+            spaceship1.addTile(5,7, cabin2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        player1.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player2.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player3.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player4.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        game.getCurrentState().setPhase(StateGameType.CORRECTION);
+
+        Coordinate pos =  new Coordinate(7,7);
+        Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
+        assertEquals(true, resultGame.get().get(1)[8][7]);
+        assertEquals(true, resultGame.get().get(1)[9][7]);
+        assertEquals(false, resultGame.get().get(1)[7][7]);
+        assertEquals(false, resultGame.get().get(1)[6][7]);
+        assertEquals(false, resultGame.get().get(1)[5][7]);
+        assertEquals(false, resultGame.get().get(1)[5][8]);
+
+        assertEquals(false, resultGame.get().get(0)[8][7]);
+        assertEquals(false, resultGame.get().get(0)[9][7]);
+        assertEquals(true, resultGame.get().get(0)[7][7]);
+        assertEquals(true, resultGame.get().get(0)[6][7]);
+        assertEquals(true, resultGame.get().get(0)[5][7]);
+        assertEquals(true, resultGame.get().get(0)[5][8]);
+
+
+
+        game.keepBlock(player1,resultGame.get().get(0));
+
+
+        assertEquals(true, spaceship1.getTile(7,7).isEmpty());
+        assertEquals(false, spaceship1.getTile(8,7).isEmpty());
 
     }
 
-    //due blocchi distinti
-    //colpisci tile 7,7
+
 
 
 }

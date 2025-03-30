@@ -9,8 +9,8 @@ public class Hourglass {
     private long timeLeft;
     private boolean running;
 
-    public Hourglass(long durata) {
-        this.durata = durata;
+    public Hourglass() {
+        this.durata = 60;
         this.timeLeft = durata;
         this.running = false;
     }

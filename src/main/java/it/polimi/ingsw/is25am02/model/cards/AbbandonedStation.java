@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,10 +65,17 @@ public class AbbandonedStation extends Card {
     }
 
     @Override
-    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on){
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, BoxType boxType, boolean on){
         if(on) {
-            start.remove(box);
-            end.add(box);
+            Iterator<Box> it = start.iterator();
+            while (it.hasNext()) {
+                Box box = it.next();
+                if (box.getType().equals(boxType)) {
+                    it.remove();
+                    end.add(box);
+                    break;
+                }
+            }
         }
         else {
             game.getCurrentCard().setStateCard(StateCardType.FINISH);

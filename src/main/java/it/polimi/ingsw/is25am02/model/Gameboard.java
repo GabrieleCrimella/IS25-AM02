@@ -16,7 +16,7 @@ public class Gameboard {
     private final int bestShip;
 
     public Gameboard(int level) {
-        if (level == 0) {
+        if (level == 0){
             this.numStep = 18;
             startingPosition = new int[]{0, 1, 2, 4};
             rewardPosition = new int[]{4, 3, 2, 1};
@@ -72,6 +72,8 @@ public class Gameboard {
         hourGlassFlip--;
     }
 
+
+    //Solo per testing
     public void initializeGameBoard(List<Player> orderedPlayers) {
         //la lista passata è una lista ordinata in base a quando ogni player ha finito la nave.
         //Il player che ha finito per primo è primo nella lista.

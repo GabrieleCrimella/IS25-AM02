@@ -138,6 +138,10 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
+    public int getMaxNum() throws UnsupportedOperationException, IllegalAddException {
+        throw new UnsupportedOperationException("Not supported method");
+    }
+
     //shield
     public boolean isShielded(RotationType side) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method");

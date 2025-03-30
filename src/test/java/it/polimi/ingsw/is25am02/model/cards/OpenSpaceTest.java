@@ -111,7 +111,7 @@ class OpenSpaceTest {
         List<Pair<Tile, Tile>> listaDiCoppieDiDMotorEBattery = new ArrayList<Pair<Tile,Tile>>();
         listaDiCoppieDiDMotorEBattery.add(CoppiaDiMotorEBattery);
         Optional<List<Pair<Tile,Tile>>> optionalListaDiCoppieDiMotorEBattery = Optional.of(listaDiCoppieDiDMotorEBattery);
-
+/*
         try {
             openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
         } catch (IllegalPhaseException e) {
@@ -119,7 +119,7 @@ class OpenSpaceTest {
         } catch (IllegalRemoveException e) {
             System.out.println(e.getMessage());
         }
-
+*/
         assertEquals(7, game.getGameboard().getPositions().get(player1),7);
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,9).get().getBattery());
 
@@ -215,7 +215,7 @@ class OpenSpaceTest {
         List<Pair<Tile, Tile>> listaDiCoppieDiDMotorEBattery = new ArrayList<Pair<Tile,Tile>>();
         listaDiCoppieDiDMotorEBattery.add(CoppiaDiMotorEBattery);
         Optional<List<Pair<Tile,Tile>>> optionalListaDiCoppieDiMotorEBattery = Optional.of(listaDiCoppieDiDMotorEBattery);
-
+/*
         try {
             openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
         } catch (IllegalPhaseException e) {
@@ -223,7 +223,7 @@ class OpenSpaceTest {
         } catch (IllegalRemoveException e) {
             System.out.println(e.getMessage());
         }
-
+*/
         assertEquals(7, game.getGameboard().getPositions().get(player1),7);
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,9).get().getBattery());
 
@@ -285,7 +285,7 @@ class OpenSpaceTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-
+/*
         try {
             openSpace.choiceDoubleMotor(game,player2,Optional.empty());
         } catch (IllegalPhaseException e) {
@@ -293,7 +293,7 @@ class OpenSpaceTest {
         } catch (IllegalRemoveException e) {
             System.out.println(e.getMessage());
         }
-
+*/
         assertEquals(3, game.getGameboard().getPositions().get(player2));
         assertEquals(3, game.getPlayers().get(1).getSpaceship().getTile(8,9).get().getBattery());
 

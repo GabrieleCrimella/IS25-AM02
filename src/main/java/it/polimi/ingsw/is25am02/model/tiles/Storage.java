@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Storage extends Tile {
-
     int maxNum;
     List<Box> occupation;
 
@@ -21,6 +20,9 @@ public final class Storage extends Tile {
         this.maxNum = maxNum;
         this.occupation = new ArrayList<Box>();
     }
+
+    @Override
+    public int getMaxNum() { return maxNum; }
 
     @Override
     public List<Box> getOccupation(){
