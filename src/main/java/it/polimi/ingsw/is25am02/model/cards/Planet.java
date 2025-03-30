@@ -70,49 +70,45 @@ public class Planet extends Card {
         if(index >= 0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
-            for(LinkedList<BoxType> boxTypeList : planetOffersTypes) {
-                LinkedList<Box> boxList = new LinkedList<>();
-                for(BoxType type : boxTypeList){
-                    if(!store.getStore().isEmpty()){
-                        Box box;
-                        if(type.equals(BoxType.RED)){
-                            if(store.getStore().containsKey(BoxType.RED)){
-                                box = new RedBox(BoxType.RED);
-                                boxList.add(box);
-                            }
-                        } else if(type.equals(BoxType.BLUE)){
-                            if(store.getStore().containsKey(BoxType.BLUE)){
-                                box = new BlueBox(BoxType.BLUE);
-                                boxList.add(box);
-                            }
-                        } else if(type.equals(BoxType.GREEN)){
-                            if(store.getStore().containsKey(BoxType.GREEN)){
-                                box = new GreenBox(BoxType.GREEN);
-                                boxList.add(box);
-                            }
-                        } else if(type.equals(BoxType.YELLOW)){
-                            if(store.getStore().containsKey(BoxType.YELLOW)){
-                                box = new YellowBox(BoxType.YELLOW);
-                                boxList.add(box);
-                            }
-                        } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
-                    } else { //se lo store è vuoto rimuovo i blocchetti rimasti sui pianeti già occupati
-                        for (int i : occupied) { //vedo sui pianeti occupati
-                            for (Box box : planetOffers.get(i)) {
-                                if (box.getType().equals(BoxType.RED)) {
-                                    boxList.add(box);
-                                } else if (box.getType().equals(BoxType.BLUE)) {
-                                    boxList.add(box);
-                                } else if (box.getType().equals(BoxType.GREEN)) {
-                                    boxList.add(box);
-                                } else if (box.getType().equals(BoxType.YELLOW)) {
-                                    boxList.add(box);
-                                } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
-                            }
+            for(BoxType type : getPlanetOffersTypes().get(index)){
+                if(!store.getStore().isEmpty()){
+                    Box box;
+                    if(type.equals(BoxType.RED)){
+                        if(store.getStore().containsKey(BoxType.RED)){
+                            box = new RedBox(BoxType.RED);
+                            planetOffers.get(index).add(box);
+                        }
+                    } else if(type.equals(BoxType.BLUE)){
+                        if(store.getStore().containsKey(BoxType.BLUE)){
+                            box = new BlueBox(BoxType.BLUE);
+                            planetOffers.get(index).add(box);
+                        }
+                    } else if(type.equals(BoxType.GREEN)){
+                        if(store.getStore().containsKey(BoxType.GREEN)){
+                            box = new GreenBox(BoxType.GREEN);
+                            planetOffers.get(index).add(box);
+                        }
+                    } else if(type.equals(BoxType.YELLOW)){
+                        if(store.getStore().containsKey(BoxType.YELLOW)){
+                            box = new YellowBox(BoxType.YELLOW);
+                            planetOffers.get(index).add(box);
+                        }
+                    } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
+                } else { //se lo store è vuoto rimuovo i blocchetti rimasti sui pianeti già occupati
+                    for (int i : occupied) { //vedo sui pianeti occupati
+                        for (Box box : planetOffers.get(i)) {
+                            if (box.getType().equals(BoxType.RED)) {
+                                planetOffers.get(index).add(box);
+                            } else if (box.getType().equals(BoxType.BLUE)) {
+                                planetOffers.get(index).add(box);
+                            } else if (box.getType().equals(BoxType.GREEN)) {
+                                planetOffers.get(index).add(box);
+                            } else if (box.getType().equals(BoxType.YELLOW)) {
+                                planetOffers.get(index).add(box);
+                            } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
                         }
                     }
                 }
-                addPlanetOffers(boxList);
             }
             setStateCard(StateCardType.BOXMANAGEMENT);
             boxesWon = planetOffers.get(index);

@@ -25,6 +25,8 @@ public final class SpecialStorage extends Tile{
     @Override
     public void addBox(Box box){
         occupation.add(box);
+        occupation.sort((b1, b2) -> Integer.compare(b2.getType().getPower(), b1.getType().getPower()));
+        //i box dentro occupation sono ordinati da quello più importante al meno importante
     }
 
     @Override
