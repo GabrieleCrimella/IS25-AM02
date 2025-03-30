@@ -34,6 +34,10 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         }
     }
 
+    public Optional<Tile> getTileInStartingPosition() {
+        return spaceshipBoard[start_pos.getKey()][start_pos.getValue()];
+    }
+
     public SpaceshipIterator reference() {
         x_current = 0;
         y_current = 0;

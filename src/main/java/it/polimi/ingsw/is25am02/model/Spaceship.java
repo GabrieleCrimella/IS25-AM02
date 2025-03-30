@@ -364,6 +364,17 @@ public class Spaceship {
                 }
             }
         }
+
+        //check that the "start" (center) tile is connected at least to one tile
+        if(spaceshipIterator.getTileInStartingPosition().isEmpty())
+            return false;
+        else {
+            Tile startTile = spaceshipIterator.getTileInStartingPosition().get();
+            if (spaceshipIterator.getConnectedNearTiles(startTile).isEmpty()) {
+                return false;
+            }
+        }
+
         return true;
     }
 
