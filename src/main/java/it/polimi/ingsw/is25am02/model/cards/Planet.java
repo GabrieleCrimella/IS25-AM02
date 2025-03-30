@@ -17,14 +17,15 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION
 
 public class Planet extends Card {
     private final int daysLost;
-    private final ArrayList<ArrayList<Box>> planetOffers;
-    private final ArrayList<ArrayList<BoxType>> planetOffersTypes;
+    private final ArrayList<LinkedList<Box>> planetOffers;
+    private final ArrayList<LinkedList<BoxType>> planetOffersTypes;
     private final ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
     private final LinkedList<Player> landed;
     private final CardType cardType;
     private final BoxStore store;
+    private LinkedList<Box> boxesWon;
 
-    public Planet(int level, BoxStore store, int daysLost, ArrayList<ArrayList<Box>> planetOffers, ArrayList<ArrayList<BoxType>> planetOffersTypes) {
+    public Planet(int level, BoxStore store, int daysLost, ArrayList<LinkedList<Box>> planetOffers, ArrayList<LinkedList<BoxType>> planetOffersTypes) {
         super(level, StateCardType.DECISION);
         this.store = store;
         this.daysLost = daysLost;
@@ -33,6 +34,7 @@ public class Planet extends Card {
         this.landed = new LinkedList<>();
         this.planetOffersTypes = planetOffersTypes;
         this.cardType = CardType.PLANET;
+        this.boxesWon = null;
     }
 
     @Override
@@ -41,22 +43,25 @@ public class Planet extends Card {
     }
 
     @Override
+    public LinkedList<Box> getBoxesWon() { return boxesWon; }
+
+    @Override
     public void clearPlanetOffers() {
         planetOffers.clear();
     }
 
     @Override
-    public void addPlanetOffers(ArrayList<Box> boxes) {
+    public void addPlanetOffers(LinkedList<Box> boxes) {
         planetOffers.add(boxes);
     }
 
     @Override
-    public ArrayList<ArrayList<Box>> getPlanetOffers() {
+    public ArrayList<LinkedList<Box>> getPlanetOffers() {
         return planetOffers;
     }
 
     @Override
-    public ArrayList<ArrayList<BoxType>> getPlanetOffersTypes() {
+    public ArrayList<LinkedList<BoxType>> getPlanetOffersTypes() {
         return planetOffersTypes;
     }
 
@@ -65,8 +70,8 @@ public class Planet extends Card {
         if(index >= 0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
-            for(ArrayList<BoxType> boxTypeList : planetOffersTypes) {
-                ArrayList<Box> boxList = new ArrayList<>();
+            for(LinkedList<BoxType> boxTypeList : planetOffersTypes) {
+                LinkedList<Box> boxList = new LinkedList<>();
                 for(BoxType type : boxTypeList){
                     if(!store.getStore().isEmpty()){
                         Box box;
@@ -110,6 +115,7 @@ public class Planet extends Card {
                 addPlanetOffers(boxList);
             }
             setStateCard(StateCardType.BOXMANAGEMENT);
+            boxesWon = planetOffers.get(index);
             return planetOffers.get(index);
         }
         else if (player.equals(game.getGameboard().getRanking().getLast())){
@@ -120,10 +126,12 @@ public class Planet extends Card {
             }
             game.getCurrentCard().setStateCard(DECISION);
             game.nextPlayer();
+            boxesWon = null;
             return null;
         }
         else if(index == -1){ //The player doesn't want to land
             game.nextPlayer();
+            boxesWon = null;
             return null;
         }
         else{
@@ -132,18 +140,17 @@ public class Planet extends Card {
     }
 
     @Override
-    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on) {
-        /*
-        mancano vari controlli
-        1. li sto passando ad uno storage o a uno special storage? posso mettere i rossi nella lista end?
-        2. massimo numero di box che posso mettere nello storage? liste non sono limitate
-        Non so come puoi fare a controllare queste cose perchè al posto di passare il riferimento alla lista
-        dovresti passare il riferimento al tile/pianeta.
-        Ovviamente questo crea problemi perchè sono di tipi diversi.
-         */
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, BoxType boxType, boolean on) {
         if(on) {
-            start.remove(box);
-            end.add(box);
+            Iterator<Box> it = start.iterator();
+            while (it.hasNext()) {
+                Box box = it.next();
+                if (box.getType().equals(boxType)) {
+                    it.remove();
+                    end.add(box);
+                    break;
+                }
+            }
         }
         else {
             if(player.equals(game.getGameboard().getRanking().getLast())) {
@@ -153,6 +160,7 @@ public class Planet extends Card {
                     game.getGameboard().move((-1)*daysLost, temp);
                 }
             }
+            boxesWon = null;
             game.getCurrentCard().setStateCard(DECISION);
             game.nextPlayer();
         }

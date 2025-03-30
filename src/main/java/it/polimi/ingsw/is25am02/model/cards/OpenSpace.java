@@ -31,11 +31,11 @@ public class OpenSpace extends Card {
         int flyForward;
 
         for(Coordinate motor : motors) {
-            dMotors.add(player.getSpaceship().getTile(motor.getX(), motor.getY()).get());
+            dMotors.add(player.getSpaceship().getTile(motor.x(), motor.y()).get());
         }
         flyForward= player.getSpaceship().calculateMotorPower(dMotors);
         for(Coordinate battery : batteries) {
-            player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+            player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
         }
         fly.put(player,flyForward);
         game.getGameboard().move(flyForward, player);

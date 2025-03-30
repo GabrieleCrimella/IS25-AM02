@@ -213,7 +213,9 @@ class AbbandonedStationTest {
         correctAvailableBoxesinitial.add(redbox2);
         correctAvailableBoxesinitial.add(bluebox);
         assertEquals(availableBoxes.equals(correctAvailableBoxesinitial),true);
-        abbandonedStation.moveBox(game, game.getPlayers().getFirst(), abbandonedStation.getBoxesWon(), game.getPlayers().getFirst().getSpaceship().getTile(9,7).get().getOccupation(), redbox1, true);
+
+        //todo qui ho cambiato il box con boxtype
+        abbandonedStation.moveBox(game, game.getPlayers().getFirst(), abbandonedStation.getBoxesWon(), game.getPlayers().getFirst().getSpaceship().getTile(9,7).get().getOccupation(), BoxType.RED, true);
 
 
         //correct list

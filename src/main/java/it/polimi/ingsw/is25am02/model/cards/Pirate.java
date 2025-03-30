@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.CHOICE_ATTRIBUTES;
-import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION;
 
 public class Pirate extends Enemies {
     private ArrayList<Pair<Integer, RotationType>> shots;
@@ -45,11 +44,11 @@ public class Pirate extends Enemies {
             //Calculate Player Power
             List<Tile> dCannon = new ArrayList<>();
             for(Coordinate cannon : cannons) {
-                dCannon.add(player.getSpaceship().getTile(cannon.getX(), cannon.getY()).get());
+                dCannon.add(player.getSpaceship().getTile(cannon.x(), cannon.y()).get());
             }
             double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
             for(Coordinate battery : batteries) {
-                player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+                player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
             }
 
             //Paragoni

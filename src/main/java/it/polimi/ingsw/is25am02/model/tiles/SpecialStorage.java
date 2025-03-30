@@ -20,6 +20,9 @@ public final class SpecialStorage extends Tile{
     }
 
     @Override
+    public int getMaxNum() { return maxNum; }
+
+    @Override
     public void addBox(Box box){
         occupation.add(box);
     }

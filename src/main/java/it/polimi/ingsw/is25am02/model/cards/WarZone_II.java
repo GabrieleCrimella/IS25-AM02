@@ -53,11 +53,11 @@ public class WarZone_II extends Card{
         if (currentPhase == 1) {
             List<Tile> dCannon = new ArrayList<>();
             for(Coordinate cannon : cannons) {
-                dCannon.add(player.getSpaceship().getTile(cannon.getX(), cannon.getY()).get());
+                dCannon.add(player.getSpaceship().getTile(cannon.x(), cannon.y()).get());
             }
             declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
             for(Coordinate battery : batteries) {
-                player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+                player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
             }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
@@ -81,11 +81,11 @@ public class WarZone_II extends Card{
         if(currentPhase == 2) {
             ArrayList<Tile> dMotors = new ArrayList<>();
             for(Coordinate motor : motors) {
-                dMotors.add(player.getSpaceship().getTile(motor.getX(), motor.getY()).get());
+                dMotors.add(player.getSpaceship().getTile(motor.x(), motor.y()).get());
             }
             declarationMotor.put(player, player.getSpaceship().calculateMotorPower(dMotors));
             for(Coordinate battery : batteries) {
-                player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+                player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
             }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {

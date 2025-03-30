@@ -7,11 +7,9 @@ import it.polimi.ingsw.is25am02.model.enumerations.CardType;
 import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
@@ -37,11 +35,11 @@ public class SlaveOwner extends Enemies{
         //Calculate Player Power
         List<Tile> dCannon = new ArrayList<>();
         for(Coordinate cannon : cannons) {
-            dCannon.add(player.getSpaceship().getTile(cannon.getX(), cannon.getY()).get());
+            dCannon.add(player.getSpaceship().getTile(cannon.x(), cannon.y()).get());
         }
         double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
         for(Coordinate battery : batteries) {
-            player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+            player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
         }
 
         //Paragoni

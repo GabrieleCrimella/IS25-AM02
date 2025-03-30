@@ -15,8 +15,7 @@ import java.util.*;
 public class HeapTiles {
     private final Set<Tile> setTiles;
     private final Random random;
-    private final String JSON_FILE_PATH = "src/main/resources/json/tiles.json";
-    private HashMap<String, Cabin> cabinStartPlayer;
+    private final HashMap<String, Cabin> cabinStartPlayer;
 
     public HeapTiles() {
         this.setTiles = new HashSet<>();
@@ -34,6 +33,7 @@ public class HeapTiles {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
+            String JSON_FILE_PATH = "src/main/resources/json/tiles.json";
             rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
         } catch (IOException e) {
             System.out.println("Error in reading JSON file");

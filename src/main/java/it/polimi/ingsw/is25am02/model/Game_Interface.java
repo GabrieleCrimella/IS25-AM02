@@ -46,7 +46,7 @@ public interface Game_Interface {
     void choice(Player player, boolean choice);
     void removeCrew(Player player, Coordinate pos);
     List<Box> choiceBox(Player player, boolean choice);
-    void moveBox(Player player, List<Box> start, List<Box> end, Box box, boolean on);
+    void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on);
     List<Box> choicePlanet(Player player, int index);
     void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries);
     void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries);

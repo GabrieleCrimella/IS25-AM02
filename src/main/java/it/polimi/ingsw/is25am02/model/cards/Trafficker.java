@@ -11,12 +11,8 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
-import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 
@@ -58,11 +54,11 @@ public class Trafficker extends Card {
         //Calculate Player Power
         List<Tile> dCannon = new ArrayList<>();
         for(Coordinate cannon : cannons) {
-            dCannon.add(player.getSpaceship().getTile(cannon.getX(), cannon.getY()).get());
+            dCannon.add(player.getSpaceship().getTile(cannon.x(), cannon.y()).get());
         }
         double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
         for(Coordinate battery : batteries) {
-            player.getSpaceship().getTile(battery.getX(), battery.getY()).get().removeBattery();
+            player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
         }
 
         //Paragoni
@@ -103,10 +99,17 @@ public class Trafficker extends Card {
     }
 
     @Override
-    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, Box box, boolean on){
+    public void moveBox(Game game, Player player, List<Box> start, List<Box> end, BoxType boxType, boolean on){
         if(on) {
-            start.remove(box);
-            end.add(box);
+            Iterator<Box> it = start.iterator();
+            while (it.hasNext()) {
+                Box box = it.next();
+                if (box.getType().equals(boxType)) {
+                    it.remove();
+                    end.add(box);
+                    break;
+                }
+            }
         }
         else {
             game.getCurrentCard().setStateCard(StateCardType.FINISH);

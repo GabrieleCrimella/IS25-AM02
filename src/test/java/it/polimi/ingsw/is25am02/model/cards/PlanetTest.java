@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,20 +70,21 @@ class PlanetTest {
         RedBox planet1redbox1 = new RedBox(BoxType.RED);
         RedBox planet1redbox2 = new RedBox(BoxType.RED);
         BlueBox planet2bluebox = new BlueBox(BoxType.BLUE);
-        ArrayList<Box> planet1boxes = new ArrayList<Box>();
+        LinkedList<Box> planet1boxes = new LinkedList<>();
         planet1boxes.add(planet1redbox1);
         planet1boxes.add(planet1redbox2);
-        ArrayList<Box> planet2boxes = new ArrayList<Box>();
+        LinkedList<Box> planet2boxes = new LinkedList<>();
         planet2boxes.add(planet2bluebox);
-        ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
-        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
+        ArrayList<LinkedList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<LinkedList<BoxType>> planetOffersTypes = new ArrayList<>();
         planetOffers.add(planet1boxes);
         planetOffers.add(planet2boxes);
         //Nel pianeta 1 ci sono due box rossi
         //Nel pianeta 2 c'è un box blu
         Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes);
 
-        planet.moveBox(game, player1, planetOffers.get(0), storage1.getOccupation(), planet1redbox1, true );
+        //todo qui ho cambiato il box con boxtype
+        planet.moveBox(game, player1, planetOffers.get(0), storage1.getOccupation(), BoxType.RED, true );
 
         //correct start
         ArrayList<Box> correctPlanet1boxes = new ArrayList<Box>();
@@ -144,13 +146,13 @@ class PlanetTest {
         RedBox planet1redbox1 = new RedBox(BoxType.RED);
         RedBox planet1redbox2 = new RedBox(BoxType.RED);
         BlueBox planet2bluebox = new BlueBox(BoxType.BLUE);
-        ArrayList<Box> planet1boxes = new ArrayList<Box>();
+        LinkedList<Box> planet1boxes = new LinkedList<>();
         planet1boxes.add(planet1redbox1);
         planet1boxes.add(planet1redbox2);
-        ArrayList<Box> planet2boxes = new ArrayList<Box>();
+        LinkedList<Box> planet2boxes = new LinkedList<>();
         planet2boxes.add(planet2bluebox);
-        ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
-        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
+        ArrayList<LinkedList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<LinkedList<BoxType>> planetOffersTypes = new ArrayList<>();
         planetOffers.add(planet1boxes);
         planetOffers.add(planet2boxes);
         //Nel pianeta 1 ci sono due box rossi
@@ -161,11 +163,13 @@ class PlanetTest {
 
 
         List<Box> planetOffers0 = planet.choicePlanet(game, player1, 0);
-        planet.moveBox(game, player1, planetOffers0, storage1.getOccupation(), planet1redbox1, true );
+        //todo qui ho cambiato il box con boxtype
+        planet.moveBox(game, player1, planetOffers0, storage1.getOccupation(), BoxType.RED, true );
         planet.choicePlanet(game, player2, -1);
         planet.choicePlanet(game, player3, -1);
         List<Box> planetOffers1 = planet.choicePlanet(game, player4, 1);
-        planet.moveBox(game, player4, planetOffers1, storage1.getOccupation(), planet1redbox1, false );
+        //todo qui ho cambiato il box con boxtype
+        planet.moveBox(game, player4, planetOffers1, storage1.getOccupation(), BoxType.RED, false );
 
 
         //correct start
@@ -244,13 +248,13 @@ class PlanetTest {
         RedBox planet1redbox1 = new RedBox(BoxType.RED);
         RedBox planet1redbox2 = new RedBox(BoxType.RED);
         BlueBox planet2bluebox = new BlueBox(BoxType.BLUE);
-        ArrayList<Box> planet1boxes = new ArrayList<Box>();
+        LinkedList<Box> planet1boxes = new LinkedList<>();
         planet1boxes.add(planet1redbox1);
         planet1boxes.add(planet1redbox2);
-        ArrayList<Box> planet2boxes = new ArrayList<Box>();
+        LinkedList<Box> planet2boxes = new LinkedList<>();
         planet2boxes.add(planet2bluebox);
-        ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
-        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
+        ArrayList<LinkedList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<LinkedList<BoxType>> planetOffersTypes = new ArrayList<>();
         planetOffers.add(planet1boxes);
         planetOffers.add(planet2boxes);
         //Nel pianeta 1 ci sono due box rossi
@@ -261,7 +265,8 @@ class PlanetTest {
 
 
         List<Box> planetOffers0 = planet.choicePlanet(game, player1, 0);
-        planet.moveBox(game, player1, planetOffers0, storage1.getOccupation(), planet1redbox1, true );
+        //todo qui ho cambiato il box con boxtype
+        planet.moveBox(game, player1, planetOffers0, storage1.getOccupation(), BoxType.RED, true );
         planet.choicePlanet(game, player2, -1);
         planet.choicePlanet(game, player3, -1);
         planet.choicePlanet(game, player4, -1);

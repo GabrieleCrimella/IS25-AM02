@@ -105,8 +105,8 @@ public class CardDeck {
         LinkedList<BoxType> boxesWonType = new LinkedList<>();
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
         ArrayList<Pair<Integer, RotationType>> meteorites = new ArrayList<>();
-        ArrayList<ArrayList<Box>> planetOffers = new ArrayList<>();
-        ArrayList<ArrayList<BoxType>> planetOffersTypes = new ArrayList<>();
+        ArrayList<LinkedList<Box>> planetOffers = new ArrayList<>();
+        ArrayList<LinkedList<BoxType>> planetOffersTypes = new ArrayList<>();
 
 
         for (JsonNode levelNode : rootNode) {  //foreach JSON node
@@ -218,7 +218,7 @@ public class CardDeck {
                     daysLost = levelNode.get("daysLost").asInt();
                     planetOffersTypes.clear();
                     for (JsonNode boxListNode : levelNode.get("boxes")) {
-                        ArrayList<BoxType> boxList = new ArrayList<>();
+                        LinkedList<BoxType> boxList = new LinkedList<>();
                         for (JsonNode boxNode : boxListNode) {
                             BoxType box;
                             if(boxNode.asText().equals("RED")){
@@ -323,7 +323,7 @@ public class CardDeck {
             }
         } else if (finalDeck.getFirst().getCardType().equals(CardType.PLANET)) {
             if(!( finalDeck.getFirst()).getPlanetOffers().isEmpty()){
-                for(ArrayList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()){
+                for(LinkedList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()){
                     for(Box box : boxlist){
                         store.addBox(box);
                     }
