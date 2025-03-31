@@ -12,6 +12,7 @@ public class Player {
     private StatePlayerType statePlayer;
     private boolean deckAllowed;
     private int numDeck;
+    private int lobbyId;
 
     public Player(Spaceship spaceship, String nickname, PlayerColor color) {
         this.spaceship = spaceship;
@@ -20,6 +21,15 @@ public class Player {
         this.statePlayer = NOT_FINISHED;
         this.deckAllowed = false;
         this.numDeck = -1;
+    }
+
+    public int getLobbyId() {
+        return lobbyId;
+    }
+
+    //todo andrebbe messo nel costruttore ma vorrebbe dire sistemare tutti i test
+    public void setLobbyId(int lobbyId) {
+        this.lobbyId = lobbyId;
     }
 
     public Spaceship getSpaceship() {
