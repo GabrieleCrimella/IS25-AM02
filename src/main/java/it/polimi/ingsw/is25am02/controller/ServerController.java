@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.controller;
 
+import it.polimi.ingsw.is25am02.controller.exception.NicknameAlreadyExists;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
@@ -18,6 +19,7 @@ public class ServerController {
     private final Map<Integer, Lobby> lobbies = new ConcurrentHashMap<>();
     private final Map<Integer, GameSession> activeGames = new ConcurrentHashMap<>();
     private int nextLobbyId = 1;
+    private final List<String> nicknames = new ArrayList<>();
 
     //todo: controller client blocca la chiamata di questo metodo nei casi non consentiti
     public synchronized int createLobby(int maxPlayers, String nickname, PlayerColor color, int level) {
@@ -28,7 +30,14 @@ public class ServerController {
         return lobby.getId();
     }
 
-    //todo metodo di iscrizione per il nickname. void nel caso torna l'eccezione del nickname
+    public void nicknameRegistration(String nickname) throws NicknameAlreadyExists {
+        if (!nicknames.contains(nickname)) {
+            nicknames.add(nickname);
+        } else {
+            throw new NicknameAlreadyExists("Nickname already exists");
+        }
+    }
+
     //todo viene lanciata l'eccezione se un colore chiesto da un giocatore esiste già per una data lobbu
     //todo: fare l'eccezione che se la lobby non esiste, viene ritornata un'eccezione
     public synchronized boolean joinLobby(int lobbyId, String nickname, PlayerColor color) {
@@ -39,7 +48,7 @@ public class ServerController {
         Lobby lobby = lobbies.get(lobbyId);
         Player p = new Player(new Spaceship(lobby.getLevel()), nickname, color);
         p.setLobbyId(lobbyId);
-        if (lobby != null && lobby.addPlayer(p)) {
+        if (lobby.addPlayer(p)) {
             if (lobby.isFull()) {
                 startGame(lobby);
                 lobbies.remove(lobbyId);
@@ -66,6 +75,8 @@ public class ServerController {
         if (gameSession != null) {
             gameSession.endGame();
         }
+        lobbies.get(lobbyId).getPlayers().stream().forEach(player -> nicknames.remove(player.getNickname()));
+        lobbies.remove(lobbyId);
     }
 
     public synchronized boolean isGameRunning(int lobbyId) {
