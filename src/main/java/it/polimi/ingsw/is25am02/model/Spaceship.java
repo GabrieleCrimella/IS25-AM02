@@ -580,7 +580,12 @@ public class Spaceship {
     // ritorno 1 se non ci sono box sulla nave, 0 altrimenti
     public boolean noBox() {
         for (Tile t : getTilesByType(TileType.STORAGE)) {
-            if (t.getOccupation() != null) {
+            if (!t.getOccupation().isEmpty()) {
+                return false;
+            }
+        }
+        for (Tile t : getTilesByType(TileType.SPECIAL_STORAGE)) {
+            if (!t.getOccupation().isEmpty()) {
                 return false;
             }
         }
