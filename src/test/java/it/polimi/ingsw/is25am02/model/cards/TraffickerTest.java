@@ -136,11 +136,15 @@ class TraffickerTest {
 
         //create card
         int level = 0;
-        int cannonPowers = 4;
+        int cannonPowers = 3;
         int daysLost = 1;
         int boxLost = 2 ;
         LinkedList<Box> boxWon = new LinkedList<>();
+        boxWon.add(new YellowBox(BoxType.YELLOW));
+        boxWon.add(new YellowBox(BoxType.GREEN));
         LinkedList<BoxType> boxWonTypes = new LinkedList<>();
+        boxWonTypes.add(BoxType.YELLOW);
+        boxWonTypes.add(BoxType.GREEN);
         BoxStore store = new BoxStore();
         Card trafficker = new Trafficker(0,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
 
@@ -283,11 +287,15 @@ class TraffickerTest {
 
         //create card
         int level = 0;
-        int cannonPowers = 4;
+        int cannonPowers = 3;
         int daysLost = 1;
         int boxLost = 2 ;
         LinkedList<Box> boxWon = new LinkedList<>();
+        boxWon.add(new YellowBox(BoxType.YELLOW));
+        boxWon.add(new GreenBox(BoxType.GREEN));
         LinkedList<BoxType> boxWonTypes = new LinkedList<>();
+        boxWonTypes.add(BoxType.YELLOW);
+        boxWonTypes.add(BoxType.GREEN);
         BoxStore store = new BoxStore();
         Card trafficker = new Trafficker(0,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
 
@@ -297,27 +305,39 @@ class TraffickerTest {
         Coordinate position = new Coordinate(8,6);
         List<Coordinate> coordcannon = new ArrayList<>();
         coordcannon.add(position);
+        position = new Coordinate(6,6);
+        coordcannon.add(position);
+
         position = new Coordinate(8,7);
         List<Coordinate> coordbatt = new ArrayList<>();
+        coordbatt.add(position);
+        position = new Coordinate(8,7);
         coordbatt.add(position);
 
 
         game.choiceDoubleCannon(player1, coordcannon, coordbatt);
-        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
-        position = new Coordinate(7,6);
-        game.removeBox(player1,position,BoxType.YELLOW);
-        game.removeBox(player1,position,BoxType.GREEN);
-        assertTrue(spaceship1.noBox());
+        assertEquals(StateCardType.DECISION, game.getCurrentState().getCurrentCard().getStateCard());
+        //il giocatore vince contro i contrabbandieri e guadagna 2 box ma perde 1 giorno di volo
+
+        List<Box> checkBoxWon = game.choiceBox(player1,true);
+        List<Box> correctWonBox = new ArrayList<>();
+        Box yb = new YellowBox(BoxType.YELLOW);
+        Box gb = new GreenBox(BoxType.GREEN);
+        correctWonBox.add(yb);
+        correctWonBox.add(gb);
+        assertEquals(checkBoxWon.size(), correctWonBox.size()); //controllo che ha guadagnato le box
+
+        assertEquals(5,game.getGameboard().getPositions().get(player1)); //mi aspetto che si muova indietro di 1
 
     }
 
-    /*@Test
+    @Test
     void test_should_check_if_player_has_enough_cannon_power_and_doesnt_use_it(){
         //4 spaceship
-        Spaceship spaceship1 = new Spaceship(0);
-        Spaceship spaceship2 = new Spaceship(0);
-        Spaceship spaceship3 = new Spaceship(0);
-        Spaceship spaceship4 = new Spaceship(0);
+        Spaceship spaceship1 = new Spaceship(2);
+        Spaceship spaceship2 = new Spaceship(2);
+        Spaceship spaceship3 = new Spaceship(2);
+        Spaceship spaceship4 = new Spaceship(2);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
         player1.setStatePlayer(StatePlayerType.FINISHED);
@@ -333,7 +353,7 @@ class TraffickerTest {
         players.add(player3);
         players.add(player4);
         //game di livello 0 con i 4 players
-        Game game = new Game(players,0);
+        Game game = new Game(players,2);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
 
@@ -357,13 +377,15 @@ class TraffickerTest {
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        int maxNum = 2;
+        int maxNum = 3;
         Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+
         try {
             spaceship1.addTile(7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
+
 
         //tile 3 - battery 8 7
         TileType t3 = TileType.BATTERY;
@@ -378,24 +400,12 @@ class TraffickerTest {
             System.out.println(e.getMessage());
         }
 
-        //tile 4 - cannon 7 5
-        TileType t4 = TileType.CANNON;
-        ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
-        RotationType rotationType4 = RotationType.NORTH;
-        int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
-        try {
-            spaceship1.addTile(7,5, cannon1);
-        } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
-        }
-
         //tile 5 - dcannon 8 6
         TileType t5 = TileType.D_CANNON;
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, id5);
         try {
             spaceship1.addTile(8,6, dcannon1);
         } catch (IllegalAddException e) {
@@ -420,7 +430,8 @@ class TraffickerTest {
         player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
 
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-        game.addCrew(player1, 7,7,AliveType.HUMAN);
+        Coordinate pos = new Coordinate(7,7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
 
         game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
         player1.setStatePlayer(StatePlayerType.IN_GAME);
@@ -428,33 +439,51 @@ class TraffickerTest {
 
         //create card
         int level = 0;
-        int cannonPowers = 4;
-        int daysLost = 2;
-        int credit = 8 ;
-        int humanLost = 1;
-        Card slaveOwner = new SlaveOwner(0,cannonPowers, daysLost,credit,humanLost);
+        int cannonPowers = 3;
+        int daysLost = 1;
+        int boxLost = 2 ;
+        LinkedList<Box> boxWon = new LinkedList<>();
+        boxWon.add(new YellowBox(BoxType.YELLOW));
+        boxWon.add(new GreenBox(BoxType.GREEN));
+        LinkedList<BoxType> boxWonTypes = new LinkedList<>();
+        boxWonTypes.add(BoxType.YELLOW);
+        boxWonTypes.add(BoxType.GREEN);
+        BoxStore store = new BoxStore();
+        Card trafficker = new Trafficker(0,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
 
-        game.getCurrentState().setCurrentCard(slaveOwner);
+        game.getCurrentState().setCurrentCard(trafficker);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
 
-        Pair<Tile, Tile> primaCoppia = new  Pair<>(dcannon1, battery3);
-        Pair<Tile, Tile> secondaCoppia = new  Pair<>(dcannon2, battery3);
-        List<Pair<Tile, Tile>> listaDoppiCannoniAttivi = new ArrayList<>();
-        listaDoppiCannoniAttivi.add(primaCoppia);
-        listaDoppiCannoniAttivi.add(secondaCoppia);
-        Optional<List<Pair<Tile, Tile>>> optionalListaDoppiCannoniAttivi = Optional.of(listaDoppiCannoniAttivi);
+        Coordinate position = new Coordinate(8,6);
+        List<Coordinate> coordcannon = new ArrayList<>();
+        coordcannon.add(position);
+        position = new Coordinate(6,6);
+        coordcannon.add(position);
+
+        position = new Coordinate(8,7);
+        List<Coordinate> coordbatt = new ArrayList<>();
+        coordbatt.add(position);
+        position = new Coordinate(8,7);
+        coordbatt.add(position);
 
 
-        game.choiceDoubleCannon(player1, optionalListaDoppiCannoniAttivi);
+        game.choiceDoubleCannon(player1, coordcannon, coordbatt);
         assertEquals(StateCardType.DECISION, game.getCurrentState().getCurrentCard().getStateCard());
-        game.choice( player1, false);
-        assertEquals(StateCardType.FINISH, game.getCurrentState().getCurrentCard().getStateCard());
-        assertEquals(0,player1.getSpaceship().getCosmicCredits());
-        assertEquals(StateGameType.TAKE_CARD, game.getCurrentState().getPhase());
-        game.removeCrew(player1,cabin1); //non dovrebbe funzionare
-        assertEquals(2, spaceship1.calculateNumAlive());
-        assertEquals(4,game.getGameboard().getPositions().get(player1));
+        //il giocatore vince contro i contrabbandieri ma non vuole guadagnare nulla, quindi non perde giorni di volo
 
-    }*/
+        assertNull(game.choiceBox(player1,false));
+        assertTrue(game.getPlayers().getFirst().getSpaceship().noBox());
 
+
+        assertEquals(6,game.getGameboard().getPositions().get(player1)); //mi aspetto che si muova indietro di 1
+
+    }
+
+    //todo controllare che se non ho abbastanza box allora rimuovo batteria
+    void test_should_check_if_removes_batteries_when_boxes_are_finished(){
+
+    }
+    //todo controllare il caso di parità
+    void test_should_check_if_it_goes_to_the_next_player_when_it_is_tie(){
+    }
 }
