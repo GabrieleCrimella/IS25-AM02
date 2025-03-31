@@ -42,6 +42,10 @@ public class Lobby {
         this.gameStarted = true;
     }
 
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
     public boolean isFull() {
         return players.size() == maxPlayers;
     }
