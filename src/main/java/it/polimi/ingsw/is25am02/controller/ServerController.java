@@ -1,6 +1,8 @@
 package it.polimi.ingsw.is25am02.controller;
 
-import it.polimi.ingsw.is25am02.controller.exception.NicknameAlreadyExists;
+import it.polimi.ingsw.is25am02.controller.exception.LobbyNotFoundException;
+import it.polimi.ingsw.is25am02.controller.exception.ColorAlreadyTakenException;
+import it.polimi.ingsw.is25am02.controller.exception.NicknameAlreadyExistsException;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
@@ -13,8 +15,6 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-//todo domanda importantissima: che succede se il controller non trova il giocatore?
-//todo <<controllare che il nickname sia unico>>
 public class ServerController {
     private final Map<Integer, Lobby> lobbies = new ConcurrentHashMap<>();
     private final Map<Integer, GameSession> activeGames = new ConcurrentHashMap<>();
@@ -30,21 +30,27 @@ public class ServerController {
         return lobby.getId();
     }
 
-    public void nicknameRegistration(String nickname) throws NicknameAlreadyExists {
+    public void nicknameRegistration(String nickname) throws NicknameAlreadyExistsException {
         if (!nicknames.contains(nickname)) {
             nicknames.add(nickname);
         } else {
-            throw new NicknameAlreadyExists("Nickname already exists");
+            throw new NicknameAlreadyExistsException("Nickname already exists");
         }
     }
 
-    //todo viene lanciata l'eccezione se un colore chiesto da un giocatore esiste già per una data lobbu
-    //todo: fare l'eccezione che se la lobby non esiste, viene ritornata un'eccezione
-    public synchronized boolean joinLobby(int lobbyId, String nickname, PlayerColor color) {
+    public synchronized boolean joinLobby(int lobbyId, String nickname, PlayerColor color) throws LobbyNotFoundException, ColorAlreadyTakenException, PlayerNotFoundException {
         //controllo dell'username che sia univoco. se non presente nel server, il metodo viene eseguito
         //altrimenti viene ritornara un'exception???
-        //todo: va a buon fine se l'username è già presente nella famosa lista dei nickname
 
+        if (!lobbies.containsKey(lobbyId)) {
+            throw new LobbyNotFoundException("Lobby not found");
+        }
+        if (lobbies.get(lobbyId).getPlayers().stream().anyMatch(player -> player.getColor().equals(color))) {
+            throw new ColorAlreadyTakenException("Color already taken");
+        }
+        if(!nicknames.contains(nickname)) {
+            throw new PlayerNotFoundException("Nickname already exists");
+        }
         Lobby lobby = lobbies.get(lobbyId);
         Player p = new Player(new Spaceship(lobby.getLevel()), nickname, color);
         p.setLobbyId(lobbyId);
