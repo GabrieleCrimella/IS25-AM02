@@ -350,7 +350,7 @@ public class CardDeck {
             }
         }
 
-        //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi
+        //se la prossima carta è una di quelle con i box allora devo riempirla con i box effettivi dallo store
         if(nextCard.getCardType().equals(CardType.ABANDONED_STATION) || nextCard.getCardType().equals(CardType.TRAFFICKER) ){
             for(BoxType boxType : nextCard.getBoxesWonTypes()){
                 if(!store.getStore().isEmpty()){

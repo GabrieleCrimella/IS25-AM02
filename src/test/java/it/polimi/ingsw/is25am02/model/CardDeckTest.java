@@ -3,23 +3,33 @@ package it.polimi.ingsw.is25am02.model;
 import it.polimi.ingsw.is25am02.model.cards.*;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
+import it.polimi.ingsw.is25am02.model.tiles.Motors;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.FINISH;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.BUILD;
+import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.NOT_FINISHED;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardDeckTest {
     @Test
     public void loadCardTest() {
-        CardDeck cardDeck = new CardDeck(2);
+        //CardDeck cardDeck = new CardDeck(2);
+        List<Player> players = new ArrayList<>();
+        Spaceship spaceship = new Spaceship(0);
+        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW));
+
+        Game game = new Game(players,2);
 
         boolean foundAbShip = false;
         boolean foundAbSta = false;
@@ -34,7 +44,7 @@ class CardDeckTest {
         boolean foundWar1 = false;
         boolean foundWar2 = false;
 
-        for (Card card : cardDeck.getInitialDeck()) {
+        for (Card card : game.getDeck().getInitialDeck()) {
             int level = card.getLevel();
 
             if (card instanceof AbbandonedShip) {
@@ -173,9 +183,8 @@ class CardDeckTest {
 
     @Test
     public void playNextCardTest() {
-        CardDeck cardDeck = new CardDeck(2);
         List<Player> players = new ArrayList<>();
-        Spaceship spaceship = new Spaceship(0);
+        Spaceship spaceship = new Spaceship(2);
         players.add(new Player(spaceship, "mario", PlayerColor.YELLOW));
         Game game = new Game(players,2); //todo anche testflight
         game.getGameboard().initializeGameBoard(players);
@@ -203,30 +212,53 @@ class CardDeckTest {
             System.out.println(e.getMessage());
         }
 
+        //tile 3 - motor
+        TileType t3 = TileType.MOTOR;
+        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        RotationType rotationType3 = RotationType.NORTH;
+        int id3 = 1;
+        Tile motor3 = new Motors(t3, connectors3, rotationType3, id3);
+        try {
+            spaceship.addTile(7,8, motor3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
 
         game.getPlayers().getFirst().setStatePlayer(NOT_FINISHED);
-        game.getCurrentState().setPhase(BUILD);
         game.shipFinished(players.getFirst());
 
+        Coordinate position = new Coordinate(7,7);
         game.getPlayers().getFirst().setStatePlayer(StatePlayerType.CORRECT_SHIP);
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-        game.addCrew(game.getPlayers().getFirst(), 7,7, AliveType.HUMAN);
+        game.addCrew(game.getPlayers().getFirst(), position, AliveType.HUMAN);
+
+        position = new Coordinate(8,7);
+        game.addCrew(game.getPlayers().getFirst(), position, AliveType.HUMAN);
 
         game.getPlayers().getFirst().setStatePlayer(StatePlayerType.IN_GAME);
         game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
-        cardDeck.createDecks();
-        cardDeck.createFinalDeck();
+
         game.getGameboard().move(3,players.getFirst());
 
-        game.playNextCard(game.getPlayers().getFirst());;
+        game.getCurrentCard().setStateCard(FINISH);
+
+        game.playNextCard(game.getPlayers().getFirst());
         Card nextCard = game.getCurrentCard();
-        while(nextCard!=null) {
+        while(nextCard!=null && game.getCurrentState().getPhase().equals(TAKE_CARD)) {
             if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
                 assertEquals(nextCard.getBoxesWonTypes().size(), nextCard.getBoxesWon().size());
                 assertNotNull(nextCard.getBoxesWon());
             }
+            if(nextCard.getCardType().equals(CardType.OPENSPACE) ) {
+                try {
+                    nextCard.choiceDoubleMotor(game,players.getFirst(),null,null);
+                } catch (IllegalPhaseException | IllegalRemoveException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            game.getCurrentCard().setStateCard(FINISH);
+            game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
             game.playNextCard(game.getPlayers().getFirst());
-            nextCard = game.getCurrentCard();
         }
     }
 }
