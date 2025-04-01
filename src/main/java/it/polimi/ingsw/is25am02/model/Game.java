@@ -770,7 +770,15 @@ public class Game implements Game_Interface {
             typeControl(player, c2.get(i), TileType.BATTERY);
         }
 
-        //todo controllo numero batterie per remove
+        HashMap<Coordinate, Integer> control = new HashMap<>();
+        for(Coordinate c : c2) {
+            control.put(c, control.getOrDefault(c, 0) + 1);
+        }
+        for(Coordinate c : c2) {
+            if(control.get(c) > giveTile(player,c).getNumBattery()){
+                throw new TileException("Battery limit exceeded");
+            }
+        }
     }
 
     private void moveControl(Player player, Coordinate start, Coordinate end, BoxType boxType) throws IllegalAddException, TileException {
