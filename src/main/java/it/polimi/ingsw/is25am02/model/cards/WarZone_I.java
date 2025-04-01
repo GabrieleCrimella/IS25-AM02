@@ -43,6 +43,11 @@ public class WarZone_I extends Card {
     }
 
     @Override
+    public void setCurrentPhase(int currentPhase) {
+        this.currentPhase = currentPhase;
+    }
+
+    @Override
     public CardType getCardType() {
         return cardType;
     }
