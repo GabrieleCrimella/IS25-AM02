@@ -86,6 +86,11 @@ public class Game implements Game_Interface {
         this.diceResult = globalBoard.getDice().pickRandomNumber();
     }
 
+    public void setDiceResultForTesting(int  diceResult) {
+        this.diceResult = diceResult;
+
+    }
+
     public void setBuildTimeIsOver() {
         buildTimeIsOver = true;
     }
@@ -734,6 +739,7 @@ public class Game implements Game_Interface {
             throw new LevelException("functionality for higher levels");
         }
     }
+
 
     private void deckAllowedControl(Player player) throws IllegalPhaseException {
         if (!player.getDeckAllowed()) {

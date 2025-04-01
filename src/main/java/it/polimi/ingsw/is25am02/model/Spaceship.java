@@ -52,6 +52,7 @@ public class Spaceship {
         spaceshipIterator.addTile(t, x, y);
     }
 
+    //todo da testare
     public void bookTile(Player player) throws IllegalAddException {
         if (currentTile == null) {
             throw new IllegalAddException("CurrentTile is empty");
@@ -233,7 +234,7 @@ public class Spaceship {
         if (power > 0) { //ci deve essere almeno un cannone
             List<Tile> cabins = getTilesByType(TileType.CABIN);
             for (Tile cabin : cabins) {
-                if (cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)) {
+                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)) {
                     power = power + 2;
                     break;
                 }
@@ -250,7 +251,7 @@ public class Spaceship {
 
         if (power > 0) {
             for (Tile cabin : getTilesByType(TileType.CABIN)) {
-                if (cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)) {
+                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)) {
                     power = power + 2;
                     break;
                 }
@@ -313,6 +314,7 @@ public class Spaceship {
         numOfWastedTiles += num;
     }
 
+    //todo checkSpaceship controlla le altre opzioni
     public boolean checkSpaceship() {
         //controllo delle connessioni delle varie tiles
         for (Optional<Tile> t : spaceshipIterator.reference()) {
@@ -398,6 +400,7 @@ public class Spaceship {
         return visited.size() != spaceshipIterator.returnAllTiles().size();
     }
 
+    //todo controllare se le eccezioni sono chiamate giuste
     public void removeBattery(BatteryStorage t) throws IllegalRemoveException {
         t.removeBattery();
     }
@@ -405,7 +408,7 @@ public class Spaceship {
     //il metodo controlla se è esposto un certo lato nella riga/colonna num
     public boolean isExposed(RotationType rotationType, int num) {
         if (rotationType == RotationType.NORTH) {
-            for (int t = 0; t < 12; t++) {
+            for (int t = 0; t < 11; t++) {
                 if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) != ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
@@ -413,7 +416,7 @@ public class Spaceship {
                 }
             }
         } else if (rotationType == RotationType.SOUTH) {
-            for (int t = 12; t > 0; t--) {
+            for (int t = 11; t > 0; t--) {
                 if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.SOUTH) != ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
@@ -421,7 +424,7 @@ public class Spaceship {
                 }
             }
         } else if (rotationType == RotationType.EAST) {
-            for (int t = 12; t > 0; t--) {
+            for (int t = 11; t > 0; t--) {
                 if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.EAST) != ConnectorType.NONE) {
                     targetTileX = t;
                     targetTileY = num;
@@ -429,7 +432,7 @@ public class Spaceship {
                 }
             }
         } else if (rotationType == RotationType.WEST) {
-            for (int t = 0; t < 12; t++) {
+            for (int t = 0; t < 11; t++) {
                 if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.WEST) != ConnectorType.NONE) {
                     targetTileX = t;
                     targetTileY = num;
@@ -541,9 +544,7 @@ public class Spaceship {
         int numType = BoxType.getNumByTypeBox(type);
         int numBestType = BoxType.getNumByTypeBox(BoxType.BLUE);
         for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().getType().equals(TileType.SPECIAL_STORAGE) && t.get().getOccupation() != null) {
-                return type.equals(BoxType.RED);
-            } else if (t.isPresent() && t.get().getType().equals(TileType.STORAGE)) {
+            if (t.isPresent() && t.get().getType().equals(TileType.STORAGE)||t.get().getType().equals(TileType.SPECIAL_STORAGE)) {
                 if (numBestType < BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType())) {
                     numBestType = BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType());//getOccupation ritorna una lista ordinata dal box più pregiato al meno
                 }
@@ -618,6 +619,7 @@ public class Spaceship {
         return false;
     }
 
+    //todo da testare
     private Optional<Tile> targetTile(RotationType type, int num) {
         targetTileX = 0;
         targetTileY = 0;
@@ -658,6 +660,8 @@ public class Spaceship {
         return Optional.empty();
     }
 
+    //todo da testare
+    //todo da implemntare
     //Mi dice se ho un cannone che può sparare al meteorite e mi passa il cannone
     private Optional<Tile> CoveredByWhatCannon(RotationType type, int num) {
         return Optional.empty();
