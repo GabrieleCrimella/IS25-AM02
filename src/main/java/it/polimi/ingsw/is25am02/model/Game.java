@@ -308,14 +308,13 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public Optional<List<boolean[][]>> removeTile(Player player, Coordinate pos) {
+    public void removeTile(Player player, Coordinate pos) {
         try {
             stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
 
-            return player.getSpaceship().removeTile(pos.x(), pos.y());
+            player.getSpaceship().removeTile(pos.x(), pos.y());
         } catch (IllegalStateException | IllegalRemoveException e) {
             System.out.println(e.getMessage());
-            return Optional.empty();
         }
     }
 
@@ -619,13 +618,13 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void keepBlock(Player player, boolean[][] tilesToKeep) {
+    public void keepBlock(Player player, Coordinate pos) {
         try {
             //stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
             currentPlayerControl(player);
 
-            player.getSpaceship().keepBlock(tilesToKeep);
+            player.getSpaceship().keepBlock(pos);
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }

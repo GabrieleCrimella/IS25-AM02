@@ -191,9 +191,9 @@ public class WarZone_II extends Card{
     }
 
     @Override
-    public void keepBlocks(Game game, Player player,boolean[][] mask){
+    public void keepBlocks(Game game, Player player, Coordinate pos){
         if(currentPhase == 4) {
-            player.getSpaceship().keepBlock(mask);
+            player.getSpaceship().keepBlock(pos);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
         }
         else throw new IllegalStateException();

@@ -14,7 +14,10 @@ public class Spaceship {
     private int cosmicCredits;
     private Tile currentTile;
     private int targetTileX, targetTileY;
-    private HashMap<Integer, Tile> bookedTiles;
+    private final HashMap<Integer, Tile> bookedTiles;
+
+    //todo Attributo per salvare i possibili rami Aggiunto da Davide
+    private List<boolean[][]> branches;
 
     public Spaceship(int level) {
         this.spaceshipIterator = new SpaceshipIterator(level);
@@ -22,6 +25,9 @@ public class Spaceship {
         this.cosmicCredits = 0;
         this.bookedTiles = new HashMap<>();
         currentTile = null;
+
+        //todo aggiunto da davide
+        branches = new ArrayList<>();
 
         bookedTiles.put(1, null);
         bookedTiles.put(2, null);
@@ -77,7 +83,7 @@ public class Spaceship {
 
     //mi dovrebbe tornare una lista di liste di tile che compongono blocchi indipendenti della nave.
     //vedere se la tile che rimuovo fa togliere altre tiles e poi aumentare wastedtiles, controllare se si stacca un pezzo di nave e capire di qaunte tiles è fatto questo pezzo
-    public Optional<List<boolean[][]>> removeTile(int x, int y) throws IllegalRemoveException { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
+    public void removeTile(int x, int y) throws IllegalRemoveException { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
         if (spaceshipIterator.getTile(x, y).isEmpty()) {
             throw new IllegalRemoveException("There is no tile on (" + x + ", " + y + ")");
         } else {
@@ -86,6 +92,9 @@ public class Spaceship {
             List<Tile> right = new ArrayList<>();
             List<Tile> down = new ArrayList<>();
             List<Tile> left = new ArrayList<>();
+
+            //todo Cancello la tessera
+            spaceshipIterator.removeOneTile(x, y);
 
             if (spaceshipIterator.getUpTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getUpTile(toRemove).get(), RotationType.NORTH)) {
                 up = startVisit(toRemove, RotationType.NORTH);
@@ -115,9 +124,11 @@ public class Spaceship {
                 booleanBlocks.add(booleanBlock);
             }
             if (booleanBlocks.isEmpty()) {
-                return Optional.empty();
+                //todo al posto di return
+                branches = null;
             } else {
-                return Optional.of(booleanBlocks);
+                //todo al posto di return
+                branches = booleanBlocks;
             }
         }
     }
@@ -125,14 +136,15 @@ public class Spaceship {
     private void generateBlocks(List<Tile> toAdd, List<List<Tile>> containers) {
         if (!toAdd.isEmpty()) {
             boolean flag = false;
-            if (containers.size() > 0) {
-                for (int i = 0; i < containers.size(); i++) {
-                    if (containers.get(i).containsAll(toAdd) && toAdd.containsAll(containers.get(i))) {
+            if (!containers.isEmpty()) {
+                for (List<Tile> container : containers) {
+                    if (new HashSet<>(container).containsAll(toAdd) && new HashSet<>(toAdd).containsAll(container)) {
                         flag = true;
+                        break;
                     }
                 }
             }
-            if (flag == false)
+            if (!flag)
                 containers.add(toAdd);
         }
     }
@@ -163,19 +175,20 @@ public class Spaceship {
     }
 
     //tiene le tiles passate come parametro sulla spaceshipe e aumenta le wastedTiles. Rimuovi i tiles
-    public void keepBlock(boolean[][] tilesToKeep) {
+    public void keepBlock(Coordinate pos) {
+        boolean[][] rightMask = new boolean[0][0];
+        for(boolean[][] mask : branches){
+            if(mask[pos.x()][pos.y()]){
+                rightMask = mask;
+                break;
+            }
+        }
         for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && !tilesToKeep[spaceshipIterator.getX(t.get())][spaceshipIterator.getY(t.get())]) {
+            if (t.isPresent() && !rightMask[spaceshipIterator.getX(t.get())][spaceshipIterator.getY(t.get())]) {
                 spaceshipIterator.removeOneTile(spaceshipIterator.getX(t.get()), spaceshipIterator.getY(t.get()));
                 addNumOfWastedTiles(1);
             }
         }
-        //controllare che gli alieni valgono
-        if (calculateNumAlive() <= 0) {
-            //todo eccezione che è morta la nave
-            //todo ma non qui, bisogna controllare da qualche parte se la nave non ha più tiles
-        }
-
     }
 
     public void returnTile() {
@@ -382,11 +395,7 @@ public class Spaceship {
             }
         }
 
-        if(visited.size()==spaceshipIterator.returnAllTiles().size()){
-            return false;
-        }
-
-        return true;
+        return visited.size() != spaceshipIterator.returnAllTiles().size();
     }
 
     public void removeBattery(BatteryStorage t) throws IllegalRemoveException {
@@ -449,7 +458,7 @@ public class Spaceship {
                     if (isShielded(rotationType) && storage.isPresent()) {
                         storage.get().removeBattery();
                         removeTile(targetTileX, targetTileY);
-                        return DividedSpaceship();
+                        return isSpaceshipDivided();
                     }
                 } else return false;
             case 1: //Big
@@ -462,7 +471,7 @@ public class Spaceship {
                         return false;
                     } else {
                         removeTile(targetTileX, targetTileY);
-                        return DividedSpaceship();
+                        return isSpaceshipDivided();
                     }
                 } else return false;
             default:
@@ -478,19 +487,21 @@ public class Spaceship {
                 if (target.isPresent()) {
                     if (!isShielded(rotationType)) {
                         removeTile(targetTileX, targetTileY);
-                        return DividedSpaceship();
+                        return isSpaceshipDivided();
                     }
                 } else return false;
             case 1: //Big
                 if (target.isPresent()) {
                     removeTile(targetTileX, targetTileY);
-                    return DividedSpaceship();
+                    return isSpaceshipDivided();
                 } else return false;
             default:
                 return false;
         }
+    }
 
-
+    private boolean isSpaceshipDivided(){
+        return !branches.isEmpty();
     }
 
     public int calculateNumAlive() {

@@ -18,9 +18,7 @@ public abstract class Card {
         this.stateCard = stateCard;
     }
 
-    public boolean getTestFlight() {
-        return testFlight;
-    }
+    public boolean getTestFlight() { return testFlight; }
 
     public int getLevel() {
         return level;
@@ -83,15 +81,11 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void holdSpaceship(Game game, Player player, boolean[][] mask) throws UnsupportedOperationException, IllegalPhaseException {
-        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
-    }
-
     public void effect(Game game) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public void keepBlocks(Game game, Player player, boolean[][] mask) throws UnsupportedOperationException, IllegalPhaseException {
+    public void keepBlocks(Game game, Player player, Coordinate pos) throws UnsupportedOperationException, IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 

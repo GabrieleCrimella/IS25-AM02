@@ -27,6 +27,6 @@ end note
 group "Join Lobby (a player wants to take part to a game) [failed due to lobby not found]"
     ClientA -> Server : joinLobby(int lobbyId, String nickname, PlayerColor color)
     rnote over Server #lightgrey : ServerController.joinLobby(int lobbyId, String nickname, PlayerColor color)
-    Server -> ClientA : {status: "failed"}, message: "lobby not found"}
+    Server -> ClientA : {status: "failed"}, message: "lobby not found"}, signalError
 end
 @enduml

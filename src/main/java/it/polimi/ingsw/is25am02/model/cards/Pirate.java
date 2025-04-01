@@ -113,9 +113,9 @@ public class Pirate extends Enemies {
     }
 
     @Override
-    public void keepBlocks(Game game, Player player, boolean[][] mask) throws IllegalPhaseException {
+    public void keepBlocks(Game game, Player player, Coordinate pos) throws IllegalPhaseException {
         if (losers.contains(player) && phase == 2) {
-            player.getSpaceship().keepBlock(mask);
+            player.getSpaceship().keepBlock(pos);
 
             if (player.equals(losers.getLast()) && currentIndex < losers.size() - 1) {
                 currentIndex++;

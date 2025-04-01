@@ -9,7 +9,6 @@ import it.polimi.ingsw.is25am02.model.tiles.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 public interface Game_Interface {
 
@@ -29,7 +28,7 @@ public interface Game_Interface {
     void checkSpaceship(Player player);
 
     //Phase CORRECTION
-    Optional<List<boolean[][]>> removeTile(Player player, Coordinate pos);
+    void removeTile(Player player, Coordinate pos);
     void checkWrongSpaceship(Player player);
 
     //Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
@@ -56,7 +55,7 @@ public interface Game_Interface {
     void rollDice(Player player);
     void effect(Game game);
     void calculateDamage(Player player, Coordinate pos);
-    void keepBlock(Player player, boolean[][] tilesToKeep);
+    void keepBlock(Player player, Coordinate pos);
 
     //Phase RESULT
     ArrayList<Player> getWinners();
