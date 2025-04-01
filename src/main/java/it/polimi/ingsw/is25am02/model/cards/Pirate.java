@@ -34,6 +34,11 @@ public class Pirate extends Enemies {
     }
 
     @Override
+    public void setPhase(int phase) {
+        this.phase = phase;
+    }
+
+    @Override
     public CardType getCardType() {
         return cardType;
     }
