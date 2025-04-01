@@ -255,11 +255,11 @@ class GameTest {
         //Nave più bella = RED
         //Vendita merci = RED (4+1)
         //Perdite = Red(2)
-        List<Player>  winners = game.getWinners();
-        assertEquals(9,winners.get(0).getSpaceship().getCosmicCredits());
-        assertEquals(5,winners.get(1).getSpaceship().getCosmicCredits());
-        assertEquals(4,winners.get(2).getSpaceship().getCosmicCredits());
-        assertEquals(3,winners.get(3).getSpaceship().getCosmicCredits());
+        game.Winners();
+        assertEquals(9,game.getWinners().get(0).getSpaceship().getCosmicCredits());
+        assertEquals(5,game.getWinners().get(1).getSpaceship().getCosmicCredits());
+        assertEquals(4,game.getWinners().get(2).getSpaceship().getCosmicCredits());
+        assertEquals(3,game.getWinners().get(3).getSpaceship().getCosmicCredits());
 
 
     }

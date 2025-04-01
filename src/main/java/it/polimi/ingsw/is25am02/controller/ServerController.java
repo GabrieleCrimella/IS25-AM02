@@ -4,11 +4,9 @@ import it.polimi.ingsw.is25am02.controller.exception.LobbyNotFoundException;
 import it.polimi.ingsw.is25am02.controller.exception.ColorAlreadyTakenException;
 import it.polimi.ingsw.is25am02.controller.exception.NicknameAlreadyExistsException;
 import it.polimi.ingsw.is25am02.model.*;
-import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.controller.exception.PlayerNotFoundException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
@@ -111,19 +109,19 @@ public class ServerController {
         g.getGame().flipHourglass(player);
     }
 
-    public Tile takeTile(Player player) throws PlayerNotFoundException {
+    public void takeTile(Player player) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        return g.getGame().takeTile(player);
+        g.getGame().takeTile(player);
     }
 
-    public Tile takeTile(Player player, Tile tile) throws PlayerNotFoundException {
+    public void takeTile(Player player, Tile tile) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        return g.getGame().takeTile(player, tile);
+        g.getGame().takeTile(player, tile);
     }
 
-    public List<Card> takeMiniDeck(Player player, int index) throws PlayerNotFoundException {
+    public void takeMiniDeck(Player player, int index) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        return g.getGame().takeMiniDeck(player, index);
+        g.getGame().takeMiniDeck(player, index);
     }
 
     public void returnMiniDeck(Player player) throws PlayerNotFoundException {
@@ -191,16 +189,6 @@ public class ServerController {
         g.getGame().earlyLanding(player);
     }
 
-    public HashMap<Player, Integer> getPosition(int lobbyId) {
-        GameSession g = activeGames.get(lobbyId);
-        return g.getGame().getPosition();
-    }
-
-    public List<Tile> possibleChoice(Player player, TileType type) throws PlayerNotFoundException {
-        GameSession g = getGameFromPlayer(player);
-        return g.getGame().possibleChoice(player, type);
-    }
-
     public void choice(Player player, boolean choice) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
         g.getGame().choice(player, choice);
@@ -211,9 +199,9 @@ public class ServerController {
         g.getGame().removeCrew(player, pos);
     }
 
-    public List<Box> choiceBox(Player player, boolean choice) throws PlayerNotFoundException {
+    public void choiceBox(Player player, boolean choice) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        return g.getGame().choiceBox(player, choice);
+        g.getGame().choiceBox(player, choice);
     }
 
     public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) throws PlayerNotFoundException {
@@ -221,9 +209,9 @@ public class ServerController {
         g.getGame().moveBox(player, start, end, boxType, on);
     }
 
-    public List<Box> choicePlanet(Player player, int index) throws PlayerNotFoundException {
+    public void choicePlanet(Player player, int index) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        return g.getGame().choicePlanet(player, index);
+        g.getGame().choicePlanet(player, index);
     }
 
     public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries) throws PlayerNotFoundException {
@@ -271,8 +259,8 @@ public class ServerController {
         g.getGame().keepBlock(player, pos);
     }
 
-    public ArrayList<Player> getWinners(int lobbyId) {
+    public void Winners(int lobbyId) {
         GameSession g = activeGames.get(lobbyId);
-        return g.getGame().getWinners();
+        g.getGame().Winners();
     }
 }

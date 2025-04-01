@@ -27,6 +27,7 @@ public class Game implements Game_Interface {
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
+    private List<Player> winners = new ArrayList<>();
 
     public Game(List<Player> p, int level) {
         this.players = p;
@@ -101,6 +102,8 @@ public class Game implements Game_Interface {
         return currentState.getCurrentCard();
     }
 
+    public List<Player> getWinners() { return winners; }
+
     public void nextPlayer() {
         int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
 
@@ -136,7 +139,7 @@ public class Game implements Game_Interface {
         }
     }
 
-    public List<Card> takeMiniDeck(Player player, int index) {
+    public void takeMiniDeck(Player player, int index) {
         try {
             levelControl();
             buildControl();
@@ -145,11 +148,10 @@ public class Game implements Game_Interface {
             deckAllowedControl(player);
 
             player.setNumDeck(index);
-            return deck.giveDeck(index);
+            deck.giveDeck(index);
 
         } catch (LevelException | IllegalStateException | IllegalPhaseException | AlreadyViewingException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 
@@ -170,7 +172,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public Tile takeTile(Player player) {
+    public void takeTile(Player player) {
         try {
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -181,11 +183,10 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException | AlreadyViewingException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
-        return player.getSpaceship().getCurrentTile();
     }
 
     @Override
-    public Tile takeTile(Player player, Tile tile) {
+    public void takeTile(Player player, Tile tile) {
         try {
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -197,7 +198,6 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException | AlreadyViewingException | IllegalRemoveException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
-        return player.getSpaceship().getCurrentTile();
     }
 
     @Override
@@ -420,23 +420,6 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public HashMap<Player, Integer> getPosition() {
-        return getGameboard().getPositions();
-    }
-
-    @Override
-    public List<Tile> possibleChoice(Player player, TileType type) {
-        try {
-            stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
-            return player.getSpaceship().getTilesByType(type);
-
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
     public void choice(Player player, boolean choice) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
@@ -463,15 +446,14 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public List<Box> choiceBox(Player player, boolean choice) {
+    public void choiceBox(Player player, boolean choice) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             currentPlayerControl(player);
 
-            return getCurrentCard().choiceBox(this, player, choice);
+            getCurrentCard().choiceBox(this, player, choice);
         } catch (IllegalStateException | UnsupportedOperationException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 
@@ -495,15 +477,14 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public List<Box> choicePlanet(Player player, int index) {
+    public void choicePlanet(Player player, int index) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             currentPlayerControl(player);
 
-            return getCurrentCard().choicePlanet(this, player, index);
+            getCurrentCard().choicePlanet(this, player, index);
         } catch (IllegalStateException | UnsupportedOperationException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 
@@ -632,14 +613,13 @@ public class Game implements Game_Interface {
 
 
     @Override
-    public ArrayList<Player> getWinners() {
+    public void Winners() {
         try {
             if (getCurrentState().getPhase() != RESULT) {
                 throw new IllegalStateException("Wrong State");
             }
 
             int minExposedConnectors = Integer.MAX_VALUE;
-            ArrayList<Player> winners = new ArrayList<>();
 
             for (Player p : getPlayers()) {
                 //Boxes Values
@@ -692,11 +672,10 @@ public class Game implements Game_Interface {
             }
 
             winners.sort((p1, p2) -> Integer.compare(p1.getSpaceship().getCosmicCredits(), p2.getSpaceship().getCosmicCredits()));
-            return winners;
+            //todo chiama un metodo della view per mostrare la classifica
 
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 

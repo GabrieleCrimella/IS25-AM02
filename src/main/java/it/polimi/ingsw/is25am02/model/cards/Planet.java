@@ -66,7 +66,7 @@ public class Planet extends Card {
     }
 
     @Override
-    public List<Box> choicePlanet(Game game, Player player, int index) throws IllegalArgumentException{
+    public void choicePlanet(Game game, Player player, int index) throws IllegalArgumentException{
         if(index >= 0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
@@ -112,7 +112,6 @@ public class Planet extends Card {
             }
             setStateCard(StateCardType.BOXMANAGEMENT);
             boxesWon = planetOffers.get(index);
-            return planetOffers.get(index);
         }
         else if (player.equals(game.getGameboard().getRanking().getLast())){
             Iterator<Player> it = landed.descendingIterator();
@@ -123,12 +122,10 @@ public class Planet extends Card {
             game.getCurrentCard().setStateCard(DECISION);
             game.nextPlayer();
             boxesWon = null;
-            return null;
         }
         else if(index == -1){ //The player doesn't want to land
             game.nextPlayer();
             boxesWon = null;
-            return null;
         }
         else{
             throw new IllegalArgumentException("Index out of bounds");

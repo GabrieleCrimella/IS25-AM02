@@ -52,15 +52,13 @@ public class AbbandonedStation extends Card {
     }
 
     @Override
-    public List<Box> choiceBox(Game game, Player player, boolean choice){
+    public void choiceBox(Game game, Player player, boolean choice){
         if(player.getSpaceship().calculateNumAlive() >= AliveNeeded && choice){ //se ho abbastanza giocatori per salire sulla nave
             setStateCard(StateCardType.BOXMANAGEMENT);
             game.getGameboard().move((-1)*daysLost, player);
-            return boxesWon;
         }
         else {
             game.nextPlayer();
-            return null;
         }
     }
 

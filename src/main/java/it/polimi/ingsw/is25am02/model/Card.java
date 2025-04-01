@@ -40,7 +40,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public List<Box> choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException {
+    public void choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -48,7 +48,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException, IllegalArgumentException {
+    public void choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException, IllegalArgumentException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
