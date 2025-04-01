@@ -170,9 +170,9 @@ public class WarZone_I extends Card {
     }
 
     @Override
-    public void keepBlocks(Game game, Player player, boolean[][] mask) throws IllegalPhaseException {
+    public void keepBlocks(Game game, Player player, Coordinate pos) throws IllegalPhaseException {
         if(currentPhase == 4) {
-            player.getSpaceship().keepBlock(mask);
+            player.getSpaceship().keepBlock(pos);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
         }
         else throw new IllegalPhaseException("Should be phase 4, instead is " + currentPhase);
