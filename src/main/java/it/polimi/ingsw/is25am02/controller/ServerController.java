@@ -48,7 +48,7 @@ public class ServerController {
         if (lobbies.get(lobbyId).getPlayers().stream().anyMatch(player -> player.getColor().equals(color))) {
             throw new ColorAlreadyTakenException("Color already taken");
         }
-        if(!nicknames.contains(nickname)) {
+        if (!nicknames.contains(nickname)) {
             throw new PlayerNotFoundException("Nickname already exists");
         }
         Lobby lobby = lobbies.get(lobbyId);
@@ -161,9 +161,9 @@ public class ServerController {
         g.getGame().checkSpaceship(player);
     }
 
-    public Optional<List<boolean[][]>> removeTile(Player player, Coordinate pos) throws PlayerNotFoundException {
+    public void removeTile(Player player, Coordinate pos) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        return g.getGame().removeTile(player, pos);
+        g.getGame().removeTile(player, pos);
     }
 
     public void checkWrongSpaceship(Player player) throws PlayerNotFoundException {
@@ -266,9 +266,9 @@ public class ServerController {
         g.getGame().calculateDamage(player, pos);
     }
 
-    public void keepBlock(Player player, boolean[][] tilesToKeep) throws PlayerNotFoundException {
+    public void keepBlock(Player player, Coordinate pos) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        g.getGame().keepBlock(player, tilesToKeep);
+        g.getGame().keepBlock(player, pos);
     }
 
     public ArrayList<Player> getWinners(int lobbyId) {
