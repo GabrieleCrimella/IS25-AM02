@@ -8,11 +8,11 @@ end
 group "Example of Build Method [failed due to invalid state of the game]"
     ClientA -> Server : playNextCard(Player player)
     rnote over Server #lightgrey : ServerController.getGame().playNextCard(Player player)
-    Server -> ClientA : {status: "failed"}, message: "invalid state of the game"}
+    Server -> ClientA : {status: "failed"}, message: "invalid state of the game"}, signalError
 end
 
 group "Example of Build Method [failed due to the player is not found in the game]"
     ClientA -> Server : playNextCard(Player player)
-    Server -> ClientA : {status: "failed"}, message: "player not found in the game"}
+    Server -> ClientA : {status: "failed"}, message: "player not found in the game"}, signalError
 end
 @enduml
