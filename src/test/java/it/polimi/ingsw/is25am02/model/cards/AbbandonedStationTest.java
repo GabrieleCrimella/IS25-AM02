@@ -21,10 +21,10 @@ class AbbandonedStationTest {
 
     public Game make_a_spaceship(){
         //4 spaceship
-        Spaceship spaceship1 = new Spaceship(0);
-        Spaceship spaceship2 = new Spaceship(0);
-        Spaceship spaceship3 = new Spaceship(0);
-        Spaceship spaceship4 = new Spaceship(0);
+        Spaceship spaceship1 = new Spaceship(2);
+        Spaceship spaceship2 = new Spaceship(2);
+        Spaceship spaceship3 = new Spaceship(2);
+        Spaceship spaceship4 = new Spaceship(2);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
         player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
@@ -39,8 +39,8 @@ class AbbandonedStationTest {
         players.add(player2);
         players.add(player3);
         players.add(player4);
-        //game di livello 0 con i 4 players
-        Game game = new Game(players,0);
+        //game di livello 2 con i 4 players
+        Game game = new Game(players,2);
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
@@ -133,14 +133,26 @@ class AbbandonedStationTest {
             System.out.println(e.getMessage());
         }
 
+
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+
         Coordinate pos1 = new Coordinate(7,7);
         game.addCrew(player1, pos1,AliveType.HUMAN);
         Coordinate pos2 = new Coordinate(8,7);
         game.addCrew(player1, pos2,AliveType.HUMAN);
-        Coordinate pos3 = new Coordinate(7,7);
-        game.addCrew(player1, pos3,AliveType.HUMAN);
-        Coordinate pos4 = new Coordinate(8,7);
-        game.addCrew(player1, pos4,AliveType.HUMAN);
+
+
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
         return game;
     }
 
@@ -148,7 +160,7 @@ class AbbandonedStationTest {
     void test_should_check_first_person_wants_to_use_card(){
         Game game = make_a_spaceship();
         //CreateCard
-        int level = 0;
+        int level = 2;
         BoxStore store = new BoxStore();
         int daysLost = 1;
         int aliveNeeded = 1;
@@ -163,7 +175,7 @@ class AbbandonedStationTest {
         boxesWon.add(bluebox);
         AbbandonedStation abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes);
 
-        List<Box> availableBoxes = abbandonedStation.choiceBox(game, game.getPlayers().getFirst(),true );
+        List<Box> availableBoxes = abbandonedStation.getBoxesWon();
         if(availableBoxes==null){
             System.out.println("Not enough alive in the spaceship");
             return;
@@ -177,8 +189,8 @@ class AbbandonedStationTest {
 
         //correctPositions
         HashMap<Player,Integer> correctPositions = new HashMap<Player,Integer>();
-        correctPositions.put(game.getPlayers().get(0),3);
-        correctPositions.put(game.getPlayers().get(1),2);
+        correctPositions.put(game.getPlayers().get(0),6);
+        correctPositions.put(game.getPlayers().get(1),3);
         correctPositions.put(game.getPlayers().get(2),1);
         correctPositions.put(game.getPlayers().get(3),0);
 
@@ -187,10 +199,10 @@ class AbbandonedStationTest {
     }
 
     @Test
-    void test_should_check_that_moveBox_works(){ //todo errore
+    void test_should_check_that_moveBox_works(){
         Game game = make_a_spaceship();
         //CreateCard
-        int level = 0;
+        int level = 2;
         BoxStore store = new BoxStore();
         int daysLost = 1;
         int aliveNeeded = 1;
@@ -205,7 +217,7 @@ class AbbandonedStationTest {
         boxesWon.add(bluebox);
         Card abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes);
 
-        List<Box> availableBoxes = abbandonedStation.choiceBox(game, game.getPlayers().getFirst(),true );
+        List<Box> availableBoxes = abbandonedStation.getBoxesWon();
 
         //correct avaiableboxesinitial
         LinkedList<Box> correctAvailableBoxesinitial = new LinkedList<Box>();
@@ -229,8 +241,8 @@ class AbbandonedStationTest {
 
         //correctPositions
         HashMap<Player,Integer> correctPositions = new HashMap<Player,Integer>();
-        correctPositions.put(game.getPlayers().get(0),3);
-        correctPositions.put(game.getPlayers().get(1),2);
+        correctPositions.put(game.getPlayers().get(0),6);
+        correctPositions.put(game.getPlayers().get(1),3);
         correctPositions.put(game.getPlayers().get(2),1);
         correctPositions.put(game.getPlayers().get(3),0);
 
