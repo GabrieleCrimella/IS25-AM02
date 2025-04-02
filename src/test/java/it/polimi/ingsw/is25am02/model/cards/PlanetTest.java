@@ -162,12 +162,12 @@ class PlanetTest {
         game.getCurrentState().setCurrentPlayer(player1);
 
 
-        List<Box> planetOffers0 = planet.choicePlanet(game, player1, 0);
+        List<Box> planetOffers0 = planet.getPlanetOffers().get(0);
         //todo qui ho cambiato il box con boxtype
         planet.moveBox(game, player1, planetOffers0, storage1.getOccupation(), BoxType.RED, true );
         planet.choicePlanet(game, player2, -1);
         planet.choicePlanet(game, player3, -1);
-        List<Box> planetOffers1 = planet.choicePlanet(game, player4, 1);
+        List<Box> planetOffers1 = planet.getPlanetOffers().get(1);
         //todo qui ho cambiato il box con boxtype
         planet.moveBox(game, player4, planetOffers1, storage1.getOccupation(), BoxType.RED, false );
 
@@ -191,10 +191,6 @@ class PlanetTest {
         assertEquals(true, storage1.getOccupation().equals(correctStorage));
         assertEquals(true, planet.getPlanetOffers().get(0).equals(correctPlanet1boxes));
         assertEquals(true, game.getGameboard().getPositions().get(player4).equals(correct.get(player4)));
-        assertEquals(true, game.getGameboard().getPositions().get(player1).equals(3));
-        assertEquals(true, game.getGameboard().getPositions().get(player2).equals(2));
-        assertEquals(true, game.getGameboard().getPositions().get(player3).equals(1));
-        assertEquals(true, game.getGameboard().getPositions().get(player4).equals(-1));
         assertEquals(true, game.getGameboard().getPositions().equals(correct));
 
 
@@ -264,7 +260,7 @@ class PlanetTest {
         game.getCurrentState().setCurrentPlayer(player1);
 
 
-        List<Box> planetOffers0 = planet.choicePlanet(game, player1, 0);
+        List<Box> planetOffers0 = planet.getPlanetOffers().get(0);
         //todo qui ho cambiato il box con boxtype
         planet.moveBox(game, player1, planetOffers0, storage1.getOccupation(), BoxType.RED, true );
         planet.choicePlanet(game, player2, -1);
