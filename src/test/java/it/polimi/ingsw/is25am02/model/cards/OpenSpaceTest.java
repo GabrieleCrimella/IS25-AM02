@@ -1,9 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
-import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Game;
-import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.Spaceship;
+import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
@@ -24,31 +21,25 @@ class OpenSpaceTest {
     @Test
     void test_should_check_choiceDoubleMotor_when_first_player_activates_motor(){
         //4 spaceship
-        Spaceship spaceship1 = new Spaceship(0);
-        Spaceship spaceship2 = new Spaceship(0);
-        Spaceship spaceship3 = new Spaceship(0);
-        Spaceship spaceship4 = new Spaceship(0);
+        Spaceship spaceship1 = new Spaceship(2);
+        Spaceship spaceship2 = new Spaceship(2);
+        Spaceship spaceship3 = new Spaceship(2);
+        Spaceship spaceship4 = new Spaceship(2);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        player1.setStatePlayer(StatePlayerType.IN_GAME);
         Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        player2.setStatePlayer(StatePlayerType.IN_GAME);
         Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        player3.setStatePlayer(StatePlayerType.IN_GAME);
         Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
-        player4.setStatePlayer(StatePlayerType.IN_GAME);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
         players.add(player3);
         players.add(player4);
         //game di livello 0 con i 4 players
-        Game game = new Game(players,0);
+        Game game = new Game(players,2);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
 
-        //creo la carta
-        Card openSpace = new OpenSpace(0);
         //inizializzo spaceship1
         //tile 1 - cabin centrale
         TileType t1 = TileType.CABIN;
@@ -107,20 +98,40 @@ class OpenSpaceTest {
             System.out.println(e.getMessage());
         }
 
-        Pair<Tile, Tile> CoppiaDiMotorEBattery = new Pair<>(dmotor1, battery1);
-        List<Pair<Tile, Tile>> listaDiCoppieDiDMotorEBattery = new ArrayList<Pair<Tile,Tile>>();
-        listaDiCoppieDiDMotorEBattery.add(CoppiaDiMotorEBattery);
-        Optional<List<Pair<Tile,Tile>>> optionalListaDiCoppieDiMotorEBattery = Optional.of(listaDiCoppieDiDMotorEBattery);
-/*
-        try {
-            openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
-        } catch (IllegalPhaseException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalRemoveException e) {
-            System.out.println(e.getMessage());
-        }
-*/
-        assertEquals(7, game.getGameboard().getPositions().get(player1),7);
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+
+        Coordinate pos4 = new Coordinate(7,7);
+        game.addCrew(player1, pos4, AliveType.HUMAN);
+
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+
+        //creo la carta
+        Card openSpace = new OpenSpace(2);
+
+        game.getCurrentState().setCurrentCard(openSpace);
+        game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
+
+        //doppio motore in 88 batteria in 98
+        List<Coordinate> dMotAttivi= new ArrayList<>();
+        Coordinate pos88 = new Coordinate(8,8);
+        dMotAttivi.add(pos88);
+        List<Coordinate> batterieUsate= new ArrayList<>();
+        Coordinate pos98 = new Coordinate(8,9);
+        batterieUsate.add(pos98);
+
+        game.choiceDoubleMotor(player1, dMotAttivi, batterieUsate);
+
+        assertEquals(10, game.getGameboard().getPositions().get(player1),7);
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,9).get().getBattery());
 
     }
@@ -128,10 +139,10 @@ class OpenSpaceTest {
     @Test
     void test_should_check_choiceDoubleMotor_when_first_player_activates_motor_and_second_player_doesnt(){
         //4 spaceship
-        Spaceship spaceship1 = new Spaceship(0);
-        Spaceship spaceship2 = new Spaceship(0);
-        Spaceship spaceship3 = new Spaceship(0);
-        Spaceship spaceship4 = new Spaceship(0);
+        Spaceship spaceship1 = new Spaceship(2);
+        Spaceship spaceship2 = new Spaceship(2);
+        Spaceship spaceship3 = new Spaceship(2);
+        Spaceship spaceship4 = new Spaceship(2);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
         player1.setStatePlayer(StatePlayerType.IN_GAME);
@@ -147,12 +158,10 @@ class OpenSpaceTest {
         players.add(player3);
         players.add(player4);
         //game di livello 0 con i 4 players
-        Game game = new Game(players,0);
+        Game game = new Game(players,2);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
 
-        //creo la carta
-        Card openSpace = new OpenSpace(0);
         //inizializzo spaceship1
         //tile 1 - cabin centrale
         TileType t1 = TileType.CABIN;
@@ -210,22 +219,6 @@ class OpenSpaceTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-
-        Pair<Tile, Tile> CoppiaDiMotorEBattery = new Pair<>(dmotor1, battery1);
-        List<Pair<Tile, Tile>> listaDiCoppieDiDMotorEBattery = new ArrayList<Pair<Tile,Tile>>();
-        listaDiCoppieDiDMotorEBattery.add(CoppiaDiMotorEBattery);
-        Optional<List<Pair<Tile,Tile>>> optionalListaDiCoppieDiMotorEBattery = Optional.of(listaDiCoppieDiDMotorEBattery);
-/*
-        try {
-            openSpace.choiceDoubleMotor(game,player1,optionalListaDiCoppieDiMotorEBattery);
-        } catch (IllegalPhaseException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalRemoveException e) {
-            System.out.println(e.getMessage());
-        }
-*/
-        assertEquals(7, game.getGameboard().getPositions().get(player1),7);
-        assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,9).get().getBattery());
 
 
         //inizializzo spaceship2
@@ -262,7 +255,7 @@ class OpenSpaceTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-        //tile 4 - motor 7 8
+        //tile 4 - dmotor 6 8
         TileType t24 = TileType.D_MOTOR;
         ConnectorType[] connectors24 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType24 = RotationType.NORTH;
@@ -285,16 +278,51 @@ class OpenSpaceTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-/*
-        try {
-            openSpace.choiceDoubleMotor(game,player2,Optional.empty());
-        } catch (IllegalPhaseException e) {
-            System.out.println(e.getMessage());
-        } catch (IllegalRemoveException e) {
-            System.out.println(e.getMessage());
-        }
-*/
-        assertEquals(3, game.getGameboard().getPositions().get(player2));
+
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+
+        Coordinate pos4 = new Coordinate(7,7);
+        game.addCrew(player1, pos4, AliveType.HUMAN);
+        game.addCrew(player2,pos4,AliveType.HUMAN);
+
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+
+        //creo la carta
+        Card openSpace = new OpenSpace(2);
+
+        game.getCurrentState().setCurrentCard(openSpace);
+        game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
+
+        //doppio motore in 88 batteria in 98
+        List<Coordinate> dMotAttivi= new ArrayList<>();
+        Coordinate pos88 = new Coordinate(8,8);
+        dMotAttivi.add(pos88);
+        List<Coordinate> batterieUsate= new ArrayList<>();
+        Coordinate pos98 = new Coordinate(8,9);
+        batterieUsate.add(pos98);
+
+        game.choiceDoubleMotor(player1, dMotAttivi, batterieUsate);
+
+        //il secondo non attiva i doppi motori
+        List<Coordinate> dMotAttivi2= new ArrayList<>();
+        List<Coordinate> batterieUsate2= new ArrayList<>();
+
+        game.choiceDoubleMotor(player2, dMotAttivi2, batterieUsate2);
+
+        assertEquals(10, game.getGameboard().getPositions().get(player1),7);
+        assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,9).get().getBattery());
+
+        assertEquals(4, game.getGameboard().getPositions().get(player2));
         assertEquals(3, game.getPlayers().get(1).getSpaceship().getTile(8,9).get().getBattery());
 
     }
