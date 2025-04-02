@@ -15,10 +15,10 @@ class EpidemyTest {
 
     public Game make_a_spaceship(){
         //4 spaceship
-        Spaceship spaceship1 = new Spaceship(0);
-        Spaceship spaceship2 = new Spaceship(0);
-        Spaceship spaceship3 = new Spaceship(0);
-        Spaceship spaceship4 = new Spaceship(0);
+        Spaceship spaceship1 = new Spaceship(2);
+        Spaceship spaceship2 = new Spaceship(2);
+        Spaceship spaceship3 = new Spaceship(2);
+        Spaceship spaceship4 = new Spaceship(2);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
         Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
@@ -29,8 +29,8 @@ class EpidemyTest {
         players.add(player2);
         players.add(player3);
         players.add(player4);
-        //game di livello 0 con i 4 players
-        Game game = new Game(players,0);
+        //game di livello 2 con i 4 players
+        Game game = new Game(players,2);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
 
@@ -75,7 +75,9 @@ class EpidemyTest {
         player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+
         Coordinate pos1 = new Coordinate(7,7);
         game.addCrew(player1, pos1, AliveType.HUMAN);
         //game.addCrew(player1, 7,7, AliveType.HUMAN);
@@ -84,6 +86,13 @@ class EpidemyTest {
 
 
 
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+
 
         return game;
     }
@@ -91,7 +100,7 @@ class EpidemyTest {
     @Test
     void test_should_remove_affected_crew(){
         Game game = make_a_spaceship();
-        Card epidemy = new Epidemy(0);
+        Card epidemy = new Epidemy(2);
 
         game.getCurrentState().setCurrentCard(epidemy);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
