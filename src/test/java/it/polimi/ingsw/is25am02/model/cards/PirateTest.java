@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PirateTest {
 
-    //todo
     @Test
     void test_should_check_if_player_doesnt_have_enough_cannon_power() {
         //4 spaceship
@@ -129,7 +129,12 @@ class PirateTest {
         int daysLost = 1;
         int credit = 2;
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
-        //todo inizializzare shots
+        Pair<Integer, RotationType> singleShot = new Pair<>(0,RotationType.NORTH);
+        shots.add(singleShot);
+        singleShot = new Pair<>(1, RotationType.NORTH);
+        shots.add(singleShot);
+        singleShot = new Pair<>(0, RotationType.NORTH);
+        shots.add(singleShot);
         Card pirate = new Pirate(level, cannonPowers, daysLost, credit, shots);
 
         game.getCurrentState().setCurrentCard(pirate);
@@ -145,7 +150,17 @@ class PirateTest {
 
         game.choiceDoubleCannon(player1, coordcannon, coordbatt);
         assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
-        //todo controllare che la nave viene colpita dagli shots
+        //todo controllare che la nave viene colpita dagli shots 0,1,0 north north north
+
+        try {
+            pirate.setPhase(2);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //la batteria è in 87
+        //todo cambia dice
+        game.calculateDamage(player1,new Coordinate(8,7));
 
     }
 
