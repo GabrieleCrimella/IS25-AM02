@@ -94,8 +94,7 @@ public class Spaceship {
             List<Tile> down = new ArrayList<>();
             List<Tile> left = new ArrayList<>();
 
-            //todo Cancello la tessera
-            spaceshipIterator.removeOneTile(x, y);
+
 
             if (spaceshipIterator.getUpTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getUpTile(toRemove).get(), RotationType.NORTH)) {
                 up = startVisit(toRemove, RotationType.NORTH);
@@ -109,6 +108,10 @@ public class Spaceship {
             if (spaceshipIterator.getLeftTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getLeftTile(toRemove).get(), RotationType.WEST)) {
                 left = startVisit(toRemove, RotationType.WEST);
             }
+
+            //todo Cancello la tessera
+            spaceshipIterator.removeOneTile(x, y);
+            numOfWastedTiles++;
 
             List<List<Tile>> effectiveBlocks = new LinkedList<>();
             generateBlocks(up, effectiveBlocks);
@@ -625,7 +628,7 @@ public class Spaceship {
         targetTileY = 0;
 
         if (type == RotationType.NORTH) {
-            for (int t = 0; t < 12; t++) {
+            for (int t = 1; t < 12; t++) {
                 if (getTile(num, t).isPresent()) {
                     targetTileX = num;
                     targetTileY = t;
