@@ -317,7 +317,6 @@ public class Spaceship {
         numOfWastedTiles += num;
     }
 
-    //todo checkSpaceship controlla le altre opzioni
     public boolean checkSpaceship() {
         //controllo delle connessioni delle varie tiles
         for (Optional<Tile> t : spaceshipIterator.reference()) {
@@ -441,8 +440,8 @@ public class Spaceship {
                     targetTileY = num;
                     return true;
                 } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
-                    targetTileX = num;
-                    targetTileY = t;
+                    targetTileX = t;
+                    targetTileY = num;
                     return false;
                 }
             }
@@ -453,8 +452,8 @@ public class Spaceship {
                     targetTileY = num;
                     return true;
                 } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
-                    targetTileX = num;
-                    targetTileY = t;
+                    targetTileX = t;
+                    targetTileY = num;
                     return false;
                 }
             }
@@ -476,8 +475,11 @@ public class Spaceship {
         switch (bigOrSmall) {
             case 0: //Small
                 if (isExposed(rotationType, num)) {
-                    if (!isShielded(rotationType) || storage.isEmpty()) {
+                    if (isShielded(rotationType) && storage.isPresent()) {
                         storage.get().removeBattery();
+                        return isSpaceshipDivided();
+                    }
+                    else{
                         removeTile(targetTileX, targetTileY);
                         return isSpaceshipDivided();
                     }
@@ -488,7 +490,7 @@ public class Spaceship {
                     Optional<Tile> cannon = CoveredByWhatCannon(rotationType, num);
                     if (cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)) {
                         return false;
-                    } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON)) {
+                    } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
                         return false;
                     } else {
                         removeTile(targetTileX, targetTileY);
@@ -500,7 +502,7 @@ public class Spaceship {
         }
     }
 
-    //todo controllare batterie
+    //todo NON SONO STATE TOLTE LE BATTERIE
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<Tile> storage) throws IllegalRemoveException {
         Optional<Tile> target = targetTile(rotationType, num);
         switch (bigOrSmall) {
@@ -509,6 +511,10 @@ public class Spaceship {
                     if (!isShielded(rotationType)) {
                         removeTile(targetTileX, targetTileY);
                         return isSpaceshipDivided();
+                    }
+                    else{
+                        storage.get().removeBattery();
+                        return false;
                     }
                 } else return false;
             case 1: //Big
@@ -632,17 +638,13 @@ public class Spaceship {
         return temp;
     }
 
-    //A fronte della rimozione di una tile mi dice se ho vari rami o solo 1
-    private boolean DividedSpaceship() {
-        return false;
-    }
 
     private Optional<Tile> targetTile(RotationType type, int num) {
         targetTileX = 0;
         targetTileY = 0;
 
         if (type == RotationType.NORTH) {
-            for (int t = 1; t < 12; t++) {
+            for (int t = 0; t < 12; t++) {
                 if (getTile(num, t).isPresent()) {
                     targetTileX = num;
                     targetTileY = t;
@@ -715,4 +717,3 @@ public class Spaceship {
         return Optional.empty();
     }
 }
-
