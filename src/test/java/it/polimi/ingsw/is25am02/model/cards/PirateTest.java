@@ -170,7 +170,6 @@ class PirateTest {
         }
 
         //la batteria è in 87
-        //todo cambia dice
         game.calculateDamage(player1,new Coordinate(8,7));
         try {
             pirate.keepBlocks(game,player1,new Coordinate(7,8)); //voglio tenere la parte di nave composta dalla casella 7,8
