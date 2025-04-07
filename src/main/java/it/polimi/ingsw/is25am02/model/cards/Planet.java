@@ -35,6 +35,13 @@ public class Planet extends Card {
         this.planetOffersTypes = planetOffersTypes;
         this.cardType = CardType.PLANET;
         this.boxesWon = null;
+        initializeOccupied();
+    }
+
+    private void initializeOccupied(){
+        for (int i = 0; i < planetOffersTypes.size(); i++) {
+            this.occupied.add(0);
+        }
     }
 
     @Override
@@ -67,7 +74,8 @@ public class Planet extends Card {
 
     @Override
     public void choicePlanet(Game game, Player player, int index) throws IllegalArgumentException{
-        if(index >= 0 && index <= planetOffers.size()-1 && occupied.get(index) == 0) {
+        LinkedList<Box> planetList = new LinkedList<>();
+        if(index >= 0 && index <= planetOffersTypes.size()-1 && occupied.get(index) == 0) {
             occupied.set(index, 1);
             landed.add(player);
             for(BoxType type : getPlanetOffersTypes().get(index)){
@@ -76,24 +84,25 @@ public class Planet extends Card {
                     if(type.equals(BoxType.RED)){
                         if(store.getStore().containsKey(BoxType.RED)){
                             box = new RedBox(BoxType.RED);
-                            planetOffers.get(index).add(box);
+                            planetList.add(box);
                         }
                     } else if(type.equals(BoxType.BLUE)){
                         if(store.getStore().containsKey(BoxType.BLUE)){
                             box = new BlueBox(BoxType.BLUE);
-                            planetOffers.get(index).add(box);
+                            planetList.add(box);
                         }
                     } else if(type.equals(BoxType.GREEN)){
                         if(store.getStore().containsKey(BoxType.GREEN)){
                             box = new GreenBox(BoxType.GREEN);
-                            planetOffers.get(index).add(box);
+                            planetList.add(box);
                         }
                     } else if(type.equals(BoxType.YELLOW)){
                         if(store.getStore().containsKey(BoxType.YELLOW)){
                             box = new YellowBox(BoxType.YELLOW);
-                            planetOffers.get(index).add(box);
+                            planetList.add(box);
                         }
                     } else throw new IllegalArgumentException("I cannot add a box to planetoffer");
+
                 } else { //se lo store è vuoto rimuovo i blocchetti rimasti sui pianeti già occupati
                     for (int i : occupied) { //vedo sui pianeti occupati
                         for (Box box : planetOffers.get(i)) {
@@ -110,6 +119,7 @@ public class Planet extends Card {
                     }
                 }
             }
+            planetOffers.add(index, planetList);
             setStateCard(StateCardType.BOXMANAGEMENT);
             boxesWon = planetOffers.get(index);
         }
