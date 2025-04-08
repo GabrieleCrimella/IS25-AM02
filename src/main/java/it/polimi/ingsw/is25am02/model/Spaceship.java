@@ -491,6 +491,7 @@ public class Spaceship {
                     if (cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)) {
                         return false;
                     } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
+                        storage.get().removeBattery();
                         return false;
                     } else {
                         removeTile(targetTileX, targetTileY);
@@ -502,7 +503,6 @@ public class Spaceship {
         }
     }
 
-    //todo NON SONO STATE TOLTE LE BATTERIE
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<Tile> storage) throws IllegalRemoveException {
         Optional<Tile> target = targetTile(rotationType, num);
         switch (bigOrSmall) {
@@ -683,33 +683,41 @@ public class Spaceship {
     private Optional<Tile> CoveredByWhatCannon(RotationType type, int num) {
         if (type == RotationType.NORTH) {
             for (int t = 0; t < 11; t++) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))){
                     return getTile(num, t);
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
             }
         } else if (type == RotationType.SOUTH) {
             for (int t = 11; t > 0; t--) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
                     return getTile(num, t);
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().getType().equals(TileType.CANNON)) {
+                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
             }
         } else if (type == RotationType.EAST) {
             for (int t = 11; t > 0; t--) {
-                if (getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)) {
+                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
                     return getTile(t, num);
-                } else if (getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)) {
+                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
             }
         } else if (type == RotationType.WEST) {
             for (int t = 0; t < 11; t++) {
-                if (getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)) {
+                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
                     return getTile(t, num);
-                } else if (getTile(t, num).isPresent() && getTile(t, num).get().getType().equals(TileType.CANNON)) {
+                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
             }
