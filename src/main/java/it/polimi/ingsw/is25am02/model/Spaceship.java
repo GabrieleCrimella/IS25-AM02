@@ -16,7 +16,7 @@ public class Spaceship {
     private int targetTileX, targetTileY;
     private final HashMap<Integer, Tile> bookedTiles;
 
-    //todo Attributo per salvare i possibili rami Aggiunto da Davide
+    //Attributo per salvare i possibili rami Aggiunto da Davide
     private List<boolean[][]> branches;
 
     public Spaceship(int level) {
@@ -26,7 +26,6 @@ public class Spaceship {
         this.bookedTiles = new HashMap<>();
         currentTile = null;
 
-        //todo aggiunto da davide
         branches = new ArrayList<>();
 
         bookedTiles.put(1, null);
@@ -109,7 +108,7 @@ public class Spaceship {
                 left = startVisit(toRemove, RotationType.WEST);
             }
 
-            //todo Cancello la tessera
+            //Cancello la tessera
             spaceshipIterator.removeOneTile(x, y);
             numOfWastedTiles++;
 
