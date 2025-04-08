@@ -582,7 +582,9 @@ public class Game implements Game_Interface {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
-            typeControl(player, pos, TileType.BATTERY);
+            if(player.getSpaceship().getTile(pos.x(), pos.y()).isPresent()){
+                typeControl(player, pos, TileType.BATTERY);
+            }
 
             getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(),pos.y()));
         } catch (IllegalStateException | IllegalPhaseException | UnsupportedOperationException |
