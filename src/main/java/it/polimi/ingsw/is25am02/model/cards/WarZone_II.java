@@ -147,6 +147,12 @@ public class WarZone_II extends Card{
         else throw new IllegalStateException();
     }
 
+    //solo per testing
+    @Override
+    public void setCurrentPhase(int phase){
+        currentPhase = phase;
+    }
+
 
     public void choiceCrew(Game game, Player player) {
         if(currentPhase == 3) {
