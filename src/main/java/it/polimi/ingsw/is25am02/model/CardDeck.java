@@ -33,6 +33,10 @@ public class CardDeck {
         } else createDecks();
     }
 
+    public HashMap<Integer, Pair<List<Card>, Boolean>> getDeck() {
+        return deck;
+    }
+
     public List<Card> getInitialDeck() {
         return initialDeck;
     }

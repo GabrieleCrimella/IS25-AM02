@@ -44,15 +44,113 @@ public class Spaceship {
      * }
      */
 
+    //per il testing
+    public void viewSpaceship(){
+        System.out.println("Booked Tiles:");
+        for (int i=1;i<3;i++){
+            if (bookedTiles.get(i)==null){
+                System.out.print("|    |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.BATTERY)){
+                System.out.print("| B  |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.BROWN_CABIN)){
+                System.out.print("| BC |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.CABIN)){
+                System.out.print("| CB |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.CANNON)){
+                System.out.print("| CN |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.D_CANNON)){
+                System.out.print("|DCN |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.D_MOTOR)){
+                System.out.print("| DM |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.MOTOR)){
+                System.out.print("| M  |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.PURPLE_CABIN)){
+                System.out.print("| PC |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.SHIELD)){
+                System.out.print("| SH |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.SPECIAL_STORAGE)){
+                System.out.print("| SS |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.STORAGE)){
+                System.out.print("| S  |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.STRUCTURAL)){
+                System.out.print("| ST |");
+            }
+            else{
+                System.out.print("| Z |");
+            }
+        }
+        System.out.println();
+        System.out.println("Spaceship View:");
+        for (int i=0;i<12; i++){
+            for (int j=0;j<12;j++){
+                if (getTile(i,j).isEmpty()){
+                    System.out.print("|    |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.BATTERY)){
+                    System.out.print("| B  |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.BROWN_CABIN)){
+                    System.out.print("| BC |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.CABIN)){
+                    System.out.print("| CB |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.CANNON)){
+                    System.out.print("| CN |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.D_CANNON)){
+                    System.out.print("|DCN |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.D_MOTOR)){
+                    System.out.print("| DM |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.MOTOR)){
+                    System.out.print("| M  |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.PURPLE_CABIN)){
+                    System.out.print("| PC |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.SHIELD)){
+                    System.out.print("| SH |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.SPECIAL_STORAGE)){
+                    System.out.print("| SS |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.STORAGE)){
+                    System.out.print("| S  |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.STRUCTURAL)){
+                    System.out.print("| ST |");
+                }
+                else{
+                    System.out.print("| Z |");
+                }
+            }
+            System.out.println();
+        }
+    }
+
     public HashMap<Integer, Tile> getBookedTiles() {
         return bookedTiles;
     }
 
     public void addTile(int x, int y, Tile t) throws IllegalAddException {
         spaceshipIterator.addTile(t, x, y);
+        currentTile = null;
     }
 
-    //todo da testare
     public void bookTile(Player player) throws IllegalAddException {
         if (currentTile == null) {
             throw new IllegalAddException("CurrentTile is empty");
@@ -66,14 +164,16 @@ public class Spaceship {
                 bookedTiles.put(2, currentTile);
                 returnTile();
             }
+            currentTile = null;
         }
     }
 
-    public void addBookedTile(int index, int x, int y) throws IllegalAddException {
+    public void addBookedTile(int index, int x, int y, RotationType rotation) throws IllegalAddException {
         if (index < 1 || index > 2) {
             throw new IllegalAddException("index must be between 1 and 2");
         } else {
             addTile(x, y, bookedTiles.get(index));
+            getTile(x,y).get().setRotationType(rotation);
             bookedTiles.put(index, null);
         }
     }
@@ -399,7 +499,7 @@ public class Spaceship {
             }
         }
 
-        return visited.size() != spaceshipIterator.returnAllTiles().size();
+        return visited.size() == spaceshipIterator.returnAllTiles().size();
     }
 
     //todo controllare se le eccezioni sono chiamate giuste

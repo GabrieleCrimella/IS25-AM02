@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.controller.exception.PlayerNotFoundException;
+import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.util.*;
@@ -134,9 +135,9 @@ public class ServerController {
         g.getGame().bookTile(player);
     }
 
-    public void addBookedTile(Player player, int index, Coordinate pos) throws PlayerNotFoundException {
+    public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        g.getGame().addBookedTile(player, index, pos);
+        g.getGame().addBookedTile(player, index, pos, rotation);
     }
 
     public void returnTile(Player player) throws PlayerNotFoundException {
@@ -144,9 +145,9 @@ public class ServerController {
         g.getGame().returnTile(player);
     }
 
-    public void addTile(Player player, Coordinate pos) throws PlayerNotFoundException {
+    public void addTile(Player player, Coordinate pos, RotationType rotation) throws PlayerNotFoundException {
         GameSession g = getGameFromPlayer(player);
-        g.getGame().addTile(player, pos);
+        g.getGame().addTile(player, pos, rotation);
     }
 
     public void shipFinished(Player player) throws PlayerNotFoundException {

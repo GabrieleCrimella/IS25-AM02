@@ -41,6 +41,57 @@ public class Game implements Game_Interface {
         this.hourglass = new Hourglass();
     }
 
+    //for testing
+    public void tilesSituation(){
+        System.out.println("Visible Tiles:");
+        Set<Tile> visibleTiles = new HashSet<>();
+        visibleTiles = getVisibleTiles();
+        for (Tile tile:visibleTiles){
+            if (tile==null){
+                System.out.print("|    |");
+            }
+            else if (tile.getType().equals(TileType.BATTERY)){
+                System.out.print("| B  |");
+            }
+            else if (tile.getType().equals(TileType.BROWN_CABIN)){
+                System.out.print("| BC |");
+            }
+            else if (tile.getType().equals(TileType.CABIN)){
+                System.out.print("| CB |");
+            }
+            else if (tile.getType().equals(TileType.CANNON)){
+                System.out.print("| CN |");
+            }
+            else if (tile.getType().equals(TileType.D_CANNON)){
+                System.out.print("|DCN |");
+            }
+            else if (tile.getType().equals(TileType.D_MOTOR)){
+                System.out.print("| DM |");
+            }
+            else if (tile.getType().equals(TileType.MOTOR)){
+                System.out.print("| M  |");
+            }
+            else if (tile.getType().equals(TileType.PURPLE_CABIN)){
+                System.out.print("| PC |");
+            }
+            else if (tile.getType().equals(TileType.SHIELD)){
+                System.out.print("| SH |");
+            }
+            else if (tile.getType().equals(TileType.SPECIAL_STORAGE)){
+                System.out.print("| SS |");
+            }
+            else if (tile.getType().equals(TileType.STORAGE)){
+                System.out.print("| S  |");
+            }
+            else if (tile.getType().equals(TileType.STRUCTURAL)){
+                System.out.print("| ST |");
+            }
+            else{
+                System.out.print("| Z |");
+            }
+        }
+        System.out.println();
+    }
     //getter
     public CardDeck getDeck() {
         return deck;
@@ -220,12 +271,14 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void addTile(Player player, Coordinate pos) {
+    public void addTile(Player player, Coordinate pos,  RotationType rotation) {
         try {
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
+            Tile currentTile = player.getSpaceship().getCurrentTile();
+            currentTile.setRotationType(rotation);
 
-            player.getSpaceship().addTile(pos.x(), pos.y(), player.getSpaceship().getCurrentTile());
+            player.getSpaceship().addTile(pos.x(), pos.y(), currentTile);
 
             //player can see the minidecks
             if (!player.getDeckAllowed()) {
@@ -249,13 +302,13 @@ public class Game implements Game_Interface {
         }
     }
 
-    public void addBookedTile(Player player, int index, Coordinate pos) {
+    public void addBookedTile(Player player, int index, Coordinate pos, RotationType  rotation) {
         try {
             levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
-            player.getSpaceship().addBookedTile(index, pos.x(), pos.y());
+            player.getSpaceship().addBookedTile(index, pos.x(), pos.y(), rotation);
         } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
             System.out.println(e.getMessage());
         }
@@ -369,7 +422,7 @@ public class Game implements Game_Interface {
     @Override
     public void ready(Player player) {
         try {
-            stateControl(INITIALIZATION_GAME, CORRECT_SHIP, FINISH, player);
+            stateControl(INITIALIZATION_SPACESHIP, CORRECT_SHIP, FINISH, player);
 
             player.setStatePlayer(IN_GAME);
             readyPlayer++;

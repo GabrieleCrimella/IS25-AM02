@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.util.List;
@@ -9,15 +10,15 @@ import java.util.List;
 public interface Game_Interface {
 
     //Phase BUILD
-    void flipHourglass(Player player);
+    void flipHourglass(Player player); //todo testare
     void takeTile(Player player);
     void takeTile(Player player, Tile tile);
     void takeMiniDeck(Player player, int index);
     void returnMiniDeck(Player player);
     void bookTile(Player player);
-    void addBookedTile(Player player, int index, Coordinate pos);
+    void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation); //testato
     void returnTile(Player player);
-    void addTile(Player player, Coordinate pos);
+    void addTile(Player player, Coordinate pos, RotationType rotation);
     void shipFinished(Player player);
 
     //Phase CHECK
@@ -28,13 +29,14 @@ public interface Game_Interface {
     void checkWrongSpaceship(Player player);
 
     //Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
-    void addCrew(Player player, Coordinate pos, AliveType type);
+    void addCrew(Player player, Coordinate pos, AliveType type); //todo da testare
     void ready(Player player);
 
     //Phase TAKE_CARD
     void playNextCard(Player player);
-    void earlyLanding(Player player);
+    void earlyLanding(Player player); //todo da testare
 
+    //todo mi viene mal di testa solo a pensare come testarli
     //Phase EFFECT_ON_PLAYERS
     void choice(Player player, boolean choice);
     void removeCrew(Player player, Coordinate pos);
