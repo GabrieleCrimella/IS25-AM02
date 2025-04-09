@@ -15,8 +15,6 @@ public class Spaceship {
     private Tile currentTile;
     private int targetTileX, targetTileY;
     private final HashMap<Integer, Tile> bookedTiles;
-
-    //todo Attributo per salvare i possibili rami Aggiunto da Davide
     private List<boolean[][]> branches;
 
     public Spaceship(int level) {
@@ -25,8 +23,6 @@ public class Spaceship {
         this.cosmicCredits = 0;
         this.bookedTiles = new HashMap<>();
         currentTile = null;
-
-        //todo aggiunto da davide
         branches = new ArrayList<>();
 
         bookedTiles.put(1, null);
@@ -36,13 +32,6 @@ public class Spaceship {
     public SpaceshipIterator getSpaceshipIterator() {
         return spaceshipIterator.reference();
     }
-
-    //serve solo per il testing, per vedere che la legge correttamente da json
-    /*
-     * public boolean[][] getMaskSpaceship() {
-     *    return maskSpaceship;
-     * }
-     */
 
     //per il testing
     public void viewSpaceship(){
@@ -209,10 +198,10 @@ public class Spaceship {
                 left = startVisit(toRemove, RotationType.WEST);
             }
 
-            //todo Cancello la tessera
             spaceshipIterator.removeOneTile(x, y);
             numOfWastedTiles++;
 
+            //todo qui il controllo per alieni che devono lasciare la nave
             List<List<Tile>> effectiveBlocks = new LinkedList<>();
             generateBlocks(up, effectiveBlocks);
             generateBlocks(right, effectiveBlocks);
@@ -228,10 +217,8 @@ public class Spaceship {
                 booleanBlocks.add(booleanBlock);
             }
             if (booleanBlocks.isEmpty()) {
-                //todo al posto di return
                 branches = null;
             } else {
-                //todo al posto di return
                 branches = booleanBlocks;
             }
         }
@@ -566,7 +553,6 @@ public class Spaceship {
     }// è la tile che sto guardando
 
 
-    //todo bisogna gestire il fatto che se viene colpito un supporto vitale allora va rimosso l'alieno nella cabina vicino
     //calcola la distruzione della nave in base a dove è arrivato il meteorite
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
@@ -650,17 +636,6 @@ public class Spaceship {
         }
         return human;
     }
-
-    //Mi dice se la tile appartiene alla nave
-    public boolean own(Tile tile) {
-        for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().equals(tile)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     // Mi dice se il tipo di box passato è al pari del blocco più pregiato della nave
     //se non ci sono box ritorno false, rosso giallo verde blu
