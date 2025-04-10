@@ -166,7 +166,6 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
-
     public int getBattery() throws UnsupportedOperationException{
         throw new UnsupportedOperationException("Not supported method");
     }

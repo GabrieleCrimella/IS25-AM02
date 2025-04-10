@@ -25,15 +25,14 @@ class GameTest {
         Game game = make_a_spaceship(players);
         System.out.println(game.getCurrentState().getPhase());
 
-        //pesco una nuova tile per il giocatore 0
-        try {
+        //pesco una nuova tile per il giocatore 0, game non ritorna più nulla
+        /*try {
             System.out.println(game.takeTile(players.get(0)).getType());
         } catch (IllegalStateException e) {
             System.out.println("Non puoi pescare una tile");
-        }
+        }*/
         assert (game.getCurrentState().getPhase().equals(StateGameType.BUILD));
     }
-
 
     public Game make_a_spaceship(List<Player> players) {
         //4 spaceship
@@ -255,11 +254,11 @@ class GameTest {
         //Nave più bella = RED
         //Vendita merci = RED (4+1)
         //Perdite = Red(2)
-        List<Player>  winners = game.getWinners();
-        assertEquals(9,winners.get(0).getSpaceship().getCosmicCredits());
-        assertEquals(5,winners.get(1).getSpaceship().getCosmicCredits());
-        assertEquals(4,winners.get(2).getSpaceship().getCosmicCredits());
-        assertEquals(3,winners.get(3).getSpaceship().getCosmicCredits());
+        game.Winners();
+        assertEquals(9,game.getWinners().get(0).getSpaceship().getCosmicCredits());
+        assertEquals(5,game.getWinners().get(1).getSpaceship().getCosmicCredits());
+        assertEquals(4,game.getWinners().get(2).getSpaceship().getCosmicCredits());
+        assertEquals(3,game.getWinners().get(3).getSpaceship().getCosmicCredits());
 
 
     }
@@ -476,8 +475,8 @@ class GameTest {
 
         Coordinate pos = new Coordinate(7,5);
 
-        Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
-        game.keepBlock(player1,resultGame.get().get(0));
+        /*Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
+        game.keepBlock(player1,resultGame.get().get(0));*/
 
 
         assertEquals(true, spaceship1.getTile(7,5).isEmpty());
@@ -582,7 +581,7 @@ class GameTest {
         int id6 = 1;
         Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
         try {
-            spaceship1.addTile(5,7, cabin2);
+            spaceship1.addTile(5,7, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -595,7 +594,26 @@ class GameTest {
         game.getCurrentState().setPhase(StateGameType.CORRECTION);
 
         Coordinate pos =  new Coordinate(7,7);
-        Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
+        /*Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
+
+        assertEquals(true, resultGame.get().get(0)[8][7]);
+        assertEquals(true, resultGame.get().get(0)[9][7]);
+        assertEquals(false, resultGame.get().get(0)[7][7]);
+        assertEquals(false, resultGame.get().get(0)[6][7]);
+        assertEquals(false, resultGame.get().get(0)[5][7]);
+        assertEquals(false, resultGame.get().get(0)[5][8]);
+
+        assertEquals(false, resultGame.get().get(1)[8][7]);
+        assertEquals(false, resultGame.get().get(1)[9][7]);
+        assertEquals(false, resultGame.get().get(1)[7][7]);
+        assertEquals(true, resultGame.get().get(1)[6][7]);
+        assertEquals(true, resultGame.get().get(1)[5][7]);
+        assertEquals(true, resultGame.get().get(1)[5][8]);
+
+
+
+
+/*
         assertEquals(true, resultGame.get().get(1)[8][7]);
         assertEquals(true, resultGame.get().get(1)[9][7]);
         assertEquals(false, resultGame.get().get(1)[7][7]);
@@ -612,13 +630,1058 @@ class GameTest {
 
 
 
-        game.keepBlock(player1,resultGame.get().get(0));
+        game.keepBlock(player1,resultGame.get().get(0));*/
 
 
         assertEquals(true, spaceship1.getTile(7,7).isEmpty());
         assertEquals(false, spaceship1.getTile(8,7).isEmpty());
 
     }
+
+    @Test
+    void test_should_check_remove_single_tile_and_return_rest_of_ship_with_3_tiles(){
+
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        //inizializzo spaceship2
+        //tile 21 - cabin centrale 7 7
+        TileType t21 = TileType.CABIN;
+        ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType21 = RotationType.NORTH;
+        int id21 = 1;
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        try {
+            spaceship2.addTile(7,7, cabin21);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        TileType t22 = TileType.BATTERY;
+        ConnectorType[] connectors22 = {ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
+        RotationType rotationType22 = RotationType.NORTH;
+        int id22 = 2;
+        int maxNum22 = 2;
+        Tile battery22 = new BatteryStorage(t22, connectors22, rotationType22, id22, maxNum22);
+        try {
+            spaceship2.addTile(8,6, battery22);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        TileType t23 = TileType.SHIELD;
+        ConnectorType[] connectors23 = {ConnectorType.DOUBLE, ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType23 = RotationType.NORTH;
+        int id23 = 0;
+        boolean[] shielded = new boolean[]{true, true, false, false};
+        Tile shield23 = new Shield(t23, connectors23, rotationType23, id23, shielded);
+        try {
+            spaceship2.addTile(8,7, shield23);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        player1.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player2.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player3.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        player4.setStatePlayer(StatePlayerType.WRONG_SHIP);
+        game.getCurrentState().setPhase(StateGameType.CORRECTION);
+
+        Coordinate pos = new Coordinate(8,6);
+        game.getCurrentState().setCurrentPlayer(player2);
+        //Optional<List<boolean [][]>> resultGame = game.removeTile(player2,pos);
+        //game.keepBlock(player2,resultGame.get().get(0));
+
+
+        assertEquals(true, spaceship2.getTile(8,6).isEmpty());
+        assertEquals(false, spaceship2.getTile(8,7).isEmpty());
+        assertEquals(false, spaceship2.getTile(7,7).isEmpty());
+
+    }
+
+    @Test
+    void test_should_check_if_i_can_add_tiles_to_the_spaceship(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo in posizione 7,7
+        game.takeTile(playerRosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo in posizione 7,6
+        game.takeTile(playerRosso);
+        Coordinate pos76 = new Coordinate(7,6);
+        game.addTile(playerRosso,pos76, RotationType.NORTH);
+        spaceshipRosso.viewSpaceship();
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+
+
+    }
+
+    @Test
+    void test_should_check_if_i_can_book_and_return_tiles(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo in posizione 7,7
+        game.takeTile(playerRosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //prendi tile e ritornala
+        game.takeTile(playerRosso);
+        game.returnTile(playerRosso);
+
+        game.takeTile(playerRosso);
+        game.bookTile(playerRosso);
+
+        game.takeTile(playerRosso);
+        game.bookTile(playerRosso);
+
+
+        spaceshipRosso.viewSpaceship();
+        game.tilesSituation();
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+    }
+
+    @Test
+    void test_should_check_if_i_can_add_a_booked_tile(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo in posizione 7,7
+        game.takeTile(playerRosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo in posizione 7,6
+        game.takeTile(playerRosso);
+        Coordinate pos76 = new Coordinate(7,6);
+        game.addTile(playerRosso,pos76, RotationType.NORTH);
+
+        //book a tile
+        game.takeTile(playerRosso);
+        game.bookTile(playerRosso);
+
+        //book a tile
+        game.takeTile(playerRosso);
+        game.bookTile(playerRosso);
+
+        //restituisco un tile
+        game.takeTile(playerRosso);
+        game.returnTile(playerRosso);
+
+        game.tilesSituation();
+        spaceshipRosso.viewSpaceship();
+
+        Coordinate pos87 = new Coordinate(8,7);
+        game.addBookedTile(playerRosso, 1, pos87, RotationType.NORTH);
+        game.tilesSituation();
+        spaceshipRosso.viewSpaceship();
+
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+
+
+    }
+
+    @Test
+    void test_should_check_if_i_can_add_visibile_tile(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo in posizione 7,7
+        game.takeTile(playerRosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //prendo e ritorno un tile
+        game.takeTile(playerRosso);
+        game.returnTile(playerRosso);
+
+        //creo un tile come se fosse visibile
+        ConnectorType connectors[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        Tile tileDiProva = new Cabin(TileType.CABIN, connectors, RotationType.NORTH, 1 );
+        tileDiProva.setVisible();
+        game.getHeapTile().getSetTiles().add(tileDiProva);
+        game.takeTile(playerRosso, tileDiProva);
+
+        //controllo che il currentTile sia quello visibile e lo aggiungo in posizione 75
+        assertEquals(tileDiProva, spaceshipRosso.getCurrentTile());
+        Coordinate pos75 = new Coordinate(7,6);
+        game.addTile(playerRosso, pos75, RotationType.NORTH);
+
+        spaceshipRosso.viewSpaceship();
+        game.tilesSituation();
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+    }
+
+    @Test
+    void test_should_check_if_player_can_take_and_return_a_mini_deck(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo in posizione 7,7 al playerrosso
+        game.takeTile(playerRosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo in posizione 7,7 al playerBlu
+        game.takeTile(playerBlu);
+        game.addTile(playerBlu,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerBlu.getStatePlayer());
+
+        //aggiungo in posizione 7,7 al playerVerde
+        game.takeTile(playerVerde);
+        game.addTile(playerVerde,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerVerde.getStatePlayer());
+
+        //aggiungo in posizione 7,7 al playerGiallo
+        game.takeTile(playerGiallo);
+        game.addTile(playerGiallo,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerGiallo.getStatePlayer());
+
+
+        //prendo e ritorno un tile
+        game.takeTile(playerRosso);
+        game.returnTile(playerRosso);
+
+        game.takeMiniDeck(playerRosso,0);
+        assertEquals(true, game.getDeck().getDeck().get(0).getValue());
+        for (int i=0;i<game.getDeck().getDeck().get(0).getKey().size();i++){
+            System.out.println(game.getDeck().getDeck().get(0).getKey().get(i).toString());
+        }
+        game.returnMiniDeck(playerRosso);
+        assertEquals(false, game.getDeck().getDeck().get(0).getValue());
+        game.takeMiniDeck(playerBlu,0);
+        for (int i=0;i<game.getDeck().getDeck().get(0).getKey().size();i++){
+            System.out.println(game.getDeck().getDeck().get(0).getKey().get(i).toString());
+        }
+
+
+        spaceshipRosso.viewSpaceship();
+        game.tilesSituation();
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+    }
+
+    @Test
+    void test_should_check_if_players_are_finished(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo posizione 7,7 al playerrosso
+        game.takeTile(playerRosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo in posizione 7,7 al playerBlu
+        game.takeTile(playerBlu);
+        game.addTile(playerBlu,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerBlu.getStatePlayer());
+
+        //aggiungo in posizione 7,7 al playerVerde
+        game.takeTile(playerVerde);
+        game.addTile(playerVerde,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerVerde.getStatePlayer());
+
+        //aggiungo in posizione 7,7 al playerGiallo
+        game.takeTile(playerGiallo);
+        game.addTile(playerGiallo,pos77, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerGiallo.getStatePlayer());
+
+        //aggiungo in posizione 8,8 al playerGiallo sbagliato
+        game.takeTile(playerGiallo);
+        Coordinate pos88 = new Coordinate(8,8);
+        game.addTile(playerGiallo,pos88, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerGiallo.getStatePlayer());
+
+
+        //finisce il rosso
+        game.shipFinished(playerRosso);
+        assertEquals(StatePlayerType.FINISHED, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il blu
+        game.shipFinished(playerBlu);
+        assertEquals(StatePlayerType.FINISHED, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il verde
+        game.shipFinished(playerVerde);
+        assertEquals(StatePlayerType.FINISHED, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il giallo
+        game.shipFinished(playerGiallo);
+        assertEquals(StatePlayerType.FINISHED, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+
+
+
+
+
+        spaceshipRosso.viewSpaceship();
+        game.tilesSituation();
+
+    }
+
+    @Test
+    void test_should_check_if_4_players_have_wrong_spaceship_and_fix_them(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerrosso
+        game.takeTile(playerRosso);
+        Coordinate pos109 = new Coordinate(10,9);
+        game.addTile(playerRosso,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerBlu
+        game.takeTile(playerBlu);
+        game.addTile(playerBlu,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerBlu.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerVerde
+        game.takeTile(playerVerde);
+        game.addTile(playerVerde,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerVerde.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerGiallo
+        game.takeTile(playerGiallo);
+        game.addTile(playerGiallo,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerGiallo.getStatePlayer());
+
+        //aggiungo Cabina centrale al Rosso
+        ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Rosso.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Blu
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Blu.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu);
+        game.addTile(playerBlu, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Verde
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Verde.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde);
+        game.addTile(playerVerde, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Giallo
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Giallo.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.addTile(playerGiallo, pos77,RotationType.NORTH);
+
+
+        //finisce il rosso
+        game.shipFinished(playerRosso);
+        assertEquals(StatePlayerType.FINISHED, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il blu
+        game.shipFinished(playerBlu);
+        assertEquals(StatePlayerType.FINISHED, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il verde
+        game.shipFinished(playerVerde);
+        assertEquals(StatePlayerType.FINISHED, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il giallo
+        game.shipFinished(playerGiallo);
+        assertEquals(StatePlayerType.FINISHED, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+/*
+        per visualizzare le navi
+        System.out.println("SpaceshipRosso");
+        spaceshipRosso.viewSpaceship();
+        System.out.println("SpaceshipBlu");
+        spaceshipBlu.viewSpaceship();
+        System.out.println("SpaceshipVerde");
+        spaceshipVerde.viewSpaceship();
+        System.out.println("SpaceshipGiallo");
+        spaceshipGiallo.viewSpaceship();
+
+
+ */
+
+
+        game.checkSpaceship(playerRosso);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerBlu);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerGiallo);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerVerde);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.CORRECTION, game.getCurrentState().getPhase());
+
+        game.removeTile(playerRosso,pos109);
+        game.removeTile(playerBlu,pos109);
+        game.removeTile(playerVerde,pos109);
+        game.removeTile(playerGiallo,pos109);
+
+        game.checkWrongSpaceship(playerRosso);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerRosso.getStatePlayer());
+        game.checkWrongSpaceship(playerBlu);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerBlu.getStatePlayer());
+        game.checkWrongSpaceship(playerGiallo);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerGiallo.getStatePlayer());
+        game.checkWrongSpaceship(playerVerde);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerVerde.getStatePlayer());
+
+        assertEquals(StateGameType.INITIALIZATION_SPACESHIP, game.getCurrentState().getPhase());
+
+
+
+        //game.tilesSituation();
+
+    }
+
+    @Test
+    void test_should_check_if_3_players_have_wrong_spaceship_and_fix_it(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerrosso
+        game.takeTile(playerRosso);
+        Coordinate pos109 = new Coordinate(10,9);
+        game.addTile(playerRosso,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerBlu
+        game.takeTile(playerBlu);
+        game.addTile(playerBlu,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerBlu.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerVerde
+        game.takeTile(playerVerde);
+        game.addTile(playerVerde,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerVerde.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerGiallo
+        game.takeTile(playerGiallo);
+        game.returnTile(playerGiallo);
+
+        //aggiungo Cabina centrale al Rosso
+        ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Rosso.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Blu
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Blu.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu);
+        game.addTile(playerBlu, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Verde
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Verde.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde);
+        game.addTile(playerVerde, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Giallo
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Giallo.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.addTile(playerGiallo, pos77,RotationType.NORTH);
+
+        //finisce il rosso
+        game.shipFinished(playerRosso);
+        assertEquals(StatePlayerType.FINISHED, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il blu
+        game.shipFinished(playerBlu);
+        assertEquals(StatePlayerType.FINISHED, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il verde
+        game.shipFinished(playerVerde);
+        assertEquals(StatePlayerType.FINISHED, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il giallo
+        game.shipFinished(playerGiallo);
+        assertEquals(StatePlayerType.FINISHED, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+/*
+        per visualizzare le navi
+        System.out.println("SpaceshipRosso");
+        spaceshipRosso.viewSpaceship();
+        System.out.println("SpaceshipBlu");
+        spaceshipBlu.viewSpaceship();
+        System.out.println("SpaceshipVerde");
+        spaceshipVerde.viewSpaceship();
+        System.out.println("SpaceshipGiallo");
+        spaceshipGiallo.viewSpaceship();
+
+
+ */
+
+
+        game.checkSpaceship(playerRosso);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerBlu);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerGiallo);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerVerde);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.CORRECTION, game.getCurrentState().getPhase());
+
+        game.removeTile(playerRosso,pos109);
+        game.removeTile(playerBlu,pos109);
+        game.removeTile(playerVerde,pos109);
+
+        game.checkWrongSpaceship(playerRosso);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerRosso.getStatePlayer());
+        game.checkWrongSpaceship(playerBlu);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerBlu.getStatePlayer());
+        game.checkWrongSpaceship(playerVerde);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerVerde.getStatePlayer());
+
+        assertEquals(StateGameType.INITIALIZATION_SPACESHIP, game.getCurrentState().getPhase());
+
+
+
+        //game.tilesSituation();
+
+    }
+
+    @Test
+    void test_should_check_spaceship_initialization(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerrosso
+        game.takeTile(playerRosso);
+        Coordinate pos109 = new Coordinate(10,9);
+        game.addTile(playerRosso,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerBlu
+        game.takeTile(playerBlu);
+        game.addTile(playerBlu,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerBlu.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerVerde
+        game.takeTile(playerVerde);
+        game.addTile(playerVerde,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerVerde.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerGiallo
+        game.takeTile(playerGiallo);
+        game.addTile(playerGiallo,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerGiallo.getStatePlayer());
+
+        //aggiungo Cabina centrale al Rosso
+        ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Rosso.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Blu
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Blu.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu);
+        game.addTile(playerBlu, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Verde
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Verde.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde);
+        game.addTile(playerVerde, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Giallo
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Giallo.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.addTile(playerGiallo, pos77,RotationType.NORTH);
+
+
+        //finisce il rosso
+        game.shipFinished(playerRosso);
+        assertEquals(StatePlayerType.FINISHED, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il blu
+        game.shipFinished(playerBlu);
+        assertEquals(StatePlayerType.FINISHED, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il verde
+        game.shipFinished(playerVerde);
+        assertEquals(StatePlayerType.FINISHED, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il giallo
+        game.shipFinished(playerGiallo);
+        assertEquals(StatePlayerType.FINISHED, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+/*
+        per visualizzare le navi
+        System.out.println("SpaceshipRosso");
+        spaceshipRosso.viewSpaceship();
+        System.out.println("SpaceshipBlu");
+        spaceshipBlu.viewSpaceship();
+        System.out.println("SpaceshipVerde");
+        spaceshipVerde.viewSpaceship();
+        System.out.println("SpaceshipGiallo");
+        spaceshipGiallo.viewSpaceship();
+
+
+ */
+
+
+        game.checkSpaceship(playerRosso);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerBlu);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerGiallo);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerVerde);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.CORRECTION, game.getCurrentState().getPhase());
+
+        game.removeTile(playerRosso,pos109);
+        game.removeTile(playerBlu,pos109);
+        game.removeTile(playerVerde,pos109);
+        game.removeTile(playerGiallo,pos109);
+
+        game.checkWrongSpaceship(playerRosso);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerRosso.getStatePlayer());
+        game.checkWrongSpaceship(playerBlu);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerBlu.getStatePlayer());
+        game.checkWrongSpaceship(playerGiallo);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerGiallo.getStatePlayer());
+        game.checkWrongSpaceship(playerVerde);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerVerde.getStatePlayer());
+
+        assertEquals(StateGameType.INITIALIZATION_SPACESHIP, game.getCurrentState().getPhase());
+        game.ready(playerGiallo);
+        assertEquals(true, spaceshipGiallo.calculateNumAlive()>0);
+        game.ready(playerVerde);
+        assertEquals(true, spaceshipVerde.calculateNumAlive()>0);
+        game.ready(playerBlu);
+        assertEquals(true, spaceshipBlu.calculateNumAlive()>0);
+        game.ready(playerRosso);
+        assertEquals(true, spaceshipRosso.calculateNumAlive()>0);
+
+        assertEquals(StateGameType.TAKE_CARD, game.getCurrentState().getPhase());
+
+        assertEquals(6, game.getGameboard().getPositions().get(playerRosso));
+        assertEquals(3, game.getGameboard().getPositions().get(playerBlu));
+        assertEquals(1, game.getGameboard().getPositions().get(playerVerde));
+        assertEquals(0, game.getGameboard().getPositions().get(playerGiallo));
+
+
+        //game.tilesSituation();
+
+    }
+
+    @Test
+    void test_should_check_take_card_phase(){
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerrosso
+        game.takeTile(playerRosso);
+        Coordinate pos109 = new Coordinate(10,9);
+        game.addTile(playerRosso,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerBlu
+        game.takeTile(playerBlu);
+        game.addTile(playerBlu,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerBlu.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerVerde
+        game.takeTile(playerVerde);
+        game.addTile(playerVerde,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerVerde.getStatePlayer());
+
+        //aggiungo tile preso a caso in posizione 10,9 al playerGiallo
+        game.takeTile(playerGiallo);
+        game.addTile(playerGiallo,pos109, RotationType.NORTH);
+        assertEquals(StatePlayerType.NOT_FINISHED,playerGiallo.getStatePlayer());
+
+        //aggiungo Cabina centrale al Rosso
+        ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Rosso.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso);
+        Coordinate pos77 = new Coordinate(7,7);
+        game.addTile(playerRosso, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Blu
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Blu.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu);
+        game.addTile(playerBlu, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Verde
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Verde.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde);
+        game.addTile(playerVerde, pos77,RotationType.NORTH);
+
+        //aggiungo Cabina centrale al Giallo
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Cabina77Giallo.setVisible();
+        game.getHeapTile().getSetTiles().add(Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.addTile(playerGiallo, pos77,RotationType.NORTH);
+
+
+        //finisce il rosso
+        game.shipFinished(playerRosso);
+        assertEquals(StatePlayerType.FINISHED, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il blu
+        game.shipFinished(playerBlu);
+        assertEquals(StatePlayerType.FINISHED, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il verde
+        game.shipFinished(playerVerde);
+        assertEquals(StatePlayerType.FINISHED, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+        //finisce il giallo
+        game.shipFinished(playerGiallo);
+        assertEquals(StatePlayerType.FINISHED, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+/*
+        per visualizzare le navi
+        System.out.println("SpaceshipRosso");
+        spaceshipRosso.viewSpaceship();
+        System.out.println("SpaceshipBlu");
+        spaceshipBlu.viewSpaceship();
+        System.out.println("SpaceshipVerde");
+        spaceshipVerde.viewSpaceship();
+        System.out.println("SpaceshipGiallo");
+        spaceshipGiallo.viewSpaceship();
+
+
+ */
+
+
+        game.checkSpaceship(playerRosso);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerRosso.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerBlu);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerBlu.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerGiallo);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerGiallo.getStatePlayer());
+        assertEquals(StateGameType.CHECK, game.getCurrentState().getPhase());
+        game.checkSpaceship(playerVerde);
+        assertEquals(StatePlayerType.WRONG_SHIP, playerVerde.getStatePlayer());
+        assertEquals(StateGameType.CORRECTION, game.getCurrentState().getPhase());
+
+        game.removeTile(playerRosso,pos109);
+        game.removeTile(playerBlu,pos109);
+        game.removeTile(playerVerde,pos109);
+        game.removeTile(playerGiallo,pos109);
+
+        game.checkWrongSpaceship(playerRosso);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerRosso.getStatePlayer());
+        game.checkWrongSpaceship(playerBlu);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerBlu.getStatePlayer());
+        game.checkWrongSpaceship(playerGiallo);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerGiallo.getStatePlayer());
+        game.checkWrongSpaceship(playerVerde);
+        assertEquals(StatePlayerType.CORRECT_SHIP, playerVerde.getStatePlayer());
+
+        assertEquals(StateGameType.INITIALIZATION_SPACESHIP, game.getCurrentState().getPhase());
+        game.ready(playerGiallo);
+        assertEquals(true, spaceshipGiallo.calculateNumAlive()>0);
+        game.ready(playerVerde);
+        assertEquals(true, spaceshipVerde.calculateNumAlive()>0);
+        game.ready(playerBlu);
+        assertEquals(true, spaceshipBlu.calculateNumAlive()>0);
+        game.ready(playerRosso);
+        assertEquals(true, spaceshipRosso.calculateNumAlive()>0);
+
+        assertEquals(StateGameType.TAKE_CARD, game.getCurrentState().getPhase());
+
+        assertEquals(6, game.getGameboard().getPositions().get(playerRosso));
+        assertEquals(3, game.getGameboard().getPositions().get(playerBlu));
+        assertEquals(1, game.getGameboard().getPositions().get(playerVerde));
+        assertEquals(0, game.getGameboard().getPositions().get(playerGiallo));
+
+        game.playNextCard(playerRosso);
+
+
+
+        //game.tilesSituation();
+
+    }
+
+
 
 
 

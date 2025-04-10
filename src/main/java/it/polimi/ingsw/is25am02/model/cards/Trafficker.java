@@ -85,16 +85,14 @@ public class Trafficker extends Card {
     }
 
     @Override
-    public List<Box> choiceBox(Game game, Player player, boolean choice){
+    public void choiceBox(Game game, Player player, boolean choice){
         if(choice){
             setStateCard(StateCardType.BOXMANAGEMENT);
             game.getGameboard().move((-1)*daysLost, player);
-            return boxesWon;
         }
         else {
             game.getCurrentCard().setStateCard(StateCardType.FINISH);
             game.getCurrentState().setPhase(TAKE_CARD);
-            return null;
         }
     }
 

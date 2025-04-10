@@ -27,6 +27,7 @@ public class Game implements Game_Interface {
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
+    private List<Player> winners = new ArrayList<>();
 
     public Game(List<Player> p, int level) {
         this.players = p;
@@ -40,6 +41,57 @@ public class Game implements Game_Interface {
         this.hourglass = new Hourglass();
     }
 
+    //for testing
+    public void tilesSituation(){
+        System.out.println("Visible Tiles:");
+        Set<Tile> visibleTiles = new HashSet<>();
+        visibleTiles = getVisibleTiles();
+        for (Tile tile:visibleTiles){
+            if (tile==null){
+                System.out.print("|    |");
+            }
+            else if (tile.getType().equals(TileType.BATTERY)){
+                System.out.print("| B  |");
+            }
+            else if (tile.getType().equals(TileType.BROWN_CABIN)){
+                System.out.print("| BC |");
+            }
+            else if (tile.getType().equals(TileType.CABIN)){
+                System.out.print("| CB |");
+            }
+            else if (tile.getType().equals(TileType.CANNON)){
+                System.out.print("| CN |");
+            }
+            else if (tile.getType().equals(TileType.D_CANNON)){
+                System.out.print("|DCN |");
+            }
+            else if (tile.getType().equals(TileType.D_MOTOR)){
+                System.out.print("| DM |");
+            }
+            else if (tile.getType().equals(TileType.MOTOR)){
+                System.out.print("| M  |");
+            }
+            else if (tile.getType().equals(TileType.PURPLE_CABIN)){
+                System.out.print("| PC |");
+            }
+            else if (tile.getType().equals(TileType.SHIELD)){
+                System.out.print("| SH |");
+            }
+            else if (tile.getType().equals(TileType.SPECIAL_STORAGE)){
+                System.out.print("| SS |");
+            }
+            else if (tile.getType().equals(TileType.STORAGE)){
+                System.out.print("| S  |");
+            }
+            else if (tile.getType().equals(TileType.STRUCTURAL)){
+                System.out.print("| ST |");
+            }
+            else{
+                System.out.print("| Z |");
+            }
+        }
+        System.out.println();
+    }
     //getter
     public CardDeck getDeck() {
         return deck;
@@ -85,6 +137,11 @@ public class Game implements Game_Interface {
         this.diceResult = globalBoard.getDice().pickRandomNumber();
     }
 
+    public void setDiceResultForTesting(int  diceResult) {
+        this.diceResult = diceResult;
+
+    }
+
     public void setBuildTimeIsOver() {
         buildTimeIsOver = true;
     }
@@ -100,6 +157,8 @@ public class Game implements Game_Interface {
     public Card getCurrentCard() {
         return currentState.getCurrentCard();
     }
+
+    public List<Player> getWinners() { return winners; }
 
     public void nextPlayer() {
         int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
@@ -136,7 +195,7 @@ public class Game implements Game_Interface {
         }
     }
 
-    public List<Card> takeMiniDeck(Player player, int index) {
+    public void takeMiniDeck(Player player, int index) {
         try {
             levelControl();
             buildControl();
@@ -145,11 +204,10 @@ public class Game implements Game_Interface {
             deckAllowedControl(player);
 
             player.setNumDeck(index);
-            return deck.giveDeck(index);
+            deck.giveDeck(index);
 
         } catch (LevelException | IllegalStateException | IllegalPhaseException | AlreadyViewingException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 
@@ -170,7 +228,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public Tile takeTile(Player player) {
+    public void takeTile(Player player) {
         try {
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -181,11 +239,10 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException | AlreadyViewingException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
-        return player.getSpaceship().getCurrentTile();
     }
 
     @Override
-    public Tile takeTile(Player player, Tile tile) {
+    public void takeTile(Player player, Tile tile) {
         try {
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
@@ -197,7 +254,6 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException | AlreadyViewingException | IllegalRemoveException | IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
-        return player.getSpaceship().getCurrentTile();
     }
 
     @Override
@@ -215,12 +271,14 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void addTile(Player player, Coordinate pos) {
+    public void addTile(Player player, Coordinate pos,  RotationType rotation) {
         try {
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
+            Tile currentTile = player.getSpaceship().getCurrentTile();
+            currentTile.setRotationType(rotation);
 
-            player.getSpaceship().addTile(pos.x(), pos.y(), player.getSpaceship().getCurrentTile());
+            player.getSpaceship().addTile(pos.x(), pos.y(), currentTile);
 
             //player can see the minidecks
             if (!player.getDeckAllowed()) {
@@ -244,13 +302,13 @@ public class Game implements Game_Interface {
         }
     }
 
-    public void addBookedTile(Player player, int index, Coordinate pos) {
+    public void addBookedTile(Player player, int index, Coordinate pos, RotationType  rotation) {
         try {
             levelControl();
             buildControl();
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
-            player.getSpaceship().addBookedTile(index, pos.x(), pos.y());
+            player.getSpaceship().addBookedTile(index, pos.x(), pos.y(), rotation);
         } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
             System.out.println(e.getMessage());
         }
@@ -364,7 +422,7 @@ public class Game implements Game_Interface {
     @Override
     public void ready(Player player) {
         try {
-            stateControl(INITIALIZATION_GAME, CORRECT_SHIP, FINISH, player);
+            stateControl(INITIALIZATION_SPACESHIP, CORRECT_SHIP, FINISH, player);
 
             player.setStatePlayer(IN_GAME);
             readyPlayer++;
@@ -420,23 +478,6 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public HashMap<Player, Integer> getPosition() {
-        return getGameboard().getPositions();
-    }
-
-    @Override
-    public List<Tile> possibleChoice(Player player, TileType type) {
-        try {
-            stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
-            return player.getSpaceship().getTilesByType(type);
-
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
     public void choice(Player player, boolean choice) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
@@ -463,15 +504,14 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public List<Box> choiceBox(Player player, boolean choice) {
+    public void choiceBox(Player player, boolean choice) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             currentPlayerControl(player);
 
-            return getCurrentCard().choiceBox(this, player, choice);
+            getCurrentCard().choiceBox(this, player, choice);
         } catch (IllegalStateException | UnsupportedOperationException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 
@@ -495,15 +535,14 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public List<Box> choicePlanet(Player player, int index) {
+    public void choicePlanet(Player player, int index) {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             currentPlayerControl(player);
 
-            return getCurrentCard().choicePlanet(this, player, index);
+            getCurrentCard().choicePlanet(this, player, index);
         } catch (IllegalStateException | UnsupportedOperationException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 
@@ -596,7 +635,9 @@ public class Game implements Game_Interface {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
-            typeControl(player, pos, TileType.BATTERY);
+            if(player.getSpaceship().getTile(pos.x(), pos.y()).isPresent()){
+                typeControl(player, pos, TileType.BATTERY);
+            }
 
             getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(),pos.y()));
         } catch (IllegalStateException | IllegalPhaseException | UnsupportedOperationException |
@@ -632,14 +673,13 @@ public class Game implements Game_Interface {
 
 
     @Override
-    public ArrayList<Player> getWinners() {
+    public void Winners() {
         try {
             if (getCurrentState().getPhase() != RESULT) {
                 throw new IllegalStateException("Wrong State");
             }
 
             int minExposedConnectors = Integer.MAX_VALUE;
-            ArrayList<Player> winners = new ArrayList<>();
 
             for (Player p : getPlayers()) {
                 //Boxes Values
@@ -692,11 +732,10 @@ public class Game implements Game_Interface {
             }
 
             winners.sort((p1, p2) -> Integer.compare(p1.getSpaceship().getCosmicCredits(), p2.getSpaceship().getCosmicCredits()));
-            return winners;
+            //todo chiama un metodo della view per mostrare la classifica
 
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
 
@@ -756,6 +795,7 @@ public class Game implements Game_Interface {
         }
     }
 
+
     private void deckAllowedControl(Player player) throws IllegalPhaseException {
         if (!player.getDeckAllowed()) {
             throw new IllegalPhaseException("the player " + player.getNickname() + " is not allowed to see the minidecks");
@@ -791,7 +831,15 @@ public class Game implements Game_Interface {
             typeControl(player, c2.get(i), TileType.BATTERY);
         }
 
-        //todo controllo numero batterie per remove
+        HashMap<Coordinate, Integer> control = new HashMap<>();
+        for(Coordinate c : c2) {
+            control.put(c, control.getOrDefault(c, 0) + 1);
+        }
+        for(Coordinate c : c2) {
+            if(control.get(c) > giveTile(player,c).getNumBattery()){
+                throw new TileException("Battery limit exceeded");
+            }
+        }
     }
 
     private void moveControl(Player player, Coordinate start, Coordinate end, BoxType boxType) throws IllegalAddException, TileException {

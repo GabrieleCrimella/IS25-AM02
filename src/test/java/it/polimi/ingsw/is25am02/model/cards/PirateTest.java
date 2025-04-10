@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PirateTest {
 
-    //todo
     @Test
     void test_should_check_if_player_doesnt_have_enough_cannon_power() {
         //4 spaceship
@@ -59,15 +59,15 @@ class PirateTest {
         }
 
 
-        //tile 2 - Storage 7 6
+        //tile 2 - Storage 6 7
         TileType t2 = TileType.STORAGE;
-        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        ConnectorType[] connectors2 = {ConnectorType.SINGLE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
         Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
         try {
-            spaceship1.addTile(7, 6, storage1);
+            spaceship1.addTile(6, 7, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -75,7 +75,7 @@ class PirateTest {
 
         //tile 3 - battery 8 7
         TileType t3 = TileType.BATTERY;
-        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
+        ConnectorType[] connectors3 = {ConnectorType.DOUBLE, ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
@@ -88,7 +88,7 @@ class PirateTest {
 
         //tile 5 - dcannon 8 6
         TileType t5 = TileType.D_CANNON;
-        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
+        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, id5);
@@ -109,6 +109,18 @@ class PirateTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
+
+        //tile 7 - cabin 7 8
+        TileType t7 = TileType.CABIN;
+        ConnectorType[] connectors7 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE};
+        RotationType rotationType7 = RotationType.NORTH;
+        int id7 = 1;
+        Tile cabin7 = new Cabin(t7, connectors7, rotationType7, id7);
+        try {
+            spaceship1.addTile(7, 8, cabin7);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
         //finished spaceships and initializing them
         player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
@@ -117,6 +129,9 @@ class PirateTest {
 
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
         Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
         game.addCrew(player1, pos, AliveType.HUMAN);
 
         game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
@@ -129,7 +144,8 @@ class PirateTest {
         int daysLost = 1;
         int credit = 2;
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
-        //todo inizializzare shots
+        Pair<Integer, RotationType> singleShot = new Pair<>(0,RotationType.NORTH);
+        shots.add(singleShot);
         Card pirate = new Pirate(level, cannonPowers, daysLost, credit, shots);
 
         game.getCurrentState().setCurrentCard(pirate);
@@ -144,8 +160,23 @@ class PirateTest {
 
 
         game.choiceDoubleCannon(player1, coordcannon, coordbatt);
-        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
-        //todo controllare che la nave viene colpita dagli shots
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
+        //controllare che la nave viene colpita dallo shots 0 north
+
+        try {
+            pirate.setPhase(2);
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //la batteria è in 87
+        game.calculateDamage(player1,new Coordinate(8,7));
+        try {
+            pirate.keepBlocks(game,player1,new Coordinate(7,8)); //voglio tenere la parte di nave composta dalla casella 7,8
+        } catch (IllegalPhaseException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(5, player1.getSpaceship().getNumOfWastedTiles());
 
     }
 

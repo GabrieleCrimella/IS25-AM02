@@ -33,6 +33,10 @@ public class CardDeck {
         } else createDecks();
     }
 
+    public HashMap<Integer, Pair<List<Card>, Boolean>> getDeck() {
+        return deck;
+    }
+
     public List<Card> getInitialDeck() {
         return initialDeck;
     }
@@ -288,7 +292,7 @@ public class CardDeck {
         Collections.shuffle(finalDeck);//mischio le carte
     }
 
-    public List<Card> giveDeck(int numDeck) throws AlreadyViewingException {
+    public void giveDeck(int numDeck) throws AlreadyViewingException {
         if(deck.get(numDeck).getValue()){
             throw new AlreadyViewingException("someone else is already looking at the deck " + numDeck);
         }
@@ -296,9 +300,7 @@ public class CardDeck {
             throw new AlreadyViewingException("numDeck is out of bounds");
         }
         else {
-            Pair<List<Card>, Boolean> pair = deck.get(numDeck);
-            deck.put(numDeck, new Pair<>(pair.getKey(), true));
-            return pair.getKey();
+            deck.put(numDeck, new Pair<>(deck.get(numDeck).getKey(), true));
         }
     }
 

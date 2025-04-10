@@ -40,7 +40,7 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public List<Box> choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException {
+    public void choiceBox(Game game, Player player, boolean choice) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
@@ -48,11 +48,21 @@ public abstract class Card {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
-    public List<Box> choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException, IllegalArgumentException {
+    public void choicePlanet(Game game, Player player, int index) throws UnsupportedOperationException, IllegalArgumentException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     public void choiceDoubleMotor(Game game, Player player, List<Coordinate> motors, List<Coordinate> batteries) throws UnsupportedOperationException, IllegalPhaseException, IllegalRemoveException {// il primo tile è dmotor, il secondo battery storage
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
+
+    //solo per testing
+    public void setCurrentPhase(int currentPhase) throws  IllegalPhaseException{
+        throw new UnsupportedOperationException("Not supported method" + this.getCardType());
+    }
+
+    //solo per testing
+    public void setPhase(int phase) throws IllegalPhaseException{
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 

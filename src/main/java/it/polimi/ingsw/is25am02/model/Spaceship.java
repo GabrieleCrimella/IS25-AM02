@@ -15,8 +15,6 @@ public class Spaceship {
     private Tile currentTile;
     private int targetTileX, targetTileY;
     private final HashMap<Integer, Tile> bookedTiles;
-
-    //todo Attributo per salvare i possibili rami Aggiunto da Davide
     private List<boolean[][]> branches;
 
     public Spaceship(int level) {
@@ -25,8 +23,6 @@ public class Spaceship {
         this.cosmicCredits = 0;
         this.bookedTiles = new HashMap<>();
         currentTile = null;
-
-        //todo aggiunto da davide
         branches = new ArrayList<>();
 
         bookedTiles.put(1, null);
@@ -37,12 +33,103 @@ public class Spaceship {
         return spaceshipIterator.reference();
     }
 
-    //serve solo per il testing, per vedere che la legge correttamente da json
-    /*
-     * public boolean[][] getMaskSpaceship() {
-     *    return maskSpaceship;
-     * }
-     */
+    //per il testing
+    public void viewSpaceship(){
+        System.out.println("Booked Tiles:");
+        for (int i=1;i<3;i++){
+            if (bookedTiles.get(i)==null){
+                System.out.print("|    |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.BATTERY)){
+                System.out.print("| B  |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.BROWN_CABIN)){
+                System.out.print("| BC |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.CABIN)){
+                System.out.print("| CB |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.CANNON)){
+                System.out.print("| CN |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.D_CANNON)){
+                System.out.print("|DCN |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.D_MOTOR)){
+                System.out.print("| DM |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.MOTOR)){
+                System.out.print("| M  |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.PURPLE_CABIN)){
+                System.out.print("| PC |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.SHIELD)){
+                System.out.print("| SH |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.SPECIAL_STORAGE)){
+                System.out.print("| SS |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.STORAGE)){
+                System.out.print("| S  |");
+            }
+            else if (bookedTiles.get(i).getType().equals(TileType.STRUCTURAL)){
+                System.out.print("| ST |");
+            }
+            else{
+                System.out.print("| Z |");
+            }
+        }
+        System.out.println();
+        System.out.println("Spaceship View:");
+        for (int i=0;i<12; i++){
+            for (int j=0;j<12;j++){
+                if (getTile(i,j).isEmpty()){
+                    System.out.print("|    |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.BATTERY)){
+                    System.out.print("| B  |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.BROWN_CABIN)){
+                    System.out.print("| BC |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.CABIN)){
+                    System.out.print("| CB |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.CANNON)){
+                    System.out.print("| CN |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.D_CANNON)){
+                    System.out.print("|DCN |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.D_MOTOR)){
+                    System.out.print("| DM |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.MOTOR)){
+                    System.out.print("| M  |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.PURPLE_CABIN)){
+                    System.out.print("| PC |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.SHIELD)){
+                    System.out.print("| SH |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.SPECIAL_STORAGE)){
+                    System.out.print("| SS |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.STORAGE)){
+                    System.out.print("| S  |");
+                }
+                else if (getTile(i,j).isPresent() && getTile(i,j).get().getType().equals(TileType.STRUCTURAL)){
+                    System.out.print("| ST |");
+                }
+                else{
+                    System.out.print("| Z |");
+                }
+            }
+            System.out.println();
+        }
+    }
 
     public HashMap<Integer, Tile> getBookedTiles() {
         return bookedTiles;
@@ -50,6 +137,7 @@ public class Spaceship {
 
     public void addTile(int x, int y, Tile t) throws IllegalAddException {
         spaceshipIterator.addTile(t, x, y);
+        currentTile = null;
     }
 
     public void bookTile(Player player) throws IllegalAddException {
@@ -65,14 +153,16 @@ public class Spaceship {
                 bookedTiles.put(2, currentTile);
                 returnTile();
             }
+            currentTile = null;
         }
     }
 
-    public void addBookedTile(int index, int x, int y) throws IllegalAddException {
+    public void addBookedTile(int index, int x, int y, RotationType rotation) throws IllegalAddException {
         if (index < 1 || index > 2) {
             throw new IllegalAddException("index must be between 1 and 2");
         } else {
             addTile(x, y, bookedTiles.get(index));
+            getTile(x,y).get().setRotationType(rotation);
             bookedTiles.put(index, null);
         }
     }
@@ -93,8 +183,7 @@ public class Spaceship {
             List<Tile> down = new ArrayList<>();
             List<Tile> left = new ArrayList<>();
 
-            //todo Cancello la tessera
-            spaceshipIterator.removeOneTile(x, y);
+
 
             if (spaceshipIterator.getUpTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getUpTile(toRemove).get(), RotationType.NORTH)) {
                 up = startVisit(toRemove, RotationType.NORTH);
@@ -109,6 +198,10 @@ public class Spaceship {
                 left = startVisit(toRemove, RotationType.WEST);
             }
 
+            spaceshipIterator.removeOneTile(x, y);
+            numOfWastedTiles++;
+
+            //todo qui il controllo per alieni che devono lasciare la nave
             List<List<Tile>> effectiveBlocks = new LinkedList<>();
             generateBlocks(up, effectiveBlocks);
             generateBlocks(right, effectiveBlocks);
@@ -124,10 +217,8 @@ public class Spaceship {
                 booleanBlocks.add(booleanBlock);
             }
             if (booleanBlocks.isEmpty()) {
-                //todo al posto di return
                 branches = null;
             } else {
-                //todo al posto di return
                 branches = booleanBlocks;
             }
         }
@@ -233,7 +324,7 @@ public class Spaceship {
         if (power > 0) { //ci deve essere almeno un cannone
             List<Tile> cabins = getTilesByType(TileType.CABIN);
             for (Tile cabin : cabins) {
-                if (cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)) {
+                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)) {
                     power = power + 2;
                     break;
                 }
@@ -250,7 +341,7 @@ public class Spaceship {
 
         if (power > 0) {
             for (Tile cabin : getTilesByType(TileType.CABIN)) {
-                if (cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)) {
+                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)) {
                     power = power + 2;
                     break;
                 }
@@ -372,7 +463,7 @@ public class Spaceship {
             }
         }
 
-        if(spaceshipIterator.getTileInStartingPosition().isEmpty())
+        if (spaceshipIterator.getTileInStartingPosition().isEmpty())
             return false;
 
         Tile current = spaceshipIterator.getTileInStartingPosition().get();
@@ -395,9 +486,10 @@ public class Spaceship {
             }
         }
 
-        return visited.size() != spaceshipIterator.returnAllTiles().size();
+        return visited.size() == spaceshipIterator.returnAllTiles().size();
     }
 
+    //todo controllare se le eccezioni sono chiamate giuste
     public void removeBattery(BatteryStorage t) throws IllegalRemoveException {
         t.removeBattery();
     }
@@ -405,35 +497,51 @@ public class Spaceship {
     //il metodo controlla se è esposto un certo lato nella riga/colonna num
     public boolean isExposed(RotationType rotationType, int num) {
         if (rotationType == RotationType.NORTH) {
-            for (int t = 0; t < 12; t++) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) != ConnectorType.NONE) {
+            for (int t = 0; t < 11; t++) {
+                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                    targetTileX = num;
+                    targetTileY = t;
+                    return false;
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) != ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
                     return true;
                 }
             }
         } else if (rotationType == RotationType.SOUTH) {
-            for (int t = 12; t > 0; t--) {
+            for (int t = 11; t > 0; t--) {
                 if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.SOUTH) != ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
                     return true;
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                    targetTileX = num;
+                    targetTileY = t;
+                    return false;
                 }
             }
         } else if (rotationType == RotationType.EAST) {
-            for (int t = 12; t > 0; t--) {
+            for (int t = 11; t > 0; t--) {
                 if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.EAST) != ConnectorType.NONE) {
                     targetTileX = t;
                     targetTileY = num;
                     return true;
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                    targetTileX = t;
+                    targetTileY = num;
+                    return false;
                 }
             }
         } else if (rotationType == RotationType.WEST) {
-            for (int t = 0; t < 12; t++) {
+            for (int t = 0; t < 11; t++) {
                 if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.WEST) != ConnectorType.NONE) {
                     targetTileX = t;
                     targetTileY = num;
                     return true;
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                    targetTileX = t;
+                    targetTileY = num;
+                    return false;
                 }
             }
         }
@@ -445,8 +553,6 @@ public class Spaceship {
     }// è la tile che sto guardando
 
 
-    //todo da controllare
-    //todo bisogna gestire il fatto che se viene colpito un supporto vitale allora va rimosso l'alieno nella cabina vicino
     //calcola la distruzione della nave in base a dove è arrivato il meteorite
     //può essere che non ci sia damage perchè il num e la rotation non fanno male alla spaceship
     //ritorna 0 se la nave non è stata divisa in sotto parti
@@ -457,6 +563,9 @@ public class Spaceship {
                 if (isExposed(rotationType, num)) {
                     if (isShielded(rotationType) && storage.isPresent()) {
                         storage.get().removeBattery();
+                        return isSpaceshipDivided();
+                    }
+                    else{
                         removeTile(targetTileX, targetTileY);
                         return isSpaceshipDivided();
                     }
@@ -467,7 +576,8 @@ public class Spaceship {
                     Optional<Tile> cannon = CoveredByWhatCannon(rotationType, num);
                     if (cannon.isPresent() && cannon.get().getType().equals(TileType.CANNON)) {
                         return false;
-                    } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON)) {
+                    } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
+                        storage.get().removeBattery();
                         return false;
                     } else {
                         removeTile(targetTileX, targetTileY);
@@ -479,7 +589,6 @@ public class Spaceship {
         }
     }
 
-    //todo controllare batterie
     public boolean shotDamage(int bigOrSmall, RotationType rotationType, int num, Optional<Tile> storage) throws IllegalRemoveException {
         Optional<Tile> target = targetTile(rotationType, num);
         switch (bigOrSmall) {
@@ -488,6 +597,10 @@ public class Spaceship {
                     if (!isShielded(rotationType)) {
                         removeTile(targetTileX, targetTileY);
                         return isSpaceshipDivided();
+                    }
+                    else{
+                        storage.get().removeBattery();
+                        return false;
                     }
                 } else return false;
             case 1: //Big
@@ -500,7 +613,7 @@ public class Spaceship {
         }
     }
 
-    private boolean isSpaceshipDivided(){
+    private boolean isSpaceshipDivided() {
         return !branches.isEmpty();
     }
 
@@ -524,26 +637,13 @@ public class Spaceship {
         return human;
     }
 
-    //Mi dice se la tile appartiene alla nave
-    public boolean own(Tile tile) {
-        for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().equals(tile)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     // Mi dice se il tipo di box passato è al pari del blocco più pregiato della nave
     //se non ci sono box ritorno false, rosso giallo verde blu
     public boolean isMostExpensive(BoxType type) {
         int numType = BoxType.getNumByTypeBox(type);
         int numBestType = BoxType.getNumByTypeBox(BoxType.BLUE);
         for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().getType().equals(TileType.SPECIAL_STORAGE) && t.get().getOccupation() != null) {
-                return type.equals(BoxType.RED);
-            } else if (t.isPresent() && t.get().getType().equals(TileType.STORAGE)) {
+            if (t.isPresent() && t.get().getType().equals(TileType.STORAGE) || t.get().getType().equals(TileType.SPECIAL_STORAGE)) {
                 if (numBestType < BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType())) {
                     numBestType = BoxType.getNumByTypeBox(t.get().getOccupation().getFirst().getType());//getOccupation ritorna una lista ordinata dal box più pregiato al meno
                 }
@@ -613,10 +713,6 @@ public class Spaceship {
         return temp;
     }
 
-    //A fronte della rimozione di una tile mi dice se ho vari rami o solo 1
-    private boolean DividedSpaceship() {
-        return false;
-    }
 
     private Optional<Tile> targetTile(RotationType type, int num) {
         targetTileX = 0;
@@ -660,6 +756,47 @@ public class Spaceship {
 
     //Mi dice se ho un cannone che può sparare al meteorite e mi passa il cannone
     private Optional<Tile> CoveredByWhatCannon(RotationType type, int num) {
+        if (type == RotationType.NORTH) {
+            for (int t = 0; t < 11; t++) {
+                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))){
+                    return getTile(num, t);
+                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
+                    return Optional.empty();
+                }
+            }
+        } else if (type == RotationType.SOUTH) {
+            for (int t = 11; t > 0; t--) {
+                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
+                    return getTile(num, t);
+                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
+                    return Optional.empty();
+                }
+            }
+        } else if (type == RotationType.EAST) {
+            for (int t = 11; t > 0; t--) {
+                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
+                    return getTile(t, num);
+                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
+                    return Optional.empty();
+                }
+            }
+        } else if (type == RotationType.WEST) {
+            for (int t = 0; t < 11; t++) {
+                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
+                    return getTile(t, num);
+                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
+                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
+                    return Optional.empty();
+                }
+            }
+        }
         return Optional.empty();
     }
 }

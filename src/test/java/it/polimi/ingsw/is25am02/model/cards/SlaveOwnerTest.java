@@ -294,15 +294,7 @@ class SlaveOwnerTest {
 
         game.getCurrentState().setCurrentCard(slaveOwner);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-/*
-        Pair<Tile, Tile> primaCoppia = new  Pair<>(dcannon1, battery3);
-        Pair<Tile, Tile> secondaCoppia = new  Pair<>(dcannon2, battery3);
-        List<Pair<Tile, Tile>> listaDoppiCannoniAttivi = new ArrayList<>();
-        listaDoppiCannoniAttivi.add(primaCoppia);
-        listaDoppiCannoniAttivi.add(secondaCoppia);
-        Optional<List<Pair<Tile, Tile>>> optionalListaDoppiCannoniAttivi = Optional.of(listaDoppiCannoniAttivi);
 
- */
         List<Coordinate> dcannonAttivi= new ArrayList<>();
         Coordinate pos86 = new Coordinate(8,6);
         dcannonAttivi.add(pos86);
@@ -457,15 +449,6 @@ class SlaveOwnerTest {
 
         game.getCurrentState().setCurrentCard(slaveOwner);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-/*
-        Pair<Tile, Tile> primaCoppia = new  Pair<>(dcannon1, battery3);
-        Pair<Tile, Tile> secondaCoppia = new  Pair<>(dcannon2, battery3);
-        List<Pair<Tile, Tile>> listaDoppiCannoniAttivi = new ArrayList<>();
-        listaDoppiCannoniAttivi.add(primaCoppia);
-        listaDoppiCannoniAttivi.add(secondaCoppia);
-        Optional<List<Pair<Tile, Tile>>> optionalListaDoppiCannoniAttivi = Optional.of(listaDoppiCannoniAttivi);
-
- */
 
         List<Coordinate> dcannonAttivi= new ArrayList<>();
         Coordinate pos86 = new Coordinate(8,6);

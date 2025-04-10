@@ -22,10 +22,10 @@ class AbbandonedShipTest {
 
     public Game make_a_spaceship(){
         //4 spaceship
-        Spaceship spaceship1 = new Spaceship(0);
-        Spaceship spaceship2 = new Spaceship(0);
-        Spaceship spaceship3 = new Spaceship(0);
-        Spaceship spaceship4 = new Spaceship(0);
+        Spaceship spaceship1 = new Spaceship(2);
+        Spaceship spaceship2 = new Spaceship(2);
+        Spaceship spaceship3 = new Spaceship(2);
+        Spaceship spaceship4 = new Spaceship(2);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
         Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
@@ -36,8 +36,8 @@ class AbbandonedShipTest {
         players.add(player2);
         players.add(player3);
         players.add(player4);
-        //game di livello 0 con i 4 players
-        Game game = new Game(players,0);
+        //game di livello 2 con i 4 players
+        Game game = new Game(players,2);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
 
@@ -128,11 +128,6 @@ class AbbandonedShipTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-
-        Coordinate pos1 = new Coordinate(7,7);
-        game.addCrew(player1, pos1, AliveType.HUMAN);
-        Coordinate pos2 = new Coordinate(8,7);
-        game.addCrew(player1, pos2,AliveType.HUMAN);
 
         //inizializzo spaceship2
         //tile 1 - cabin centrale
@@ -147,9 +142,6 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
-        Coordinate pos3 = new Coordinate(7,7);
-        game.addCrew(player2, pos3, AliveType.HUMAN);
-
         //inizializzo spaceship3
         //tile 1 - cabin centrale
         TileType t31 = TileType.CABIN;
@@ -162,8 +154,6 @@ class AbbandonedShipTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-        Coordinate pos4 = new Coordinate(7,7);
-        game.addCrew(player3, pos4, AliveType.HUMAN);
 
         //inizializzo spaceship4
         //tile 1 - cabin centrale
@@ -178,17 +168,43 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+
+        Coordinate pos4 = new Coordinate(7,7);
+        game.addCrew(player3, pos4, AliveType.HUMAN);
+
+        Coordinate pos3 = new Coordinate(7,7);
+        game.addCrew(player2, pos3, AliveType.HUMAN);
+
         Coordinate pos5 = new Coordinate(7,7);
         game.addCrew(player4, pos5, AliveType.HUMAN);
+
+        Coordinate pos1 = new Coordinate(7,7);
+        game.addCrew(player1, pos1, AliveType.HUMAN);
+        Coordinate pos2 = new Coordinate(8,7);
+        game.addCrew(player1, pos2,AliveType.HUMAN);
+
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+
         return game;
     }
 
     public Game make_a_spaceship_with_aliens_for_spaceship_2(){
         //4 spaceship
-        Spaceship spaceship1 = new Spaceship(0);
-        Spaceship spaceship2 = new Spaceship(0);
-        Spaceship spaceship3 = new Spaceship(0);
-        Spaceship spaceship4 = new Spaceship(0);
+        Spaceship spaceship1 = new Spaceship(2);
+        Spaceship spaceship2 = new Spaceship(2);
+        Spaceship spaceship3 = new Spaceship(2);
+        Spaceship spaceship4 = new Spaceship(2);
         //4 player
         Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
         player1.setStatePlayer(StatePlayerType.IN_GAME);
@@ -201,8 +217,8 @@ class AbbandonedShipTest {
         players.add(player2);
         players.add(player3);
         players.add(player4);
-        //game di livello 0 con i 4 players
-        Game game = new Game(players,0);
+        //game di livello 2 con i 4 players
+        Game game = new Game(players,2);
         //inizializzo
         game.getGameboard().initializeGameBoard(players);
 
@@ -293,10 +309,6 @@ class AbbandonedShipTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-        Coordinate pos5 = new Coordinate(7,7);
-        game.addCrew(player1, pos5, AliveType.HUMAN);
-        Coordinate pos6 = new Coordinate(8,7);
-        game.addCrew(player1, pos6,AliveType.HUMAN);
 
         //inizializzo spaceship2
         //tile 1 - cabin centrale
@@ -316,14 +328,12 @@ class AbbandonedShipTest {
         ConnectorType[] connectors22 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 1;
-        Tile purplecabin22 = new PurpleCabin(t21, connectors21, rotationType21, id21);
+        Tile purplecabin22 = new PurpleCabin(t22, connectors22, rotationType22, id22);
         try {
             spaceship2.addTile(7,8, purplecabin22);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
-        Coordinate pos7 = new Coordinate(7,7);
-        game.addCrew(player2, pos7, AliveType.PURPLE_ALIEN);
 
         //inizializzo spaceship3
         //tile 1 - cabin centrale
@@ -338,9 +348,6 @@ class AbbandonedShipTest {
             System.out.println(e.getMessage());
         }
 
-        Coordinate pos9 = new Coordinate(7,7);
-        game.addCrew(player3, pos9, AliveType.HUMAN);
-
         //inizializzo spaceship4
         //tile 1 - cabin centrale
         TileType t41 = TileType.CABIN;
@@ -353,9 +360,32 @@ class AbbandonedShipTest {
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
 
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+
+        Coordinate pos7 = new Coordinate(7,7);
+        game.addCrew(player2, pos7, AliveType.PURPLE_ALIEN);
         Coordinate pos8 = new Coordinate(7,7);
         game.addCrew(player4, pos8, AliveType.HUMAN);
+        Coordinate pos5 = new Coordinate(7,7);
+        game.addCrew(player1, pos5, AliveType.HUMAN);
+        Coordinate pos6 = new Coordinate(8,7);
+        game.addCrew(player1, pos6,AliveType.HUMAN);
+
+        Coordinate pos9 = new Coordinate(7,7);
+        game.addCrew(player3, pos9, AliveType.HUMAN);
+
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+
         return game;
     }
 
@@ -363,7 +393,7 @@ class AbbandonedShipTest {
     void test_should_check_AbbandonedShip_when_first_wants_to_use_card_and_only_has_humans(){
         Game game = make_a_spaceship();
         //CreateCard
-        int level = 0;
+        int level = 2;
         int AliveLost = 2;
         int creditWin = 2;
         int flyBack = 1;
@@ -397,7 +427,7 @@ class AbbandonedShipTest {
         assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTile(7,7).get().getCrew().size());
         assertEquals(1, game.getPlayers().getFirst().getSpaceship().getTile(8,7).get().getCrew().size());
         //check position on board
-        assertEquals(3, game.getGameboard().getPositions().get(game.getPlayers().getFirst()));
+        assertEquals(5, game.getGameboard().getPositions().get(game.getPlayers().getFirst()));
 
     }
 
@@ -405,7 +435,7 @@ class AbbandonedShipTest {
     void test_should_check_AbbandonedShip_when_second_wants_to_use_card_and_only_has_humans(){
         Game game = make_a_spaceship();
         //CreateCard
-        int level = 0;
+        int level = 2;
         int AliveLost = 2;
         int creditWin = 2;
         int flyBack = 1;
@@ -447,8 +477,8 @@ class AbbandonedShipTest {
         assertEquals(0, game.getPlayers().get(1).getSpaceship().getTile(7,7).get().getCrew().size());
 
         //check position on board
-        assertEquals(4, game.getGameboard().getPositions().get(game.getPlayers().getFirst()));
-        assertEquals(-1, game.getGameboard().getPositions().get(game.getPlayers().get(1)));
+        assertEquals(6, game.getGameboard().getPositions().get(game.getPlayers().getFirst()));
+        assertEquals(2, game.getGameboard().getPositions().get(game.getPlayers().get(1)));
         assertEquals(1, game.getGameboard().getPositions().get(game.getPlayers().get(2)));
         assertEquals(0, game.getGameboard().getPositions().get(game.getPlayers().get(3)));
     }
@@ -457,7 +487,7 @@ class AbbandonedShipTest {
     void test_should_check_AbbandonedShip_when_second_wants_to_use_card_and_has_aliens(){
         Game game = make_a_spaceship_with_aliens_for_spaceship_2();
         //CreateCard
-        int level = 0;
+        int level = 2;
         int AliveLost = 1;
         int creditWin = 2;
         int flyBack = 1;
@@ -488,15 +518,15 @@ class AbbandonedShipTest {
         }
 
         //Check correct card state
-        assertEquals(true, game.getCurrentState().equals(StateCardType.FINISH));
+        assertEquals(true, game.getCurrentState().getPhase().equals(StateGameType.TAKE_CARD));
         //Check correct number of alive
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(7,7).get().getCrew().size());
         assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(8,7).get().getCrew().size());
         assertEquals(0, game.getPlayers().get(1).getSpaceship().getTile(7,7).get().getCrew().size());
 
         //check position on board
-        assertEquals(4, game.getGameboard().getPositions().get(game.getPlayers().getFirst()));
-        assertEquals(-1, game.getGameboard().getPositions().get(game.getPlayers().get(1)));
+        assertEquals(6, game.getGameboard().getPositions().get(game.getPlayers().getFirst()));
+        assertEquals(2, game.getGameboard().getPositions().get(game.getPlayers().get(1)));
         assertEquals(1, game.getGameboard().getPositions().get(game.getPlayers().get(2)));
         assertEquals(0, game.getGameboard().getPositions().get(game.getPlayers().get(3)));
     }

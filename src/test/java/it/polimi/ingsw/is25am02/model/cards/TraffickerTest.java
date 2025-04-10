@@ -286,7 +286,7 @@ class TraffickerTest {
         //Create current card in state choice attributes
 
         //create card
-        int level = 0;
+        int level = 2;
         int cannonPowers = 3;
         int daysLost = 1;
         int boxLost = 2 ;
@@ -297,7 +297,7 @@ class TraffickerTest {
         boxWonTypes.add(BoxType.YELLOW);
         boxWonTypes.add(BoxType.GREEN);
         BoxStore store = new BoxStore();
-        Card trafficker = new Trafficker(0,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
+        Card trafficker = new Trafficker(2,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
 
         game.getCurrentState().setCurrentCard(trafficker);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -319,7 +319,8 @@ class TraffickerTest {
         assertEquals(StateCardType.DECISION, game.getCurrentState().getCurrentCard().getStateCard());
         //il giocatore vince contro i contrabbandieri e guadagna 2 box ma perde 1 giorno di volo
 
-        List<Box> checkBoxWon = game.choiceBox(player1,true);
+        game.choiceBox(player1,true);
+        List<Box> checkBoxWon = trafficker.getBoxesWon();
         List<Box> correctWonBox = new ArrayList<>();
         Box yb = new YellowBox(BoxType.YELLOW);
         Box gb = new GreenBox(BoxType.GREEN);
@@ -332,7 +333,7 @@ class TraffickerTest {
     }
 
     @Test
-    void test_should_check_if_player_has_enough_cannon_power_and_doesnt_use_it(){
+    void test_should_check_if_player_has_enough_cannon_power_and_doesnt_want_the_boxes(){
         //4 spaceship
         Spaceship spaceship1 = new Spaceship(2);
         Spaceship spaceship2 = new Spaceship(2);
@@ -449,7 +450,7 @@ class TraffickerTest {
         boxWonTypes.add(BoxType.YELLOW);
         boxWonTypes.add(BoxType.GREEN);
         BoxStore store = new BoxStore();
-        Card trafficker = new Trafficker(0,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
+        Card trafficker = new Trafficker(2,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
 
         game.getCurrentState().setCurrentCard(trafficker);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -471,7 +472,7 @@ class TraffickerTest {
         assertEquals(StateCardType.DECISION, game.getCurrentState().getCurrentCard().getStateCard());
         //il giocatore vince contro i contrabbandieri ma non vuole guadagnare nulla, quindi non perde giorni di volo
 
-        assertNull(game.choiceBox(player1,false));
+        game.choiceBox(player1,false);
         assertTrue(game.getPlayers().getFirst().getSpaceship().noBox());
 
 
@@ -603,7 +604,7 @@ class TraffickerTest {
         boxWonTypes.add(BoxType.YELLOW);
         boxWonTypes.add(BoxType.GREEN);
         BoxStore store = new BoxStore();
-        Card trafficker = new Trafficker(0,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
+        Card trafficker = new Trafficker(2,store, cannonPowers, daysLost,boxLost,boxWon, boxWonTypes);
 
         game.getCurrentState().setCurrentCard(trafficker);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
