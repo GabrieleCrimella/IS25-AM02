@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
+import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.NOT_FINISHED;
 
@@ -9,15 +10,18 @@ public class Player {
     private final Spaceship spaceship;
     private final String nickname;
     private final PlayerColor color;
+    private final VirtualView observer;
     private StatePlayerType statePlayer;
     private boolean deckAllowed;
     private int numDeck;
-    private int lobbyId;
+    private final int lobbyId;
 
-    public Player(Spaceship spaceship, String nickname, PlayerColor color) {
+    public Player(Spaceship spaceship, String nickname, PlayerColor color, VirtualView observer, int lobbyId) {
         this.spaceship = spaceship;
         this.nickname = nickname;
         this.color = color;
+        this.observer = observer;
+        this.lobbyId = lobbyId;
         this.statePlayer = NOT_FINISHED;
         this.deckAllowed = false;
         this.numDeck = -1;
@@ -25,11 +29,6 @@ public class Player {
 
     public int getLobbyId() {
         return lobbyId;
-    }
-
-    //todo andrebbe messo nel costruttore ma vorrebbe dire sistemare tutti i test
-    public void setLobbyId(int lobbyId) {
-        this.lobbyId = lobbyId;
     }
 
     public Spaceship getSpaceship() {
@@ -44,13 +43,13 @@ public class Player {
         return color;
     }
 
+    public VirtualView getObserver() {return observer; }
+
     public StatePlayerType getStatePlayer() {
         return statePlayer;
     }
 
-    public void setStatePlayer(StatePlayerType statePlayer) {
-        this.statePlayer = statePlayer;
-    }
+    public void setStatePlayer(StatePlayerType statePlayer) { this.statePlayer = statePlayer; }
 
     public boolean getDeckAllowed() { return deckAllowed; }
 

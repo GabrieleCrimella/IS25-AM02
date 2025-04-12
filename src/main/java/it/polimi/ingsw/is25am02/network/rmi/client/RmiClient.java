@@ -9,6 +9,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
+
+//todo da modificare completamente
 public class RmiClient extends UnicastRemoteObject implements VirtualViewRmi {
     final VirtualServerRmi server;
 

@@ -3,17 +3,15 @@ package it.polimi.ingsw.is25am02.model;
 import it.polimi.ingsw.is25am02.model.cards.InitialCard;
 import it.polimi.ingsw.is25am02.model.enumerations.StateGameType;
 
-import java.util.List;
-
 public class State {
     private Card currentCard;
     private Player currentPlayer;
     private StateGameType phase;
 
-    public State(List<Player> players) {
+    public State(Player player) {
         this.phase = StateGameType.BUILD;
         this.currentCard = new InitialCard(1);
-        this.currentPlayer = players.getFirst();
+        this.currentPlayer = player;
     }
 
     public Card getCurrentCard() {

@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import java.util.*;
 
@@ -27,16 +28,16 @@ public class Game implements Game_Interface {
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
-    private List<Player> winners = new ArrayList<>();
+    private final List<Player> winners = new ArrayList<>();
 
-    public Game(List<Player> p, int level) {
-        this.players = p;
+    public Game(List<Player> players, int level) {
+        this.players = players;
         this.level = level;
         this.diceResult = 0;
         this.buildTimeIsOver = false;
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
-        this.currentState = new State(p);
+        this.currentState = new State(players.getFirst());
         this.deck = new CardDeck(level);
         this.hourglass = new Hourglass();
     }
@@ -44,7 +45,7 @@ public class Game implements Game_Interface {
     //for testing
     public void tilesSituation(){
         System.out.println("Visible Tiles:");
-        Set<Tile> visibleTiles = new HashSet<>();
+        Set<Tile> visibleTiles;
         visibleTiles = getVisibleTiles();
         for (Tile tile:visibleTiles){
             if (tile==null){
@@ -646,6 +647,7 @@ public class Game implements Game_Interface {
         }
     }
 
+    //todo il controller non lo chiama più la sua chiamata è fatta da dentro il model quando la carte è stardust o epidemy
     @Override
     public void effect(Game game) {
         try {
