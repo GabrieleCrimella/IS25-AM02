@@ -67,7 +67,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         }
     }
 
-    public void nicknameRegistration(String nickname, VirtualView client){
+    public void nicknameRegistration(String nickname, VirtualView client) {
         methodQueue.offer(() -> {
             if (!registeredClients.containsKey(nickname)) {
                 registeredClients.put(nickname, client);
