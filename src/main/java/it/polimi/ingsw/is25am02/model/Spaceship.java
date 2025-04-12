@@ -637,6 +637,17 @@ public class Spaceship {
         return human;
     }
 
+    //Mi dice se la tile appartiene alla nave
+    public boolean own(Tile tile) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
+            if (t.isPresent() && t.get().equals(tile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     // Mi dice se il tipo di box passato è al pari del blocco più pregiato della nave
     //se non ci sono box ritorno false, rosso giallo verde blu
     public boolean isMostExpensive(BoxType type) {

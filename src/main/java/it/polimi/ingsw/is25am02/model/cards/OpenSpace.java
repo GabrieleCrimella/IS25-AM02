@@ -29,13 +29,13 @@ public class OpenSpace extends Card {
     public void choiceDoubleMotor( Game game, Player player, List<Coordinate> motors, List<Coordinate> batteries) throws IllegalRemoveException {
         List<Tile> dMotors = new ArrayList<>();
         int flyForward;
-        if(motors!=null){
+        if(!motors.isEmpty()){
             for(Coordinate motor : motors) {
                 dMotors.add(player.getSpaceship().getTile(motor.x(), motor.y()).get());
             }
         }
         flyForward= player.getSpaceship().calculateMotorPower(dMotors);
-        if(batteries!=null){
+        if(!batteries.isEmpty()){
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
             }

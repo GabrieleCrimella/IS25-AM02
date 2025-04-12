@@ -142,7 +142,9 @@ public class WarZone_II extends Card{
                     currentPhase++;
                 }
             }
-            //todo eccezione nel caso ho ancora dei box sulla nave
+            else
+                throw new IllegalRemoveException("You are trying to remove a battery but you still have boxes");
+
         }
         else throw new IllegalStateException();
     }
