@@ -38,6 +38,10 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         return spaceshipBoard[start_pos.getKey()][start_pos.getValue()];
     }
 
+    public Optional<Tile>[][] getSpaceshipBoard() {
+        return spaceshipBoard;
+    }
+
     public List<Tile> getNearTile(Tile t) {
         List<Tile> nearTiles = new LinkedList<>();
         if (getUpTile(t).isPresent())
