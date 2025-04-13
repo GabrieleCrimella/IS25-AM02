@@ -1,6 +1,6 @@
 package it.polimi.ingsw.is25am02.view.tui.commandLine;
 
-import it.polimi.ingsw.is25am02.controller.ClientController;
+import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.model.Coordinate;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
@@ -21,8 +21,6 @@ import java.util.StringTokenizer;
  * Si occupa di ricevere i comandi dall'utente e inoltrarli al controller client.
  */
 public class CliReader implements Runnable {
-
-    //todo da fare
     private final ClientController clientController;
 
     //è il posto in cui leggo

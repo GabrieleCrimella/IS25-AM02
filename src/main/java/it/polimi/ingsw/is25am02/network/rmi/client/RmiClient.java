@@ -10,45 +10,38 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 
-//todo da modificare completamente
 public class RmiClient extends UnicastRemoteObject implements VirtualViewRmi {
-    final VirtualServerRmi server;
+    VirtualServerRmi server;
 
-    public RmiClient(VirtualServerRmi server) throws RemoteException {
+    public RmiClient() throws RemoteException {
         super();
-        this.server = server;
     }
 
-    public static void main(String[] args) throws RemoteException, NotBoundException {
-        final String serverName = "AdderServer";
+    public void startRmiClient() throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry("192.168.178.20");
+        System.out.println("Tentativo di lookup...");
+        server = (VirtualServerRmi) registry.lookup("RMIServer");
+        System.out.println("Lookup riuscito...");
 
-        Registry registry = LocateRegistry.getRegistry(args[0], 1234);
-
-        VirtualServerRmi server = (VirtualServerRmi) registry.lookup(serverName);
-
-        new RmiClient(server).run();
+        System.out.println(">> RMI Client ready.");
     }
 
-    private void run() throws RemoteException {
-        this.server.connect(this);
-        this.runCli();
+    public void stopRmiClient() throws RemoteException {
+        UnicastRemoteObject.unexportObject(this, true);
+        System.out.println(">> RMI Client stopped.");
     }
 
-    private void runCli() throws RemoteException {
-        Scanner scan = new Scanner(System.in);
+    public VirtualServerRmi getServer() { return server; }
+
+    //todo da rivedere
+    public void startProcessing() throws RemoteException {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.print("> ");
-            int command = scan.nextInt();
-/*
-            if (command == 0) {
-                server.reset();
-            } else {
-                server.add(command);
-            }
- */
+            System.out.println("Comando: ");
         }
     }
 
+    //todo da rivedere
     @Override
     public void reportError(String details) throws RemoteException {
         // TODO. Attenzione, questo può causare data race con il thread dell'interfaccia o un altro thread!
