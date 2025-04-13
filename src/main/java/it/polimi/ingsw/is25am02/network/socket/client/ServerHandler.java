@@ -1,4 +1,4 @@
-package it.polimi.ingsw.is25am02.controller.client;
+package it.polimi.ingsw.is25am02.network.socket.client;
 
 import it.polimi.ingsw.is25am02.model.Coordinate;
 import it.polimi.ingsw.is25am02.model.Player;
@@ -7,206 +7,198 @@ import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
-import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import java.rmi.RemoteException;
 import java.util.List;
 
-public class ClientController implements VirtualServer {
-    private final ConnectionClient connection;
+public class ServerHandler implements VirtualServer {
 
-    public ClientController(ConnectionClient connection) {
-        this.connection = connection;
+    //todo per ogni metodo creo un oggetto command che riempio con i parametri passati e poi uso out di socket
+    // (dati da prendere dal socketClient)
+    @Override
+    public void nicknameRegistration(String nickname, VirtualView client) throws RemoteException {
+
     }
 
-    public VirtualView getVirtualView() { return (VirtualView) connection; }
-
-    public void nicknameRegistration(String nickname, VirtualView client) {
-        try {
-            connection.getServer().nicknameRegistration(nickname, client);
-        } catch (RemoteException e) {
-            //todo notifica al client che c'è stato un problema (connection.methodname(); )
-        }
-    }
-
+    @Override
     public void createLobby(VirtualView client, String nickname, int maxPlayers, PlayerColor color, int level) throws RemoteException {
-        connection.getServer().createLobby(client, nickname, maxPlayers, color, level);
+
     }
 
+    @Override
     public void getLobbies(VirtualView client) throws RemoteException {
-        connection.getServer().getLobbies(client);
 
     }
 
+    @Override
     public void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) throws RemoteException {
-        connection.getServer().joinLobby(client, lobbyId, nickname, color);
 
     }
 
+    @Override
     public void isGameRunning(VirtualView client, int lobbyId) throws RemoteException {
-        connection.getServer().isGameRunning(client, lobbyId);
 
     }
 
+    @Override
     public void flipHourglass(Player player) throws RemoteException {
-        connection.getServer().flipHourglass(player);
 
     }
 
+    @Override
     public void takeTile(Player player) throws RemoteException {
-        connection.getServer().takeTile(player);
 
     }
 
+    @Override
     public void takeTile(Player player, Tile tile) throws RemoteException {
-        connection.getServer().takeTile(player, tile);
 
     }
 
+    @Override
     public void takeMiniDeck(Player player, int index) throws RemoteException {
-        connection.getServer().takeMiniDeck(player, index);
 
     }
 
+    @Override
     public void returnMiniDeck(Player player) throws RemoteException {
-        connection.getServer().returnMiniDeck(player);
 
     }
 
+    @Override
     public void bookTile(Player player) throws RemoteException {
-        connection.getServer().bookTile(player);
 
     }
 
+    @Override
     public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation) throws RemoteException {
-        connection.getServer().addBookedTile(player, index, pos, rotation);
 
     }
 
+    @Override
     public void returnTile(Player player) throws RemoteException {
-        connection.getServer().returnTile(player);
 
     }
 
+    @Override
     public void addTile(Player player, Coordinate pos, RotationType rotation) throws RemoteException {
-        connection.getServer().addTile(player, pos, rotation);
 
     }
 
+    @Override
     public void shipFinished(Player player) throws RemoteException {
-        connection.getServer().shipFinished(player);
 
     }
 
+    @Override
     public void checkSpaceship(Player player) throws RemoteException {
-        connection.getServer().checkSpaceship(player);
 
     }
 
+    @Override
     public void removeTile(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeTile(player, pos);
 
     }
 
+    @Override
     public void checkWrongSpaceship(Player player) throws RemoteException {
-        connection.getServer().checkWrongSpaceship(player);
 
     }
 
+    @Override
     public void addCrew(Player player, Coordinate pos, AliveType type) throws RemoteException {
-        connection.getServer().addCrew(player, pos, type);
 
     }
 
+    @Override
     public void ready(Player player) throws RemoteException {
-        connection.getServer().ready(player);
 
     }
 
+    @Override
     public void playNextCard(Player player) throws RemoteException {
-        connection.getServer().playNextCard(player);
 
     }
 
+    @Override
     public void earlyLanding(Player player) throws RemoteException {
-        connection.getServer().earlyLanding(player);
 
     }
 
+    @Override
     public void choice(Player player, boolean choice) throws RemoteException {
-        connection.getServer().choice(player, choice);
 
     }
 
+    @Override
     public void removeCrew(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeCrew(player, pos);
 
     }
 
+    @Override
     public void choiceBox(Player player, boolean choice) throws RemoteException {
-        connection.getServer().choiceBox(player, choice);
 
     }
 
+    @Override
     public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) throws RemoteException {
-        connection.getServer().moveBox(player, start, end, boxType, on);
 
     }
 
+    @Override
     public void choicePlanet(Player player, int index) throws RemoteException {
-        connection.getServer().choicePlanet(player, index);
 
     }
 
+    @Override
     public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries) throws RemoteException {
-        connection.getServer().choiceDoubleMotor(player, motors, batteries);
 
     }
 
+    @Override
     public void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws RemoteException {
-        connection.getServer().choiceDoubleCannon(player, cannons, batteries);
 
     }
 
+    @Override
     public void choiceCrew(Player player) throws RemoteException {
-        connection.getServer().choiceCrew(player);
 
     }
 
+    @Override
     public void removeBox(Player player, Coordinate pos, BoxType type) throws RemoteException {
-        connection.getServer().removeBox(player, pos, type);
 
     }
 
+    @Override
     public void removeBattery(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeBattery(player, pos);
 
     }
 
+    @Override
     public void rollDice(Player player) throws RemoteException {
-        connection.getServer().rollDice(player);
 
     }
 
+    @Override
     public void calculateDamage(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().calculateDamage(player, pos);
 
     }
 
+    @Override
     public void keepBlock(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().keepBlock(player, pos);
 
     }
 
+    @Override
     public void Winners(int lobbyId) throws RemoteException {
-        connection.getServer().Winners(lobbyId);
 
     }
 
+    @Override
     public void endGame(int lobbyId) throws RemoteException {
-        connection.getServer().endGame(lobbyId);
 
     }
 }

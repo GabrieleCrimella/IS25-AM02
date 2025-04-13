@@ -2,13 +2,12 @@ package it.polimi.ingsw.is25am02.network.rmi.client;
 
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
-import it.polimi.ingsw.is25am02.model.Spaceship;
 import it.polimi.ingsw.is25am02.model.State;
-import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.modelDuplicateView.Player;
-import it.polimi.ingsw.is25am02.network.rmi.server.VirtualViewRmi;
+import it.polimi.ingsw.is25am02.network.ConnectionClient;
+import it.polimi.ingsw.is25am02.network.VirtualServer;
+import it.polimi.ingsw.is25am02.network.VirtualView;
+import it.polimi.ingsw.is25am02.view.ConsoleClient;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -19,28 +18,36 @@ import java.util.Optional;
 import java.util.Scanner;
 
 
-public class RmiClient extends UnicastRemoteObject implements VirtualViewRmi {
-    VirtualServerRmi server;
+public class RmiClient extends UnicastRemoteObject implements VirtualView, ConnectionClient {
+    VirtualServer server;
+    ConsoleClient console;
 
     public RmiClient() throws RemoteException {
         super();
     }
 
-    public void startRmiClient() throws RemoteException, NotBoundException {
+    public void startConnection() throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry("192.168.178.20");
         System.out.println("Tentativo di lookup...");
-        server = (VirtualServerRmi) registry.lookup("RMIServer");
+        server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
 
         System.out.println(">> RMI Client ready.");
     }
 
-    public void stopRmiClient() throws RemoteException {
+    public void closeConnection() throws RemoteException {
         UnicastRemoteObject.unexportObject(this, true);
         System.out.println(">> RMI Client stopped.");
     }
 
-    public VirtualServerRmi getServer() { return server; }
+    public void setView(ConsoleClient choice) {
+        console = choice;
+    }
+
+    public VirtualServer getServer() { return server; }
+
+
+
 
     //todo da rivedere
     public void startProcessing() throws RemoteException {

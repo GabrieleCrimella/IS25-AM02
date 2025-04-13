@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.view.ConsoleClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,19 +21,21 @@ import java.util.StringTokenizer;
  * Classe che gestisce l'interfaccia testuale (TUI) del gioco.
  * Si occupa di ricevere i comandi dall'utente e inoltrarli al controller client.
  */
-public class CliReader implements Runnable {
-    private final ClientController clientController;
+public class TuiConsole implements Runnable, ConsoleClient {
+    private ClientController controller;
 
     //è il posto in cui leggo
     private final BufferedReader reader;
     private boolean running;
     private Player currentPlayer;
 
-    public CliReader(ClientController clientController) {
-        //
-        this.clientController = clientController;
+    public TuiConsole() {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
         this.running = false;
+    }
+
+    public void setController(ClientController control){
+        controller = control;
     }
 
     /**
@@ -78,7 +81,7 @@ public class CliReader implements Runnable {
         System.out.println("/help - Mostra questa lista di comandi");
         System.out.println("/exit - Esci dal gioco");
         System.out.println("/login <nickname> - Registra il tuo nickname");
-        System.out.println("/create <maxPlayers> <color> <level> - Crea una nuova lobby");
+        System.out.println("/create <nickname> <maxPlayers> <color> <level> - Crea una nuova lobby");
         System.out.println("/lobbies - Mostra le lobby disponibili");
         System.out.println("/join <lobbyId> <color> - Unisciti a una lobby esistente");
         System.out.println("/ready - Segna il giocatore come pronto");
@@ -174,44 +177,22 @@ public class CliReader implements Runnable {
                         break;
                     }
                     String nickname = tokenizer.nextToken();
-                    if(clientController.registerNickname(nickname)==0) {
-                        System.out.println("Nickname registrato con successo: " + nickname);
-                    }
-                    else {
-                        System.out.println("Nickname già in uso, prova con un altro.");
-                    }
-
-                    /* todo come gestiamo il fatto che un username è già stato preso? mi spiego:
-                     *> andrebbe visualizzato all'utente un messaggio tipo
-                     *> "l'username che hai inserito è già stato preso".
-                     *> Lo facciamo visualizzare da questa classe, facendo tornare
-                     *> da clientController un codice di errore?
-                     *> oppure ClientController stampa direttamente a video
-                     *> ciò che va/non va? opterei (ho optato per) la prima soluzione,
-                     *> in modo che la gestione dell'interazione con l'utente
-                     *> sia un'esclusiva di questa classe.
-                     *
-                     *> NOOOO, forse sto sbagliando tutto. gli aggiornamenti dovrebbero
-                     *> arrivare non come ritorno del metodo, ma come metodi a parte... HOW
-                     *> dovrebbe esserci un metodo che scrive a schermo i messaggi di errore
-                     *> provenienti dal server
-                     *>>>>> questa potrebbe essere una soluzione intelligente
-                     */
+                    controller.nicknameRegistration(nickname, controller.getVirtualView());
                     break;
 
                 case "create":
-                    if (tokenizer.countTokens() < 3) {
-                        System.out.println("Formato corretto: /create <maxPlayers> <color> <level>");
+                    if (tokenizer.countTokens() < 4) {
+                        System.out.println("Formato corretto: /create <nickname> <maxPlayers> <color> <level>");
                         break;
                     }
                     int maxPlayers = Integer.parseInt(tokenizer.nextToken());
                     PlayerColor color = PlayerColor.valueOf(tokenizer.nextToken().toUpperCase());
                     int level = Integer.parseInt(tokenizer.nextToken());
-                    clientController.createLobby(maxPlayers, color, level);
+                    controller.createLobby(maxPlayers, color, level);
                     break;
 
                 case "lobbies":
-                    clientController.getLobbies();
+                    controller.getLobbies();
                     break;
 
                 case "join":
@@ -221,15 +202,15 @@ public class CliReader implements Runnable {
                     }
                     int lobbyId = Integer.parseInt(tokenizer.nextToken());
                     PlayerColor joinColor = PlayerColor.valueOf(tokenizer.nextToken().toUpperCase());
-                    clientController.joinLobby(lobbyId, joinColor);
+                    controller.joinLobby(lobbyId, joinColor);
                     break;
 
                 case "hourglass":
-                    clientController.flipHourglass();
+                    controller.flipHourglass();
                     break;
 
                 case "take":
-                    clientController.takeTile();
+                    controller.takeTile();
                     break;
 
                 case "takeTile":
@@ -240,7 +221,7 @@ public class CliReader implements Runnable {
                     int tileId = Integer.parseInt(tokenizer.nextToken());
                     // Qui dovresti ottenere l'oggetto Tile corrispondente a tileId
                     Tile tile = getTileById(tileId); // Questo metodo dovrebbe essere implementato
-                    clientController.takeTile(tile);
+                    controller.takeTile(tile);
                     break;
 
                 case "takeMiniDeck":
@@ -249,15 +230,15 @@ public class CliReader implements Runnable {
                         break;
                     }
                     int miniDeckIndex = Integer.parseInt(tokenizer.nextToken());
-                    clientController.takeMiniDeck(miniDeckIndex);
+                    controller.takeMiniDeck(miniDeckIndex);
                     break;
 
                 case "returnMiniDeck":
-                    clientController.returnMiniDeck();
+                    controller.returnMiniDeck();
                     break;
 
                 case "book":
-                    clientController.bookTile();
+                    controller.bookTile();
                     break;
 
                 case "addBooked":
@@ -269,11 +250,11 @@ public class CliReader implements Runnable {
                     int x = Integer.parseInt(tokenizer.nextToken());
                     int y = Integer.parseInt(tokenizer.nextToken());
                     RotationType rotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
-                    clientController.addBookedTile(index, new Coordinate(x, y), rotation);
+                    controller.addBookedTile(index, new Coordinate(x, y), rotation);
                     break;
 
                 case "return":
-                    clientController.returnTile();
+                    controller.returnTile();
                     break;
 
                 case "add":
@@ -284,15 +265,15 @@ public class CliReader implements Runnable {
                     int addX = Integer.parseInt(tokenizer.nextToken());
                     int addY = Integer.parseInt(tokenizer.nextToken());
                     RotationType addRotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
-                    clientController.addTile(new Coordinate(addX, addY), addRotation);
+                    controller.addTile(new Coordinate(addX, addY), addRotation);
                     break;
 
                 case "finish":
-                    clientController.shipFinished();
+                    controller.shipFinished();
                     break;
 
                 case "check":
-                    clientController.checkSpaceship();
+                    controller.checkSpaceship();
                     break;
 
                 case "remove":
@@ -302,7 +283,7 @@ public class CliReader implements Runnable {
                     }
                     int removeX = Integer.parseInt(tokenizer.nextToken());
                     int removeY = Integer.parseInt(tokenizer.nextToken());
-                    clientController.removeTile(new Coordinate(removeX, removeY));
+                    controller.removeTile(new Coordinate(removeX, removeY));
                     break;
 
                 case "addCrew":
@@ -313,7 +294,7 @@ public class CliReader implements Runnable {
                     int crewX = Integer.parseInt(tokenizer.nextToken());
                     int crewY = Integer.parseInt(tokenizer.nextToken());
                     AliveType type = AliveType.valueOf(tokenizer.nextToken().toUpperCase());
-                    clientController.addCrew(new Coordinate(crewX, crewY), type);
+                    controller.addCrew(new Coordinate(crewX, crewY), type);
                     break;
 
                 case "removeCrew":
@@ -323,19 +304,19 @@ public class CliReader implements Runnable {
                     }
                     int removeCrewX = Integer.parseInt(tokenizer.nextToken());
                     int removeCrewY = Integer.parseInt(tokenizer.nextToken());
-                    clientController.removeCrew(new Coordinate(removeCrewX, removeCrewY));
+                    controller.removeCrew(new Coordinate(removeCrewX, removeCrewY));
                     break;
 
                 case "ready":
-                    clientController.ready();
+                    controller.ready();
                     break;
 
                 case "next":
-                    clientController.playNextCard();
+                    controller.playNextCard();
                     break;
 
                 case "early":
-                    clientController.earlyLanding();
+                    controller.earlyLanding();
                     break;
 
                 case "choice":
@@ -344,7 +325,7 @@ public class CliReader implements Runnable {
                         break;
                     }
                     boolean choice = Boolean.parseBoolean(tokenizer.nextToken());
-                    clientController.choice(choice);
+                    controller.choice(choice);
                     break;
 
                 case "choiceBox":
@@ -353,7 +334,7 @@ public class CliReader implements Runnable {
                         break;
                     }
                     boolean choiceBox = Boolean.parseBoolean(tokenizer.nextToken());
-                    clientController.choiceBox(choiceBox);
+                    controller.choiceBox(choiceBox);
                     break;
 
                 case "moveBox":
@@ -367,7 +348,7 @@ public class CliReader implements Runnable {
                     int endY = Integer.parseInt(tokenizer.nextToken());
                     BoxType boxType = BoxType.valueOf(tokenizer.nextToken().toUpperCase());
                     boolean on = tokenizer.nextToken().equalsIgnoreCase("on");
-                    clientController.moveBox(new Coordinate(startX, startY), new Coordinate(endX, endY), boxType, on);
+                    controller.moveBox(new Coordinate(startX, startY), new Coordinate(endX, endY), boxType, on);
                     break;
 
                 case "choicePlanet":
@@ -376,7 +357,7 @@ public class CliReader implements Runnable {
                         break;
                     }
                     int planetIndex = Integer.parseInt(tokenizer.nextToken());
-                    clientController.choicePlanet(planetIndex);
+                    controller.choicePlanet(planetIndex);
                     break;
 
                 case "choiceDoublemotor":
@@ -388,7 +369,7 @@ public class CliReader implements Runnable {
                     break;
 
                 case "choiceCrew":
-                    clientController.choiceCrew();
+                    controller.choiceCrew();
                     break;
 
                 case "removeBox":
@@ -399,7 +380,7 @@ public class CliReader implements Runnable {
                     int boxX = Integer.parseInt(tokenizer.nextToken());
                     int boxY = Integer.parseInt(tokenizer.nextToken());
                     BoxType removeBoxType = BoxType.valueOf(tokenizer.nextToken().toUpperCase());
-                    clientController.removeBox(new Coordinate(boxX, boxY), removeBoxType);
+                    controller.removeBox(new Coordinate(boxX, boxY), removeBoxType);
                     break;
 
                 case "removeBattery":
@@ -409,11 +390,11 @@ public class CliReader implements Runnable {
                     }
                     int batteryX = Integer.parseInt(tokenizer.nextToken());
                     int batteryY = Integer.parseInt(tokenizer.nextToken());
-                    clientController.removeBattery(new Coordinate(batteryX, batteryY));
+                    controller.removeBattery(new Coordinate(batteryX, batteryY));
                     break;
 
                 case "roll":
-                    clientController.rollDice();
+                    controller.rollDice();
                     break;
 
                 case "damage":
@@ -423,7 +404,7 @@ public class CliReader implements Runnable {
                     }
                     int damageX = Integer.parseInt(tokenizer.nextToken());
                     int damageY = Integer.parseInt(tokenizer.nextToken());
-                    clientController.calculateDamage(new Coordinate(damageX, damageY));
+                    controller.calculateDamage(new Coordinate(damageX, damageY));
                     break;
 
                 case "keepBlock":
@@ -433,7 +414,7 @@ public class CliReader implements Runnable {
                     }
                     int keepX = Integer.parseInt(tokenizer.nextToken());
                     int keepY = Integer.parseInt(tokenizer.nextToken());
-                    clientController.keepBlock(new Coordinate(keepX, keepY));
+                    controller.keepBlock(new Coordinate(keepX, keepY));
                     break;
 
                 default:
@@ -485,7 +466,7 @@ public class CliReader implements Runnable {
                 batteries.add(new Coordinate(batteryX, batteryY));
             }
 
-            clientController.choiceDoubleMotor(motors, batteries);
+            controller.choiceDoubleMotor(motors, batteries);
 
         } catch (NumberFormatException e) {
             System.out.println("Errore di formato numerico: " + e.getMessage());
@@ -532,7 +513,7 @@ public class CliReader implements Runnable {
                 batteries.add(new Coordinate(batteryX, batteryY));
             }
 
-            clientController.choiceDoubleCannon(cannons, batteries);
+            controller.choiceDoubleCannon(cannons, batteries);
 
         } catch (NumberFormatException e) {
             System.out.println("Errore di formato numerico: " + e.getMessage());
