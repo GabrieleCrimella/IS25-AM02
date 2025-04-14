@@ -8,13 +8,12 @@ import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
-import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import java.rmi.RemoteException;
 import java.util.List;
 
-public class ClientController implements VirtualServer {
+public class ClientController {
     private final ConnectionClient connection;
 
     public ClientController(ConnectionClient connection) {
@@ -27,186 +26,295 @@ public class ClientController implements VirtualServer {
         try {
             connection.getServer().nicknameRegistration(nickname, client);
         } catch (RemoteException e) {
-            //todo notifica al client che c'è stato un problema (connection.methodname(); )
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
         }
     }
 
-    public void createLobby(VirtualView client, String nickname, int maxPlayers, PlayerColor color, int level) throws RemoteException {
-        connection.getServer().createLobby(client, nickname, maxPlayers, color, level);
+    public void createLobby(VirtualView client, String nickname, int maxPlayers, PlayerColor color, int level) {
+        try {
+            connection.getServer().createLobby(client, nickname, maxPlayers, color, level);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void getLobbies(VirtualView client) throws RemoteException {
-        connection.getServer().getLobbies(client);
-
+    public void getLobbies(VirtualView client) {
+        try {
+            connection.getServer().getLobbies(client);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) throws RemoteException {
-        connection.getServer().joinLobby(client, lobbyId, nickname, color);
-
+    public void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) {
+        try {
+            connection.getServer().joinLobby(client, lobbyId, nickname, color);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void isGameRunning(VirtualView client, int lobbyId) throws RemoteException {
-        connection.getServer().isGameRunning(client, lobbyId);
-
+    public void isGameRunning(VirtualView client, int lobbyId)  {
+        try {
+            connection.getServer().isGameRunning(client, lobbyId);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void flipHourglass(Player player) throws RemoteException {
-        connection.getServer().flipHourglass(player);
-
+    public void flipHourglass(Player player)  {
+        try {
+            connection.getServer().flipHourglass(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void takeTile(Player player) throws RemoteException {
-        connection.getServer().takeTile(player);
-
+    public void takeTile(Player player)  {
+        try {
+            connection.getServer().takeTile(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void takeTile(Player player, Tile tile) throws RemoteException {
-        connection.getServer().takeTile(player, tile);
-
+    public void takeTile(Player player, Tile tile)  {
+        try {
+            connection.getServer().takeTile(player, tile);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void takeMiniDeck(Player player, int index) throws RemoteException {
-        connection.getServer().takeMiniDeck(player, index);
-
+    public void takeMiniDeck(Player player, int index)  {
+        try {
+            connection.getServer().takeMiniDeck(player, index);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void returnMiniDeck(Player player) throws RemoteException {
-        connection.getServer().returnMiniDeck(player);
-
+    public void returnMiniDeck(Player player)  {
+        try {
+            connection.getServer().returnMiniDeck(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void bookTile(Player player) throws RemoteException {
-        connection.getServer().bookTile(player);
-
+    public void bookTile(Player player)  {
+        try {
+            connection.getServer().bookTile(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation) throws RemoteException {
-        connection.getServer().addBookedTile(player, index, pos, rotation);
-
+    public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation)  {
+        try {
+            connection.getServer().addBookedTile(player, index, pos, rotation);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void returnTile(Player player) throws RemoteException {
-        connection.getServer().returnTile(player);
-
+    public void returnTile(Player player)  {
+        try {
+            connection.getServer().returnTile(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void addTile(Player player, Coordinate pos, RotationType rotation) throws RemoteException {
-        connection.getServer().addTile(player, pos, rotation);
-
+    public void addTile(Player player, Coordinate pos, RotationType rotation)  {
+        try {
+            connection.getServer().addTile(player, pos, rotation);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void shipFinished(Player player) throws RemoteException {
-        connection.getServer().shipFinished(player);
-
+    public void shipFinished(Player player)  {
+        try {
+            connection.getServer().shipFinished(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void checkSpaceship(Player player) throws RemoteException {
-        connection.getServer().checkSpaceship(player);
-
+    public void checkSpaceship(Player player)  {
+        try {
+            connection.getServer().checkSpaceship(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void removeTile(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeTile(player, pos);
-
+    public void removeTile(Player player, Coordinate pos)  {
+        try {
+            connection.getServer().removeTile(player, pos);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void checkWrongSpaceship(Player player) throws RemoteException {
-        connection.getServer().checkWrongSpaceship(player);
-
+    public void checkWrongSpaceship(Player player)  {
+        try {
+            connection.getServer().checkWrongSpaceship(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void addCrew(Player player, Coordinate pos, AliveType type) throws RemoteException {
-        connection.getServer().addCrew(player, pos, type);
-
+    public void addCrew(Player player, Coordinate pos, AliveType type)  {
+        try {
+            connection.getServer().addCrew(player, pos, type);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void ready(Player player) throws RemoteException {
-        connection.getServer().ready(player);
-
+    public void ready(Player player)  {
+        try {
+            connection.getServer().ready(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void playNextCard(Player player) throws RemoteException {
-        connection.getServer().playNextCard(player);
-
+    public void playNextCard(Player player)  {
+        try {
+            connection.getServer().playNextCard(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void earlyLanding(Player player) throws RemoteException {
-        connection.getServer().earlyLanding(player);
-
+    public void earlyLanding(Player player)  {
+        try {
+            connection.getServer().earlyLanding(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void choice(Player player, boolean choice) throws RemoteException {
-        connection.getServer().choice(player, choice);
-
+    public void choice(Player player, boolean choice)  {
+        try {
+            connection.getServer().choice(player, choice);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void removeCrew(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeCrew(player, pos);
-
+    public void removeCrew(Player player, Coordinate pos)  {
+        try {
+            connection.getServer().removeCrew(player, pos);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void choiceBox(Player player, boolean choice) throws RemoteException {
-        connection.getServer().choiceBox(player, choice);
-
+    public void choiceBox(Player player, boolean choice)  {
+        try {
+            connection.getServer().choiceBox(player, choice);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) throws RemoteException {
-        connection.getServer().moveBox(player, start, end, boxType, on);
-
+    public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on)  {
+        try {
+            connection.getServer().moveBox(player, start, end, boxType, on);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void choicePlanet(Player player, int index) throws RemoteException {
-        connection.getServer().choicePlanet(player, index);
-
+    public void choicePlanet(Player player, int index)  {
+        try {
+            connection.getServer().choicePlanet(player, index);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries) throws RemoteException {
-        connection.getServer().choiceDoubleMotor(player, motors, batteries);
-
+    public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries)  {
+        try {
+            connection.getServer().choiceDoubleMotor(player, motors, batteries);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws RemoteException {
-        connection.getServer().choiceDoubleCannon(player, cannons, batteries);
-
+    public void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries)  {
+        try {
+            connection.getServer().choiceDoubleCannon(player, cannons, batteries);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void choiceCrew(Player player) throws RemoteException {
-        connection.getServer().choiceCrew(player);
-
+    public void choiceCrew(Player player)  {
+        try {
+            connection.getServer().choiceCrew(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void removeBox(Player player, Coordinate pos, BoxType type) throws RemoteException {
-        connection.getServer().removeBox(player, pos, type);
-
+    public void removeBox(Player player, Coordinate pos, BoxType type)  {
+        try {
+            connection.getServer().removeBox(player, pos, type);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void removeBattery(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeBattery(player, pos);
-
+    public void removeBattery(Player player, Coordinate pos)  {
+        try {
+            connection.getServer().removeBattery(player, pos);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void rollDice(Player player) throws RemoteException {
-        connection.getServer().rollDice(player);
-
+    public void rollDice(Player player)  {
+        try {
+            connection.getServer().rollDice(player);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void calculateDamage(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().calculateDamage(player, pos);
-
+    public void calculateDamage(Player player, Coordinate pos)  {
+        try {
+            connection.getServer().calculateDamage(player, pos);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void keepBlock(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().keepBlock(player, pos);
-
+    public void keepBlock(Player player, Coordinate pos)  {
+        try {
+            connection.getServer().keepBlock(player, pos);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void Winners(int lobbyId) throws RemoteException {
-        connection.getServer().Winners(lobbyId);
-
+    public void Winners(int lobbyId)  {
+        try {
+            connection.getServer().Winners(lobbyId);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 
-    public void endGame(int lobbyId) throws RemoteException {
-        connection.getServer().endGame(lobbyId);
-
+    public void endGame(int lobbyId)  {
+        try {
+            connection.getServer().endGame(lobbyId);
+        } catch (RemoteException e) {
+            //todo notifica al client che c'è stato un problema (connection.getConsole().methodname(); )
+        }
     }
 }

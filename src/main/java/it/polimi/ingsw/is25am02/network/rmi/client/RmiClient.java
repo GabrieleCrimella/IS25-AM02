@@ -46,7 +46,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     public VirtualServer getServer() { return server; }
 
-
+    public ConsoleClient getConsole() { return console; }
 
 
     //todo da rivedere
@@ -57,11 +57,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
-    //todo da rivedere
     @Override
     public void reportError(String details) throws RemoteException {
-        // TODO. Attenzione, questo può causare data race con il thread dell'interfaccia o un altro thread!
         console.reportError(details);
+    }
+
+    @Override
+    public void displayMessage(String details) throws Exception {
+
     }
 
     @Override
