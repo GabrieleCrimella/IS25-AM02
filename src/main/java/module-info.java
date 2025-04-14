@@ -8,4 +8,5 @@ module it.polimi.ingsw.is25am02 {
 
     opens it.polimi.ingsw.is25am02 to javafx.fxml;
     exports it.polimi.ingsw.is25am02;
+    exports it.polimi.ingsw.is25am02.network;
 }

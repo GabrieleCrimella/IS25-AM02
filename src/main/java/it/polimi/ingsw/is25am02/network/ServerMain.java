@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.network.rmi.server.RmiServer;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class ServerMain {
     public static void main(String[] args) {
@@ -18,10 +19,10 @@ public class ServerMain {
 
             //todo istanziare il socket server
 
-
+            Scanner scanner = new Scanner(System.in);
             while(activeServers > 0){
                 System.out.println("Write 1 to stop RMI Server, 2 to stop Socket Server");
-                int ris = System.in.read();
+                int ris = scanner.nextInt();
 
                 if(ris == 1){
                     rmiServer.stopServer(controller);

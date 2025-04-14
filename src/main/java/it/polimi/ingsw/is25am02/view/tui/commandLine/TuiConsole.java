@@ -41,11 +41,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
         controller = control;
     }
 
-    /**
-     * Imposta il giocatore corrente
-     *
-     * @param player il giocatore corrente
-     */
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
     }
@@ -171,13 +166,14 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     System.out.println("Uscita dal gioco...");
                     running = false;
 
-                    //todo chiamata del metodo che contiene la disconnessione del server e la fine della partita da parte del giocatore di questo client
+                    //chiamata del metodo che contiene la disconnessione del server e la fine della partita da parte del giocatore di questo client
+                    stop();
                     System.exit(0); //chiudo tutto, baracca e burattini
                     break;
 
                 case "login":
                     if (!tokenizer.hasMoreTokens()) {
-                        //potremmo far saltar fuori questa riga solo tipo se viene passato il comando di debug
+                        //potremmo far saltar fuori questa riga solo tipo se viene passato il comando di debug... eureka!!
                         //System.out.println("Formato corretto: /login <nickname>");
                         break;
                     }
