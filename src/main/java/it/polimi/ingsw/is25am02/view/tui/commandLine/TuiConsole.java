@@ -534,8 +534,14 @@ public class TuiConsole implements Runnable, ConsoleClient {
     }
 
     //Mostra un messaggio all'utente
+    @Override
     public void displayMessage(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void reportError(String details) {
+        System.out.println(details);
     }
 
     //Mostra lo stato corrente del gioco

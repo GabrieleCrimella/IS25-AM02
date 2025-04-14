@@ -61,7 +61,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void reportError(String details) throws RemoteException {
         // TODO. Attenzione, questo può causare data race con il thread dell'interfaccia o un altro thread!
-        System.err.print("\n[ERROR] " + details + "\n> ");
+        console.reportError(details);
     }
 
     @Override

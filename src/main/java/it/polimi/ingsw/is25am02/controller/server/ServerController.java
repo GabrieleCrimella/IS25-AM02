@@ -72,7 +72,11 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             if (!registeredClients.containsKey(nickname)) {
                 registeredClients.put(nickname, client);
             } else {
-                //todo notifica al client che il nome non è disponibile perchè già occupato
+                try {
+                    client.reportError("The nickname is already taken");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -83,9 +87,17 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                 Player p = new Player(new Spaceship(level), nickname, color, client, nextLobbyId++);
                 Lobby lobby = new Lobby(p.getLobbyId(), maxPlayers, p, client, level);
                 lobbies.put(lobby.getId(), lobby);
-                //todo notifica al client che ha creato la lobby con id "lobby.getId()"
+                try {
+                    client.displayMessage("The lobby with id" + lobby.getId() + "has been created!");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             } else {
-                //todo notifica al client che nickname non trovato
+                try {
+                    client.reportError("Nickname not found :(");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -99,13 +111,25 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     public synchronized void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) {
         methodQueue.offer(() -> {
             if (!lobbies.containsKey(lobbyId)) {
-                //todo notifica al client che non è stata trovata la lobby
+                try {
+                    client.reportError("Lobby not found :(");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
             if (lobbies.get(lobbyId).getPlayers().stream().anyMatch(player -> player.getColor().equals(color))) {
-                //todo notifica al client che il suo colore è già stato preso
+                try {
+                    client.reportError("Color is already in use");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
             if (!registeredClients.containsKey(nickname)) {
-                //todo notifica al client che il suo nickname non è stato trovato
+                try {
+                    client.reportError("Your nickname was not found");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
             Lobby lobby = lobbies.get(lobbyId);
             Player p = new Player(new Spaceship(lobby.getLevel()), nickname, color, client, lobbyId);
@@ -113,9 +137,18 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             if (lobby.isFull()) {
                 startGame(lobby);
                 lobbies.remove(lobbyId);
-                //todo notifico ai client che il gioco è iniziato
+                try {
+                    client.displayMessage("Game begins!");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             } else{
-                //todo notifico al client chiamante che si è unito alla lobby
+                try {
+                    client.displayMessage("You have been added to the lobby" + lobby.getId());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         });
     }
@@ -135,7 +168,11 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     private GameSession getGameFromPlayer(Player player) {
         GameSession g = activeGames.get(player.getLobbyId());
         if (!lobbies.get(player.getLobbyId()).isGameStarted() || g == null) {
-            //todo notifico al client che "Player not found in any game"
+            try {
+                player.getObserver().reportError("Player not found in any game");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             return null;
         } else return g;
     }
@@ -420,7 +457,13 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             lobbies.remove(lobbyId);
             if (gameSession != null) {
                 gameSession.shutdown();
-                //todo notifico ai client che la partita è stata chiusa
+                for (int i = 0; i < gameSession.getGame().getPlayers().size(); i++) {
+                    try {
+                        gameSession.getGame().getPlayers().get(i).getObserver().displayMessage("The match has ended");
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
     }
