@@ -13,6 +13,7 @@ import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -21,6 +22,8 @@ import java.util.StringTokenizer;
  * Classe che gestisce l'interfaccia testuale (TUI) del gioco.
  * Si occupa di ricevere i comandi dall'utente e inoltrarli al controller client.
  */
+
+//todo tutti i Player vari non ha senso metterli come riferimenti di classi del model!!! usiamo il nickname e stop, oppure una struttura interna alla view
 public class TuiConsole implements Runnable, ConsoleClient {
     private ClientController controller;
 
@@ -34,12 +37,13 @@ public class TuiConsole implements Runnable, ConsoleClient {
         this.running = false;
     }
 
-    public void setController(ClientController control){
+    public void setController(ClientController control) {
         controller = control;
     }
 
     /**
      * Imposta il giocatore corrente
+     *
      * @param player il giocatore corrente
      */
     public void setCurrentPlayer(Player player) {
@@ -155,6 +159,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
         }
 
         String command = tokenizer.nextToken().toLowerCase();
+        String nickname = "";
 
         try {
             switch (command) {
@@ -176,7 +181,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         //System.out.println("Formato corretto: /login <nickname>");
                         break;
                     }
-                    String nickname = tokenizer.nextToken();
+                    nickname = tokenizer.nextToken();
                     controller.nicknameRegistration(nickname, controller.getVirtualView());
                     break;
 
@@ -188,11 +193,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int maxPlayers = Integer.parseInt(tokenizer.nextToken());
                     PlayerColor color = PlayerColor.valueOf(tokenizer.nextToken().toUpperCase());
                     int level = Integer.parseInt(tokenizer.nextToken());
-                    controller.createLobby(maxPlayers, color, level);
+                    controller.createLobby(controller.getVirtualView(), nickname, maxPlayers, color, level);
                     break;
 
                 case "lobbies":
-                    controller.getLobbies();
+                    controller.getLobbies(controller.getVirtualView());
                     break;
 
                 case "join":
@@ -202,15 +207,15 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int lobbyId = Integer.parseInt(tokenizer.nextToken());
                     PlayerColor joinColor = PlayerColor.valueOf(tokenizer.nextToken().toUpperCase());
-                    controller.joinLobby(lobbyId, joinColor);
+                    controller.joinLobby(controller.getVirtualView(), lobbyId, nickname, joinColor);
                     break;
 
                 case "hourglass":
-                    controller.flipHourglass();
+                    controller.flipHourglass(currentPlayer);
                     break;
 
                 case "take":
-                    controller.takeTile();
+                    controller.takeTile(currentPlayer);
                     break;
 
                 case "takeTile":
@@ -221,7 +226,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int tileId = Integer.parseInt(tokenizer.nextToken());
                     // Qui dovresti ottenere l'oggetto Tile corrispondente a tileId
                     Tile tile = getTileById(tileId); // Questo metodo dovrebbe essere implementato
-                    controller.takeTile(tile);
+                    controller.takeTile(currentPlayer, tile);
                     break;
 
                 case "takeMiniDeck":
@@ -230,15 +235,15 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     int miniDeckIndex = Integer.parseInt(tokenizer.nextToken());
-                    controller.takeMiniDeck(miniDeckIndex);
+                    controller.takeMiniDeck(currentPlayer, miniDeckIndex);
                     break;
 
                 case "returnMiniDeck":
-                    controller.returnMiniDeck();
+                    controller.returnMiniDeck(currentPlayer);
                     break;
 
                 case "book":
-                    controller.bookTile();
+                    controller.bookTile(currentPlayer);
                     break;
 
                 case "addBooked":
@@ -250,11 +255,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int x = Integer.parseInt(tokenizer.nextToken());
                     int y = Integer.parseInt(tokenizer.nextToken());
                     RotationType rotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
-                    controller.addBookedTile(index, new Coordinate(x, y), rotation);
+                    controller.addBookedTile(currentPlayer, index, new Coordinate(x, y), rotation);
                     break;
 
                 case "return":
-                    controller.returnTile();
+                    controller.returnTile(currentPlayer);
                     break;
 
                 case "add":
@@ -265,15 +270,15 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int addX = Integer.parseInt(tokenizer.nextToken());
                     int addY = Integer.parseInt(tokenizer.nextToken());
                     RotationType addRotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
-                    controller.addTile(new Coordinate(addX, addY), addRotation);
+                    controller.addTile(currentPlayer, new Coordinate(addX, addY), addRotation);
                     break;
 
                 case "finish":
-                    controller.shipFinished();
+                    controller.shipFinished(currentPlayer);
                     break;
 
                 case "check":
-                    controller.checkSpaceship();
+                    controller.checkSpaceship(currentPlayer);
                     break;
 
                 case "remove":
@@ -283,7 +288,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int removeX = Integer.parseInt(tokenizer.nextToken());
                     int removeY = Integer.parseInt(tokenizer.nextToken());
-                    controller.removeTile(new Coordinate(removeX, removeY));
+                    controller.removeTile(currentPlayer, new Coordinate(removeX, removeY));
                     break;
 
                 case "addCrew":
@@ -294,7 +299,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int crewX = Integer.parseInt(tokenizer.nextToken());
                     int crewY = Integer.parseInt(tokenizer.nextToken());
                     AliveType type = AliveType.valueOf(tokenizer.nextToken().toUpperCase());
-                    controller.addCrew(new Coordinate(crewX, crewY), type);
+                    controller.addCrew(currentPlayer, new Coordinate(crewX, crewY), type);
                     break;
 
                 case "removeCrew":
@@ -304,19 +309,19 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int removeCrewX = Integer.parseInt(tokenizer.nextToken());
                     int removeCrewY = Integer.parseInt(tokenizer.nextToken());
-                    controller.removeCrew(new Coordinate(removeCrewX, removeCrewY));
+                    controller.removeCrew(currentPlayer, new Coordinate(removeCrewX, removeCrewY));
                     break;
 
                 case "ready":
-                    controller.ready();
+                    controller.ready(currentPlayer);
                     break;
 
                 case "next":
-                    controller.playNextCard();
+                    controller.playNextCard(currentPlayer);
                     break;
 
                 case "early":
-                    controller.earlyLanding();
+                    controller.earlyLanding(currentPlayer);
                     break;
 
                 case "choice":
@@ -325,7 +330,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     boolean choice = Boolean.parseBoolean(tokenizer.nextToken());
-                    controller.choice(choice);
+                    controller.choice(currentPlayer, choice);
                     break;
 
                 case "choiceBox":
@@ -334,7 +339,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     boolean choiceBox = Boolean.parseBoolean(tokenizer.nextToken());
-                    controller.choiceBox(choiceBox);
+                    controller.choiceBox(currentPlayer, choiceBox);
                     break;
 
                 case "moveBox":
@@ -348,7 +353,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int endY = Integer.parseInt(tokenizer.nextToken());
                     BoxType boxType = BoxType.valueOf(tokenizer.nextToken().toUpperCase());
                     boolean on = tokenizer.nextToken().equalsIgnoreCase("on");
-                    controller.moveBox(new Coordinate(startX, startY), new Coordinate(endX, endY), boxType, on);
+                    controller.moveBox(currentPlayer, new Coordinate(startX, startY), new Coordinate(endX, endY), boxType, on);
                     break;
 
                 case "choicePlanet":
@@ -357,7 +362,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     int planetIndex = Integer.parseInt(tokenizer.nextToken());
-                    controller.choicePlanet(planetIndex);
+                    controller.choicePlanet(currentPlayer, planetIndex);
                     break;
 
                 case "choiceDoublemotor":
@@ -369,7 +374,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "choiceCrew":
-                    controller.choiceCrew();
+                    controller.choiceCrew(currentPlayer);
                     break;
 
                 case "removeBox":
@@ -380,7 +385,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int boxX = Integer.parseInt(tokenizer.nextToken());
                     int boxY = Integer.parseInt(tokenizer.nextToken());
                     BoxType removeBoxType = BoxType.valueOf(tokenizer.nextToken().toUpperCase());
-                    controller.removeBox(new Coordinate(boxX, boxY), removeBoxType);
+                    controller.removeBox(currentPlayer, new Coordinate(boxX, boxY), removeBoxType);
                     break;
 
                 case "removeBattery":
@@ -390,11 +395,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int batteryX = Integer.parseInt(tokenizer.nextToken());
                     int batteryY = Integer.parseInt(tokenizer.nextToken());
-                    controller.removeBattery(new Coordinate(batteryX, batteryY));
+                    controller.removeBattery(currentPlayer, new Coordinate(batteryX, batteryY));
                     break;
 
                 case "roll":
-                    controller.rollDice();
+                    controller.rollDice(currentPlayer);
                     break;
 
                 case "damage":
@@ -404,7 +409,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int damageX = Integer.parseInt(tokenizer.nextToken());
                     int damageY = Integer.parseInt(tokenizer.nextToken());
-                    controller.calculateDamage(new Coordinate(damageX, damageY));
+                    controller.calculateDamage(currentPlayer, new Coordinate(damageX, damageY));
                     break;
 
                 case "keepBlock":
@@ -414,7 +419,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int keepX = Integer.parseInt(tokenizer.nextToken());
                     int keepY = Integer.parseInt(tokenizer.nextToken());
-                    controller.keepBlock(new Coordinate(keepX, keepY));
+                    controller.keepBlock(currentPlayer, new Coordinate(keepX, keepY));
                     break;
 
                 default:
@@ -466,7 +471,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                 batteries.add(new Coordinate(batteryX, batteryY));
             }
 
-            controller.choiceDoubleMotor(motors, batteries);
+            controller.choiceDoubleMotor(currentPlayer, motors, batteries);
 
         } catch (NumberFormatException e) {
             System.out.println("Errore di formato numerico: " + e.getMessage());
@@ -513,7 +518,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                 batteries.add(new Coordinate(batteryX, batteryY));
             }
 
-            controller.choiceDoubleCannon(cannons, batteries);
+            controller.choiceDoubleCannon(currentPlayer, cannons, batteries);
 
         } catch (NumberFormatException e) {
             System.out.println("Errore di formato numerico: " + e.getMessage());
