@@ -37,6 +37,14 @@ public class TuiConsole implements Runnable, ConsoleClient {
         this.running = false;
     }
 
+    public void closeConnect() {
+        try {
+            controller.closeConnect();
+        } catch (Exception e) {
+            reportError("Error closing connection" + e.getMessage());
+        }
+    }
+
     public void setController(ClientController control) {
         controller = control;
     }
@@ -164,11 +172,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "exit":
                     System.out.println("Uscita dal gioco...");
-                    running = false;
 
-                    //chiamata del metodo che contiene la disconnessione del server e la fine della partita da parte del giocatore di questo client
+                    //Stop connection and UI threads
                     stop();
-                    System.exit(0); //chiudo tutto, baracca e burattini
+                    closeConnect();
+                    System.exit(0);
                     break;
 
                 case "login":
@@ -422,8 +430,8 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     System.out.println("Comando non riconosciuto: " + command);
                     break;
             }
-        } catch (Exception e) {
-            System.err.println("Errore durante l'esecuzione del comando: " + e.getMessage());
+        } catch (RemoteException e) {
+            System.err.println("Error executing command:" + e.getMessage());
         }
     }
 
@@ -441,7 +449,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
             for (int i = 0; i < numMotors; i++) {
                 if (tokenizer.countTokens() < 2) {
-                    System.out.println("Dati insufficienti per i motori");
+                    System.err.println("Dati insufficienti per i motori");
                     return;
                 }
                 int motorX = Integer.parseInt(tokenizer.nextToken());
@@ -470,7 +478,9 @@ public class TuiConsole implements Runnable, ConsoleClient {
             controller.choiceDoubleMotor(currentPlayer, motors, batteries);
 
         } catch (NumberFormatException e) {
-            System.out.println("Errore di formato numerico: " + e.getMessage());
+            System.err.println("Errore di formato numerico: " + e.getMessage());
+        } catch (RemoteException e) {
+            System.err.println("Error executing command:" + e.getMessage());
         }
     }
 
@@ -517,7 +527,9 @@ public class TuiConsole implements Runnable, ConsoleClient {
             controller.choiceDoubleCannon(currentPlayer, cannons, batteries);
 
         } catch (NumberFormatException e) {
-            System.out.println("Errore di formato numerico: " + e.getMessage());
+            System.err.println("Errore di formato numerico: " + e.getMessage());
+        } catch (RemoteException e) {
+            System.err.println("Error executing command:" + e.getMessage());
         }
     }
 
