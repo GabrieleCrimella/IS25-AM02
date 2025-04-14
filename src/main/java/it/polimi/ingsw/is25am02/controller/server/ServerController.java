@@ -104,7 +104,18 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
     public void getLobbies(VirtualView client) {
         methodQueue.offer(() -> {
-            //todo notifica al player quali lobby sono disponibili
+            try {
+                client.displayMessage("Lobby disponibili:");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            for (Integer lobbyId : lobbies.keySet()) {
+                try {
+                    client.displayMessage(lobbyId.toString() + ", ");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 
@@ -161,7 +172,20 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
     public synchronized void isGameRunning(VirtualView client, int lobbyId) {
         methodQueue.offer(() -> {
-            //todo notifica al client se il lobbyId da lui cercato è in gioco o no
+            if (activeGames.containsKey(lobbyId)) {
+                try {
+                    client.displayMessage("LobbyId" + lobbyId + "is in the game");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else{
+                try {
+                    client.displayMessage("LobbyId" + lobbyId + "is not in the game");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 
