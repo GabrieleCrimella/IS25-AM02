@@ -27,7 +27,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     public void startConnection() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("192.168.178.20");
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1");
         System.out.println("Tentativo di lookup...");
         server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
@@ -64,7 +64,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void displayMessage(String details) throws Exception {
-
+        console.displayMessage(details);
     }
 
     @Override

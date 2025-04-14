@@ -31,6 +31,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
     private final BufferedReader reader;
     private boolean running;
     private Player currentPlayer;
+    private String nickname;
 
     public TuiConsole() {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
@@ -88,7 +89,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
         System.out.println("/help - Mostra questa lista di comandi");
         System.out.println("/exit - Esci dal gioco");
         System.out.println("/login <nickname> - Registra il tuo nickname");
-        System.out.println("/create <nickname> <maxPlayers> <color> <level> - Crea una nuova lobby");
+        System.out.println("/create <maxPlayers> <color> <level> - Crea una nuova lobby");
         System.out.println("/lobbies - Mostra le lobby disponibili");
         System.out.println("/join <lobbyId> <color> - Unisciti a una lobby esistente");
         System.out.println("/ready - Segna il giocatore come pronto");
@@ -162,7 +163,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
         }
 
         String command = tokenizer.nextToken().toLowerCase();
-        String nickname = "";
 
         try {
             switch (command) {
@@ -190,7 +190,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "create":
-                    if (tokenizer.countTokens() < 4) {
+                    if (tokenizer.countTokens() < 3) {
                         System.out.println("Formato corretto: /create <nickname> <maxPlayers> <color> <level>");
                         break;
                     }
