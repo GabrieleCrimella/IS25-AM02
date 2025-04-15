@@ -36,6 +36,10 @@ public class Lobby {
         }
     }
 
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
     public void startGame(){
         this.gameStarted = true;
     }
