@@ -186,6 +186,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     nickname = tokenizer.nextToken();
+                    if (nickname == "") {
+                        reportError("Nickname non valido");
+                        break;
+                    }
                     controller.nicknameRegistration(nickname, controller.getVirtualView());
                     break;
 
