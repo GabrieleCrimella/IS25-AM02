@@ -44,10 +44,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         console = choice;
     }
 
-    public VirtualServer getServer() { return server; }
+    public VirtualServer getServer() {
+        return server;
+    }
 
-    public ConsoleClient getConsole() { return console; }
-
+    public ConsoleClient getConsole() {
+        return console;
+    }
 
     //todo da rivedere
     public void startProcessing() throws RemoteException {
@@ -75,25 +78,25 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
         if (player1.isPresent()) {
             Player player1V = new Player(player1.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player1.get().getNickname(), player1.get().getColor(), player1.get().getStatePlayer(), player1.get().getNumDeck(), player1.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player1)){
+            if (state.getCurrentPlayer().equals(player1)) {
                 it.polimi.ingsw.is25am02.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.modelDuplicateView.State(cardV, player1V, phaseV);
             }
         }
-        if (player2.isPresent()){
+        if (player2.isPresent()) {
             Player player2V = new Player(player2.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player2.get().getNickname(), player2.get().getColor(), player2.get().getStatePlayer(), player2.get().getNumDeck(), player2.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player2)){
+            if (state.getCurrentPlayer().equals(player2)) {
                 it.polimi.ingsw.is25am02.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.modelDuplicateView.State(cardV, player2V, phaseV);
             }
         }
-        if (player3.isPresent()){
+        if (player3.isPresent()) {
             Player player3V = new Player(player3.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player3.get().getNickname(), player3.get().getColor(), player3.get().getStatePlayer(), player3.get().getNumDeck(), player3.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player3)){
+            if (state.getCurrentPlayer().equals(player3)) {
                 it.polimi.ingsw.is25am02.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.modelDuplicateView.State(cardV, player3V, phaseV);
             }
         }
-        if (player4.isPresent()){
+        if (player4.isPresent()) {
             Player player4V = new Player(player4.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player4.get().getNickname(), player4.get().getColor(), player4.get().getStatePlayer(), player4.get().getNumDeck(), player4.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player4)){
+            if (state.getCurrentPlayer().equals(player4)) {
                 it.polimi.ingsw.is25am02.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.modelDuplicateView.State(cardV, player4V, phaseV);
             }
         }
