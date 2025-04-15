@@ -180,16 +180,15 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "login":
-                    if (!tokenizer.hasMoreTokens()) {
+                    if (tokenizer.countTokens()==0) {
                         //potremmo far saltar fuori questa riga solo tipo se viene passato il comando di debug... eureka!!
-                        //reportError("Wrong input!! The correct syntax is /login <nickname>");
+                        reportError("Wrong input!! The nickname must be specified");
+                        break;
+                    }else if(tokenizer.countTokens()>1){
+                        reportError("Wrong input!! The correct syntax is /login <nickname>");
                         break;
                     }
                     nickname = tokenizer.nextToken();
-                    if (nickname == "") {
-                        reportError("Nickname non valido");
-                        break;
-                    }
                     controller.nicknameRegistration(nickname, controller.getVirtualView());
                     break;
 
