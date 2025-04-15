@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
+import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.NOT_FINISHED;

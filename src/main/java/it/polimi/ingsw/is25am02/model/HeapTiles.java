@@ -24,6 +24,10 @@ public class HeapTiles {
         loadTiles();
     }
 
+    public HashMap<String, Cabin> getCabinStartPlayer() {
+        return cabinStartPlayer;
+    }
+
     public Set<Tile> getSetTiles() {
         return setTiles;
     }
