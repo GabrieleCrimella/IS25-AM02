@@ -37,6 +37,13 @@ public class Game implements Game_Interface {
         this.buildTimeIsOver = false;
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
+        for (int i=0;i<players.size();i++){
+            try {
+                players.get(i).getSpaceship().addTile(players.get(i).getSpaceship().getSpaceshipIterator().getX_start(), players.get(i).getSpaceship().getSpaceshipIterator().getY_start(), heapTile.getCabinStartPlayer().get(players.get(i).getColor()));
+            } catch (IllegalAddException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         this.currentState = new State(players.getFirst());
         this.deck = new CardDeck(level);
         this.hourglass = new Hourglass();
