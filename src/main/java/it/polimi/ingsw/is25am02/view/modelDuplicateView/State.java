@@ -1,7 +1,7 @@
-package it.polimi.ingsw.is25am02.modelDuplicateView;
+package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
 
-import it.polimi.ingsw.is25am02.modelDuplicateView.enumeration.StateGameType;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.enumeration.StateGameType;
 
 public class State {
     private Card currentCard;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.is25am02.modelDuplicateView.enumeration;
+package it.polimi.ingsw.is25am02.view.modelDuplicateView.enumeration;
 
 public enum StatePlayerType {
     FINISHED,
