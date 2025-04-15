@@ -93,7 +93,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                 Lobby lobby = new Lobby(p.getLobbyId(), maxPlayers, p, client, level);
                 lobbies.put(lobby.getId(), lobby);
                 try {
-                    client.displayMessage("> The lobby with id" + lobby.getId() + "has been created!");
+                    client.displayMessage("> The lobby with id " + lobby.getId() + " has been created!");
                 } catch (Exception e) {
                     reportErrorOnServer("connection problem in method createLobby with parameter: " + nickname + ", " + maxPlayers + ", " + color + ", " + level);
                 }

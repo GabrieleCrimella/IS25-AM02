@@ -131,7 +131,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
         while (running) {
             try {
-                System.out.print("> ");
+                //System.out.print("> ");
                 String input = reader.readLine();
 
                 if (input == null || input.trim().isEmpty()) {
