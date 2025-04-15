@@ -149,7 +149,9 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                 startGame(lobby);
                 lobbies.remove(lobbyId);
                 try {
-                    client.displayMessage("Game begins!");
+                    for(Player player : lobby.getPlayers()){
+                        player.getObserver().displayMessage("> Game started!");
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

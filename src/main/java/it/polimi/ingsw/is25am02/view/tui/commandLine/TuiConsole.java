@@ -141,7 +141,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                 processCommand(input.trim());
 
             } catch (IOException e) {
-                System.err.println("Errore durante la lettura dell'input: " + e.getMessage());
+                reportError("Errore durante la lettura dell'input: " + e.getMessage());
             }
         }
     }
@@ -149,7 +149,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
     //Elabora il comando inserito dall'utente
     private void processCommand(String input) {
         if (!input.startsWith("/")) {
-            System.out.println("Commands must starts with '/'");
+            reportError("Commands must starts with '/'");
             return;
         }
 
@@ -171,7 +171,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "exit":
-                    System.out.println("Uscita dal gioco...");
+                    displayMessage("Uscita dal gioco...");
 
                     //Stop connection and UI threads
                     stop();
@@ -182,7 +182,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                 case "login":
                     if (!tokenizer.hasMoreTokens()) {
                         //potremmo far saltar fuori questa riga solo tipo se viene passato il comando di debug... eureka!!
-                        //System.out.println("Formato corretto: /login <nickname>");
+                        //reportError("Wrong input!! The correct syntax is /login <nickname>");
                         break;
                     }
                     nickname = tokenizer.nextToken();
@@ -191,7 +191,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "create":
                     if (tokenizer.countTokens() < 3) {
-                        System.out.println("Formato corretto: /create <nickname> <maxPlayers> <color> <level>");
+                        reportError("Wrong input!! The correct syntax is /create <maxPlayers> <color> <level>");
                         break;
                     }
                     int maxPlayers = Integer.parseInt(tokenizer.nextToken());
@@ -206,7 +206,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "join":
                     if (tokenizer.countTokens() < 2) {
-                        System.out.println("Formato corretto: /join <lobbyId> <color>");
+                        reportError("Wrong input!! The correct syntax is /join <lobbyId> <color>");
                         break;
                     }
                     int lobbyId = Integer.parseInt(tokenizer.nextToken());
@@ -224,7 +224,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "takeTile":
                     if (!tokenizer.hasMoreTokens()) {
-                        System.out.println("Formato corretto: /takeTile <id>");
+                        reportError("Wrong input!! The correct syntax is /takeTile <id>");
                         break;
                     }
                     int tileId = Integer.parseInt(tokenizer.nextToken());
@@ -235,7 +235,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "takeMiniDeck":
                     if (!tokenizer.hasMoreTokens()) {
-                        System.out.println("Formato corretto: /takeMiniDeck <index>");
+                        reportError("Wrong input!! The correct syntax is /takeMiniDeck <index>");
                         break;
                     }
                     int miniDeckIndex = Integer.parseInt(tokenizer.nextToken());
@@ -252,7 +252,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "addBooked":
                     if (tokenizer.countTokens() < 4) {
-                        System.out.println("Formato corretto: /addBooked <index> <x> <y> <rotation>");
+                        reportError("Wrong input!! The correct syntax is /addBooked <index> <x> <y> <rotation>");
                         break;
                     }
                     int index = Integer.parseInt(tokenizer.nextToken());
@@ -268,7 +268,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "add":
                     if (tokenizer.countTokens() < 3) {
-                        System.out.println("Formato corretto: /add <x> <y> <rotation>");
+                        reportError("Wrong input!! The correct syntax is /add <x> <y> <rotation>");
                         break;
                     }
                     int addX = Integer.parseInt(tokenizer.nextToken());
@@ -287,7 +287,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "remove":
                     if (tokenizer.countTokens() < 2) {
-                        System.out.println("Formato corretto: /remove <x> <y>");
+                        reportError("Wrong input!! The correct syntax is /remove <x> <y>");
                         break;
                     }
                     int removeX = Integer.parseInt(tokenizer.nextToken());
@@ -297,7 +297,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "addCrew":
                     if (tokenizer.countTokens() < 3) {
-                        System.out.println("Formato corretto: /addCrew <x> <y> <type>");
+                        reportError("Wrong input!! The correct syntax is /addCrew <x> <y> <type>");
                         break;
                     }
                     int crewX = Integer.parseInt(tokenizer.nextToken());
@@ -308,7 +308,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "removeCrew":
                     if (tokenizer.countTokens() < 2) {
-                        System.out.println("Formato corretto: /removeCrew <x> <y>");
+                        reportError("Wrong input!! The correct syntax is /removeCrew <x> <y>");
                         break;
                     }
                     int removeCrewX = Integer.parseInt(tokenizer.nextToken());
@@ -330,7 +330,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "choice":
                     if (!tokenizer.hasMoreTokens()) {
-                        System.out.println("Formato corretto: /choice <true/false>");
+                        reportError("Wrong input!! The correct syntax is /choice <true/false>");
                         break;
                     }
                     boolean choice = Boolean.parseBoolean(tokenizer.nextToken());
@@ -339,7 +339,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "choiceBox":
                     if (!tokenizer.hasMoreTokens()) {
-                        System.out.println("Formato corretto: /choiceBox <true/false>");
+                        reportError("Wrong input!! The correct syntax is /choiceBox <true/false>");
                         break;
                     }
                     boolean choiceBox = Boolean.parseBoolean(tokenizer.nextToken());
@@ -348,7 +348,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "moveBox":
                     if (tokenizer.countTokens() < 6) {
-                        System.out.println("Formato corretto: /moveBox <startX> <startY> <endX> <endY> <boxType> <on/off>");
+                        reportError("Wrong input!! The correct syntax is /moveBox <startX> <startY> <endX> <endY> <boxType> <on/off>");
                         break;
                     }
                     int startX = Integer.parseInt(tokenizer.nextToken());
@@ -362,7 +362,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "choicePlanet":
                     if (!tokenizer.hasMoreTokens()) {
-                        System.out.println("Formato corretto: /choicePlanet <index>");
+                        reportError("Wrong input!! The correct syntax is /choicePlanet <index>");
                         break;
                     }
                     int planetIndex = Integer.parseInt(tokenizer.nextToken());
@@ -383,7 +383,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "removeBox":
                     if (tokenizer.countTokens() < 3) {
-                        System.out.println("Formato corretto: /removeBox <x> <y> <boxType>");
+                        reportError("Wrong input!! The correct syntax is /removeBox <x> <y> <boxType>");
                         break;
                     }
                     int boxX = Integer.parseInt(tokenizer.nextToken());
@@ -394,7 +394,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "removeBattery":
                     if (tokenizer.countTokens() < 2) {
-                        System.out.println("Formato corretto: /removeBattery <x> <y>");
+                        reportError("Wrong input!! The correct syntax is /removeBattery <x> <y>");
                         break;
                     }
                     int batteryX = Integer.parseInt(tokenizer.nextToken());
@@ -408,7 +408,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "damage":
                     if (tokenizer.countTokens() < 2) {
-                        System.out.println("Formato corretto: /damage <x> <y>");
+                        reportError("Wrong input!! The correct syntax is /damage <x> <y>");
                         break;
                     }
                     int damageX = Integer.parseInt(tokenizer.nextToken());
@@ -418,7 +418,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "keepBlock":
                     if (tokenizer.countTokens() < 2) {
-                        System.out.println("Formato corretto: /keepBlock <x> <y>");
+                        reportError("Wrong input!! The correct syntax is /keepBlock <x> <y>");
                         break;
                     }
                     int keepX = Integer.parseInt(tokenizer.nextToken());
@@ -440,7 +440,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
         try {
             // Formato: /choiceDoubleMotor <numMotors> <motor1X> <motor1Y> ... <numBatteries> <battery1X> <battery1Y> ...
             if (!tokenizer.hasMoreTokens()) {
-                System.out.println("Formato corretto: /choiceDoubleMotor <numMotors> <motor1X> <motor1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
+                reportError("Wrong input!! The correct syntax is /choiceDoubleMotor <numMotors> <motor1X> <motor1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
                 return;
             }
 
@@ -458,7 +458,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
             }
 
             if (!tokenizer.hasMoreTokens()) {
-                System.out.println("Formato corretto: /choiceDoubleMotor <numMotors> <motor1X> <motor1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
+                reportError("Wrong input!! The correct syntax is /choiceDoubleMotor <numMotors> <motor1X> <motor1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
                 return;
             }
 
@@ -489,7 +489,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
         try {
             // Formato: /choiceDoubleCannon <numCannons> <cannon1X> <cannon1Y> ... <numBatteries> <battery1X> <battery1Y> ...
             if (!tokenizer.hasMoreTokens()) {
-                System.out.println("Formato corretto: /choiceDoubleCannon <numCannons> <cannon1X> <cannon1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
+                reportError("Wrong input!! The correct syntax is /choiceDoubleCannon <numCannons> <cannon1X> <cannon1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
                 return;
             }
 
@@ -507,7 +507,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
             }
 
             if (!tokenizer.hasMoreTokens()) {
-                System.out.println("Formato corretto: /choiceDoubleCannon <numCannons> <cannon1X> <cannon1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
+                reportError("Wrong input!! The correct syntax is /choiceDoubleCannon <numCannons> <cannon1X> <cannon1Y> ... <numBatteries> <battery1X> <battery1Y> ...");
                 return;
             }
 
@@ -527,9 +527,9 @@ public class TuiConsole implements Runnable, ConsoleClient {
             controller.choiceDoubleCannon(currentPlayer, cannons, batteries);
 
         } catch (NumberFormatException e) {
-            System.err.println("Errore di formato numerico: " + e.getMessage());
+            reportError("Errore di formato numerico: " + e.getMessage());
         } catch (RemoteException e) {
-            System.err.println("Error executing command:" + e.getMessage());
+            reportError("Error executing command:" + e.getMessage());
         }
     }
 
@@ -549,13 +549,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
     @Override
     public void reportError(String details) {
-        System.out.println(details);
+        System.err.println(details);
     }
 
     //Mostra lo stato corrente del gioco
     public void displayGameState(String gameState) {
-        System.out.println("\n--- Stato del gioco ---");
-        System.out.println(gameState);
-        System.out.println("----------------------\n");
+        displayMessage("\n--- Stato del gioco ---\n" + gameState + "\n----------------------\n");
     }
 }
