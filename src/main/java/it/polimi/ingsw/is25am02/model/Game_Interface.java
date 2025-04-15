@@ -10,7 +10,7 @@ import java.util.List;
 public interface Game_Interface {
 
     //Phase BUILD
-    void flipHourglass(Player player); //todo testare
+    void flipHourglass(Player player) throws Exception; //todo testare
     void takeTile(Player player);
     void takeTile(Player player, Tile tile);
     void takeMiniDeck(Player player, int index);
