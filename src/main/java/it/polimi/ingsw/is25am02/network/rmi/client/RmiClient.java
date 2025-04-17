@@ -1,8 +1,7 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
-import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Gameboard;
-import it.polimi.ingsw.is25am02.model.State;
+import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameboardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
@@ -18,6 +17,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -72,52 +72,65 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     //todo showtileremoval, se sto rimuovendo una cabina allora tolgo anche gli umani etc
-    //todo showbatteryremoval
-    //todo showcrewremoval
-    //todo showboxremoval
-    //todo showcreditupdate
-
-    //todo showuptadeothers ????
-
-    //todo showpositionsupdate
-    //todo showhourglassupdate
-    //todo showdiceupdate
-
-    //todo showheapTilesupdate
-    //todo showminideckupdate
-    //todo showcurrentcardupdate
-
-    //todo passargli la lista di players
-    //todo cambia nome cose
-
     @Override
-    public void showUpdateEverything(Optional<it.polimi.ingsw.is25am02.model.Player> player1, Optional<it.polimi.ingsw.is25am02.model.Player> player2, Optional<it.polimi.ingsw.is25am02.model.Player> player3, Optional<it.polimi.ingsw.is25am02.model.Player> player4, Gameboard gameboard, Card currentCard, State state) throws RemoteException {
+    public void showTileRemoval(){
+
+    }
+    @Override
+    public void showBatteryRemoval(Coordinate coordinate, Player p){
+
+
+    }
+    @Override
+    public void showCrewRemoval(Tile t){
+
+    }
+    @Override
+    public void showBoxRemoval(Tile t){
+
+    }
+    @Override
+    public void showCreditUpdate(){
+
+    }
+    @Override
+    public void showUpdatedOthers(){
+
+    }
+    @Override
+    public void showPositionsUpdate(){
+
+    }
+    @Override
+    public void showHourglassUpdate(){
+
+    }
+    @Override
+    public void showDiceUpdate(){
+
+    }
+    @Override
+    public void showHeapTileUpdate(){
+
+    }
+    @Override
+    public void showMinideckUpdate(){
+
+    }
+    @Override
+    public void showCurrentCardUpdate() {
+
+    }
+    @Override
+    public void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws RemoteException {
         StateGameTypeV phaseV = StateGameTypeV.valueOf(state.getPhase().name());
 
         CardV cardV = new CardV(currentCard.getLevel(), currentCard.getStateCard());
 
-        if (player1.isPresent()) {
-            PlayerV player1V = new PlayerV(player1.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player1.get().getNickname(), player1.get().getColor(), player1.get().getStatePlayer(), player1.get().getNumDeck(), player1.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player1)){
-                StateV stateV = new StateV(cardV, player1V, phaseV);
-            }
-        }
-        if (player2.isPresent()){
-            PlayerV player2V = new PlayerV(player2.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player2.get().getNickname(), player2.get().getColor(), player2.get().getStatePlayer(), player2.get().getNumDeck(), player2.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player2)){
-                StateV stateV = new StateV(cardV, player2V, phaseV);
-            }
-        }
-        if (player3.isPresent()){
-            PlayerV player3V = new PlayerV(player3.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player3.get().getNickname(), player3.get().getColor(), player3.get().getStatePlayer(), player3.get().getNumDeck(), player3.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player3)){
-                StateV stateV = new StateV(cardV, player3V, phaseV);
-            }
-        }
-        if (player4.isPresent()){
-            PlayerV player4V = new PlayerV(player4.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player4.get().getNickname(), player4.get().getColor(), player4.get().getStatePlayer(), player4.get().getNumDeck(), player4.get().getLobbyId());
-            if (state.getCurrentPlayer().equals(player4)){
-                StateV stateV = new StateV(cardV, player4V, phaseV);
+        for(Player p: players){
+            PlayerV playerv = new PlayerV(p.getSpaceship().getSpaceshipIterator().getSpaceshipBoard(),p.getNickname(),p.getColor(),p.getStatePlayer(),p.getNumDeck(),p.getLobbyId());
+            if(state.getCurrentPlayer().equals(p)){
+                StateV statev = new StateV(cardV,playerv,phaseV);
             }
         }
 

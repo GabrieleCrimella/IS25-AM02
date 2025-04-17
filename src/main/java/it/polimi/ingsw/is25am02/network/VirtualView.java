@@ -1,10 +1,10 @@
 package it.polimi.ingsw.is25am02.network;
 
-import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Gameboard;
-import it.polimi.ingsw.is25am02.model.State;
+import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.rmi.Remote;
+import java.util.List;
 import java.util.Optional;
 
 /*
@@ -15,6 +15,18 @@ public interface VirtualView extends Remote {
 
     void displayMessage(String details) throws Exception;
 
-    void showUpdateEverything(Optional<it.polimi.ingsw.is25am02.model.Player> player1, Optional<it.polimi.ingsw.is25am02.model.Player> player2, Optional<it.polimi.ingsw.is25am02.model.Player> player3, Optional<it.polimi.ingsw.is25am02.model.Player> player4, Gameboard gameboard, Card currentCard, State state) throws Exception;
-    //todo all the showUpdate!!!
+    void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws Exception;
+    void showTileRemoval();
+    void showBatteryRemoval(Coordinate coordinate, Player p);
+    void showCrewRemoval(Tile t);
+    void showBoxRemoval(Tile t);
+    void showCreditUpdate();
+    void showUpdatedOthers();
+    void showPositionsUpdate();
+    void showHourglassUpdate();
+    void showDiceUpdate();
+    void showHeapTileUpdate();
+    void showMinideckUpdate();
+    void showCurrentCardUpdate();
+
 }
