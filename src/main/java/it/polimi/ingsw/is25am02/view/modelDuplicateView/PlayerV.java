@@ -6,7 +6,7 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.util.Optional;
 
-public class Player {
+public class PlayerV {
     private final Optional<Tile>[][] spaceshipBoard;
     private final String nickname;
     private final PlayerColor color;
@@ -14,7 +14,7 @@ public class Player {
     private int numDeck;
     private int lobbyId;
 
-    public Player(Optional<Tile>[][] spaceshipBoard, String nickname, PlayerColor color, StatePlayerType statePlayer, int numDeck, int lobbyId) {
+    public PlayerV(Optional<Tile>[][] spaceshipBoard, String nickname, PlayerColor color, StatePlayerType statePlayer, int numDeck, int lobbyId) {
         this.spaceshipBoard = spaceshipBoard;
         this.nickname = nickname;
         this.color = color;

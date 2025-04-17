@@ -1,6 +1,6 @@
 package it.polimi.ingsw.is25am02.view.modelDuplicateView.enumeration;
 
-public enum StatePlayerType {
+public enum StatePlayerTypeV {
     FINISHED,
     NOT_FINISHED,
     CORRECT_SHIP,

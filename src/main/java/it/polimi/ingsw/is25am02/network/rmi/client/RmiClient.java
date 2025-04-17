@@ -3,12 +3,15 @@ package it.polimi.ingsw.is25am02.network.rmi.client;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.State;
-import it.polimi.ingsw.is25am02.view.modelDuplicateView.Player;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameboardV;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
-import it.polimi.ingsw.is25am02.view.modelDuplicateView.enumeration.StateGameType;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.StateV;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.enumeration.StateGameTypeV;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -68,38 +71,57 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         console.displayMessage(details);
     }
 
+    //todo showtileremoval, se sto rimuovendo una cabina allora tolgo anche gli umani etc
+    //todo showbatteryremoval
+    //todo showcrewremoval
+    //todo showboxremoval
+    //todo showcreditupdate
+
+    //todo showuptadeothers ????
+
+    //todo showpositionsupdate
+    //todo showhourglassupdate
+    //todo showdiceupdate
+
+    //todo showheapTilesupdate
+    //todo showminideckupdate
+    //todo showcurrentcardupdate
+
+    //todo passargli la lista di players
+    //todo cambia nome cose
+
     @Override
     public void showUpdateEverything(Optional<it.polimi.ingsw.is25am02.model.Player> player1, Optional<it.polimi.ingsw.is25am02.model.Player> player2, Optional<it.polimi.ingsw.is25am02.model.Player> player3, Optional<it.polimi.ingsw.is25am02.model.Player> player4, Gameboard gameboard, Card currentCard, State state) throws RemoteException {
-        StateGameType phaseV = StateGameType.valueOf(state.getPhase().name());
+        StateGameTypeV phaseV = StateGameTypeV.valueOf(state.getPhase().name());
 
-        it.polimi.ingsw.is25am02.view.modelDuplicateView.Card cardV = new it.polimi.ingsw.is25am02.view.modelDuplicateView.Card(currentCard.getLevel(), currentCard.getStateCard());
+        CardV cardV = new CardV(currentCard.getLevel(), currentCard.getStateCard());
 
         if (player1.isPresent()) {
-            Player player1V = new Player(player1.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player1.get().getNickname(), player1.get().getColor(), player1.get().getStatePlayer(), player1.get().getNumDeck(), player1.get().getLobbyId());
+            PlayerV player1V = new PlayerV(player1.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player1.get().getNickname(), player1.get().getColor(), player1.get().getStatePlayer(), player1.get().getNumDeck(), player1.get().getLobbyId());
             if (state.getCurrentPlayer().equals(player1)){
-                it.polimi.ingsw.is25am02.view.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.view.modelDuplicateView.State(cardV, player1V, phaseV);
+                StateV stateV = new StateV(cardV, player1V, phaseV);
             }
         }
         if (player2.isPresent()){
-            Player player2V = new Player(player2.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player2.get().getNickname(), player2.get().getColor(), player2.get().getStatePlayer(), player2.get().getNumDeck(), player2.get().getLobbyId());
+            PlayerV player2V = new PlayerV(player2.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player2.get().getNickname(), player2.get().getColor(), player2.get().getStatePlayer(), player2.get().getNumDeck(), player2.get().getLobbyId());
             if (state.getCurrentPlayer().equals(player2)){
-                it.polimi.ingsw.is25am02.view.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.view.modelDuplicateView.State(cardV, player2V, phaseV);
+                StateV stateV = new StateV(cardV, player2V, phaseV);
             }
         }
         if (player3.isPresent()){
-            Player player3V = new Player(player3.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player3.get().getNickname(), player3.get().getColor(), player3.get().getStatePlayer(), player3.get().getNumDeck(), player3.get().getLobbyId());
+            PlayerV player3V = new PlayerV(player3.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player3.get().getNickname(), player3.get().getColor(), player3.get().getStatePlayer(), player3.get().getNumDeck(), player3.get().getLobbyId());
             if (state.getCurrentPlayer().equals(player3)){
-                it.polimi.ingsw.is25am02.view.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.view.modelDuplicateView.State(cardV, player3V, phaseV);
+                StateV stateV = new StateV(cardV, player3V, phaseV);
             }
         }
         if (player4.isPresent()){
-            Player player4V = new Player(player4.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player4.get().getNickname(), player4.get().getColor(), player4.get().getStatePlayer(), player4.get().getNumDeck(), player4.get().getLobbyId());
+            PlayerV player4V = new PlayerV(player4.get().getSpaceship().getSpaceshipIterator().getSpaceshipBoard(), player4.get().getNickname(), player4.get().getColor(), player4.get().getStatePlayer(), player4.get().getNumDeck(), player4.get().getLobbyId());
             if (state.getCurrentPlayer().equals(player4)){
-                it.polimi.ingsw.is25am02.view.modelDuplicateView.State stateV = new it.polimi.ingsw.is25am02.view.modelDuplicateView.State(cardV, player4V, phaseV);
+                StateV stateV = new StateV(cardV, player4V, phaseV);
             }
         }
 
-        it.polimi.ingsw.is25am02.view.modelDuplicateView.Gameboard gameboardV = new it.polimi.ingsw.is25am02.view.modelDuplicateView.Gameboard(gameboard.getPositions(), gameboard.getDice(), gameboard.getHourGlassFlip());
+        GameboardV gameboardV = new GameboardV(gameboard.getPositions(), gameboard.getDice(), gameboard.getHourGlassFlip());
 
     }
 }

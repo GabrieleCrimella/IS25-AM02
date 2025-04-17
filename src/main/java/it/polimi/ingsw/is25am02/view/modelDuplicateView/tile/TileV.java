@@ -3,7 +3,7 @@ package it.polimi.ingsw.is25am02.view.modelDuplicateView.tile;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
-public class Tile {
+public class TileV {
     private final TileType tType;
     //private final String imagePath;
     private RotationType rotationType;
@@ -18,7 +18,7 @@ public class Tile {
     private int numGreenBox;
     private int numBlueBox;
 
-    public Tile(TileType tType, RotationType rotationType, boolean visible, int id, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
+    public TileV(TileType tType, RotationType rotationType, boolean visible, int id, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
         this.tType = tType;
         this.rotationType = rotationType;
         this.visible = visible;

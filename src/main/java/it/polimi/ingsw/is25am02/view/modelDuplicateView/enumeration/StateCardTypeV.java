@@ -1,6 +1,6 @@
 package it.polimi.ingsw.is25am02.view.modelDuplicateView.enumeration;
 
-public enum StateCardType {
+public enum StateCardTypeV {
     DECISION,    //decisioni si/no o utilizzo di batteria
     CHOICE_ATTRIBUTES,  //scelta di cannoni e motori doppi da usare
     REMOVE,  //rimozione di equipaggio o merce
