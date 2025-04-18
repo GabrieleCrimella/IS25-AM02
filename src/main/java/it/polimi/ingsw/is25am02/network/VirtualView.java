@@ -18,9 +18,9 @@ public interface VirtualView extends Remote {
     void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws Exception;
     void showTileRemoval();
     void showBatteryRemoval(Coordinate coordinate, Player p);
-    void showCrewRemoval(Tile t);
+    void showCrewRemoval(Coordinate coordinate, Player p);
     void showBoxRemoval(Tile t);
-    void showCreditUpdate();
+    void showCreditUpdate(Player p);
     void showUpdatedOthers();
     void showPositionsUpdate();
     void showHourglassUpdate();

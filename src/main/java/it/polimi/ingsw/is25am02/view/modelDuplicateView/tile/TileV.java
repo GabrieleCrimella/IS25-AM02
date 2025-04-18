@@ -32,4 +32,44 @@ public class TileV {
         this.numGreenBox = numGreenBox;
         this.numBlueBox = numBlueBox;
     }
+
+    public void setRotationType(RotationType rotationType) {
+        this.rotationType = rotationType;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void setNumBattery(int numBattery) {
+        this.numBattery = numBattery;
+    }
+
+    public void setNumHumans(int numHumans) {
+        this.numHumans = numHumans;
+    }
+
+    public void setNumPAliens(int numPAliens) {
+        this.numPAliens = numPAliens;
+    }
+
+    public void setNumBAliens(int numBAliens) {
+        this.numBAliens = numBAliens;
+    }
+
+    public void setNumRedBox(int numRedBox) {
+        this.numRedBox = numRedBox;
+    }
+
+    public void setNumYellowBox(int numYellowBox) {
+        this.numYellowBox = numYellowBox;
+    }
+
+    public void setNumGreenBox(int numGreenBox) {
+        this.numGreenBox = numGreenBox;
+    }
+
+    public void setNumBlueBox(int numBlueBox) {
+        this.numBlueBox = numBlueBox;
+    }
 }
