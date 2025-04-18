@@ -6,6 +6,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.model.exception.LevelException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
@@ -172,4 +173,10 @@ public class ClientController implements VirtualServer {
     public void endGame(int lobbyId) throws RemoteException {
         connection.getServer().endGame(lobbyId);
     }
+
+
+    //Controlli
+
+
+
 }
