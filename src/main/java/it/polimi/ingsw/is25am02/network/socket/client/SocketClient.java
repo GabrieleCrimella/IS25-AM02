@@ -25,4 +25,9 @@ public class SocketClient implements ConnectionClient {
     public VirtualServer getServer() {
         return handler;
     }
+
+    @Override
+    public ConsoleClient getConsole() {
+        return null;
+    }
 }

@@ -6,7 +6,6 @@ import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.exception.LevelException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
@@ -17,33 +16,53 @@ import java.util.List;
 
 public class ClientController implements VirtualServer {
     private final ConnectionClient connection;
+    private MenuState menuState;
 
     public ClientController(ConnectionClient connection) {
         this.connection = connection;
+        this.menuState = MenuState.LOGIN;
     }
 
-    public VirtualView getVirtualView() { return (VirtualView) connection; }
+    public void setMenuState(MenuState state) {
+        menuState = state;
+    }
+
+    public VirtualView getVirtualView() {
+        return (VirtualView) connection;
+    }
     
-    public void closeConnect() throws Exception { connection.closeConnection();}
+    public void closeConnect() throws Exception {
+        connection.closeConnection();
+    }
 
     public void nicknameRegistration(String nickname, VirtualView client) throws RemoteException {
-        connection.getServer().nicknameRegistration(nickname, client);
+        if(menuControl(MenuState.LOGIN)) {
+            connection.getServer().nicknameRegistration(nickname, client);
+        }
     }
 
     public void createLobby(VirtualView client, String nickname, int maxPlayers, PlayerColor color, int level) throws RemoteException {
-        connection.getServer().createLobby(client, nickname, maxPlayers, color, level);
+        if(menuControl(MenuState.MENU)) {
+            connection.getServer().createLobby(client, nickname, maxPlayers, color, level);
+        }
     }
 
     public void getLobbies(VirtualView client) throws RemoteException {
-        connection.getServer().getLobbies(client);
+        if(menuControl(MenuState.MENU)) {
+            connection.getServer().getLobbies(client);
+        }
     }
 
     public void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) throws RemoteException {
-        connection.getServer().joinLobby(client, lobbyId, nickname, color);
+        if(menuControl(MenuState.MENU)) {
+            connection.getServer().joinLobby(client, lobbyId, nickname, color);
+        }
     }
 
     public void isGameRunning(VirtualView client, int lobbyId) throws RemoteException {
-        connection.getServer().isGameRunning(client, lobbyId);
+        if(menuControl(MenuState.MENU)) {
+            connection.getServer().isGameRunning(client, lobbyId);
+        }
     }
 
     public void flipHourglass(Player player) throws RemoteException {
@@ -174,9 +193,20 @@ public class ClientController implements VirtualServer {
         connection.getServer().endGame(lobbyId);
     }
 
-
-    //Controlli
-
-
-
+    private boolean menuControl(MenuState state){
+        if(menuState != state){
+            if(menuState == MenuState.LOGIN){
+                connection.getConsole().reportError("> you need to log in");
+            } else if (menuState == MenuState.MENU) {
+                if(state == MenuState.LOGIN) {
+                    connection.getConsole().reportError("> you are already logged in");
+                } else if (state == MenuState.WAITING) {
+                    connection.getConsole().reportError("> you need to wait, for the game to start");
+                }
+            } else if (menuState == MenuState.WAITING) {
+                connection.getConsole().reportError("> you need to wait, for the game to start");
+            }
+            return false;
+        } else { return true; }
+    }
 }

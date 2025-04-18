@@ -6,6 +6,8 @@ import java.rmi.RemoteException;
 
 public interface ConsoleClient {
     void setController(ClientController controller);
+    ClientController getController();
+    public void setNickname(String nickname);
     void start();
     void displayMessage(String message);
     void reportError(String details);

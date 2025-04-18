@@ -2,7 +2,6 @@ package it.polimi.ingsw.is25am02.view;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
-import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.rmi.client.RmiClient;
 import it.polimi.ingsw.is25am02.network.socket.client.SocketClient;
 import it.polimi.ingsw.is25am02.view.tui.commandLine.TuiConsole;

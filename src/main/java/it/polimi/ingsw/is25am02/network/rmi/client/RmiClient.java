@@ -1,5 +1,12 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
+import it.polimi.ingsw.is25am02.controller.client.ClientController;
+import it.polimi.ingsw.is25am02.controller.client.MenuState;
+import it.polimi.ingsw.is25am02.model.Card;
+import it.polimi.ingsw.is25am02.model.Gameboard;
+import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.State;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
@@ -49,9 +56,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         console = choice;
     }
 
+    public void setNickname(String nickname) { console.setNickname(nickname); }
+
+
     public VirtualServer getServer() { return server; }
 
-    public ConsoleClient getConsole() { return console; }
+    public ConsoleClient getConsole() {
+        return console;
+    }
 
 
     //todo da rivedere
@@ -68,7 +80,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void displayMessage(String details) throws Exception {
+    public void displayMessage(String details) throws RemoteException {
         console.displayMessage(details);
     }
 
@@ -206,6 +218,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     //todo
+    @Override
+    public void setMenuState(MenuState state) throws RemoteException {
+        console.getController().setMenuState(state);
+    }
+
     @Override
     public void showMinideckUpdate(){
 
