@@ -6,14 +6,22 @@ import it.polimi.ingsw.is25am02.model.Player;
 import java.util.HashMap;
 
 public class GameboardV {
-    private final HashMap<Player, Integer> positions;
+    private HashMap<PlayerV, Integer> positions;
     private final Dice dice;
     private int hourGlassFlip;
 
 
-    public GameboardV(HashMap<Player, Integer> positions, Dice dice, int hourGlassFlip) {
+    public GameboardV(HashMap<PlayerV, Integer> positions, Dice dice, int hourGlassFlip) {
         this.positions = positions;
         this.dice = dice;
         this.hourGlassFlip = hourGlassFlip;
+    }
+
+    public void setPositions(HashMap<PlayerV, Integer> positions) {
+        this.positions = positions;
+    }
+
+    public HashMap<PlayerV, Integer> getPositions() {
+        return positions;
     }
 }

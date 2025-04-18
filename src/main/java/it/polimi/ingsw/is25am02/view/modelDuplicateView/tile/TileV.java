@@ -18,6 +18,10 @@ public class TileV {
     private int numGreenBox;
     private int numBlueBox;
 
+    public TileType gettType() {
+        return tType;
+    }
+
     public TileV(TileType tType, RotationType rotationType, boolean visible, int id, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
         this.tType = tType;
         this.rotationType = rotationType;

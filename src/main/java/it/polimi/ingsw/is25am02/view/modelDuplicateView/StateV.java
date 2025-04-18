@@ -13,4 +13,8 @@ public class StateV {
         this.currentPlayer = currentPlayer;
         this.phase = phase;
     }
+
+    public void setCurrentCard(CardV currentCard) {
+        this.currentCard = currentCard;
+    }
 }
