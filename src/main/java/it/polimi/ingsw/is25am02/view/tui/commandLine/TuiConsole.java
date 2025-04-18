@@ -50,6 +50,14 @@ public class TuiConsole implements Runnable, ConsoleClient {
         controller = control;
     }
 
+    public ClientController getController() {
+        return controller;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
     }
@@ -188,8 +196,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         reportError("Wrong input!! The correct syntax is /login <nickname>");
                         break;
                     }
-                    nickname = tokenizer.nextToken();
-                    controller.nicknameRegistration(nickname, controller.getVirtualView());
+                    controller.nicknameRegistration(tokenizer.nextToken(), controller.getVirtualView());
                     break;
 
                 case "create":
