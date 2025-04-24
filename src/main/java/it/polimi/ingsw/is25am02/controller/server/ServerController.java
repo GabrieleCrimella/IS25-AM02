@@ -12,11 +12,16 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ServerController extends UnicastRemoteObject implements VirtualServer {
@@ -25,6 +30,8 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     private final ExecutorService threadPool = Executors.newFixedThreadPool(8);
     private static final Runnable POISON_PILL = () -> {};
     private Thread queueProcessor;
+    private static final Logger logger = Logger.getLogger(ServerController.class.getName());
+
 
     //Gestione Login, Lobby, Inizio partita
     private final Map<Integer, Lobby> lobbies = new ConcurrentHashMap<>();
@@ -34,6 +41,13 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
     public ServerController() throws RemoteException {
         super();
+        try {
+            FileHandler fh = new FileHandler("server.log", true);
+            fh.setFormatter(new SimpleFormatter());
+            logger.addHandler(fh);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to setup logger FileHandler", e);
+        }
         startQueueProcessor();
     }
 
@@ -70,9 +84,9 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
 
     //todo più avanti questo può essere scritto non a schermo nel terminale ma in un file di log, con contesto di chiamata e timestamp
-    private void reportErrorOnServer(String message) {
+    /*private void reportErrorOnServer(String message) {
         System.err.println(">> " + message);
-    }
+    }*/
 
     public void nicknameRegistration(String nickname, VirtualView client) {
         methodQueue.offer(() -> {
@@ -84,8 +98,8 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                 } else {
                     client.reportError("> The nickname is already taken");
                 }
-            } catch(Exception e){
-                reportErrorOnServer("connection problem in method nicknameRegistration with parameter " + nickname);
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "connection problem in method nicknameRegistration with parameter " + nickname, e);
             }
         });
     }
@@ -100,13 +114,13 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     client.displayMessage("> The lobby with id " + lobby.getId() + " has been created!");
                     client.setMenuState(MenuState.WAITING);
                 } catch (Exception e) {
-                    reportErrorOnServer("connection problem in method createLobby with parameter: " + nickname + ", " + maxPlayers + ", " + color + ", " + level);
+                    logger.log(Level.SEVERE, "connection problem in method createLobby with parameter: " + nickname + ", " + maxPlayers + ", " + color + ", " + level, e);
                 }
             } else {
                 try {
                     client.reportError("> Nickname not found :(");
                 } catch (Exception e) {
-                    reportErrorOnServer("connection problem in method createLobby with parameter: " + nickname + ", " + maxPlayers + ", " + color + ", " + level);
+                    logger.log(Level.SEVERE, "connection problem in method createLobby with parameter: " + nickname + ", " + maxPlayers + ", " + color + ", " + level, e);
                 }
             }
         });
@@ -121,7 +135,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     client.displayMessage("id: " + lobbyId.toString() + ",\t owner: " + lobbies.get(lobbyId).getPlayers().getFirst().getNickname() + ",\t players: " + lobbies.get(lobbyId).getPlayers().size() + "/" + lobbies.get(lobbyId).getMaxPlayers());
                 }
             } catch (Exception e) {
-                reportErrorOnServer("connection problem in method getLobbies");
+                logger.log(Level.SEVERE, "connection problem in method getLobbies", e);
             }
         });
     }
@@ -131,11 +145,9 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             try {
                 if (!lobbies.containsKey(lobbyId)) {
                     client.reportError("> Lobby not found :(");
-                }
-                else if (lobbies.get(lobbyId).getPlayers().stream().anyMatch(player -> player.getColor().equals(color))) {
+                } else if (lobbies.get(lobbyId).getPlayers().stream().anyMatch(player -> player.getColor().equals(color))) {
                     client.reportError("> Color is already in use");
-                }
-                else if (!registeredClients.containsKey(nickname)) {
+                } else if (!registeredClients.containsKey(nickname)) {
                     client.reportError("> Your nickname was not found");
                 } else {
                     Lobby lobby = lobbies.get(lobbyId);
@@ -154,7 +166,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     client.setMenuState(MenuState.WAITING);
                 }
             } catch (Exception e) {
-                reportErrorOnServer("connection problem in method joinLobby with parameter: " + lobbyId + ", " + nickname + ", " + color);
+                logger.log(Level.SEVERE, "connection problem in method joinLobby with parameter: " + lobbyId + ", " + nickname + ", " + color, e);
             }
         });
     }
@@ -174,7 +186,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     client.displayMessage("> LobbyId " + lobbyId + " is not in the game");
                 }
             } catch (Exception e) {
-                reportErrorOnServer("connection problem in method isGameRunning with parameter: " + lobbyId);
+                logger.log(Level.SEVERE, "connection problem in method isGameRunning with parameter: " + lobbyId, e);
             }
         });
     }
@@ -185,7 +197,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             try {
                 player.getObserver().reportError("> Player not found in any game");
             } catch (Exception e) {
-                reportErrorOnServer("connection problem in method getGameFromPlayer with parameter: " + player.getNickname());
+                logger.log(Level.SEVERE, "connection problem in method getGameFromPlayer with parameter: " + player.getNickname(), e);
             }
             return null;
         } else return g;
@@ -475,7 +487,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     try {
                         gameSession.getGame().getPlayers().get(i).getObserver().displayMessage("> The match is ended");
                     } catch (Exception e) {
-                        reportErrorOnServer("connection problem in method endGame with parameter: " + lobbyId);
+                        logger.log(Level.SEVERE, "connection problem in method endGame with parameter: " + lobbyId, e);
                     }
                 }
             }
