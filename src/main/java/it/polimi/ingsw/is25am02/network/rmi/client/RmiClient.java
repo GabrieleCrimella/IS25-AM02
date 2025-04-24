@@ -1,6 +1,6 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
-import it.polimi.ingsw.is25am02.controller.client.ClientController;
+
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
@@ -39,7 +39,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     public void startConnection() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("172.20.10.3");
+        Registry registry = LocateRegistry.getRegistry("192.168.1.106");
         System.out.println("Tentativo di lookup...");
         server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
@@ -58,7 +58,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     public void setNickname(String nickname) { console.setNickname(nickname); }
 
-
     public VirtualServer getServer() { return server; }
 
     public ConsoleClient getConsole() {
@@ -66,22 +65,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
 
-    //todo da rivedere
-    public void startProcessing() throws RemoteException {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("Comando: ");
-        }
+    @Override
+    public void reportError(String keys, Map<String, String> params) throws RemoteException {
+        console.reportError(keys, params);
     }
 
     @Override
-    public void reportError(String details) throws RemoteException {
-        console.reportError(details);
-    }
-
-    @Override
-    public void displayMessage(String details) throws RemoteException {
-        console.displayMessage(details);
+    public void displayMessage(String keys, Map<String, String> params) throws RemoteException {
+        console.displayMessage(keys, params);
     }
 
     @Override

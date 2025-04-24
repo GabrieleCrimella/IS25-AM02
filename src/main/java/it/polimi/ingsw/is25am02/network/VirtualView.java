@@ -11,14 +11,14 @@ import java.rmi.Remote;
 import java.util.HashMap;
 import java.util.List;
 import java.rmi.RemoteException;
-import java.util.Optional;
+import java.util.Map;
 
 /*
 Interface that defines the methods used by the server to notify clients of state changes.
 */
 public interface VirtualView extends Remote {
-    void reportError(String details) throws Exception;
-    void displayMessage(String details) throws Exception;
+    void reportError(String keys, Map<String, String> params) throws Exception;
+    void displayMessage(String keys, Map<String, String> params) throws Exception;
     void setMenuState(MenuState state) throws RemoteException;
     void setNickname(String nickname) throws RemoteException;
 

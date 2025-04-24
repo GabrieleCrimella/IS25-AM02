@@ -4,7 +4,7 @@ import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.rmi.client.RmiClient;
 import it.polimi.ingsw.is25am02.network.socket.client.SocketClient;
-import it.polimi.ingsw.is25am02.view.tui.commandLine.TuiConsole;
+import it.polimi.ingsw.is25am02.view.tui.TuiConsole;
 
 public class ClientMain {
     public static void main(String[] args) {
@@ -33,8 +33,6 @@ public class ClientMain {
                 System.out.println("Usage: java -jar client.jar <UI> <ConnectionType>");
                 throw new Exception("...");
             }
-
-            //todo chiusura client
         } catch (Exception e) {
             System.err.println(e.getMessage());
             System.err.println("Error while starting the Client.");

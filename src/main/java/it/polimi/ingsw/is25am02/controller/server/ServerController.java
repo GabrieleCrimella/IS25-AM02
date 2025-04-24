@@ -473,7 +473,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                 gameSession.shutdown();
                 for (int i = 0; i < gameSession.getGame().getPlayers().size(); i++) {
                     try {
-                        gameSession.getGame().getPlayers().get(i).getObserver().displayMessage("> The match has ended");
+                        gameSession.getGame().getPlayers().get(i).getObserver().displayMessage("> The match is ended");
                     } catch (Exception e) {
                         reportErrorOnServer("connection problem in method endGame with parameter: " + lobbyId);
                     }
