@@ -1,17 +1,17 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
-import it.polimi.ingsw.is25am02.model.Coordinate;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.enumerations.CardType;
-import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;
 
 public class SlaveOwner extends Enemies{
     private final int AliveLost;

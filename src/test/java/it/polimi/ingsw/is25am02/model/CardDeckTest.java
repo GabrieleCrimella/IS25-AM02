@@ -1,24 +1,23 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.*;
-import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 import it.polimi.ingsw.is25am02.model.tiles.Motors;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.FINISH;
-import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.BUILD;
-import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
-import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.NOT_FINISHED;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.FINISH;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType.NOT_FINISHED;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardDeckTest {

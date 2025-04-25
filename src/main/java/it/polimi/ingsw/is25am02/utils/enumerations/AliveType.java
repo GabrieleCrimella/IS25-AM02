@@ -1,4 +1,4 @@
-package it.polimi.ingsw.is25am02.model.enumerations;
+package it.polimi.ingsw.is25am02.utils.enumerations;
 
 public enum AliveType {
     HUMAN,

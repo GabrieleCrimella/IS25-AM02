@@ -1,21 +1,31 @@
 package it.polimi.ingsw.is25am02.controller.client;
 
-import it.polimi.ingsw.is25am02.model.Coordinate;
-import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameV;
 
 import java.rmi.RemoteException;
 import java.util.List;
 
+//PlayerV diventa String nickname
+//PlayerColorV diventa int numEnum
+//tile in take tile non so come fare!!, id? immagine?
+//Coordinate diventa x e y
+//RotationTypeV diventa int numEnum
+//AliveTypeV diventa int numEnum
+//BoxTypeV diventa int numEnum
+
 public class ClientController implements VirtualServer {
     private final ConnectionClient connection;
     private MenuState menuState;
+    private GameV gameV;
 
     public ClientController(ConnectionClient connection) {
         this.connection = connection;
@@ -208,4 +218,6 @@ public class ClientController implements VirtualServer {
             return false;
         } else { return true; }
     }
+
+
 }

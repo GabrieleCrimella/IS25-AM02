@@ -1,4 +1,4 @@
-package it.polimi.ingsw.is25am02.model.enumerations;
+package it.polimi.ingsw.is25am02.utils.enumerations;
 
 public enum BoxType {
     BLUE(1), GREEN(2), YELLOW(3), RED(4), NONE(0);

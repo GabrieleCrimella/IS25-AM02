@@ -1,21 +1,21 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Coordinate;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.CardType;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
 import java.util.*;
 
-import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.TAKE_CARD;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;
 
 public class WarZone_II extends Card{
     private final int flyback;

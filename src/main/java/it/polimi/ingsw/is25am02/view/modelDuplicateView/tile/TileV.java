@@ -1,7 +1,7 @@
 package it.polimi.ingsw.is25am02.view.modelDuplicateView.tile;
 
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 
 public class TileV {
     private final TileType tType;

@@ -1,24 +1,24 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
-import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.State;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
-import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.*;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
-import it.polimi.ingsw.is25am02.view.modelDuplicateView.enumeration.StateGameTypeV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.rmi.NotBoundException;
@@ -191,11 +191,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
         gameV.getGlobalBoard().setPositions(newPosition);
     }
-
+/*
     @Override
     public void showHourglassUpdate(int timeLeft){
         gameV.setHourglassV(timeLeft);
     }
+
+ *///todo da aggiustare
 
     @Override
     public void showDiceUpdate(int diceResult){
@@ -230,9 +232,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws RemoteException {
-        StateGameTypeV phaseV = StateGameTypeV.valueOf(state.getPhase().name());
+        StateGameType phaseV = state.getPhase();
 
-        CardV cardV = new CardV(currentCard.getLevel(), currentCard.getStateCard());
+        CardV cardV = new CardV(currentCard.getLevel(), currentCard.getStateCard()); //todo bisogna mettere l'equivalente dell'enumerazione
         StateV statev = null;
         List<PlayerV> playersV = new ArrayList<>();
         HashMap<PlayerV, Integer> position = new HashMap<>();

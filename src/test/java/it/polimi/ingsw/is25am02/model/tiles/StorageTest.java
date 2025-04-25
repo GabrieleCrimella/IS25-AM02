@@ -1,10 +1,10 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import org.junit.jupiter.api.Test;
 

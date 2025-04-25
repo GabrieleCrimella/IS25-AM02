@@ -1,8 +1,8 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.enumerations.CardType;
-import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 
 public class InitialCard extends Card {
 

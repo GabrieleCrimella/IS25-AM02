@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.is25am02.model.cards.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.CardType;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import javafx.util.Pair;
 

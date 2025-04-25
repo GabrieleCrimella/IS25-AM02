@@ -1,8 +1,9 @@
 package it.polimi.ingsw.is25am02.model;
 
-import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.util.List;

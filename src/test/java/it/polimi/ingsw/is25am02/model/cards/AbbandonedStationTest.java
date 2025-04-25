@@ -5,9 +5,10 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BlueBox;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
-import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -142,7 +143,7 @@ class AbbandonedStationTest {
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
 
         Coordinate pos1 = new Coordinate(7,7);
-        game.addCrew(player1, pos1,AliveType.HUMAN);
+        game.addCrew(player1, pos1, AliveType.HUMAN);
         Coordinate pos2 = new Coordinate(8,7);
         game.addCrew(player1, pos2,AliveType.HUMAN);
 

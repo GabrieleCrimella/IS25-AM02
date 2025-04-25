@@ -1,11 +1,11 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
-import it.polimi.ingsw.is25am02.model.Coordinate;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.enumerations.CardType;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.CHOICE_ATTRIBUTES;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.CHOICE_ATTRIBUTES;
 
 public class Pirate extends Enemies {
     private ArrayList<Pair<Integer, RotationType>> shots;

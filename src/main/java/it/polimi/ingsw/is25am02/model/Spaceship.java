@@ -1,10 +1,11 @@
 package it.polimi.ingsw.is25am02.model;
 
-import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 
 public abstract class Enemies extends Card {
     private final int cannonPowers;

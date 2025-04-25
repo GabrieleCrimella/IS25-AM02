@@ -1,10 +1,10 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
 import it.polimi.ingsw.is25am02.model.Alive;
-import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
-import it.polimi.ingsw.is25am02.model.enumerations.ConnectorType;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.enumerations.TileType;
+import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
+import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 import java.util.ArrayList;

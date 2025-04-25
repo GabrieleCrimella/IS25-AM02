@@ -2,7 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;

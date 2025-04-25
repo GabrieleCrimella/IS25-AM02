@@ -7,10 +7,10 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.BlueBox;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
-import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.Storage;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

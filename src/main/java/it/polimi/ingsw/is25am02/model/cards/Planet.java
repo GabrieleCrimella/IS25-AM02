@@ -4,16 +4,16 @@ import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
-import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.model.enumerations.CardType;
-import it.polimi.ingsw.is25am02.model.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.DECISION;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.DECISION;
 
 public class Planet extends Card {
     private final int daysLost;

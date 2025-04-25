@@ -1,4 +1,4 @@
-package it.polimi.ingsw.is25am02.model.enumerations;
+package it.polimi.ingsw.is25am02.utils.enumerations;
 
 public enum StateGameType {
     INITIALIZATION_GAME, //can be deleted. it's used to initialize all the stuff.Iy can be done in Game Creator

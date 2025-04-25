@@ -1,15 +1,14 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
-import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
-import javafx.util.Pair;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -125,7 +124,7 @@ class SlaveOwnerTest {
 
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
         Coordinate pos = new Coordinate(7,7);
-        game.addCrew(player1, pos,AliveType.HUMAN);
+        game.addCrew(player1, pos, AliveType.HUMAN);
 
         game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
         player1.setStatePlayer(StatePlayerType.IN_GAME);

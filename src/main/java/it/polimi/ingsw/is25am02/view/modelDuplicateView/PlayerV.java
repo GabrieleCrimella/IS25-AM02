@@ -1,8 +1,7 @@
 package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
-import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.util.Optional;
