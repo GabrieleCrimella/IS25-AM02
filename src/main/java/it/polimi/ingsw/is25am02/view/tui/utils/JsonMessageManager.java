@@ -2,16 +2,12 @@ package it.polimi.ingsw.is25am02.view.tui.utils;
 
 import com.google.gson.*;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Map;
 
 public class JsonMessageManager {
     private final JsonObject messages;
 
     public JsonMessageManager(String filePath) throws Exception {
-        //JsonElement root = JsonParser.parseReader(new FileReader(filePath));
-        //JsonObject jsonObject= root.getAsJsonObject();
-        //this.messages = jsonObject.getAsJsonObject("messages");
         Gson gson = new Gson();
         this.messages = gson.fromJson(new FileReader(filePath), JsonObject.class);
     }
@@ -40,3 +36,7 @@ public class JsonMessageManager {
         return msg;
     }
 }
+
+//JsonElement root = JsonParser.parseReader(new FileReader(filePath));
+//JsonObject jsonObject= root.getAsJsonObject();
+//this.messages = jsonObject.getAsJsonObject("messages");

@@ -10,8 +10,17 @@
         "off" : "> you need to login",
         "on"  : "> you are already logged in"
       },
+      "nickname" : {
+        "taken" : "> The nickname is already taken",
+        "notFound" : "> Nickname not found :("
+      },
       "wait" : "> you have to wait for the game to start",
-      "data" : "insufficient data for {object}"
+      "data" : "insufficient data for {object}",
+      "lobby" : "> Lobby not found :(",
+      "color" : "> Color is already in use",
+      "player" : {
+        "notFound" : "> Player not found in any game"
+      }
     },
 
     "reading" : {
@@ -23,7 +32,27 @@
         "syntax" : "Wrong input!! The correct syntax is {syntax}"
       },
       "format" : "Number format error"
-    }
+    },
+
+    "hourglass" : "> Hourglass already running",
+
+    "level" : "> command not supported for this level",
+
+    "phase" : "> command not supported for this phase",
+
+    "state" : "> command not supported for this game state",
+
+    "viewing" : "> you are already looking at a tile",
+
+    "remove" : "> you were trying to do an illegal remove",
+
+    "add" : "> you were trying to do an illegal add",
+
+    "tile" : "> you passed a tile with wrong type, correct type is {tType}",
+
+    "command" : "> command not supported for this card",
+
+    "argument" : "> wrong argument choice"
   },
 
   "info" : {
@@ -32,7 +61,19 @@
 
   "welcome" : "========================================\n=       Galaxy Trucker (CLI)           =\n========================================",
 
+  "start" : "> Game started!",
+
+  "end" : "> The match is ended",
+
   "help" : "\nComandi disponibili:\n/help - Mostra questa lista di comandi\n/exit - Esci dal gioco\n/login <nickname> - Registra il tuo nickname\n/create <maxPlayers> <color> <level> - Crea una nuova lobby\n/lobbies - Mostra le lobby disponibili\n/join <lobbyId> <color> - Unisciti a una lobby esistente\n/ready - Segna il giocatore come pronto\n\nComandi di gioco:\n/hourglass - Gira la clessidra\n/take - Prendi una tessera\n/takeTile <id> - Prendi una tessera specifica\n/takeMiniDeck <index> - Prendi un mini-mazzo\n/returnMiniDeck - Restituisci il mini-mazzo\n/book - Prenota una tessera\n/addBooked <index> <x> <y> <rotation> - Aggiungi tessera prenotata\n/return - Restituisci una tessera\n/add <x> <y> <rotation> - Aggiungi tessera alla nave\n/remove <x> <y> - Rimuovi tessera dalla posizione\n/finish - Segnala che hai terminato la nave\n/check - Controlla la correttezza della nave\n/addCrew <x> <y> <type> - Aggiungi membro dell'equipaggio\n/removeCrew <x> <y> - Rimuovi membro dell'equipaggio\n/next - Gioca la prossima carta\n/early - Atterraggio anticipato\n/choice <true/false> - Fai una scelta\n/choiceBox <true/false> - Fai una scelta riguardo una scatola\n/moveBox <startX> <startY> <endX> <endY> <boxType> <on/off> - Muovi una scatola\n/choicePlanet <index> - Scegli un pianeta\n/roll - Lancia i dadi\n/damage <x> <y> - Calcola danno alla posizione\n/keepBlock <x> <y> - Mantieni blocco alla posizione\n\nPer altri comandi specifici, consulta la documentazione del gioco.",
+
+  "lobby" : {
+    "creation" : "> The lobby with id {num} has been created!",
+    "join" : "> You have been added to the lobby {num}",
+    "available" : "> Lobbies available:",
+    "show" : "id: {num},\t owner: {owner},\t players: {att}/{max}",
+    "state" : "> LobbyId {num} {state}"
+  },
 
   "exit" : "Exit the game..."
 
