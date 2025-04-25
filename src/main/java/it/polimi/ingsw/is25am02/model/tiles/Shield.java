@@ -7,8 +7,8 @@ import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 public final class Shield extends Tile{
     boolean[] shielded;
 
-    public Shield(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, boolean[] shielded) {
-        super(t, connectors, rotationType, id);
+    public Shield(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath, boolean[] shielded) {
+        super(t, connectors, rotationType, imagePath);
         this.shielded = shielded;
     }
 

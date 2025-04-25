@@ -9,8 +9,8 @@ public final class BatteryStorage extends Tile {
     int battery;
     int maxBattery;
 
-    public BatteryStorage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxBattery) {
-        super(t, connectors, rotationType, id);
+    public BatteryStorage(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath, int maxBattery) {
+        super(t, connectors, rotationType, imagePath);
         this.battery = maxBattery;
         this.maxBattery = maxBattery;
     }

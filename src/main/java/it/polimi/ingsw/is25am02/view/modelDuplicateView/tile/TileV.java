@@ -8,7 +8,7 @@ public class TileV {
     //private final String imagePath;
     private RotationType rotationType;
     private boolean visible;
-    private final int id;
+    private final String imagePath;
     private int numBattery;
     private int numHumans;
     private int numPAliens;
@@ -18,15 +18,15 @@ public class TileV {
     private int numGreenBox;
     private int numBlueBox;
 
-    public TileType gettType() {
+    public TileType getType() {
         return tType;
     }
 
-    public TileV(TileType tType, RotationType rotationType, boolean visible, int id, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
+    public TileV(TileType tType, RotationType rotationType, boolean visible, String imagePath, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
         this.tType = tType;
         this.rotationType = rotationType;
         this.visible = visible;
-        this.id = id;
+        this.imagePath = imagePath;
         this.numBattery = numBattery;
         this.numHumans = numHumans;
         this.numPAliens = numPAliens;
@@ -35,6 +35,10 @@ public class TileV {
         this.numYellowBox = numYellowBox;
         this.numGreenBox = numGreenBox;
         this.numBlueBox = numBlueBox;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     public void setRotationType(RotationType rotationType) {

@@ -13,8 +13,8 @@ public final class SpecialStorage extends Tile{
     int maxNum;
     ArrayList<Box> occupation;
 
-    public SpecialStorage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum) {
-        super(t, connectors, rotationType, id);
+    public SpecialStorage(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath, int maxNum) {
+        super(t, connectors, rotationType, imagePath);
         this.occupation = new ArrayList<>();
         this.maxNum = maxNum;
     }

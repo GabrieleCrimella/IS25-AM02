@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public final class Cabin extends Tile{
     ArrayList<Alive> crew;
 
-    public Cabin(TileType t, ConnectorType[] connectors, RotationType rotationType, int id) {
-        super(t, connectors, rotationType, id);
+    public Cabin(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath) {
+        super(t, connectors, rotationType, imagePath);
         this.crew = new ArrayList<>();
     }
 

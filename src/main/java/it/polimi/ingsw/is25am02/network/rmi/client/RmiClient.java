@@ -1,6 +1,5 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
-import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
@@ -89,13 +88,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(p.getNickname())) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().gettType().equals(TileType.CABIN)){
+                    if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN)){
                         showCrewRemoval(coordinate,p);
                     }
-                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().gettType().equals(TileType.BATTERY)){
+                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)){
                         showBatteryRemoval(coordinate,p);
                     }
-                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().gettType().equals(TileType.STORAGE) || playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().gettType().equals(TileType.SPECIAL_STORAGE)){
+                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) || playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE)){
                         showBoxRemoval(coordinate,p);
                     }
                     playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = null;
@@ -255,13 +254,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     if(tile.isPresent()){
                         if(tile.get().getType().equals(TileType.CABIN)){
                             if(tile.get().getCrew().contains(AliveType.PURPLE_ALIEN)){
-                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getId(),tile.get().getNumBattery(), 0,1,0,0,0,0,0);
+                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,1,0,0,0,0,0);
                             }
                             else if(tile.get().getCrew().contains(AliveType.BROWN_ALIEN)){
-                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getId(),tile.get().getNumBattery(), 0,0,1,0,0,0,0);
+                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,0,1,0,0,0,0);
                             }
                             else{
-                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getId(),tile.get().getNumBattery(), tile.get().getCrew().size(),0,0,0,0,0,0);
+                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), tile.get().getCrew().size(),0,0,0,0,0,0);
                             }
                         }
                         else if(tile.get().getType().equals(TileType.STORAGE)||tile.get().getType().equals(TileType.SPECIAL_STORAGE)){
@@ -283,10 +282,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                                     blueCount++;
                                 }
                             }
-                            tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getId(),tile.get().getNumBattery(), 0,0,0,redCount,yellowCount,greenCount,blueCount);
+                            tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,0,0,redCount,yellowCount,greenCount,blueCount);
                         }
                         else{
-                            tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getId(),tile.get().getNumBattery(), 0,0,0,0,0,0,0);
+                            tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,0,0,0,0,0,0);
 
                         }
                         spaceshipV[i][j] = Optional.of(tileV);

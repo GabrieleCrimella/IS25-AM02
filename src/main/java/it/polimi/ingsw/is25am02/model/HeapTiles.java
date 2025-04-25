@@ -67,47 +67,47 @@ public class HeapTiles {
                     shilded[1] = shildedNode.get("EAST").asBoolean();
                     shilded[2] = shildedNode.get("SOUTH").asBoolean();
                     shilded[3] = shildedNode.get("WEST").asBoolean();
-                    setTiles.add(new Shield(TileType.SHIELD, pos, RotationType.NORTH, 1, shilded));
+                    setTiles.add(new Shield(TileType.SHIELD, pos, RotationType.NORTH, levelNode.get("image").asText(), shilded));
                     break;
                 case "STRUCTURAL":
-                    setTiles.add(new Structural(TileType.STRUCTURAL, pos, RotationType.NORTH, 1));
+                    setTiles.add(new Structural(TileType.STRUCTURAL, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "BATTERY":
                     maxBattery = levelNode.get("maxBattery").asInt();
-                    setTiles.add(new BatteryStorage(TileType.BATTERY, pos, RotationType.NORTH, 1, maxBattery));
+                    setTiles.add(new BatteryStorage(TileType.BATTERY, pos, RotationType.NORTH, levelNode.get("image").asText(), maxBattery));
                     break;
                 case "BROWN_CABIN":
-                    setTiles.add(new BrownCabin(TileType.BROWN_CABIN, pos, RotationType.NORTH, 1));
+                    setTiles.add(new BrownCabin(TileType.BROWN_CABIN, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "PURPLE_CABIN":
-                    setTiles.add(new PurpleCabin(TileType.PURPLE_CABIN, pos, RotationType.NORTH, 1));
+                    setTiles.add(new PurpleCabin(TileType.PURPLE_CABIN, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "CABIN":
-                    setTiles.add(new Cabin(TileType.CABIN, pos, RotationType.NORTH, 1));
+                    setTiles.add(new Cabin(TileType.CABIN, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "CANNON":
-                    setTiles.add(new Cannon(TileType.CANNON, pos, RotationType.NORTH, 1));
+                    setTiles.add(new Cannon(TileType.CANNON, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "D_CANNON":
-                    setTiles.add(new DoubleMotor(TileType.D_CANNON, pos, RotationType.NORTH, 1));
+                    setTiles.add(new DoubleMotor(TileType.D_CANNON, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "MOTOR":
-                    setTiles.add(new Motors(TileType.MOTOR, pos, RotationType.NORTH, 1));
+                    setTiles.add(new Motors(TileType.MOTOR, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "D_MOTOR":
-                    setTiles.add(new DoubleMotor(TileType.D_MOTOR, pos, RotationType.NORTH, 1));
+                    setTiles.add(new DoubleMotor(TileType.D_MOTOR, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
                 case "SPECIAL_STORAGE":
                     maxBox = levelNode.get("maxBox").asInt();
-                    setTiles.add(new SpecialStorage(TileType.SPECIAL_STORAGE, pos, RotationType.NORTH, 1, maxBox));
+                    setTiles.add(new SpecialStorage(TileType.SPECIAL_STORAGE, pos, RotationType.NORTH, levelNode.get("image").asText(), maxBox));
                     break;
                 case "STORAGE":
                     maxBox = levelNode.get("maxBox").asInt();
-                    setTiles.add(new Storage(TileType.STORAGE, pos, RotationType.NORTH, 1, maxBox));
+                    setTiles.add(new Storage(TileType.STORAGE, pos, RotationType.NORTH, levelNode.get("image").asText(), maxBox));
                     break;
                 case "COLORED_CABIN":
                     color = levelNode.get("color").asText();
-                    cabinStartPlayer.put(color, new Cabin(TileType.CABIN, pos, RotationType.NORTH, 1));
+                    cabinStartPlayer.put(color, new Cabin(TileType.CABIN, pos, RotationType.NORTH, levelNode.get("image").asText()));
                     break;
             }
         }
@@ -147,8 +147,7 @@ public class HeapTiles {
     }
 
     public void addTile(Tile t, boolean visible) {
-        if (visible)
-            t.setVisible();
+        if (visible) t.setVisible();
         setTiles.add(t);
     }
 }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.is25am02.model.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.enumerations.TileType;
 
 public final class DoubleMotor extends Tile{
-    public DoubleMotor(TileType t, ConnectorType[] connectors, RotationType rotationType, int id) {
-        super(t, connectors, rotationType, id);
+    public DoubleMotor(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath) {
+        super(t, connectors, rotationType, imagePath);
     }
 }

@@ -16,13 +16,13 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
 //todo: ricordiamoci di mettere che all'inizio della preparazione della nave i giocatori trovano già posizionata la "tile iniziale" colorata al centro della loro nave
     private final TileType tType;
     private final ConnectorType[] connectors;
-    //private final String imagePath;
+    private final String imagePath;
     private RotationType rotationType;
     private boolean visible;
-    private final int id;
+    //private final int id;
 
     //Constructor
-    public Tile(TileType t, ConnectorType[] connectors, RotationType rotationType, int id) {
+    public Tile(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath) {
         this.tType = t;
         // Connectors array has to be of length 4
         if (connectors.length != 4) {
@@ -30,12 +30,12 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         }
         this.connectors = connectors;
         this.rotationType = rotationType;
-        this.id = id;
+        this.imagePath = imagePath;
         this.visible = false;
     }
 
-    public int getId() {
-        return id;
+    public String getImagePath() {
+        return imagePath;
     }
 
     public boolean isVisible() {

@@ -15,8 +15,8 @@ public final class Storage extends Tile {
     int maxNum;
     List<Box> occupation;
 
-    public Storage(TileType t, ConnectorType[] connectors, RotationType rotationType, int id, int maxNum) {
-        super(t, connectors, rotationType, id);
+    public Storage(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath, int maxNum) {
+        super(t, connectors, rotationType, imagePath);
         this.maxNum = maxNum;
         this.occupation = new ArrayList<Box>();
     }
