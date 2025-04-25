@@ -5,7 +5,6 @@ import it.polimi.ingsw.is25am02.model.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
-import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import java.util.*;
 
@@ -13,6 +12,7 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.*;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.*;
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.*;
 
+@SuppressWarnings("unchecked")
 public class Game implements Game_Interface {
     private int diceResult;
     private boolean buildTimeIsOver;
@@ -37,9 +37,9 @@ public class Game implements Game_Interface {
         this.buildTimeIsOver = false;
         this.globalBoard = new Gameboard(level);
         this.heapTile = new HeapTiles();
-        for (int i=0;i<players.size();i++){
+        for (Player player : players) {
             try {
-                players.get(i).getSpaceship().addTile(players.get(i).getSpaceship().getSpaceshipIterator().getX_start(), players.get(i).getSpaceship().getSpaceshipIterator().getY_start(), heapTile.getCabinStartPlayer().get(players.get(i).getColor()));
+                player.getSpaceship().addTile(player.getSpaceship().getSpaceshipIterator().getX_start(), player.getSpaceship().getSpaceshipIterator().getY_start(), heapTile.getCabinStartPlayer().get(player.getColor()));
             } catch (IllegalAddException e) {
                 System.out.println(e.getMessage());
             }
@@ -196,11 +196,23 @@ public class Game implements Game_Interface {
                     globalBoard.decreaseHourGlassFlip();
                 }
             } else {
-                throw new IllegalStateException("Hourglass already running");
+                throw new IllegalStateException("");
             }
-        } catch (IllegalStateException | IllegalPhaseException | LevelException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.hourglass", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method getLobbies");
+            }
+        } catch (LevelException e) {
+            try {
+                player.getObserver().reportError("error.level", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method getLobbies");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method getLobbies");
             }
@@ -218,9 +230,27 @@ public class Game implements Game_Interface {
             player.setNumDeck(index);
             deck.giveDeck(index);
 
-        } catch (LevelException | IllegalStateException | IllegalPhaseException | AlreadyViewingException e) {
+        } catch (LevelException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.level", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method takeminideck");
+            }
+        } catch (IllegalStateException e) {
+            try {
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method takeminideck");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method takeminideck");
+            }
+        } catch (AlreadyViewingException e) {
+            try {
+                player.getObserver().reportError("error.viewing", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeminideck");
             }
@@ -238,9 +268,27 @@ public class Game implements Game_Interface {
             deck.returnDeck(player.getNumDeck());
             player.setNumDeck(-1);
 
-        } catch (LevelException | AlreadyViewingException | IllegalStateException | IllegalPhaseException e) {
+        } catch (LevelException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.level", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method returnminideck");
+            }
+        } catch (AlreadyViewingException e) {
+            try {
+                player.getObserver().reportError("error.viewing", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method returnminideck");
+            }
+        } catch (IllegalStateException e) {
+            try {
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method returnminideck");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnminideck");
             }
@@ -256,9 +304,21 @@ public class Game implements Game_Interface {
 
             player.getSpaceship().setCurrentTile(heapTile.drawTile());
 
-        } catch (IllegalStateException | AlreadyViewingException | IllegalPhaseException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method takeTile (player)");
+            }
+        } catch (AlreadyViewingException e) {
+            try {
+                player.getObserver().reportError("error.viewing", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method takeTile (player)");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeTile (player)");
             }
@@ -275,9 +335,27 @@ public class Game implements Game_Interface {
             heapTile.removeVisibleTile(tile);
             player.getSpaceship().setCurrentTile(tile);
 
-        } catch (IllegalStateException | AlreadyViewingException | IllegalRemoveException | IllegalPhaseException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method taketile (player,tile)");
+            }
+        } catch (AlreadyViewingException e) {
+            try {
+                player.getObserver().reportError("error.viewing", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method taketile (player,tile)");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method taketile (player,tile)");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method taketile (player,tile)");
             }
@@ -293,9 +371,15 @@ public class Game implements Game_Interface {
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile();
 
-        } catch (IllegalStateException | IllegalPhaseException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method returnTile");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnTile");
             }
@@ -317,9 +401,21 @@ public class Game implements Game_Interface {
                 player.setDeckAllowed();
             }
 
-        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addtile");
+            }
+        } catch (IllegalAddException e) {
+            try {
+                player.getObserver().reportError("error.add", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addtile");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addtile");
             }
@@ -333,9 +429,27 @@ public class Game implements Game_Interface {
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().bookTile(player);
-        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method booktile");
+            }
+        } catch (IllegalAddException e) {
+            try {
+                player.getObserver().reportError("error.add", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method booktile");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method booktile");
+            }
+        } catch (LevelException e) {
+            try {
+                player.getObserver().reportError("error.level", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method booktile");
             }
@@ -349,9 +463,27 @@ public class Game implements Game_Interface {
             stateControl(BUILD, NOT_FINISHED, FINISH, player);
 
             player.getSpaceship().addBookedTile(index, pos.x(), pos.y(), rotation);
-        } catch (IllegalStateException | IllegalAddException | IllegalPhaseException | LevelException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addbookedTile");
+            }
+        } catch (IllegalAddException e) {
+            try {
+                player.getObserver().reportError("error.add", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addbookedTile");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addbookedTile");
+            }
+        } catch (LevelException e) {
+            try {
+                player.getObserver().reportError("error.level", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addbookedTile");
             }
@@ -380,7 +512,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method shipfinished");
             }
@@ -410,7 +542,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method checkspaceship");
             }
@@ -423,9 +555,15 @@ public class Game implements Game_Interface {
             stateControl(CORRECTION, WRONG_SHIP, FINISH, player);
 
             player.getSpaceship().removeTile(pos.x(), pos.y());
-        } catch (IllegalStateException | IllegalRemoveException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removeTile");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method removeTile");
             }
@@ -447,7 +585,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method checkWrongSpaceship");
             }
@@ -473,9 +611,27 @@ public class Game implements Game_Interface {
                     giveTile(player, pos).addCrew(type);
                 }
             }
-        } catch (IllegalStateException | TileException | IllegalAddException | LevelException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addCrew");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "Cabin"));
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addCrew");
+            }
+        } catch (IllegalAddException e) {
+            try {
+                player.getObserver().reportError("error.add", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method addCrew");
+            }
+        } catch (LevelException e) {
+            try {
+                player.getObserver().reportError("error.level", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addCrew");
             }
@@ -506,7 +662,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method ready");
             }
@@ -523,9 +679,15 @@ public class Game implements Game_Interface {
             player.setStatePlayer(OUT_GAME);
 
             getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
-        } catch (IllegalStateException | LevelException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method earlylanding");
+            }
+        } catch (LevelException e) {
+            try {
+                player.getObserver().reportError("error.level", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method earlylanding");
             }
@@ -546,7 +708,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method playNextCard");
             }
@@ -560,9 +722,21 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choice(this, player, choice);
-        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choice");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choice");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choice");
             }
@@ -577,10 +751,33 @@ public class Game implements Game_Interface {
             typeControl(player, pos, TileType.CABIN);
 
             getCurrentCard().removeCrew(this, player, giveTile(player, pos));
-        } catch (IllegalStateException | TileException | UnsupportedOperationException | IllegalPhaseException |
-                 IllegalRemoveException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removecrew");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "cabin"));
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removecrew");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removecrew");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removecrew");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method removecrew");
             }
@@ -594,9 +791,15 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choiceBox(this, player, choice);
-        } catch (IllegalStateException | UnsupportedOperationException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceBox");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choiceBox");
             }
@@ -617,9 +820,21 @@ public class Game implements Game_Interface {
             } else{ //Start and End are types of storage
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
             }
-        } catch (IllegalStateException | IllegalAddException | TileException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method moveBox");
+            }
+        } catch (IllegalAddException e) {
+            try {
+                player.getObserver().reportError("error.add", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method moveBox");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "storage / card"));
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method moveBox");
             }
@@ -633,9 +848,21 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choicePlanet(this, player, index);
-        } catch (IllegalStateException | UnsupportedOperationException | IllegalArgumentException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choicePlanet");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choicePlanet");
+            }
+        } catch (IllegalArgumentException e) {
+            try {
+                player.getObserver().reportError("error.argument", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choicePlanet");
             }
@@ -650,10 +877,33 @@ public class Game implements Game_Interface {
             choicesControl(player, motors, batteries, TileType.D_MOTOR);
 
             getCurrentCard().choiceDoubleMotor(this, player, motors, batteries);
-        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException |
-                 IllegalRemoveException | TileException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleMotor");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleMotor");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleMotor");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleMotor");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "motors / battery storages"));
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choiceDoubleMotor");
             }
@@ -668,10 +918,33 @@ public class Game implements Game_Interface {
             choicesControl(player, cannons, batteries, TileType.D_CANNON);
 
             getCurrentCard().choiceDoubleCannon(this, player, cannons, batteries);
-        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException |
-                 IllegalRemoveException | TileException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleCannon");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleCannon");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleCannon");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceDoubleCannon");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "cannons / battery storages"));
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choiceDoubleCannon");
             }
@@ -685,9 +958,21 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choiceCrew(this, player);
-        } catch (IllegalStateException | UnsupportedOperationException | IllegalPhaseException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceCrew");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method choiceCrew");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choiceCrew");
             }
@@ -707,9 +992,27 @@ public class Game implements Game_Interface {
             } else {
                 throw new TileException("Tile is not a storage or doesn't exits");
             }
-        } catch (IllegalStateException | TileException | UnsupportedOperationException | IllegalRemoveException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removeBox");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "storage"));
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removeBox");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removeBox");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method removeBox");
             }
@@ -724,9 +1027,27 @@ public class Game implements Game_Interface {
             typeControl(player, pos, TileType.BATTERY);
 
             getCurrentCard().removeBattery(this, player, giveTile(player, pos));
-        } catch (IllegalStateException | TileException | UnsupportedOperationException | IllegalRemoveException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removeBattery");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "battery storage"));
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removeBattery");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method removeBattery");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method removeBattery");
             }
@@ -743,7 +1064,7 @@ public class Game implements Game_Interface {
             getCurrentCard().setStateCard(CHOICE_ATTRIBUTES);
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method rollDice");
             }
@@ -760,10 +1081,33 @@ public class Game implements Game_Interface {
             }
 
             getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(),pos.y()));
-        } catch (IllegalStateException | IllegalPhaseException | UnsupportedOperationException |
-                 IllegalRemoveException | TileException e) {
+        } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method calculateDamage");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method calculateDamage");
+            }
+        } catch (UnsupportedOperationException e) {
+            try {
+                player.getObserver().reportError("error.command", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method calculateDamage");
+            }
+        } catch (IllegalRemoveException e) {
+            try {
+                player.getObserver().reportError("error.remove", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method calculateDamage");
+            }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", Map.of("tType", "battery storage"));
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method calculateDamage");
             }
@@ -781,7 +1125,7 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException e) {
             for(Player p: players){
                 try {
-                    p.getObserver().displayMessage(e.getMessage());
+                    p.getObserver().reportError("error.state", null);
                 } catch (Exception ex) {
                     reportErrorOnServer("connection problem in method effect");
                 }
@@ -799,7 +1143,7 @@ public class Game implements Game_Interface {
             player.getSpaceship().keepBlock(pos);
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method keepBlock");
             }
@@ -811,7 +1155,7 @@ public class Game implements Game_Interface {
     public void Winners() {
         try {
             if (getCurrentState().getPhase() != RESULT) {
-                throw new IllegalStateException("Wrong State");
+                throw new IllegalStateException("");
             }
 
             int minExposedConnectors = Integer.MAX_VALUE;
@@ -872,7 +1216,7 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException e) {
             for(Player p: players){
                 try {
-                    p.getObserver().displayMessage(e.getMessage());
+                    p.getObserver().reportError("error.state", null);
                 } catch (Exception ex) {
                     reportErrorOnServer("connection problem in method Winners");
                 }
