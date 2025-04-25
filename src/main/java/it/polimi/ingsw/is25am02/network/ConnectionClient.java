@@ -1,6 +1,5 @@
 package it.polimi.ingsw.is25am02.network;
 
-import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 
 public interface ConnectionClient {

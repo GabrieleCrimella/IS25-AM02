@@ -196,15 +196,15 @@ public class ClientController implements VirtualServer {
     private boolean menuControl(MenuState state){
         if(menuState != state){
             if(menuState == MenuState.LOGIN){
-                connection.getConsole().reportError("> you need to log in");
+                connection.getConsole().reportError("error.menu.login.off", null);
             } else if (menuState == MenuState.MENU) {
                 if(state == MenuState.LOGIN) {
-                    connection.getConsole().reportError("> you are already logged in");
+                    connection.getConsole().reportError("error.menu.login.on", null);
                 } else if (state == MenuState.WAITING) {
-                    connection.getConsole().reportError("> you need to wait, for the game to start");
+                    connection.getConsole().reportError("error.menu.wait", null);
                 }
             } else if (menuState == MenuState.WAITING) {
-                connection.getConsole().reportError("> you need to wait, for the game to start");
+                connection.getConsole().reportError("error.menu.wait", null);
             }
             return false;
         } else { return true; }

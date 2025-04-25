@@ -5,6 +5,7 @@ module it.polimi.ingsw.is25am02 {
     requires java.rmi;
     requires java.desktop;
     requires java.logging;
+    requires com.google.gson;
 
 
     opens it.polimi.ingsw.is25am02 to javafx.fxml;

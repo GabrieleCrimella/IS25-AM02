@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
+import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
@@ -65,22 +66,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
 
-    //todo da rivedere
-    public void startProcessing() throws RemoteException {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("Comando: ");
-        }
+    @Override
+    public void reportError(String keys, Map<String, String> params) throws RemoteException {
+        console.reportError(keys, params);
     }
 
     @Override
-    public void reportError(String details) throws RemoteException {
-        console.reportError(details);
-    }
-
-    @Override
-    public void displayMessage(String details) throws RemoteException {
-        console.displayMessage(details);
+    public void displayMessage(String keys, Map<String, String> params) throws RemoteException {
+        console.displayMessage(keys, params);
     }
 
     @Override
@@ -94,7 +87,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)){
                         showBatteryRemoval(coordinate,p);
                     }
-                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) || playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE)){
+                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) || playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().gettType().equals(TileType.SPECIAL_STORAGE)){
                         showBoxRemoval(coordinate,p);
                     }
                     playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = null;
