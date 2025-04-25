@@ -23,17 +23,17 @@ public interface VirtualView extends Remote {
     void setNickname(String nickname) throws RemoteException;
 
     void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws Exception;
-    void showTileRemoval(Coordinate coordinate, Player p);
-    void showBatteryRemoval(Coordinate coordinate, Player p);
-    void showCrewRemoval(Coordinate coordinate, Player p);
-    void showBoxRemoval(Coordinate coordinate, Player p);
-    void showCreditUpdate(Player p);
-    void showUpdatedOthers();
-    void showPositionsUpdate(HashMap<Player,Integer> positionOnGameboard);
-    void showHourglassUpdate(int timeLeft);
-    void showDiceUpdate(int diceResult);
-    void showHeapTileUpdate(HeapTiles heapTiles);
-    void showMinideckUpdate();
-    void showCurrentCardUpdate(Card currentCard);
+    void showTileRemoval(Coordinate coordinate, Player p) throws RemoteException;
+    void showBatteryRemoval(Coordinate coordinate, Player p) throws RemoteException;
+    void showCrewRemoval(Coordinate coordinate, Player p) throws RemoteException;
+    void showBoxRemoval(Coordinate coordinate, Player p) throws RemoteException;
+    void showCreditUpdate(Player p) throws RemoteException;
+    void showUpdatedOthers() throws RemoteException;
+    void showPositionsUpdate(HashMap<Player,Integer> positionOnGameboard) throws RemoteException;
+    void showHourglassUpdate(int timeLeft) throws RemoteException;
+    void showDiceUpdate(int diceResult) throws RemoteException;
+    void showHeapTileUpdate(HeapTiles heapTiles) throws RemoteException;
+    void showMinideckUpdate() throws RemoteException;
+    void showCurrentCardUpdate(Card currentCard) throws RemoteException;
 
 }

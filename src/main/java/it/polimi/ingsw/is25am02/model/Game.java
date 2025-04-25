@@ -12,7 +12,6 @@ import static it.polimi.ingsw.is25am02.model.enumerations.StateCardType.*;
 import static it.polimi.ingsw.is25am02.model.enumerations.StateGameType.*;
 import static it.polimi.ingsw.is25am02.model.enumerations.StatePlayerType.*;
 
-@SuppressWarnings("unchecked")
 public class Game implements Game_Interface {
     private int diceResult;
     private boolean buildTimeIsOver;

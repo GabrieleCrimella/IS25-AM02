@@ -40,7 +40,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
     public TuiConsole() throws Exception {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
         this.running = false;
-        this.messManager = new JsonMessageManager("resources/json/messages.json");
+        this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
     }
 
     public void closeConnect() {

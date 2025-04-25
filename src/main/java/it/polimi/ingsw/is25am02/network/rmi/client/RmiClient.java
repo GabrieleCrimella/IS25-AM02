@@ -39,7 +39,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     public void startConnection() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("172.20.10.3");
+        Registry registry = LocateRegistry.getRegistry("192.168.1.106");
         System.out.println("Tentativo di lookup...");
         server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
@@ -87,7 +87,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)){
                         showBatteryRemoval(coordinate,p);
                     }
-                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) || playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().gettType().equals(TileType.SPECIAL_STORAGE)){
+                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) || playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE)){
                         showBoxRemoval(coordinate,p);
                     }
                     playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = null;
