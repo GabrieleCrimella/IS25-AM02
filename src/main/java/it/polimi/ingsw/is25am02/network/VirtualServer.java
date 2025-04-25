@@ -17,6 +17,7 @@ public interface VirtualServer extends Remote {
     void getLobbies(VirtualView client) throws RemoteException;
     void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) throws RemoteException;
     void isGameRunning(VirtualView client, int lobbyId) throws RemoteException;
+    void ping(String nickname) throws RemoteException;
 
     // Metodi relativi al flusso di gioco
     void flipHourglass(String nickname) throws RemoteException;

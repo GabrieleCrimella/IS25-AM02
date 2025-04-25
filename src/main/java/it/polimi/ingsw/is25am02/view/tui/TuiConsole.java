@@ -24,8 +24,6 @@ import java.util.StringTokenizer;
  * Classe che gestisce l'interfaccia testuale (TUI) del gioco.
  * Si occupa di ricevere i comandi dall'utente e inoltrarli al controller client.
  */
-
-//todo tutti i Player vari non ha senso metterli come riferimenti di classi del model!!! usiamo il nickname e stop, oppure una struttura interna alla view
 public class TuiConsole implements Runnable, ConsoleClient {
     private ClientController controller;
     private final JsonMessageManager messManager;

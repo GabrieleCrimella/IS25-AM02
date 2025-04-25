@@ -25,11 +25,13 @@ import java.util.List;
 public class ClientController implements VirtualServer {
     private final ConnectionClient connection;
     private MenuState menuState;
+    private boolean running;
     private GameV gameV;
 
     public ClientController(ConnectionClient connection) {
         this.connection = connection;
         this.menuState = MenuState.LOGIN;
+        this.running = true;
     }
 
     public void setMenuState(MenuState state) {
@@ -42,11 +44,32 @@ public class ClientController implements VirtualServer {
     
     public void closeConnect() throws Exception {
         connection.closeConnection();
+        running = false;
+    }
+
+    @SuppressWarnings("all")
+    public void ping(String nickname) throws RemoteException {
+        Thread pingThread = new Thread(() -> {
+            while (running) {
+                try {
+                    connection.getServer().ping(nickname);
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                } catch (RemoteException e) {
+                    connection.getConsole().displayMessage("error.connection.command", null);
+                    break;
+                }
+            }
+        });
+        pingThread.start();
     }
 
     public void nicknameRegistration(String nickname, VirtualView client) throws RemoteException {
         if(menuControl(MenuState.LOGIN)) {
             connection.getServer().nicknameRegistration(nickname, client);
+            ping(nickname);
         }
     }
 

@@ -26,6 +26,7 @@ public class GameSession {
     }
 
     public Game getGame() { return game; }
+    public int getLobbyId() { return lobbyId; }
     public BlockingQueue<Runnable> getQueue() { return gameMethodQueue; }
 
     private void startGameQueueProcessor() {

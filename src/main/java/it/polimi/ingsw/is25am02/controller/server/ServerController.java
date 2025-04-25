@@ -32,6 +32,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     private static final Runnable POISON_PILL = () -> {};
     private Thread queueProcessor;
     private static final Logger logger = Logger.getLogger(ServerController.class.getName());
+    private final PingManager pingManager;
 
 
     //Gestione Login, Lobby, Inizio partita
@@ -50,6 +51,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             logger.log(Level.SEVERE, "Failed to setup logger FileHandler", e);
         }
         startQueueProcessor();
+        pingManager = new PingManager(this);
     }
 
     private void startQueueProcessor() {
@@ -78,8 +80,66 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             threadPool.shutdownNow();
             System.out.println(">> ThreadPool shutdown.");
             System.out.println(">> Thread administrator shutdown.");
+            pingManager.stop();
         } else {
             System.out.println(">> ThreadPool shutdown failed.");
+        }
+    }
+
+    public void ping(String nickname) throws RemoteException {
+        pingManager.ping(nickname);
+    }
+
+    public void disconnectClient(String nickname){
+        //lo cancello dai player attivi
+        registeredClients.remove(nickname);
+
+        //controllo se è in una lobby non ancora cominciata
+        for(Lobby lobby : lobbies.values()) {
+            for(Player player : lobby.getPlayers()){
+                if(player.getNickname().equals(nickname)){
+                    if(lobby.getPlayers().getFirst().getNickname().equals(nickname)){
+                        lobbies.remove(lobby.getId());
+                        lobby.getPlayers().removeFirst();
+                        for(Player player1 : lobby.getPlayers()){
+                            try {
+                                player1.getObserver().displayMessage("disconnect.lobby_owner", null);
+                                player1.getObserver().setMenuState(MenuState.MENU);
+                            } catch (Exception e) {
+                                logger.log(Level.SEVERE, "connection problem during client disconnection (case lobby_owner) " + e);
+                            }
+                        }
+                    } else {
+                        lobby.getPlayers().remove(player);
+                        for(Player player2 : lobby.getPlayers()){
+                            try {
+                                player2.getObserver().displayMessage("disconnect.lobby", Map.of("att", String.valueOf(lobby.getPlayers().size()), "max", String.valueOf(lobby.getMaxPlayers())));
+                            } catch (Exception e) {
+                                logger.log(Level.SEVERE, "connection problem during client disconnection (case lobby) " + e);
+                            }
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+
+        for(GameSession gameSession : activeGames.values()){
+            for(Player player : gameSession.getGame().getPlayers()){
+                if(player.getNickname().equals(nickname)){
+                    activeGames.remove(gameSession.getLobbyId());
+                    gameSession.getGame().getPlayers().remove(player);
+                    for(Player player2 : gameSession.getGame().getPlayers()){
+                        try {
+                            player2.getObserver().displayMessage("disconnect.game", null);
+                            player2.getObserver().setMenuState(MenuState.MENU);
+                        } catch (Exception e) {
+                            logger.log(Level.SEVERE, "connection problem during client disconnection " + e);
+                        }
+                    }
+                    return;
+                }
+            }
         }
     }
 
@@ -90,6 +150,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     registeredClients.put(nickname, client);
                     client.setMenuState(MenuState.MENU);
                     client.setNickname(nickname);
+                    pingManager.registerClient(nickname);
                 } else {
                     client.reportError("error.menu.nickname.taken", null);
                 }

@@ -36,7 +36,3 @@ public class JsonMessageManager {
         return msg;
     }
 }
-
-//JsonElement root = JsonParser.parseReader(new FileReader(filePath));
-//JsonObject jsonObject= root.getAsJsonObject();
-//this.messages = jsonObject.getAsJsonObject("messages");

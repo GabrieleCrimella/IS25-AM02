@@ -16,6 +16,13 @@ public class ServerHandler implements VirtualServer {
 
     //todo per ogni metodo creo un oggetto command che riempio con i parametri passati e poi uso out di socket
     // (dati da prendere dal socketClient)
+
+
+    @Override
+    public void ping(String nickname) throws RemoteException {
+
+    }
+
     @Override
     public void nicknameRegistration(String nickname, VirtualView client) throws RemoteException {
 

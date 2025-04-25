@@ -1283,6 +1283,7 @@ public class Game implements Game_Interface {
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     private boolean checkTileNear(Player player, Coordinate pos, TileType type) throws IllegalAddException, TileException {
         Tile tile = giveTile(player, pos);
         if (player.getSpaceship().getSpaceshipIterator().getUpTile(tile).isPresent() &&
