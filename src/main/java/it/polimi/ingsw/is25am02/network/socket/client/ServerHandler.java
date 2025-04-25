@@ -1,7 +1,6 @@
 package it.polimi.ingsw.is25am02.network.socket.client;
 
 import it.polimi.ingsw.is25am02.model.Coordinate;
-import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
@@ -43,152 +42,152 @@ public class ServerHandler implements VirtualServer {
     }
 
     @Override
-    public void flipHourglass(Player player) throws RemoteException {
+    public void flipHourglass(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void takeTile(Player player) throws RemoteException {
+    public void takeTile(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void takeTile(Player player, Tile tile) throws RemoteException {
+    public void takeTile(String nickname, Tile tile) throws RemoteException {
 
     }
 
     @Override
-    public void takeMiniDeck(Player player, int index) throws RemoteException {
+    public void takeMiniDeck(String nickname, int index) throws RemoteException {
 
     }
 
     @Override
-    public void returnMiniDeck(Player player) throws RemoteException {
+    public void returnMiniDeck(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void bookTile(Player player) throws RemoteException {
+    public void bookTile(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation) throws RemoteException {
+    public void addBookedTile(String nickname, int index, Coordinate pos, RotationType rotation) throws RemoteException {
 
     }
 
     @Override
-    public void returnTile(Player player) throws RemoteException {
+    public void returnTile(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void addTile(Player player, Coordinate pos, RotationType rotation) throws RemoteException {
+    public void addTile(String nickname, Coordinate pos, RotationType rotation) throws RemoteException {
 
     }
 
     @Override
-    public void shipFinished(Player player) throws RemoteException {
+    public void shipFinished(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void checkSpaceship(Player player) throws RemoteException {
+    public void checkSpaceship(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void removeTile(Player player, Coordinate pos) throws RemoteException {
+    public void removeTile(String nickname, Coordinate pos) throws RemoteException {
 
     }
 
     @Override
-    public void checkWrongSpaceship(Player player) throws RemoteException {
+    public void checkWrongSpaceship(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void addCrew(Player player, Coordinate pos, AliveType type) throws RemoteException {
+    public void addCrew(String nickname, Coordinate pos, AliveType type) throws RemoteException {
 
     }
 
     @Override
-    public void ready(Player player) throws RemoteException {
+    public void ready(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void playNextCard(Player player) throws RemoteException {
+    public void playNextCard(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void earlyLanding(Player player) throws RemoteException {
+    public void earlyLanding(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void choice(Player player, boolean choice) throws RemoteException {
+    public void choice(String nickname, boolean choice) throws RemoteException {
 
     }
 
     @Override
-    public void removeCrew(Player player, Coordinate pos) throws RemoteException {
+    public void removeCrew(String nickname, Coordinate pos) throws RemoteException {
 
     }
 
     @Override
-    public void choiceBox(Player player, boolean choice) throws RemoteException {
+    public void choiceBox(String nickname, boolean choice) throws RemoteException {
 
     }
 
     @Override
-    public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) throws RemoteException {
+    public void moveBox(String nickname, Coordinate start, Coordinate end, BoxType boxType, boolean on) throws RemoteException {
 
     }
 
     @Override
-    public void choicePlanet(Player player, int index) throws RemoteException {
+    public void choicePlanet(String nickname, int index) throws RemoteException {
 
     }
 
     @Override
-    public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries) throws RemoteException {
+    public void choiceDoubleMotor(String nickname, List<Coordinate> motors, List<Coordinate> batteries) throws RemoteException {
 
     }
 
     @Override
-    public void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws RemoteException {
+    public void choiceDoubleCannon(String nickname, List<Coordinate> cannons, List<Coordinate> batteries) throws RemoteException {
 
     }
 
     @Override
-    public void choiceCrew(Player player) throws RemoteException {
+    public void choiceCrew(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void removeBox(Player player, Coordinate pos, BoxType type) throws RemoteException {
+    public void removeBox(String nickname, Coordinate pos, BoxType type) throws RemoteException {
 
     }
 
     @Override
-    public void removeBattery(Player player, Coordinate pos) throws RemoteException {
+    public void removeBattery(String nickname, Coordinate pos) throws RemoteException {
 
     }
 
     @Override
-    public void rollDice(Player player) throws RemoteException {
+    public void rollDice(String nickname) throws RemoteException {
 
     }
 
     @Override
-    public void calculateDamage(Player player, Coordinate pos) throws RemoteException {
+    public void calculateDamage(String nickname, Coordinate pos) throws RemoteException {
 
     }
 
     @Override
-    public void keepBlock(Player player, Coordinate pos) throws RemoteException {
+    public void keepBlock(String nickname, Coordinate pos) throws RemoteException {
 
     }
 

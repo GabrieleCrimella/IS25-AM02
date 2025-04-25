@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.controller.server;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
+import it.polimi.ingsw.is25am02.controller.server.exception.PlayerNotFoundException;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.Spaceship;
 import it.polimi.ingsw.is25am02.model.Coordinate;
@@ -17,6 +18,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -187,284 +189,447 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         });
     }
 
-    private GameSession getGameFromPlayer(Player player) {
+    private Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {
+        for (GameSession g : activeGames.values()) {
+            for (Player p : g.getGame().getPlayers()) {
+                if (p.getNickname().equals(nickname)) {
+                    return p;
+                }
+            }
+        }
+        throw new PlayerNotFoundException("Player <" + nickname + "> not found");
+    }
+
+    private GameSession getGameFromPlayer(String nickname) throws PlayerNotFoundException {
+        Player player = getPlayerFromNickname(nickname);
         GameSession g = activeGames.get(player.getLobbyId());
         if (!lobbies.get(player.getLobbyId()).isGameStarted() || g == null) {
             try {
                 player.getObserver().reportError("error.player.notFound", null);
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "connection problem in method getGameFromPlayer with parameter: " + player.getNickname(), e);
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method getGameFromPlayer", e);
             }
             return null;
         } else return g;
     }
 
-    public void flipHourglass(Player player) {
+    public void flipHourglass(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().flipHourglass(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().flipHourglass(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method flipHourglass", e);
             }
         });
     }
 
-    public void takeTile(Player player) {
+    public void takeTile(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().takeTile(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().takeTile(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method takeTile", e);
             }
         });
     }
 
-    public void takeTile(Player player, Tile tile) {
+    //todo sostituire Tile con qualhce tipo primitivo univoco che rappresenti però anche rotazione ecc.
+    public void takeTile(String nickname, Tile tile) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().takeTile(player, tile));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().takeTile(player, tile));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method takeTile", e);
             }
         });
     }
 
-    public void takeMiniDeck(Player player, int index) {
+    public void takeMiniDeck(String nickname, int index) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().takeMiniDeck(player, index));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().takeMiniDeck(player, index));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method takeMiniDeck", e);
             }
         });
     }
 
-    public void returnMiniDeck(Player player) {
+    public void returnMiniDeck(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().returnMiniDeck(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().returnMiniDeck(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method returnMiniDeck", e);
             }
         });
     }
 
-    public void bookTile(Player player) {
+    public void bookTile(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().bookTile(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().bookTile(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method bookTile", e);
             }
         });
     }
 
-    public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation) {
+    public void addBookedTile(String nickname, int index, Coordinate pos, RotationType rotation) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().addBookedTile(player, index, pos, rotation));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().addBookedTile(player, index, pos, rotation));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method addBookedTile", e);
             }
         });
     }
 
-    public void returnTile(Player player) {
+    public void returnTile(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().returnTile(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().returnTile(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method returnTile", e);
             }
         });
     }
 
-    public void addTile(Player player, Coordinate pos, RotationType rotation) {
+    public void addTile(String nickname, Coordinate pos, RotationType rotation) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().addTile(player, pos, rotation));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().addTile(player, pos, rotation));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method addTile", e);
             }
         });
     }
 
-    public void shipFinished(Player player) {
+    public void shipFinished(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().shipFinished(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().shipFinished(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method shipFinished", e);
             }
         });
     }
 
-    public void checkSpaceship(Player player) {
+    public void checkSpaceship(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().checkSpaceship(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().checkSpaceship(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method checkSpaceship", e);
             }
         });
     }
 
-    public void removeTile(Player player, Coordinate pos) {
+    public void removeTile(String nickname, Coordinate pos) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().removeTile(player, pos));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().removeTile(player, pos));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method removeTile", e);
             }
         });
     }
 
-    public void checkWrongSpaceship(Player player) {
+    public void checkWrongSpaceship(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().checkWrongSpaceship(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().checkWrongSpaceship(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method checkWrongSpaceship", e);
             }
         });
     }
 
-    public void addCrew(Player player, Coordinate pos, AliveType type) {
+    public void addCrew(String nickname, Coordinate pos, AliveType type) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().addCrew(player, pos, type));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().addCrew(player, pos, type));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method addCrew", e);
             }
         });
     }
 
-    public void ready(Player player) {
+    public void ready(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().ready(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().ready(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method ready", e);
             }
         });
     }
 
-    public void playNextCard(Player player) {
+    public void playNextCard(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().playNextCard(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().playNextCard(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method playNextCard", e);
             }
         });
     }
 
-    public void earlyLanding(Player player) {
+    public void earlyLanding(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().earlyLanding(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().earlyLanding(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method earlyLanding", e);
             }
         });
     }
 
-    public void choice(Player player, boolean choice) {
+    public void choice(String nickname, boolean choice) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().choice(player, choice));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().choice(player, choice));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method choice", e);
             }
         });
     }
 
-    public void removeCrew(Player player, Coordinate pos) {
+    public void removeCrew(String nickname, Coordinate pos) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().removeCrew(player, pos));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().removeCrew(player, pos));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method removeCrew", e);
             }
         });
     }
 
-    public void choiceBox(Player player, boolean choice) {
+    public void choiceBox(String nickname, boolean choice) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().choiceBox(player, choice));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().choiceBox(player, choice));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method choiceBox", e);
             }
         });
     }
 
-    public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) {
+    public void moveBox(String nickname, Coordinate start, Coordinate end, BoxType boxType, boolean on) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().moveBox(player, start, end, boxType, on));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().moveBox(player, start, end, boxType, on));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method moveBox", e);
             }
         });
     }
 
-    public void choicePlanet(Player player, int index) {
+    public void choicePlanet(String nickname, int index) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().choicePlanet(player, index));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().choicePlanet(player, index));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method choicePlanet", e);
             }
         });
     }
 
-    public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries) {
+    public void choiceDoubleMotor(String nickname, List<Coordinate> motors, List<Coordinate> batteries) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().choiceDoubleMotor(player, motors, batteries));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().choiceDoubleMotor(player, motors, batteries));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method choiceDoubleMotor", e);
             }
         });
     }
 
-    public void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries) {
+    public void choiceDoubleCannon(String nickname, List<Coordinate> cannons, List<Coordinate> batteries) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().choiceDoubleCannon(player, cannons, batteries));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().choiceDoubleCannon(player, cannons, batteries));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method choiceDoubleCannon", e);
             }
         });
     }
 
-    public void choiceCrew(Player player) {
+    public void choiceCrew(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().choiceCrew(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().choiceCrew(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method choiceCrew", e);
             }
         });
     }
 
-    public void removeBox(Player player, Coordinate pos, BoxType type) {
+    public void removeBox(String nickname, Coordinate pos, BoxType type) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().removeBox(player, pos, type));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().removeBox(player, pos, type));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method removeBox", e);
             }
         });
     }
 
-    public void removeBattery(Player player, Coordinate pos) {
+    public void removeBattery(String nickname, Coordinate pos) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().removeBattery(player, pos));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().removeBattery(player, pos));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method removeBattery", e);
             }
         });
     }
 
-    public void rollDice(Player player) {
+    public void rollDice(String nickname) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().rollDice(player));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().rollDice(player));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method rollDice", e);
             }
         });
     }
 
-    public void calculateDamage(Player player, Coordinate pos) {
+    public void calculateDamage(String nickname, Coordinate pos) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().calculateDamage(player, pos));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().calculateDamage(player, pos));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname "+nickname+" not found in method ");
             }
         });
     }
 
-    public void keepBlock(Player player, Coordinate pos) {
+    public void keepBlock(String nickname, Coordinate pos) {
         methodQueue.offer(() -> {
-            GameSession g = getGameFromPlayer(player);
-            if (g != null) {
-                g.getQueue().offer(() -> g.getGame().keepBlock(player, pos));
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().keepBlock(player, pos));
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method keepBlock", e);
             }
         });
     }

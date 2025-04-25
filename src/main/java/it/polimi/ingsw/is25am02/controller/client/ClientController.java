@@ -1,7 +1,6 @@
 package it.polimi.ingsw.is25am02.controller.client;
 
 import it.polimi.ingsw.is25am02.model.Coordinate;
-import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.model.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.model.enumerations.PlayerColor;
@@ -65,124 +64,124 @@ public class ClientController implements VirtualServer {
         }
     }
 
-    public void flipHourglass(Player player) throws RemoteException {
-        connection.getServer().flipHourglass(player);
+    public void flipHourglass(String nickname) throws RemoteException {
+        connection.getServer().flipHourglass(nickname);
     }
 
-    public void takeTile(Player player) throws RemoteException {
-        connection.getServer().takeTile(player);
+    public void takeTile(String nickname) throws RemoteException {
+        connection.getServer().takeTile(nickname);
     }
 
-    public void takeTile(Player player, Tile tile) throws RemoteException {
-        connection.getServer().takeTile(player, tile);
+    public void takeTile(String nickname, Tile tile) throws RemoteException {
+        connection.getServer().takeTile(nickname, tile);
     }
 
-    public void takeMiniDeck(Player player, int index) throws RemoteException {
-        connection.getServer().takeMiniDeck(player, index);
+    public void takeMiniDeck(String nickname, int index) throws RemoteException {
+        connection.getServer().takeMiniDeck(nickname, index);
     }
 
-    public void returnMiniDeck(Player player) throws RemoteException {
-        connection.getServer().returnMiniDeck(player);
+    public void returnMiniDeck(String nickname) throws RemoteException {
+        connection.getServer().returnMiniDeck(nickname);
     }
 
-    public void bookTile(Player player) throws RemoteException {
-        connection.getServer().bookTile(player);
+    public void bookTile(String nickname) throws RemoteException {
+        connection.getServer().bookTile(nickname);
     }
 
-    public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation) throws RemoteException {
-        connection.getServer().addBookedTile(player, index, pos, rotation);
+    public void addBookedTile(String nickname, int index, Coordinate pos, RotationType rotation) throws RemoteException {
+        connection.getServer().addBookedTile(nickname, index, pos, rotation);
     }
 
-    public void returnTile(Player player) throws RemoteException {
-        connection.getServer().returnTile(player);
+    public void returnTile(String nickname) throws RemoteException {
+        connection.getServer().returnTile(nickname);
     }
 
-    public void addTile(Player player, Coordinate pos, RotationType rotation) throws RemoteException {
-        connection.getServer().addTile(player, pos, rotation);
+    public void addTile(String nickname, Coordinate pos, RotationType rotation) throws RemoteException {
+        connection.getServer().addTile(nickname, pos, rotation);
     }
 
-    public void shipFinished(Player player) throws RemoteException {
-        connection.getServer().shipFinished(player);
+    public void shipFinished(String nickname) throws RemoteException {
+        connection.getServer().shipFinished(nickname);
     }
 
-    public void checkSpaceship(Player player) throws RemoteException {
-        connection.getServer().checkSpaceship(player);
+    public void checkSpaceship(String nickname) throws RemoteException {
+        connection.getServer().checkSpaceship(nickname);
     }
 
-    public void removeTile(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeTile(player, pos);
+    public void removeTile(String nickname, Coordinate pos) throws RemoteException {
+        connection.getServer().removeTile(nickname, pos);
     }
 
-    public void checkWrongSpaceship(Player player) throws RemoteException {
-        connection.getServer().checkWrongSpaceship(player);
+    public void checkWrongSpaceship(String nickname) throws RemoteException {
+        connection.getServer().checkWrongSpaceship(nickname);
     }
 
-    public void addCrew(Player player, Coordinate pos, AliveType type) throws RemoteException {
-        connection.getServer().addCrew(player, pos, type);
+    public void addCrew(String nickname, Coordinate pos, AliveType type) throws RemoteException {
+        connection.getServer().addCrew(nickname, pos, type);
     }
 
-    public void ready(Player player) throws RemoteException {
-        connection.getServer().ready(player);
+    public void ready(String nickname) throws RemoteException {
+        connection.getServer().ready(nickname);
     }
 
-    public void playNextCard(Player player) throws RemoteException {
-        connection.getServer().playNextCard(player);
+    public void playNextCard(String nickname) throws RemoteException {
+        connection.getServer().playNextCard(nickname);
     }
 
-    public void earlyLanding(Player player) throws RemoteException {
-        connection.getServer().earlyLanding(player);
+    public void earlyLanding(String nickname) throws RemoteException {
+        connection.getServer().earlyLanding(nickname);
     }
 
-    public void choice(Player player, boolean choice) throws RemoteException {
-        connection.getServer().choice(player, choice);
+    public void choice(String nickname, boolean choice) throws RemoteException {
+        connection.getServer().choice(nickname, choice);
     }
 
-    public void removeCrew(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeCrew(player, pos);
+    public void removeCrew(String nickname, Coordinate pos) throws RemoteException {
+        connection.getServer().removeCrew(nickname, pos);
     }
 
-    public void choiceBox(Player player, boolean choice) throws RemoteException {
-        connection.getServer().choiceBox(player, choice);
+    public void choiceBox(String nickname, boolean choice) throws RemoteException {
+        connection.getServer().choiceBox(nickname, choice);
     }
 
-    public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) throws RemoteException {
-        connection.getServer().moveBox(player, start, end, boxType, on);
+    public void moveBox(String nickname, Coordinate start, Coordinate end, BoxType boxType, boolean on) throws RemoteException {
+        connection.getServer().moveBox(nickname, start, end, boxType, on);
     }
 
-    public void choicePlanet(Player player, int index) throws RemoteException {
-        connection.getServer().choicePlanet(player, index);
+    public void choicePlanet(String nickname, int index) throws RemoteException {
+        connection.getServer().choicePlanet(nickname, index);
     }
 
-    public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries) throws RemoteException {
-        connection.getServer().choiceDoubleMotor(player, motors, batteries);
+    public void choiceDoubleMotor(String nickname, List<Coordinate> motors, List<Coordinate> batteries) throws RemoteException {
+        connection.getServer().choiceDoubleMotor(nickname, motors, batteries);
     }
 
-    public void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries) throws RemoteException {
-        connection.getServer().choiceDoubleCannon(player, cannons, batteries);
+    public void choiceDoubleCannon(String nickname, List<Coordinate> cannons, List<Coordinate> batteries) throws RemoteException {
+        connection.getServer().choiceDoubleCannon(nickname, cannons, batteries);
     }
 
-    public void choiceCrew(Player player) throws RemoteException {
-        connection.getServer().choiceCrew(player);
+    public void choiceCrew(String nickname) throws RemoteException {
+        connection.getServer().choiceCrew(nickname);
     }
 
-    public void removeBox(Player player, Coordinate pos, BoxType type) throws RemoteException {
-        connection.getServer().removeBox(player, pos, type);
+    public void removeBox(String nickname, Coordinate pos, BoxType type) throws RemoteException {
+        connection.getServer().removeBox(nickname, pos, type);
     }
 
-    public void removeBattery(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().removeBattery(player, pos);
+    public void removeBattery(String nickname, Coordinate pos) throws RemoteException {
+        connection.getServer().removeBattery(nickname, pos);
     }
 
-    public void rollDice(Player player) throws RemoteException {
-        connection.getServer().rollDice(player);
+    public void rollDice(String nickname) throws RemoteException {
+        connection.getServer().rollDice(nickname);
     }
 
-    public void calculateDamage(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().calculateDamage(player, pos);
+    public void calculateDamage(String nickname, Coordinate pos) throws RemoteException {
+        connection.getServer().calculateDamage(nickname, pos);
     }
 
-    public void keepBlock(Player player, Coordinate pos) throws RemoteException {
-        connection.getServer().keepBlock(player, pos);
+    public void keepBlock(String nickname, Coordinate pos) throws RemoteException {
+        connection.getServer().keepBlock(nickname, pos);
     }
 
     public void Winners(int lobbyId) throws RemoteException {
