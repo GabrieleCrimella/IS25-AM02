@@ -17,6 +17,14 @@ public class PlayerV {
     private int lobbyId;
     private int credits;
 
+    public void setCurrentTile(Optional<TileV> currentTile) {
+        this.currentTile = currentTile;
+    }
+
+    public void setNumDeck(int numDeck) {
+        this.numDeck = numDeck;
+    }
+
     public PlayerV(Optional<TileV>[][] spaceshipBoard, String nickname, PlayerColor color, StatePlayerType statePlayer, int numDeck, int lobbyId) {
         this.spaceshipBoard = spaceshipBoard;
         this.nickname = nickname;

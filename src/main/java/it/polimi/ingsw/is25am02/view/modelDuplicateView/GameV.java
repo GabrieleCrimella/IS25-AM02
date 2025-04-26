@@ -28,6 +28,7 @@ public class GameV {
     private DiceV diceV;
     private boolean buildTimeIsOver; //todo bisogna aggiornarlo in una update
     private HourglassV hourglass;
+    private List<CardV> deck;
 
     public GameV(List<PlayerV> players, int level, GameboardV globalBoard, StateV currentState, boolean buildTimeIsOver, HourglassV hourglass) {
         this.players = players;
@@ -36,6 +37,10 @@ public class GameV {
         this.currentState = currentState;
         this.buildTimeIsOver = buildTimeIsOver;
         this.hourglass = hourglass;
+    }
+
+    public List<CardV> getDeck() {
+        return deck;
     }
 
     public HeapTileV getHeapTilesV() {

@@ -6,13 +6,10 @@ import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.State;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
-import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
-import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
-import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.*;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
@@ -200,40 +197,50 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     }
 
-    //todo
     @Override
     public void setMenuState(MenuState state) throws RemoteException {
         console.getController().setMenuState(state);
     }
 
-    //todo
     @Override
-    public void showMinideckUpdate(){
-
+    public void showMinideckUpdate(String nickname, int deck){
+        for(PlayerV playerV : gameV.getPlayers()){
+            if(nickname.equals(playerV.getNickname())){
+                playerV.setNumDeck(deck);
+                return;
+            }
+        }
     }
 
-    //todo le carte sono univoche ma come le cerco? faccio con imagepath
     @Override
-    public void showCurrentCardUpdate(String imagepath) {
-
-        //gameV.getCurrentState().setCurrentCard(imagepath);
-
-
+    public void showCurrentCardUpdate(String imagepath, StateCardType stateCard) {
+        for(CardV card: gameV.getDeck()){
+            if(card.getImagePath().equals(imagepath)){
+                gameV.getCurrentState().setCurrentCard(new CardV(stateCard, imagepath));
+                return;
+            }
+        }
     }
 
-    //todo
     @Override
-    public void showCurrentTileUpdate(String imagepath) {
-        //gameV.getCurrentState().setCurrentTile(imagepath);
-
-
+    public void showCurrentTileUpdate(String imagepath, String nickname) {
+        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+            if (tileV.getImagePath().equals(imagepath)) {
+                for (PlayerV playerv : gameV.getPlayers()) {
+                    if (playerv.getNickname().equals(nickname)) {
+                        playerv.setCurrentTile(Optional.of(tileV));
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws RemoteException {
         StateGameType phaseV = state.getPhase();
 
-        CardV cardV = new CardV(currentCard.getLevel(), currentCard.getStateCard(), currentCard.getImagePath()); //todo bisogna mettere l'equivalente dell'enumerazione
+        CardV cardV = new CardV(currentCard.getStateCard(), currentCard.getImagePath());
         StateV statev = null;
         List<PlayerV> playersV = new ArrayList<>();
         HashMap<PlayerV, Integer> position = new HashMap<>();
@@ -294,6 +301,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             playersV.add(playerv);
             position.put(playerv,gameboard.getPositions().get(p));
         }
+
 
 
         GameboardV gameboardV = new GameboardV(position, gameboard.getDice(), gameboard.getHourGlassFlip());

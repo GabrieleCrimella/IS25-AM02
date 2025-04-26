@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.State;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 
 import java.rmi.Remote;
 import java.util.HashMap;
@@ -33,10 +34,10 @@ public interface VirtualView extends Remote {
     void showPositionsUpdate(HashMap<Player,Integer> positionOnGameboard) throws RemoteException;
     void showHourglassUpdate(Hourglass hourglass) throws RemoteException;
     void showDiceUpdate(Dice dice) throws RemoteException;
-    void showMinideckUpdate() throws RemoteException;
-    void showCurrentCardUpdate(String imagepath) throws RemoteException;
-    void showCurrentTileUpdate(String imagepath) throws RemoteException;
+    void showMinideckUpdate(String nickname, int deck) throws RemoteException;
+    void showCurrentCardUpdate(String imagepath, StateCardType stateCard) throws RemoteException;
+    void showCurrentTileUpdate(String imagepath, String nickname) throws RemoteException;
     void showVisibilityUpdate(String imagepath) throws RemoteException;
-     void showTileRemovalFromHeapTile(String imagepath) throws RemoteException;
+    void showTileRemovalFromHeapTile(String imagepath) throws RemoteException;
 
 }
