@@ -42,10 +42,6 @@ public class GameV {
         return heapTilesV;
     }
 
-    public void setDiceV(DiceV diceV) {
-        this.diceV = diceV;
-    }
-
     public void setHourglass(HourglassV hourglass) {
         this.hourglass = hourglass;
     }
@@ -58,7 +54,7 @@ public class GameV {
         return diceV;
     }
 
-    public void setDiceV(int diceV) {
+    public void setDiceV(DiceV diceV) {
         this.diceV = diceV;
     }
 
