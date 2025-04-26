@@ -61,13 +61,13 @@ public class GameV {
             buildControl();
             if (!hourglass.getRunning()) {
                 stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, playerV);
-                connection.getServer().flipHourglass(player);
+                connection.getServer().flipHourglass(playerV);
             } else {
                 throw new it.polimi.ingsw.is25am02.model.exception.IllegalStateException("Hourglass already running");
             }
         } catch (IllegalStateException | IllegalPhaseException | LevelException e) {
             try {
-                player.getObserver().displayMessage(e.getMessage());
+                playerV.getObserver().displayMessage(e.getMessage());
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method getLobbies");
             }

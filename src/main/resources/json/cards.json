@@ -6,7 +6,7 @@
     "aliveLost" : 2,
     "creditWin"  : 3 ,
     "daysLost": 1,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0117.jpg"
   },
   {
     "type": "ABANDONED_SHIP",
@@ -15,7 +15,7 @@
     "aliveLost" : 3,
     "creditWin"  : 4,
     "daysLost": 1,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0118.jpg"
   },
   {
     "type": "ABANDONED_SHIP",
@@ -24,7 +24,7 @@
     "aliveLost" : 5,
     "creditWin"  : 8,
     "daysLost": 2,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0118.jpg"
   },
   {
     "type": "ABANDONED_SHIP",
@@ -33,7 +33,7 @@
     "aliveLost" : 4,
     "creditWin"  : 6,
     "daysLost": 1,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0117.jpg"
   },
   {
     "type": "ABANDONED_STATION",
@@ -45,7 +45,7 @@
       "YELLOW",
       "GREEN"
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0119.jpg"
   },
   {
     "type": "ABANDONED_STATION",
@@ -57,7 +57,7 @@
       "RED",
       "RED"
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0120.jpg"
   },
   {
     "type": "ABANDONED_STATION",
@@ -69,7 +69,7 @@
       "RED",
       "YELLOW"
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0119.jpg"
   },
   {
     "type": "ABANDONED_STATION",
@@ -82,7 +82,7 @@
       "YELLOW",
       "GREEN"
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0120.jpg"
   },
   {
     "type": "PIRATE",
@@ -96,7 +96,7 @@
       [1, "north"],
       [0, "north"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_013.jpg"
   },
   {
     "type": "PIRATE",
@@ -110,7 +110,7 @@
       [0, "north"],
       [1, "north"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_013.jpg"
   },
   {
     "type": "TRAFFICKER",
@@ -124,7 +124,7 @@
       "GREEN",
       "BLUE"
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_012.jpg"
   },
   {
     "type": "TRAFFICKER",
@@ -138,7 +138,7 @@
       "YELLOW",
       "YELLOW"
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_012.jpg"
   },
   {
     "type": "SLAVEOWNER",
@@ -148,7 +148,7 @@
     "daysLost": 1,
     "aliveLost": 3,
     "creditWin"  : 5,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_01.jpg"
   },
   {
     "type": "SLAVEOWNER",
@@ -158,67 +158,67 @@
     "daysLost": 2,
     "aliveLost": 4,
     "creditWin"  : 8,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_01.jpg"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": true,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_015.jpg"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_016.jpg"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_017.jpg"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_018.jpg"
   },
   {
     "type": "OPENSPACE",
     "level": 2,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_016.jpg"
   },
   {
     "type": "OPENSPACE",
     "level": 2,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_017.jpg"
   },
   {
     "type": "OPENSPACE",
     "level": 2,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_018.jpg"
   },
   {
     "type": "STARDUST",
     "level": 1,
     "testFlight": true,
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_014.jpg"
   },
   {
     "type": "STARDUST",
     "level": 2,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_014.jpg"
   },
   {
     "type": "EPIDEMY",
     "level": 2,
     "testFlight": false,
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_015.jpg"
   },
   {
     "type": "METEORITES",
@@ -231,7 +231,7 @@
       [0, "east"],
       [0, "south"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0110.jpg"
   },
   {
     "type": "METEORITES",
@@ -242,7 +242,7 @@
       [0, "west"],
       [0, "east"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_019.jpg"
   },
   {
     "type": "METEORITES",
@@ -253,7 +253,7 @@
       [0, "north"],
       [1, "north"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0111.jpg"
   },
   {
     "type": "METEORITES",
@@ -266,7 +266,7 @@
       [0, "east"],
       [0, "east"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0111.jpg"
   },
   {
     "type": "METEORITES",
@@ -279,7 +279,7 @@
       [0, "west"],
       [0, "west"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_019.jpg"
   },
   {
     "type": "METEORITES",
@@ -291,7 +291,7 @@
       [0, "south"],
       [0, "south"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0110.jpg"
   },
   {
     "type": "PLANETS",
@@ -303,7 +303,7 @@
       ["RED", "BLUE", "BLUE"],
       ["YELLOW"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0113.jpg"
   },
   {
     "type": "PLANETS",
@@ -314,7 +314,7 @@
       ["YELLOW", "GREEN", "BLUE", "BLUE"],
       ["YELLOW", "YELLOW"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0114.jpg"
   },
   {
     "type": "PLANETS",
@@ -326,7 +326,7 @@
       ["YELLOW"],
       ["BLUE", "BLUE", "BLUE"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0115.jpg"
   },
   {
     "type": "PLANETS",
@@ -339,7 +339,7 @@
       ["RED","BLUE", "BLUE", "BLUE"],
       ["RED", "GREEN"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0112.jpg"
   },
   {
     "type": "PLANETS",
@@ -350,7 +350,7 @@
       ["RED", "RED"],
       ["GREEN", "GREEN","GREEN", "GREEN"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0113.jpg"
   },
   {
     "type": "PLANETS",
@@ -362,7 +362,7 @@
       ["RED", "RED","GREEN", "GREEN"],
       ["RED","BLUE", "BLUE", "BLUE", "BLUE"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0112.jpg"
   },
   {
     "type": "PLANETS",
@@ -375,7 +375,7 @@
       ["GREEN","GREEN"],
       ["YELLOW"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0114.jpg"
   },
   {
     "type": "PLANETS",
@@ -387,7 +387,7 @@
       ["YELLOW", "YELLOW"],
       ["BLUE", "BLUE", "BLUE", "BLUE"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0115.jpg"
   },
   {
     "type": "WARZONE1",
@@ -399,7 +399,7 @@
       [0, "south"],
       [1, "south"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_I_IT_0116.jpg"
   },
   {
     "type": "WARZONE2",
@@ -413,6 +413,6 @@
       [0, "east"],
       [1, "south"]
     ],
-    "image": ""
+    "image": "/images/cards/GT-cards_II_IT_0116.jpg"
   }
 ]

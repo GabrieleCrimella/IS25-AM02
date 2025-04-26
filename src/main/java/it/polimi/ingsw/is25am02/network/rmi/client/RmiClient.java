@@ -298,7 +298,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
         GameboardV gameboardV = new GameboardV(position, gameboard.getDice(), gameboard.getHourGlassFlip());
 
-        GameV gameV = new GameV(playersV, currentCard.getLevel(), gameboardV, statev);
+        GameV gameV = new GameV(playersV, currentCard.getLevel(), gameboardV, statev, false, new HourglassV());
 
     }
 }
