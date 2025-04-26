@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 
 public class TileV {
     private final TileType tType;
+    //private final String imagePath;
     private RotationType rotationType;
     private boolean visible;
     private final String imagePath;
@@ -17,9 +18,7 @@ public class TileV {
     private int numGreenBox;
     private int numBlueBox;
 
-    public TileType getType() {
-        return tType;
-    }
+
 
     public TileV(TileType tType, RotationType rotationType, boolean visible, String imagePath, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
         this.tType = tType;
@@ -36,7 +35,7 @@ public class TileV {
         this.numBlueBox = numBlueBox;
     }
 
-    public TileType gettType() {
+    public TileType getType() {
         return tType;
     }
 

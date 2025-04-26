@@ -4,11 +4,14 @@ package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
 import it.polimi.ingsw.is25am02.model.HeapTiles;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.exception.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
-import it.polimi.ingsw.is25am02.model.exception.LevelException;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.util.List;
@@ -55,25 +58,9 @@ public class GameV {
         return diceV;
     }
 
-    public void flipHourglass(PlayerV playerV) {
-        try {
-            levelControl();
-            buildControl();
-            if (!hourglass.getRunning()) {
-                stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, playerV);
-                connection.getServer().flipHourglass(playerV);
-            } else {
-                throw new it.polimi.ingsw.is25am02.model.exception.IllegalStateException("Hourglass already running");
-            }
-        } catch (IllegalStateException | IllegalPhaseException | LevelException e) {
-            try {
-                playerV.getObserver().displayMessage(e.getMessage());
-            } catch (Exception ex) {
-                reportErrorOnServer("connection problem in method getLobbies");
-            }
-        }
+    public void setDiceV(int diceV) {
+        this.diceV = diceV;
     }
-
 
     public StateV getCurrentState() {
         return currentState;
@@ -96,32 +83,104 @@ public class GameV {
     }
 
     //controlli
-    private void levelControl() throws LevelException {
+    public boolean levelControl(){
         if (level == 0) {
-            throw new LevelException("functionality for higher levels");
+            //throw new LevelException("functionality for higher levels");
+            //todo messaggio
+            return false;
         }
+        return true;
     }
 
-    private void buildControl() throws IllegalPhaseException {
+    public boolean buildControl() {
         if (buildTimeIsOver) {
-            throw new IllegalPhaseException("the time for building is over, call finishedSpaceship");
+            //throw new IllegalPhaseException("the time for building is over, call finishedSpaceship");
+            //todo messaggio
+            return false;
         }
+        return true;
     }
 
     public CardV getCurrentCard() {
         return currentState.getCurrentCard();
     }
 
-    private void stateControl(StateGameType stateGame, StatePlayerType statePlayer, StateCardType stateCard, PlayerV playerV) throws IllegalStateException {
+    public boolean stateControl(StateGameType stateGame, StatePlayerType statePlayer, StateCardType stateCard, PlayerV playerV) {
         if (!playerV.getStatePlayer().equals(statePlayer)) {
-            throw new IllegalStateException("Wrong player state, expected state : " + statePlayer + ", actual state : " + playerV.getStatePlayer());
+            //throw new IllegalStateException("Wrong player state, expected state : " + statePlayer + ", actual state : " + playerV.getStatePlayer());
+            //todo messaggio
+            return false;
         }
         if (!getCurrentCard().getStateCard().equals(stateCard)) {
-            throw new IllegalStateException("Wrong card state, expected state : " + stateCard + ", actual state : " + getCurrentCard().getStateCard());
+            //todo messaggio
+            //throw new IllegalStateException("Wrong card state, expected state : " + stateCard + ", actual state : " + getCurrentCard().getStateCard());
+            return false;
         }
         if (!getCurrentState().getPhase().equals(stateGame)) {
-            throw new IllegalStateException("Wrong game state, expected state : " + stateGame + "  actual state : " + getCurrentState().getPhase());
+            //todo messaggio
+            //throw new IllegalStateException("Wrong game state, expected state : " + stateGame + "  actual state : " + getCurrentState().getPhase());
+            return false;
         }
+        return true;
+    }
+
+    public boolean currentTileControl(PlayerV playerV) {
+        if (playerV.getCurrentTile() != null) {
+            //todo message
+            //throw new AlreadyViewingException("Wrong (CurrentTile != null), Player : " + player.getNickname() + ", actual tile : " + player.getSpaceship().getCurrentTile());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deckAllowedControl(PlayerV player) {
+        if (!player.getDeckAllowed()) {
+            //todo message
+            //throw new IllegalPhaseException("the player " + player.getNickname() + " is not allowed to see the minidecks");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean cabinControl(PlayerV playerV, Coordinate pos) {
+        if (playerV.getSpaceshipBoard()[pos.x()][pos.y()].isEmpty()) {
+            //todo manda messaggio
+            //throw new TileException("No Tile in position ( " + pos.x() + ", " + pos.y() + " )");
+            return false;
+        }
+        if (!playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getType().equals(TileType.CABIN)) {
+            //todo manda messaggio
+            //throw new TileException("Different TileType, expected " + TileType.CABIN + ", actual " + player.getSpaceship().getTile(pos.x(), pos.y()).get().getType());
+            return false;
+        }
+        if (!(playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumHumans()==0 && playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumPAliens()==0 && playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumBAliens()==0)) {
+            //todo manda messaggio
+            //throw new TileException("Cabin already full");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean currentPlayerControl(PlayerV playerV) {
+        if (!playerV.equals(getCurrentState().getCurrentPlayer())) {
+            //todo manda messaggio
+            //throw new IllegalStateException("Wrong leader, actual leader : " + getCurrentState().getCurrentPlayer());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean typeControl(PlayerV playerV, Coordinate pos, TileType type) {
+        if (playerV.getSpaceshipBoard()[pos.x()][ pos.y()].isPresent() && !playerV.getSpaceshipBoard()[pos.x()][ pos.y()].get().getType().equals(type)) {
+            //todo manda messaggio
+            //throw new TileException("Tile (" + pos.x() + " " + pos.y() + ") from player " + player.getNickname() +" doesn't possess Type: " + type);
+            return false;
+        } else if (playerV.getSpaceshipBoard()[pos.x()][ pos.y()].isEmpty()) {
+            //todo manda messaggio
+            //throw new TileException("No Tile in position ( " + pos.x() + ", " + pos.y() + " ) from player " + player.getNickname());
+            return false;
+        }
+        return true;
     }
 
 }

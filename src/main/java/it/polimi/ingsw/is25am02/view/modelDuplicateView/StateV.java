@@ -25,4 +25,7 @@ public class StateV {
         return phase;
     }
 
+    public PlayerV getCurrentPlayer() {
+        return currentPlayer;
+    }
 }

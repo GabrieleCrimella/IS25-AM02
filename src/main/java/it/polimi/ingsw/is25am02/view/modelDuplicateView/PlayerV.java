@@ -8,9 +8,11 @@ import java.util.Optional;
 
 public class PlayerV {
     private final Optional<TileV>[][] spaceshipBoard;
+    private Optional<TileV> currentTile;
     private final String nickname;
     private final PlayerColor color;
     private StatePlayerType statePlayer;
+    private boolean deckAllowed; //todo bisogna aggiornare anche questo
     private int numDeck;
     private int lobbyId;
     private int credits;
@@ -26,6 +28,14 @@ public class PlayerV {
 
     public Optional<TileV>[][] getSpaceshipBoard() {
         return spaceshipBoard;
+    }
+
+    public Optional<TileV> getCurrentTile() {
+        return currentTile;
+    }
+
+    public boolean getDeckAllowed() {
+        return deckAllowed;
     }
 
     public String getNickname() {
