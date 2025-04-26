@@ -15,6 +15,10 @@ public class Hourglass {
         this.running = false;
     }
 
+    public long getTimeLeft() {
+        return timeLeft;
+    }
+
     public boolean getRunning() {
         return running;
     }

@@ -1,11 +1,17 @@
 package it.polimi.ingsw.is25am02.model;
 
 public class Dice {
+    private int result;
     public Dice() {
         super();
     }
 
+    public int getResult() {
+        return result;
+    }
+
     public int pickRandomNumber(){
-        return (int)(Math.random() * 11) + 2;
+        result = (int)(Math.random() * 11) + 2;
+        return result;
     }
 }

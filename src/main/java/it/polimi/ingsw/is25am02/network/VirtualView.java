@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Gameboard;
 import it.polimi.ingsw.is25am02.model.State;
+import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 
 import java.rmi.Remote;
@@ -23,15 +24,16 @@ public interface VirtualView extends Remote {
     void setNickname(String nickname) throws RemoteException;
 
     void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws Exception;
-    void showTileRemoval(Coordinate coordinate, Player p) throws RemoteException;
-    void showBatteryRemoval(Coordinate coordinate, Player p) throws RemoteException;
-    void showCrewRemoval(Coordinate coordinate, Player p) throws RemoteException;
-    void showBoxRemoval(Coordinate coordinate, Player p) throws RemoteException;
-    void showCreditUpdate(Player p) throws RemoteException;
+    void showTileRemoval(Coordinate coordinate, String nickname) throws RemoteException;
+    void showBatteryRemoval(Coordinate coordinate, String nickname, int numBattery) throws RemoteException;
+    void showCrewRemoval(Coordinate coordinate, String nickname, int numCrew) throws RemoteException;
+    void showBoxRemoval(Coordinate coordinate, String nickname, Box box) throws RemoteException;
+    void showCreditUpdate(String nickname, int cosmicCredits) throws RemoteException;
     void showUpdatedOthers() throws RemoteException;
+    void showCurrentTileUpdate() throws RemoteException;
     void showPositionsUpdate(HashMap<Player,Integer> positionOnGameboard) throws RemoteException;
-    void showHourglassUpdate(int timeLeft) throws RemoteException;
-    void showDiceUpdate(int diceResult) throws RemoteException;
+    void showHourglassUpdate(Hourglass hourglass) throws RemoteException;
+    void showDiceUpdate(Dice dice) throws RemoteException;
     void showHeapTileUpdate(HeapTiles heapTiles) throws RemoteException;
     void showMinideckUpdate() throws RemoteException;
     void showCurrentCardUpdate(Card currentCard) throws RemoteException;

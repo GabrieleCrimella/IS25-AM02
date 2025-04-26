@@ -77,18 +77,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showTileRemoval(Coordinate coordinate, Player p){ //tolgo dal player p la tile in posizione coordinate
+    public void showTileRemoval(Coordinate coordinate, String nickname){ //tolgo dal player p la tile in posizione coordinate
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(p.getNickname())) {
+            if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
                     if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN)){
-                        showCrewRemoval(coordinate,p);
+                        showCrewRemoval(coordinate,nickname,playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumHumans()-1);
                     }
                     else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)){
-                        showBatteryRemoval(coordinate,p);
-                    }
-                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) || playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE)){
-                        showBoxRemoval(coordinate,p);
+                        showBatteryRemoval(coordinate,nickname, playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBattery()-1);
                     }
                     playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = null;
                 }
@@ -97,83 +94,61 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showBatteryRemoval(Coordinate coordinate, Player p){
+    public void showBatteryRemoval(Coordinate coordinate, String nickname, int numBattery){
     //voglio mettere nella tile in coordinate nella spaceship copiata una batteria in meno
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(p.getNickname())) {
+            if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBattery(p.getSpaceship().getTile(coordinate.x(),coordinate.y()).get().getNumBattery());
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBattery(numBattery);
                 }
-
             }
         }
     }
 
     @Override
-    public void showCrewRemoval(Coordinate coordinate, Player p){
+    public void showCrewRemoval(Coordinate coordinate, String nickname, int numCrew){
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(p.getNickname())) {
+            if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    if(p.getSpaceship().getTile(coordinate.x(), coordinate.y()).get().getCrew().contains(AliveType.BROWN_ALIEN)){
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBAliens(0);
-                    }
-                    else if(p.getSpaceship().getTile(coordinate.x(), coordinate.y()).get().getCrew().contains(AliveType.PURPLE_ALIEN)){
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumPAliens(0);
-                    }
-                    else{
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumHumans(p.getSpaceship().getTile(coordinate.x(),coordinate.y()).get().getCrew().size());
-                    }
-
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumHumans(numCrew);
                 }
-
             }
         }
     }
 
     @Override
-    public void showBoxRemoval(Coordinate coordinate, Player p){
+    public void showBoxRemoval(Coordinate coordinate, String nickname, Box box){
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(p.getNickname())) {
+            if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    int redCount = 0;
-                    int yellowCount = 0;
-                    int greenCount = 0;
-                    int blueCount = 0;
-                    for (Box box : p.getSpaceship().getTile(coordinate.x(),coordinate.y()).get().getOccupation()) {
-                        if (box.getType().equals(BoxType.RED)) {
-                            redCount++;
-                        }
-                        else if(box.getType().equals(BoxType.YELLOW)){
-                            yellowCount++;
-                        }
-                        else if(box.getType().equals(BoxType.GREEN)){
-                            greenCount++;
-                        }
-                        else {
-                            blueCount++;
-                        }
+                    if (box.getType().equals(BoxType.RED)) {
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumRedBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumRedBox()-1);
                     }
-                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumRedBox(redCount);
-                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumYellowBox(yellowCount);
-                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumGreenBox(greenCount);
-                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBlueBox(blueCount);
+                    else if(box.getType().equals(BoxType.YELLOW)){
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumYellowBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumYellowBox()-1);
+                    }
+                    else if(box.getType().equals(BoxType.GREEN)){
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumGreenBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumGreenBox()-1);
+                    }
+                    else {
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBlueBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBlueBox()-1);
+                    }
                 }
-
             }
         }
     }
 
     @Override
-    public void showCreditUpdate(Player p){
+    public void showCreditUpdate(String nickname, int cosmicCredits){
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(p.getNickname())) {
-                playerv.setCredits(p.getSpaceship().getCosmicCredits());
+            if (playerv.getNickname().equals(nickname)) {
+                playerv.setCredits(cosmicCredits);
 
             }
         }
     }
 
-    //todo
+    //todo cosa deve fare?
     @Override
     public void showUpdatedOthers(){
 
@@ -191,20 +166,22 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
         gameV.getGlobalBoard().setPositions(newPosition);
     }
-/*
+
     @Override
-    public void showHourglassUpdate(int timeLeft){
-        gameV.setHourglassV(timeLeft);
+    public void showHourglassUpdate(Hourglass hourglass){
+        gameV.getHourglass().setTimeLeft(hourglass.getTimeLeft());
     }
 
- *///todo da aggiustare
-
     @Override
-    public void showDiceUpdate(int diceResult){
-        gameV.setDiceV(diceResult);
+    public void showDiceUpdate(Dice dice){
+        gameV.getDiceV().setResult(dice.getResult());
+
     }
 
     //todo come faccio a trovare la tile corrispondente? forse mi serve un id univoco delle tile
+    //gli passo una sola tile, faccio due metodi uno per rendere un tile visibile e uno per togliere un tile che è stato messo in una nave
+    //showvisibility update, showtileremovalfromheaptile
+    //i metodi ricevono come ingresso la stringa imagepath
     @Override
     public void showHeapTileUpdate(HeapTiles heapTiles){
 
@@ -217,14 +194,23 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         console.getController().setMenuState(state);
     }
 
+    //todo
     @Override
     public void showMinideckUpdate(){
 
     }
 
-    //todo le carte sono univoche ma come le cerco?
+    //todo le carte sono univoche ma come le cerco? faccio con imagepath
     @Override
     public void showCurrentCardUpdate(Card currentCard) {
+        //gameV.getCurrentState().setCurrentCard(currentCard);
+
+
+    }
+
+    //todo
+    @Override
+    public void showCurrentTileUpdate() {
         //gameV.getCurrentState().setCurrentCard(currentCard);
 
 

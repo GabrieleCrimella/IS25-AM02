@@ -18,6 +18,10 @@ public class HourglassV {
         this.running = false;
     }
 
+    public void setTimeLeft(long timeLeft) {
+        this.timeLeft = timeLeft;
+    }
+
     public boolean getRunning() {
         return running;
     }
