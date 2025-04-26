@@ -9,10 +9,10 @@ import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.util.*;
 
+@SuppressWarnings("all")
 public class Game implements Game_Interface {
     private int diceResult;
     private boolean buildTimeIsOver;
-    private String gameName;
     private int maxAllowedPlayers;
     private final List<Player> players;
     private final int level;
@@ -96,7 +96,7 @@ public class Game implements Game_Interface {
         }
         System.out.println();
     }
-    //getter
+
     public CardDeck getDeck() {
         return deck;
     }
@@ -107,10 +107,6 @@ public class Game implements Game_Interface {
 
     public List<Player> getPlayers() {
         return players;
-    }
-
-    public String getName() {
-        return gameName;
     }
 
     public int getlevel() {
@@ -1206,7 +1202,7 @@ public class Game implements Game_Interface {
                 }
             }
 
-            winners.sort((p1, p2) -> Integer.compare(p1.getSpaceship().getCosmicCredits(), p2.getSpaceship().getCosmicCredits()));
+            winners.sort(Comparator.comparingInt(p -> p.getSpaceship().getCosmicCredits()));
             //todo chiama un metodo della view per mostrare la classifica
 
         } catch (IllegalStateException e) {
