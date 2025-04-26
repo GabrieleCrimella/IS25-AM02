@@ -9,6 +9,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.util.*;
 
+@SuppressWarnings("all")
 public class Spaceship {
     private final SpaceshipIterator spaceshipIterator;
     private int numOfWastedTiles;
@@ -172,8 +173,6 @@ public class Spaceship {
         return spaceshipIterator.getTile(x, y);
     }
 
-    //mi dovrebbe tornare una lista di liste di tile che compongono blocchi indipendenti della nave.
-    //vedere se la tile che rimuovo fa togliere altre tiles e poi aumentare wastedtiles, controllare se si stacca un pezzo di nave e capire di qaunte tiles è fatto questo pezzo
     public void removeTile(int x, int y) throws IllegalRemoveException { //chiamo quando il gioco è iniziato e perdo un pezzo perchè mi colpiscono
         if (spaceshipIterator.getTile(x, y).isEmpty()) {
             throw new IllegalRemoveException("There is no tile on (" + x + ", " + y + ")");
@@ -199,10 +198,14 @@ public class Spaceship {
                 left = startVisit(toRemove, RotationType.WEST);
             }
 
+            if(spaceshipIterator.getTile(x,y).get().getType().equals(TileType.PURPLE_CABIN)){
+                alienCheck(x,y,AliveType.PURPLE_ALIEN);
+            } else if (spaceshipIterator.getTile(x,y).get().getType().equals(TileType.BROWN_CABIN)) {
+                alienCheck(x,y,AliveType.BROWN_ALIEN);
+            }
             spaceshipIterator.removeOneTile(x, y);
             numOfWastedTiles++;
 
-            //todo qui il controllo per alieni che devono lasciare la nave
             List<List<Tile>> effectiveBlocks = new LinkedList<>();
             generateBlocks(up, effectiveBlocks);
             generateBlocks(right, effectiveBlocks);
@@ -325,7 +328,7 @@ public class Spaceship {
         if (power > 0) { //ci deve essere almeno un cannone
             List<Tile> cabins = getTilesByType(TileType.CABIN);
             for (Tile cabin : cabins) {
-                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.PURPLE_ALIEN)) {
+                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().race().equals(AliveType.PURPLE_ALIEN)) {
                     power = power + 2;
                     break;
                 }
@@ -342,7 +345,7 @@ public class Spaceship {
 
         if (power > 0) {
             for (Tile cabin : getTilesByType(TileType.CABIN)) {
-                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().getRace().equals(AliveType.BROWN_ALIEN)) {
+                if (!cabin.getCrew().isEmpty() && cabin.getCrew().getFirst().race().equals(AliveType.BROWN_ALIEN)) {
                     power = power + 2;
                     break;
                 }
@@ -490,7 +493,6 @@ public class Spaceship {
         return visited.size() == spaceshipIterator.returnAllTiles().size();
     }
 
-    //todo controllare se le eccezioni sono chiamate giuste
     public void removeBattery(BatteryStorage t) throws IllegalRemoveException {
         t.removeBattery();
     }
@@ -630,24 +632,13 @@ public class Spaceship {
         int human = 0;
         for (Tile cabin : getTilesByType(TileType.CABIN)) {
             for (Alive alive : cabin.getCrew()) {
-                if (alive.getRace().equals(AliveType.HUMAN)) {
+                if (alive.race().equals(AliveType.HUMAN)) {
                     human++;
                 }
             }
         }
         return human;
     }
-
-    //Mi dice se la tile appartiene alla nave
-    public boolean own(Tile tile) {
-        for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && t.get().equals(tile)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     // Mi dice se il tipo di box passato è al pari del blocco più pregiato della nave
     //se non ci sono box ritorno false, rosso giallo verde blu
@@ -810,5 +801,28 @@ public class Spaceship {
             }
         }
         return Optional.empty();
+    }
+
+    private void alienCheck(int x, int y, AliveType type) {
+        List<Tile> near = spaceshipIterator.getConnectedNearTiles(spaceshipIterator.getTile(x,y).get());
+        for(Tile t : near) {
+            if(t.getType().equals(TileType.CABIN) && t.getCrew().getFirst().race().equals(type)) {
+                //devo controllare che nelle cabine connesse vicine a questa t ci sia un cabina per alieni diversa da quella che
+                //sta per essere distrutta
+                List<Tile> neighbors = spaceshipIterator.getConnectedNearTiles(t);
+                for(Tile neighbor : neighbors) {
+                    if(type.equals(AliveType.PURPLE_ALIEN) && neighbor.getType().equals(TileType.PURPLE_CABIN) &&
+                        spaceshipIterator.getX(neighbor) != x && spaceshipIterator.getY(neighbor) != y) {
+                        return; //va tutto bene nessun alieno deve abbandonare la nave
+                    }
+                    if(type.equals(AliveType.BROWN_ALIEN) && neighbor.getType().equals(TileType.BROWN_CABIN) &&
+                            spaceshipIterator.getX(neighbor) != x && spaceshipIterator.getY(neighbor) != y) {
+                        return; //va tutto bene nessun alieno deve abbandonare la nave
+                    }
+                }
+                t.getCrew().removeFirst(); //tolgo l'alieno
+                return;
+            }
+        }
     }
 }

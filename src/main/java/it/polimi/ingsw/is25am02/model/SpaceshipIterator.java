@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+@SuppressWarnings("all")
 public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Optional<Tile>> {
     private final Optional<Tile>[][] spaceshipBoard;
     private boolean[][] spaceshipMask;
@@ -115,8 +116,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     public List<Tile> returnAllTiles() {
         List<Tile> temp = new LinkedList<>();
         for (Optional<Tile> t : this.reference())
-            if (t.isPresent())
-                temp.add(t.get());
+            t.ifPresent(temp::add);
         return temp;
     }
 
@@ -135,7 +135,6 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         return connectedNear;
     }
 
-    //todo: il controllo di correttezza con la maschera andrebbe fatto forse SOLO durante il check della spaceship. DISCUTIAMONE E CAPIAMO.
     public void addTile(Tile tile, int x, int y) throws IllegalAddException {
         if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty())
             spaceshipBoard[x][y] = Optional.of(tile);
@@ -180,8 +179,6 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         throw new NoSuchElementException();
     }
 
-
-    //todo fare metodo che ritorna coordinate da una tile. e usarlo per i metodi seguenti
     public int getX(Tile t) {
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 12; j++) {
