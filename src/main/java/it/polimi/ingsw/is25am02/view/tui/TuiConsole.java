@@ -28,7 +28,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
     private ClientController controller;
     private final JsonMessageManager messManager;
 
-
     //è il posto in cui leggo
     private final BufferedReader reader;
     private boolean running;
@@ -99,13 +98,14 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
         while (running) {
             try {
-                //System.out.print("> ");
+                //todo aggiungere metodo che se il player è in una partita allora
+                //todo pulisce lo schermo e stampa i messaggi di base per la fase corrente
+
                 String input = reader.readLine();
 
                 if (input == null || input.trim().isEmpty()) {
                     continue;
                 }
-
                 processCommand(input.trim());
 
             } catch (IOException e) {
@@ -514,6 +514,8 @@ public class TuiConsole implements Runnable, ConsoleClient {
     @Override
     public void displayMessage(String keys, Map<String, String> params) {
         System.out.println(messManager.getMessageWithParams(keys, params));
+
+        if(keys.equals("start")) startCountdown();
     }
 
     @Override
@@ -521,8 +523,30 @@ public class TuiConsole implements Runnable, ConsoleClient {
         System.err.println(messManager.getMessageWithParams(keys, params));
     }
 
-    //Mostra lo stato corrente del gioco
-    public void displayGameState(String gameState) {
-        displayMessage("info.gameState", Map.of("gameState", gameState));
+    private void startCountdown() {
+        try {
+            for (int i = 3; i > 0; i--) {
+                displayMessage("countdown.number", Map.of("num", String.valueOf(i)));
+                Thread.sleep(1000);
+            }
+            displayMessage("countdown.phrase", null);
+            Thread.sleep(1000);
+            clearConsole();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void clearConsole() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            reportError("error.terminal", null);
+        }
     }
 }

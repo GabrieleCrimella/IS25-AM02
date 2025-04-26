@@ -5,17 +5,20 @@
       "command" : "Error executing command"
     },
 
+    "terminal" : "Unable to clean terminal",
+
     "menu" : {
       "login" : {
-        "off" : "> you need to login",
-        "on"  : "> you are already logged in"
+        "off" : "> You need to login",
+        "on"  : "> You are already logged in"
       },
       "nickname" : {
         "taken" : "> The nickname is already taken",
         "notFound" : "> Nickname not found :("
       },
-      "wait" : "> you have to wait for the game to start",
-      "data" : "insufficient data for {object}",
+      "wait" : "> You have to wait for the game to start",
+      "game" : "> You are not currently in any game, join a lobby to start",
+      "data" : "Insufficient data for {object}",
       "lobby" : "> Lobby not found :(",
       "color" : "> Color is already in use",
       "player" : {
@@ -36,24 +39,30 @@
 
     "hourglass" : "> Hourglass already running",
 
-    "level" : "> command not supported for this level",
+    "level" : "> Command not supported for this level",
 
-    "phase" : "> command not supported for this phase",
+    "phase" : "> Command not supported for this phase",
 
-    "state" : "> command not supported for this game state",
+    "state" : "> Command not supported for this game state",
 
-    "viewing" : "> you are already looking at a tile",
+    "viewing" : "> You are already looking at a tile",
 
-    "remove" : "> you were trying to do an illegal remove",
+    "remove" : "> You were trying to do an illegal remove",
 
-    "add" : "> you were trying to do an illegal add",
+    "add" : "> You were trying to do an illegal add",
 
-    "tile" : "> you passed a tile with wrong type, correct type is {tType}",
+    "tile" : "> You passed a tile with wrong type, correct type is {tType}",
 
-    "command" : "> command not supported for this card",
+    "command" : "> Command not supported for this card",
 
-    "argument" : "> wrong argument choice"
+    "argument" : "> Wrong argument choice"
   },
+
+  "countdown" : {
+    "number" : " {num} ...",
+    "phrase" : "Start!!"
+  },
+
 
   "info" : {
     "gameState" : "------- Game State -------\n\t{state}\n--------------------------"

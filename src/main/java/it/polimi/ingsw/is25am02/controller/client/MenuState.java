@@ -4,4 +4,5 @@ public enum MenuState {
     LOGIN,
     MENU,
     WAITING,
+    GAME,
 }
