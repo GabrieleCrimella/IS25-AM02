@@ -14,11 +14,17 @@ import java.util.*;
 public abstract class Card {
     private final int level;
     private StateCardType stateCard;
+    private final String imagePath;
     private boolean testFlight;
 
-    public Card(int level, StateCardType stateCard) {
+    public Card(int level, StateCardType stateCard, String imagePath) {
         this.level = level;
         this.stateCard = stateCard;
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     public boolean getTestFlight() { return testFlight; }

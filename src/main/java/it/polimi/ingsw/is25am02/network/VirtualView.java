@@ -30,12 +30,13 @@ public interface VirtualView extends Remote {
     void showBoxRemoval(Coordinate coordinate, String nickname, Box box) throws RemoteException;
     void showCreditUpdate(String nickname, int cosmicCredits) throws RemoteException;
     void showUpdatedOthers() throws RemoteException;
-    void showCurrentTileUpdate() throws RemoteException;
     void showPositionsUpdate(HashMap<Player,Integer> positionOnGameboard) throws RemoteException;
     void showHourglassUpdate(Hourglass hourglass) throws RemoteException;
     void showDiceUpdate(Dice dice) throws RemoteException;
-    void showHeapTileUpdate(HeapTiles heapTiles) throws RemoteException;
     void showMinideckUpdate() throws RemoteException;
-    void showCurrentCardUpdate(Card currentCard) throws RemoteException;
+    void showCurrentCardUpdate(String imagepath) throws RemoteException;
+    void showCurrentTileUpdate(String imagepath) throws RemoteException;
+    void showVisibilityUpdate(String imagepath) throws RemoteException;
+     void showTileRemovalFromHeapTile(String imagepath) throws RemoteException;
 
 }

@@ -178,13 +178,25 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     }
 
-    //todo come faccio a trovare la tile corrispondente? forse mi serve un id univoco delle tile
-    //gli passo una sola tile, faccio due metodi uno per rendere un tile visibile e uno per togliere un tile che è stato messo in una nave
-    //showvisibility update, showtileremovalfromheaptile
-    //i metodi ricevono come ingresso la stringa imagepath
     @Override
-    public void showHeapTileUpdate(HeapTiles heapTiles){
+    public void showVisibilityUpdate(String imagepath){
+        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+            if (tileV.getImagePath().equals(imagepath)) {
+                tileV.setVisible(true);
+                return;
+            }
+        }
+    }
 
+    // tolgo un tile che è stato messo in una nave
+    @Override
+    public void showTileRemovalFromHeapTile(String imagepath){
+        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+            if (tileV.getImagePath().equals(imagepath)) {
+                gameV.getHeapTilesV().removeTile(tileV);
+                return;
+            }
+        }
 
     }
 
@@ -202,16 +214,17 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     //todo le carte sono univoche ma come le cerco? faccio con imagepath
     @Override
-    public void showCurrentCardUpdate(Card currentCard) {
-        //gameV.getCurrentState().setCurrentCard(currentCard);
+    public void showCurrentCardUpdate(String imagepath) {
+
+        //gameV.getCurrentState().setCurrentCard(imagepath);
 
 
     }
 
     //todo
     @Override
-    public void showCurrentTileUpdate() {
-        //gameV.getCurrentState().setCurrentCard(currentCard);
+    public void showCurrentTileUpdate(String imagepath) {
+        //gameV.getCurrentState().setCurrentTile(imagepath);
 
 
     }
@@ -220,7 +233,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     public void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws RemoteException {
         StateGameType phaseV = state.getPhase();
 
-        CardV cardV = new CardV(currentCard.getLevel(), currentCard.getStateCard()); //todo bisogna mettere l'equivalente dell'enumerazione
+        CardV cardV = new CardV(currentCard.getLevel(), currentCard.getStateCard(), currentCard.getImagePath()); //todo bisogna mettere l'equivalente dell'enumerazione
         StateV statev = null;
         List<PlayerV> playersV = new ArrayList<>();
         HashMap<PlayerV, Integer> position = new HashMap<>();

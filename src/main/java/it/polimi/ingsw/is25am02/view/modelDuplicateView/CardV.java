@@ -5,11 +5,12 @@ import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 public class CardV {
     private final int level;
     private StateCardType stateCard;
-    //o serve l'id/imagine correlata
+    private final String imagePath;
 
-    public CardV(int level, StateCardType stateCard) {
+    public CardV(int level, StateCardType stateCard, String imagePath) {
         this.level = level;
         this.stateCard = stateCard;
+        this.imagePath = imagePath;
     }
 
     public StateCardType getStateCard() {

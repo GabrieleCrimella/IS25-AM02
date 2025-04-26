@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
 
 
+import it.polimi.ingsw.is25am02.model.HeapTiles;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
 import it.polimi.ingsw.is25am02.model.exception.LevelException;
@@ -20,11 +21,10 @@ public class GameV {
     private final int level;
     private final GameboardV globalBoard;
     private final StateV currentState;
-    private Set<TileV> heapTilesV;
-    private int diceV;
-
+    private HeapTileV heapTilesV;
+    private DiceV diceV;
     private boolean buildTimeIsOver; //todo bisogna aggiornarlo in una update
-    private final HourglassV hourglass;
+    private HourglassV hourglass;
 
     public GameV(List<PlayerV> players, int level, GameboardV globalBoard, StateV currentState, boolean buildTimeIsOver, HourglassV hourglass) {
         this.players = players;
@@ -35,17 +35,25 @@ public class GameV {
         this.hourglass = hourglass;
     }
 
-    public Set<TileV> getHeapTilesV() {
+    public HeapTileV getHeapTilesV() {
         return heapTilesV;
     }
 
-    //todo aggisutare questa
-    /*
-    public void setHourglassV(int hourglassV) {
-        this.hourglassV = hourglassV;
+    public void setDiceV(DiceV diceV) {
+        this.diceV = diceV;
     }
 
-     */
+    public void setHourglass(HourglassV hourglass) {
+        this.hourglass = hourglass;
+    }
+
+    public HourglassV getHourglass() {
+        return hourglass;
+    }
+
+    public DiceV getDiceV() {
+        return diceV;
+    }
 
     public void flipHourglass(PlayerV playerV) {
         try {
@@ -66,9 +74,6 @@ public class GameV {
         }
     }
 
-    public void setDiceV(int diceV) {
-        this.diceV = diceV;
-    }
 
     public StateV getCurrentState() {
         return currentState;
