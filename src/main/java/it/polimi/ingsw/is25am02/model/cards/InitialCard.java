@@ -13,8 +13,8 @@ public class InitialCard extends Card {
         return cardType;
     }
 
-    public InitialCard(int level) {
-        super(level, StateCardType.FINISH);
+    public InitialCard(int level, String imagepath) {
+        super(level, StateCardType.FINISH, imagepath);
         this.cardType = CardType.INITIAL_CARD;
     }
 

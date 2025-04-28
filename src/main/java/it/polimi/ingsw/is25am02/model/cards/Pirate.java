@@ -24,8 +24,8 @@ public class Pirate extends Enemies {
     private int phase;
     private final CardType cardType;
 
-    public Pirate(int level, int cannonPowers, int daysLost, int credit, ArrayList<Pair<Integer, RotationType>> shots) {
-        super(level, cannonPowers, daysLost, credit, CHOICE_ATTRIBUTES);
+    public Pirate(int level, int cannonPowers, int daysLost, int credit, ArrayList<Pair<Integer, RotationType>> shots, String imagepath) {
+        super(level, cannonPowers, daysLost, credit, CHOICE_ATTRIBUTES, imagepath);
         this.shots = shots;
         this.losers = new ArrayList<>();
         this.currentIndex = 0;

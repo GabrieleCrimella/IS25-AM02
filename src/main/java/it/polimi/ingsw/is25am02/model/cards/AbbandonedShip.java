@@ -17,8 +17,8 @@ public class AbbandonedShip extends Card{
 
     //Phase: DECISION e REMOVE
 
-    public AbbandonedShip(int level, int AliveLost, int creditWin, int flyBack){
-        super(level,StateCardType.DECISION);
+    public AbbandonedShip(int level, int AliveLost, int creditWin, int flyBack, String imagepath){
+        super(level,StateCardType.DECISION, imagepath);
         this.AliveLost = AliveLost;
         this.creditWin = creditWin;
         this.flyBack = flyBack;

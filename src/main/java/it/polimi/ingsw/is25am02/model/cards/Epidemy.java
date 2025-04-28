@@ -10,8 +10,8 @@ public class Epidemy extends Card {
 
     private final CardType cardType;
 
-    public Epidemy(int level) {
-        super(level, StateCardType.DECISION);
+    public Epidemy(int level, String imagepath) {
+        super(level, StateCardType.DECISION, imagepath);
         this.cardType = CardType.EPIDEMY;
     }
 

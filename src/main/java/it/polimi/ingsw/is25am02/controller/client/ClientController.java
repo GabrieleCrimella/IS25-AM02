@@ -54,6 +54,7 @@ public class ClientController implements VirtualServer {
         }
         //todo messagio di errore
         //throw new PlayerNotFoundException("Player <" + nickname + "> not found");
+        return null; //messo solo per non dare errore
     }
 
     @SuppressWarnings("all")

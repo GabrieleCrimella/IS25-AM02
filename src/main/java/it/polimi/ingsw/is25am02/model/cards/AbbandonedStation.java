@@ -20,8 +20,8 @@ public class AbbandonedStation extends Card {
     private final LinkedList<BoxType> boxesWonTypes;
     private final CardType cardType;
 
-    public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes) {
-        super(level, StateCardType.DECISION);
+    public AbbandonedStation(int level, BoxStore store, int AliveNeeded, int daysLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes, String imagepath) {
+        super(level, StateCardType.DECISION, imagepath);
         this.AliveNeeded = AliveNeeded;
         this.daysLost = daysLost;
         this.boxesWon = boxesWon;

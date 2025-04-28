@@ -98,6 +98,7 @@ public class CardDeck {
         } catch (IOException e) {
             System.out.println("Error in reading Card JSON file");
         }
+        String imagepath;
         int level;
         int aliveLost;
         int aliveNeeded;
@@ -124,7 +125,8 @@ public class CardDeck {
                         aliveLost = levelNode.get("aliveLost").asInt();
                         creditWin = levelNode.get("creditWin").asInt();
                         daysLost = levelNode.get("daysLost").asInt();
-                        initialDeck.add(new AbbandonedShip(level, aliveLost, creditWin, daysLost));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new AbbandonedShip(level, aliveLost, creditWin, daysLost, imagepath));
                         break;
                     case "ABANDONED_STATION":
                         aliveNeeded = levelNode.get("aliveNeeded").asInt();
@@ -143,7 +145,8 @@ public class CardDeck {
                             } else throw new IllegalArgumentException("I cannot add a box");
                             boxesWonType.add(box);
                         }
-                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonType));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonType, imagepath));
                         break;
                     case "PIRATE":
                         cannonPower = levelNode.get("cannonPower").asInt();
@@ -164,7 +167,8 @@ public class CardDeck {
                             } else throw new IllegalArgumentException("I cannot add a shot from JSON");
                             shots.add(new Pair<>(smallOrBig, rotation));
                         }
-                        initialDeck.add(new Pirate(level, cannonPower, daysLost, creditWin, shots));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new Pirate(level, cannonPower, daysLost, creditWin, shots, imagepath));
                         break;
                     case "TRAFFICKER":
                         cannonPower = levelNode.get("cannonPower").asInt();
@@ -184,23 +188,28 @@ public class CardDeck {
                             } else throw new IllegalArgumentException("I cannot add a box");
                             boxesWonType.add(box);
                         }
-                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, boxesWon, boxesWonType));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, boxesWon, boxesWonType, imagepath));
                         break;
                     case "SLAVEOWNER":
                         cannonPower = levelNode.get("cannonPower").asInt();
                         daysLost = levelNode.get("daysLost").asInt();
                         aliveLost = levelNode.get("aliveLost").asInt();
                         creditWin = levelNode.get("creditWin").asInt();
-                        initialDeck.add(new SlaveOwner(level, cannonPower, daysLost, creditWin, aliveLost));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new SlaveOwner(level, cannonPower, daysLost, creditWin, aliveLost, imagepath));
                         break;
                     case "OPENSPACE":
-                        initialDeck.add(new OpenSpace(level));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new OpenSpace(level,imagepath));
                         break;
                     case "STARDUST":
-                        initialDeck.add(new Stardust(level));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new Stardust(level, imagepath));
                         break;
                     case "EPIDEMY":
-                        initialDeck.add(new Epidemy(level));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new Epidemy(level, imagepath));
                         break;
                     case "METEORITES":
                         meteorites.clear();
@@ -218,7 +227,8 @@ public class CardDeck {
                             } else throw new IllegalArgumentException("I cannot add a meteorites from JSON");
                             meteorites.add(new Pair<>(smallOrBig, rotation));
                         }
-                        initialDeck.add(new MeteoritesStorm(level, meteorites));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new MeteoritesStorm(level, meteorites,imagepath));
                         break;
                     case "PLANETS":
                         daysLost = levelNode.get("daysLost").asInt();
@@ -242,7 +252,8 @@ public class CardDeck {
 
                             planetOffersTypes.add(boxList); // Aggiungi la lista alla lista principale
                         }
-                        initialDeck.add(new Planet(level, store, daysLost, planetOffers, planetOffersTypes));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new Planet(level, store, daysLost, planetOffers, planetOffersTypes, imagepath));
                         break;
                     case "WARZONE1":
                         daysLost = levelNode.get("daysLost").asInt();
@@ -262,7 +273,8 @@ public class CardDeck {
                             } else throw new IllegalArgumentException("I cannot add a shot from JSON");
                             shots.add(new Pair<>(smallOrBig, rotation));
                         }
-                        initialDeck.add(new WarZone_I(level, daysLost, aliveLost, shots));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new WarZone_I(level, daysLost, aliveLost, shots, imagepath));
                         break;
                     case "WARZONE2":
                         daysLost = levelNode.get("daysLost").asInt();
@@ -282,7 +294,8 @@ public class CardDeck {
                             } else throw new IllegalArgumentException("I cannot add a shot from JSON");
                             shots.add(new Pair<>(smallOrBig, rotation));
                         }
-                        initialDeck.add(new WarZone_II(level, daysLost, boxesLost, shots));
+                        imagepath = levelNode.get("image").asText();
+                        initialDeck.add(new WarZone_II(level, daysLost, boxesLost, shots, imagepath));
                         break;
                 }
             }
