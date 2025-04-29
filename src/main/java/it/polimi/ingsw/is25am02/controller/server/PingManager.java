@@ -36,6 +36,8 @@ public class PingManager {
 
     public void stop() {
         scheduler.shutdownNow();
+
+        //todo logger per gabri
         System.out.println("PingManager was stopped");
     }
 }

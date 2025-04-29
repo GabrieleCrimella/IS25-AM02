@@ -69,7 +69,7 @@
   },
 
   "disconnect" : {
-    "lobby_owner" : "> The onwer has disconnected from the lobby, so you got kicked out",
+    "lobby_owner" : "> The owner has disconnected from the lobby, so you got kicked out",
     "lobby" : "> A player has disconnected from the lobby, now the lobby has {att}/{max} players",
     "game" : ">A player has disconnected from the game, so the game is over"
   },

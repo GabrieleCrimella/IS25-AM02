@@ -111,7 +111,6 @@ public class ClientController implements VirtualServer {
         if (menuControl(MenuState.GAME)&&gameV.levelControl() && gameV.buildControl() && (gameV.stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, getPlayerVFromNickname(nickname))||gameV.stateControl(StateGameType.BUILD, StatePlayerType.FINISHED, StateCardType.FINISH, getPlayerVFromNickname(nickname)))) {
             connection.getServer().flipHourglass(nickname);
         }
-
     }
 
     public void takeTile(String nickname) throws RemoteException {

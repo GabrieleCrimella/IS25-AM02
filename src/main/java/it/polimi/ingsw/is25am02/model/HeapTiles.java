@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
+import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
@@ -15,7 +16,7 @@ import java.util.*;
 public class HeapTiles {
     private final Set<Tile> setTiles;
     private final Random random;
-    private final HashMap<String, Cabin> cabinStartPlayer;
+    private final HashMap<PlayerColor, Cabin> cabinStartPlayer;
 
     public HeapTiles() {
         this.setTiles = new HashSet<>();
@@ -24,7 +25,7 @@ public class HeapTiles {
         loadTiles();
     }
 
-    public HashMap<String, Cabin> getCabinStartPlayer() {
+    public HashMap<PlayerColor, Cabin> getCabinStartPlayer() {
         return cabinStartPlayer;
     }
 
@@ -108,7 +109,7 @@ public class HeapTiles {
                         break;
                     case "COLORED_CABIN":
                         color = levelNode.get("color").asText();
-                        cabinStartPlayer.put(color, new Cabin(TileType.CABIN, pos, RotationType.NORTH, levelNode.get("image").asText()));
+                        cabinStartPlayer.put(PlayerColor.valueOf(color.toUpperCase()), new Cabin(TileType.CABIN, pos, RotationType.NORTH, levelNode.get("image").asText()));
                         break;
                 }
             }

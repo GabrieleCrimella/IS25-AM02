@@ -87,57 +87,65 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     }
 
     public void ping(String nickname) throws RemoteException {
-        pingManager.ping(nickname);
+        synchronized (pingManager) {
+            pingManager.ping(nickname);
+        }
     }
 
     public void disconnectClient(String nickname){
-        //lo cancello dai player attivi
-        registeredClients.remove(nickname);
+        synchronized (registeredClients) {
+            //lo cancello dai player attivi
+            registeredClients.remove(nickname);
+        }
 
-        //controllo se è in una lobby non ancora cominciata
-        for(Lobby lobby : lobbies.values()) {
-            for(Player player : lobby.getPlayers()){
-                if(player.getNickname().equals(nickname)){
-                    if(lobby.getPlayers().getFirst().getNickname().equals(nickname)){
-                        lobbies.remove(lobby.getId());
-                        lobby.getPlayers().removeFirst();
-                        for(Player player1 : lobby.getPlayers()){
-                            try {
-                                player1.getObserver().displayMessage("disconnect.lobby_owner", null);
-                                player1.getObserver().setMenuState(MenuState.MENU);
-                            } catch (Exception e) {
-                                logger.log(Level.SEVERE, "connection problem during client disconnection (case lobby_owner) " + e);
+        synchronized (lobbies) {
+            //controllo se è in una lobby non ancora cominciata
+            for (Lobby lobby : lobbies.values()) {
+                for (Player player : lobby.getPlayers()) {
+                    if (player.getNickname().equals(nickname)) {
+                        if (lobby.getPlayers().getFirst().getNickname().equals(nickname)) {
+                            lobbies.remove(lobby.getId());
+                            lobby.getPlayers().removeFirst();
+                            for (Player player1 : lobby.getPlayers()) {
+                                try {
+                                    player1.getObserver().displayMessage("disconnect.lobby_owner", null);
+                                    player1.getObserver().setMenuState(MenuState.MENU);
+                                } catch (Exception e) {
+                                    logger.log(Level.SEVERE, "connection problem during client disconnection (case lobby_owner) " + e);
+                                }
+                            }
+                        } else {
+                            lobby.getPlayers().remove(player);
+                            for (Player player2 : lobby.getPlayers()) {
+                                try {
+                                    player2.getObserver().displayMessage("disconnect.lobby", Map.of("att", String.valueOf(lobby.getPlayers().size()), "max", String.valueOf(lobby.getMaxPlayers())));
+                                } catch (Exception e) {
+                                    logger.log(Level.SEVERE, "connection problem during client disconnection (case lobby) " + e);
+                                }
                             }
                         }
-                    } else {
-                        lobby.getPlayers().remove(player);
-                        for(Player player2 : lobby.getPlayers()){
-                            try {
-                                player2.getObserver().displayMessage("disconnect.lobby", Map.of("att", String.valueOf(lobby.getPlayers().size()), "max", String.valueOf(lobby.getMaxPlayers())));
-                            } catch (Exception e) {
-                                logger.log(Level.SEVERE, "connection problem during client disconnection (case lobby) " + e);
-                            }
-                        }
+                        return;
                     }
-                    return;
                 }
             }
         }
 
-        for(GameSession gameSession : activeGames.values()){
-            for(Player player : gameSession.getGame().getPlayers()){
-                if(player.getNickname().equals(nickname)){
-                    activeGames.remove(gameSession.getLobbyId());
-                    gameSession.getGame().getPlayers().remove(player);
-                    for(Player player2 : gameSession.getGame().getPlayers()){
-                        try {
-                            player2.getObserver().displayMessage("disconnect.game", null);
-                            player2.getObserver().setMenuState(MenuState.MENU);
-                        } catch (Exception e) {
-                            logger.log(Level.SEVERE, "connection problem during client disconnection " + e);
+        synchronized (activeGames) {
+            for (GameSession gameSession : activeGames.values()) {
+                for (Player player : gameSession.getGame().getPlayers()) {
+                    if (player.getNickname().equals(nickname)) {
+                        activeGames.remove(gameSession.getLobbyId());
+                        gameSession.getGame().getPlayers().remove(player);
+                        for (Player player2 : gameSession.getGame().getPlayers()) {
+                            try {
+                                player2.getObserver().displayMessage("disconnect.game", null);
+                                player2.getObserver().setMenuState(MenuState.MENU);
+                            } catch (Exception e) {
+                                logger.log(Level.SEVERE, "connection problem during client disconnection " + e);
+                            }
                         }
+                        return;
                     }
-                    return;
                 }
             }
         }
@@ -146,13 +154,15 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     public void nicknameRegistration(String nickname, VirtualView client) {
         methodQueue.offer(() -> {
             try {
-                if (!registeredClients.containsKey(nickname)) {
-                    registeredClients.put(nickname, client);
-                    client.setMenuState(MenuState.MENU);
-                    client.setNickname(nickname);
-                    pingManager.registerClient(nickname);
-                } else {
-                    client.reportError("error.menu.nickname.taken", null);
+                synchronized (registeredClients) {
+                    if (!registeredClients.containsKey(nickname)) {
+                        registeredClients.put(nickname, client);
+                        client.setMenuState(MenuState.MENU);
+                        client.setNickname(nickname);
+                        pingManager.registerClient(nickname);
+                    } else {
+                        client.reportError("error.menu.nickname.taken", null);
+                    }
                 }
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "connection problem in method nicknameRegistration with parameter " + nickname, e);
@@ -160,17 +170,23 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         });
     }
 
-    public void createLobby(VirtualView client, String nickname, int maxPlayers, PlayerColor color, int level) {
+    public synchronized void createLobby(VirtualView client, String nickname, int maxPlayers, PlayerColor color, int level) {
         methodQueue.offer(() -> {
-            if (registeredClients.containsKey(nickname)) {
-                Player p = new Player(new Spaceship(level), nickname, color, client, nextLobbyId++);
-                Lobby lobby = new Lobby(p.getLobbyId(), maxPlayers, p, client, level);
-                lobbies.put(lobby.getId(), lobby);
-                try {
-                    client.displayMessage("lobby.creation", Map.of("num", String.valueOf(lobby.getId())));
-                    client.setMenuState(MenuState.WAITING);
-                } catch (Exception e) {
-                    logger.log(Level.SEVERE, "connection problem in method createLobby with parameter: " + nickname + ", " + maxPlayers + ", " + color + ", " + level, e);
+            boolean found = false;
+            synchronized (registeredClients) {
+                found = registeredClients.containsKey(nickname);
+            }
+            if (found) {
+                synchronized (lobbies) {
+                    Player p = new Player(new Spaceship(level), nickname, color, client, nextLobbyId++);
+                    Lobby lobby = new Lobby(p.getLobbyId(), maxPlayers, p, client, level);
+                    lobbies.put(lobby.getId(), lobby);
+                    try {
+                        client.displayMessage("lobby.creation", Map.of("num", String.valueOf(lobby.getId())));
+                        client.setMenuState(MenuState.WAITING);
+                    } catch (Exception e) {
+                        logger.log(Level.SEVERE, "connection problem in method createLobby with parameter: " + nickname + ", " + maxPlayers + ", " + color + ", " + level, e);
+                    }
                 }
             } else {
                 try {
@@ -187,8 +203,10 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             try {
                 client.displayMessage("lobby.available", null);
 
-                for (Integer lobbyId : lobbies.keySet()) {
-                    client.displayMessage("lobby.show", Map.of("num",  String.valueOf(lobbyId), "owner", lobbies.get(lobbyId).getPlayers().getFirst().getNickname(), "att", String.valueOf(lobbies.get(lobbyId).getPlayers().size()), "max", String.valueOf(lobbies.get(lobbyId).getMaxPlayers())));
+                synchronized (lobbies) {
+                    for (Integer lobbyId : lobbies.keySet()) {
+                        client.displayMessage("lobby.show", Map.of("num", String.valueOf(lobbyId), "owner", lobbies.get(lobbyId).getPlayers().getFirst().getNickname(), "att", String.valueOf(lobbies.get(lobbyId).getPlayers().size()), "max", String.valueOf(lobbies.get(lobbyId).getMaxPlayers())));
+                    }
                 }
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "connection problem in method getLobbies", e);
@@ -199,27 +217,31 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     public synchronized void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) {
         methodQueue.offer(() -> {
             try {
-                if (!lobbies.containsKey(lobbyId)) {
-                    client.reportError("error.menu.lobby", null);
-                } else if (lobbies.get(lobbyId).getPlayers().stream().anyMatch(player -> player.getColor().equals(color))) {
-                    client.reportError("error.menu.color", null);
-                } else if (!registeredClients.containsKey(nickname)) {
-                    client.reportError("error.menu.nickname.notFound", null);
-                } else {
-                    Lobby lobby = lobbies.get(lobbyId);
-                    Player p = new Player(new Spaceship(lobby.getLevel()), nickname, color, client, lobbyId);
-                    lobby.addPlayer(p);
-                    if (lobby.isFull()) {
-                        startGame(lobby);
-                        lobbies.remove(lobbyId);
+                synchronized (registeredClients) {
+                    synchronized (lobbies) {
+                        if (!lobbies.containsKey(lobbyId)) {
+                            client.reportError("error.menu.lobby", null);
+                        } else if (lobbies.get(lobbyId).getPlayers().stream().anyMatch(player -> player.getColor().equals(color))) {
+                            client.reportError("error.menu.color", null);
+                        } else if (!registeredClients.containsKey(nickname)) {
+                            client.reportError("error.menu.nickname.notFound", null);
+                        } else {
+                            Lobby lobby = lobbies.get(lobbyId);
+                            Player p = new Player(new Spaceship(lobby.getLevel()), nickname, color, client, lobbyId);
+                            lobby.addPlayer(p);
+                            if (lobby.isFull()) {
+                                startGame(lobby);
+                                lobbies.remove(lobbyId);
 
-                        for (Player player : lobby.getPlayers()) {
-                            player.getObserver().displayMessage("start", null);
+                                for (Player player : lobby.getPlayers()) {
+                                    player.getObserver().displayMessage("start", null);
+                                }
+                            } else {
+                                client.displayMessage("lobby.join", Map.of("num", String.valueOf(lobby.getId())));
+                            }
+                            client.setMenuState(MenuState.WAITING);
                         }
-                    } else {
-                        client.displayMessage("lobby.join", Map.of("num", String.valueOf(lobby.getId())));
                     }
-                    client.setMenuState(MenuState.WAITING);
                 }
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "connection problem in method joinLobby with parameter: " + lobbyId + ", " + nickname + ", " + color, e);
