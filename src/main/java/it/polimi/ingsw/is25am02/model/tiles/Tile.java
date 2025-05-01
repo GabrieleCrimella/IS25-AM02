@@ -76,6 +76,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         };
     }
 
+
     //tested
     //it is taken for granted that the tile being passed is actually touching the current tile on the sideToCheck
     public boolean checkConnectors (Tile t, RotationType sideToCheck){
