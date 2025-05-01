@@ -31,7 +31,8 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     private final ExecutorService threadPool = Executors.newFixedThreadPool(8);
     private static final Runnable POISON_PILL = () -> {};
     private Thread queueProcessor;
-    private static final Logger logger = Logger.getLogger(ServerController.class.getName());
+    public static final Logger logger = Logger.getLogger(ServerController.class.getName());
+    //todo gestire concorrenza logger
     private final PingManager pingManager;
 
 

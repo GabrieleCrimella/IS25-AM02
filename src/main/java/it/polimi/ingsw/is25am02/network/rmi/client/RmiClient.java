@@ -136,6 +136,28 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
+    public void showBoxAddition(Coordinate coordinate, String nickname, Box box){
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
+                    if (box.getType().equals(BoxType.RED)) {
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumRedBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumRedBox()+1);
+                    }
+                    else if(box.getType().equals(BoxType.YELLOW)){
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumYellowBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumYellowBox()+1);
+                    }
+                    else if(box.getType().equals(BoxType.GREEN)){
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumGreenBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumGreenBox()+1);
+                    }
+                    else {
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBlueBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBlueBox()+1);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void showCreditUpdate(String nickname, int cosmicCredits){
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
@@ -152,16 +174,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showPositionsUpdate(HashMap<Player,Integer> positionOnGameboard){
-        HashMap<PlayerV, Integer> newPosition = new HashMap<>();
-        for(PlayerV playerV : gameV.getPlayers()){
-            for(Player p: positionOnGameboard.keySet()){
-                if(p.getNickname().equals(playerV.getNickname())){
-                    newPosition.put(playerV, positionOnGameboard.get(p));
-                }
+    public void showPositionUpdate(String nickname, int position){
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                gameV.getGlobalBoard().setPosition(playerv, position);
             }
         }
-        gameV.getGlobalBoard().setPositions(newPosition);
     }
 
     @Override
@@ -307,6 +325,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         GameboardV gameboardV = new GameboardV(position, gameboard.getDice(), gameboard.getHourGlassFlip());
 
         GameV gameV = new GameV(playersV, currentCard.getLevel(), gameboardV, statev, false, new HourglassV());
+        console.getController().setGameV(gameV);
 
     }
 }

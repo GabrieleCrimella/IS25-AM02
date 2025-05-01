@@ -33,6 +33,10 @@ public class ClientController implements VirtualServer {
         this.running = true;
     }
 
+    public void setGameV(GameV gameV) {
+        this.gameV = gameV;
+    }
+
     public void setMenuState(MenuState state) {
         menuState = state;
     }

@@ -21,6 +21,10 @@ public class GameboardV {
         this.positions = positions;
     }
 
+    public void setPosition(PlayerV playerV, int position){
+        positions.put(playerV,position);
+    }
+
     public HashMap<PlayerV, Integer> getPositions() {
         return positions;
     }

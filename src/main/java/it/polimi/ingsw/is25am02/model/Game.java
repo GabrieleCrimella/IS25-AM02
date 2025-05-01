@@ -1,6 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
-import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.exception.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
@@ -187,6 +187,7 @@ public class Game implements Game_Interface {
                     hourglass.flip(this);
                     globalBoard.decreaseHourGlassFlip();
                 }
+                player.onHourglassUpdate(hourglass);
             } else {
                 throw new IllegalStateException("");
             }
@@ -221,6 +222,7 @@ public class Game implements Game_Interface {
 
             player.setNumDeck(index);
             deck.giveDeck(index);
+            player.onMiniDeckUpdate(index);
 
         } catch (LevelException e) {
             try {
@@ -325,6 +327,7 @@ public class Game implements Game_Interface {
             currentTileControl(player);
 
             heapTile.removeVisibleTile(tile);
+            player.onTileRemovalFromHTUpdate(tile.getImagePath());
             player.getSpaceship().setCurrentTile(tile);
 
         } catch (IllegalStateException e) {
@@ -361,6 +364,7 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
+            player.onVsibilityUpdate(player.getSpaceship().getCurrentTile().getImagePath());
             player.getSpaceship().returnTile();
 
         } catch (IllegalStateException e) {
@@ -698,6 +702,7 @@ public class Game implements Game_Interface {
             } else {
                 this.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
             }
+            player.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard());
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -981,6 +986,14 @@ public class Game implements Game_Interface {
                     player.getSpaceship().getTile(pos.x(),pos.y()).get().getType().equals(TileType.SPECIAL_STORAGE) ||
                     player.getSpaceship().getTile(pos.x(),pos.y()).get().getType().equals(TileType.STORAGE))){
                 getCurrentCard().removeBox(this, player, player.getSpaceship().getTile(pos.x(),pos.y()).get(), type);
+                if(type.equals(BoxType.BLUE))
+                    player.onBoxRemovalUpdate(pos,new BlueBox(type));
+                else if(type.equals(BoxType.RED))
+                    player.onBoxRemovalUpdate(pos, new RedBox(type));
+                else if(type.equals(BoxType.YELLOW))
+                    player.onBoxRemovalUpdate(pos, new YellowBox(type));
+                else
+                    player.onBoxRemovalUpdate(pos, new GreenBox(type));
             } else {
                 throw new TileException("Tile is not a storage or doesn't exits");
             }
@@ -1053,6 +1066,7 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             setDiceResult();
+            player.onDiceUpdate(getGameboard().getDice());
             getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
         } catch (IllegalStateException e) {
             try {

@@ -18,6 +18,7 @@ public class Spaceship {
     private int targetTileX, targetTileY;
     private final HashMap<Integer, Tile> bookedTiles;
     private List<boolean[][]> branches;
+    private UpdateListener listener;
 
     public Spaceship(int level) {
         this.spaceshipIterator = new SpaceshipIterator(level);
@@ -33,6 +34,10 @@ public class Spaceship {
 
     public SpaceshipIterator getSpaceshipIterator() {
         return spaceshipIterator.reference();
+    }
+
+    public void setListener(UpdateListener listener) {
+        this.listener = listener;
     }
 
     //per il testing
@@ -394,10 +399,12 @@ public class Spaceship {
 
     public void addCosmicCredits(int numCosmicCredits) {
         cosmicCredits += numCosmicCredits;
+        listener.onCreditUpdate(numCosmicCredits);
     }
 
     public void removeCosmicCredits(int numCosmicCredits) {
         cosmicCredits -= numCosmicCredits;
+        listener.onCreditUpdate(numCosmicCredits);
     }
 
     public int getNumOfWastedTiles() {
@@ -495,6 +502,7 @@ public class Spaceship {
 
     public void removeBattery(BatteryStorage t) throws IllegalRemoveException {
         t.removeBattery();
+        listener.onRemoveBatteryUpdate(t.getNumBattery(), new Coordinate(spaceshipIterator.getX(t),spaceshipIterator.getY(t)) );
     }
 
     //il metodo controlla se è esposto un certo lato nella riga/colonna num
@@ -566,6 +574,7 @@ public class Spaceship {
                 if (isExposed(rotationType, num)) {
                     if (isShielded(rotationType) && storage.isPresent()) {
                         storage.get().removeBattery();
+                        listener.onRemoveBatteryUpdate(storage.get().getNumBattery(), new Coordinate(spaceshipIterator.getX(storage.get()),spaceshipIterator.getY(storage.get())) );
                         return isSpaceshipDivided();
                     }
                     else{
@@ -581,6 +590,7 @@ public class Spaceship {
                         return false;
                     } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
                         storage.get().removeBattery();
+                        listener.onRemoveBatteryUpdate(storage.get().getNumBattery(), new Coordinate(spaceshipIterator.getX(storage.get()),spaceshipIterator.getY(storage.get())) );
                         return false;
                     } else {
                         removeTile(targetTileX, targetTileY);
@@ -603,6 +613,7 @@ public class Spaceship {
                     }
                     else{
                         storage.get().removeBattery();
+                        listener.onRemoveBatteryUpdate(storage.get().getNumBattery(), new Coordinate(spaceshipIterator.getX(storage.get()),spaceshipIterator.getY(storage.get())) );
                         return false;
                     }
                 } else return false;
@@ -687,6 +698,7 @@ public class Spaceship {
         if (!cabinAffected.isEmpty()) {
             for (Tile cabin : cabinAffected) {
                 cabin.removeCrew();
+                listener.onRemoveCrewUpdate(new Coordinate(spaceshipIterator.getX(cabin),spaceshipIterator.getY(cabin)) , cabin.getCrew().size());
             }
         }
     }

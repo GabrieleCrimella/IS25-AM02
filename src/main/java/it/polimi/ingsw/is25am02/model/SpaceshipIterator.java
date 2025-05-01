@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
@@ -17,6 +18,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     private boolean[][] spaceshipMask;
     private Pair<Integer, Integer> start_pos;
     private int x_current, y_current;
+    private UpdateListener listener;
     //the first is x, the second is y
 
     private static final String JSON_FILE_PATH = "src/main/resources/json/spaceship.json";
@@ -33,6 +35,10 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
                 spaceshipBoard[i][j] = Optional.empty();
             }
         }
+    }
+
+    public void setListener(UpdateListener listener) {
+        this.listener = listener;
     }
 
     public Optional<Tile> getTileInStartingPosition() {
@@ -108,8 +114,11 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public void removeOneTile(int x, int y) {
-        if (spaceshipMask[x][y])
+        if (spaceshipMask[x][y]){
             spaceshipBoard[x][y] = Optional.empty();
+            listener.onRemoveTileUpdate(new Coordinate(x,y));
+        }
+
         else throw new IllegalArgumentException("Invalid tile position");
     }
 
@@ -136,8 +145,11 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public void addTile(Tile tile, int x, int y) throws IllegalAddException {
-        if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty())
+        if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty()){
             spaceshipBoard[x][y] = Optional.of(tile);
+            listener.onCurrentTileUpdate(tile.getImagePath());
+        }
+
         else throw new IllegalAddException("Invalid tile position or occupied");
     }
 

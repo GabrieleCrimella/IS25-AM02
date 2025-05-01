@@ -101,6 +101,7 @@ public class Gameboard {
         }
 
         positions.put(player, target_position);
+        player.onPositionUpdate(target_position);
     }
 
     public LinkedList<Player> getRanking() {
