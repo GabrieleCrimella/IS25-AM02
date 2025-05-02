@@ -1,16 +1,9 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Gameboard;
-import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.model.State;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
-import it.polimi.ingsw.is25am02.model.*;
-import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.*;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
@@ -36,7 +29,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     public void startConnection() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("192.168.178.20");
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1");
         System.out.println("Tentativo di lookup...");
         server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
@@ -114,7 +107,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showBoxUpdate(Coordinate coordinate, String nickname, List<Box> boxList){
+    public void showBoxUpdate(Coordinate coordinate, String nickname, List<BoxType> boxList){
         int numred=0;
         int numyellow=0;
         int numblue=0;
@@ -122,12 +115,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    for(Box box: boxList) {
-                        if (box.getType().equals(BoxType.RED)) {
+                    for(BoxType box: boxList) {
+                        if (box.equals(BoxType.RED)) {
                             numred++;
-                        } else if (box.getType().equals(BoxType.YELLOW)) {
+                        } else if (box.equals(BoxType.YELLOW)) {
                             numyellow++;
-                        } else if (box.getType().equals(BoxType.GREEN)) {
+                        } else if (box.equals(BoxType.GREEN)) {
                             numgreen++;
                         } else {
                             numblue++;
@@ -168,13 +161,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showHourglassUpdate(Hourglass hourglass){
-        gameV.getHourglass().setTimeLeft(hourglass.getTimeLeft());
+    public void showHourglassUpdate(long timeleft){
+        gameV.getHourglass().setTimeLeft(timeleft);
     }
 
     @Override
-    public void showDiceUpdate(Dice dice){
-        gameV.getDiceV().setResult(dice.getResult());
+    public void showDiceUpdate(int result){
+        gameV.getDiceV().setResult(result);
 
     }
 
@@ -240,77 +233,40 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showUpdateEverything(List<Player> players, Gameboard gameboard, Card currentCard, State state) throws RemoteException {
-        StateGameType phaseV = state.getPhase();
-
-        CardV cardV = new CardV(currentCard.getStateCard(), currentCard.getImagePath());
-        StateV statev = null;
-        List<PlayerV> playersV = new ArrayList<>();
-        HashMap<PlayerV, Integer> position = new HashMap<>();
-
-        for(Player p: players){
-            Optional<TileV>[][] spaceshipV = new Optional[12][12];
-            for(int i = 0; i< 12; i++){
-                //Optional<Tile>[] tileVect :p.getSpaceship().getSpaceshipIterator().getSpaceshipBoard()
-                for(int j = 0; j < 12; j++){
-                    TileV tileV = null;
-                    Optional<Tile> tile = p.getSpaceship().getTile(i,j);
-                    if(tile.isPresent()){
-                        if(tile.get().getType().equals(TileType.CABIN)){
-                            if(tile.get().getCrew().contains(AliveType.PURPLE_ALIEN)){
-                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,1,0,0,0,0,0);
-                            }
-                            else if(tile.get().getCrew().contains(AliveType.BROWN_ALIEN)){
-                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,0,1,0,0,0,0);
-                            }
-                            else{
-                                tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), tile.get().getCrew().size(),0,0,0,0,0,0);
-                            }
-                        }
-                        else if(tile.get().getType().equals(TileType.STORAGE)||tile.get().getType().equals(TileType.SPECIAL_STORAGE)){
-                            int redCount = 0;
-                            int yellowCount = 0;
-                            int greenCount = 0;
-                            int blueCount = 0;
-                            for (Box box : tile.get().getOccupation()) {
-                                if (box.getType().equals(BoxType.RED)) {
-                                    redCount++;
-                                }
-                                else if(box.getType().equals(BoxType.YELLOW)){
-                                    yellowCount++;
-                                }
-                                else if(box.getType().equals(BoxType.GREEN)){
-                                    greenCount++;
-                                }
-                                else {
-                                    blueCount++;
-                                }
-                            }
-                            tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,0,0,redCount,yellowCount,greenCount,blueCount);
-                        }
-                        else{
-                            tileV = new TileV(tile.get().getType(),tile.get().getRotationType(),true,tile.get().getImagePath(),tile.get().getNumBattery(), 0,0,0,0,0,0,0);
-
-                        }
-                        spaceshipV[i][j] = Optional.of(tileV);
-
+    public void showTileAdditionUpdate(String imagepath, String nickname, Coordinate coordinate){
+        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+            if (tileV.getImagePath().equals(imagepath)) {
+                for (PlayerV playerv : gameV.getPlayers()) {
+                    if (playerv.getNickname().equals(nickname)) {
+                        playerv.setSpaceshipBoardTile(tileV, coordinate);
+                        return;
                     }
                 }
             }
-            PlayerV playerv = new PlayerV(spaceshipV,p.getNickname(),p.getColor(),p.getStatePlayer(),p.getNumDeck(),p.getLobbyId());
-            if(state.getCurrentPlayer().equals(p)){
-                statev = new StateV(cardV,playerv,phaseV);
-            }
-            playersV.add(playerv);
-            position.put(playerv,gameboard.getPositions().get(p));
         }
+    }
+
+    //todo gestire hourglass e dice
+    @Override
+    public void showUpdateEverything(int level, List<String> nickPlayers, HashMap<String, PlayerColor> playercolors,HashMap<String, Integer> positions, String currentCardImage, StateCardType stateCard,StateGameType stateGame, String currentPlayer) throws RemoteException {
+        ArrayList<PlayerV> players = new ArrayList<>();
+        HashMap<Integer, PlayerV> positionsV = new HashMap<>();
+        CardV currentCardV = new CardV(stateCard,currentCardImage);
+        PlayerV currentPlayerV = null;
 
 
 
-        GameboardV gameboardV = new GameboardV(position, gameboard.getDice(), gameboard.getHourGlassFlip());
+        for(String p: nickPlayers){
+            PlayerV playerV = new PlayerV(null,p,playercolors.get(p));
+            if(p.equals(currentPlayer)) currentPlayerV = playerV;
+            players.add(playerV);
+            positionsV.put(positions.get(p),playerV);
+        }
+        StateV stateV =new StateV(currentCardV,currentPlayerV,stateGame);
+        GameboardV gameboardV = new GameboardV(positionsV);
+        GameV game = new GameV(players,level, gameboardV, stateV, false);
 
-        GameV gameV = new GameV(playersV, currentCard.getLevel(), gameboardV, statev, false, new HourglassV());
-        console.getController().setGameV(gameV);
+        console.getController().setGameV(game);
 
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
@@ -26,6 +27,15 @@ public final class Storage extends Tile {
     @Override
     public List<Box> getOccupation(){
         return occupation;
+    }
+
+    @Override
+    public List<BoxType> getOccupationTypes(){
+        List<BoxType> type = new ArrayList<>();
+        for(Box box: occupation){
+            type.add(box.getType());
+        }
+        return type;
     }
 
     @Override

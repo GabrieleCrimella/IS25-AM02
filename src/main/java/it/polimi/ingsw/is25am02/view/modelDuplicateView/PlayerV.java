@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
@@ -7,14 +8,13 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import java.util.Optional;
 
 public class PlayerV {
-    private final Optional<TileV>[][] spaceshipBoard;
+    private Optional<TileV>[][] spaceshipBoard;
     private Optional<TileV> currentTile;
     private final String nickname;
     private final PlayerColor color;
     private StatePlayerType statePlayer;
     private boolean deckAllowed; //todo bisogna aggiornare anche questo
     private int numDeck;
-    private int lobbyId;
     private int credits;
 
     public void setCurrentTile(Optional<TileV> currentTile) {
@@ -25,13 +25,15 @@ public class PlayerV {
         this.numDeck = numDeck;
     }
 
-    public PlayerV(Optional<TileV>[][] spaceshipBoard, String nickname, PlayerColor color, StatePlayerType statePlayer, int numDeck, int lobbyId) {
+    public PlayerV(Optional<TileV>[][] spaceshipBoard, String nickname, PlayerColor color) {
         this.spaceshipBoard = spaceshipBoard;
         this.nickname = nickname;
         this.color = color;
-        this.statePlayer = statePlayer;
-        this.numDeck = numDeck;
-        this.lobbyId = lobbyId;
+        this.statePlayer = StatePlayerType.NOT_FINISHED;
+    }
+
+    public void setSpaceshipBoardTile(TileV tileV, Coordinate coordinate) {
+        spaceshipBoard[coordinate.x()][coordinate.y()] = Optional.of(tileV);
     }
 
     public Optional<TileV>[][] getSpaceshipBoard() {
@@ -66,8 +68,5 @@ public class PlayerV {
         return numDeck;
     }
 
-    public int getLobbyId() {
-        return lobbyId;
-    }
 }
 

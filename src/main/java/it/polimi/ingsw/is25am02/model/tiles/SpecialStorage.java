@@ -1,12 +1,14 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //special storage può contenere tutte le box
 public final class SpecialStorage extends Tile{
@@ -32,6 +34,15 @@ public final class SpecialStorage extends Tile{
     @Override
     public ArrayList<Box> getOccupation(){
         return occupation;
+    }
+
+    @Override
+    public List<BoxType> getOccupationTypes(){
+        List<BoxType> type = new ArrayList<>();
+        for(Box box: occupation){
+            type.add(box.getType());
+        }
+        return type;
     }
 
     @Override

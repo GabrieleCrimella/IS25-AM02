@@ -148,10 +148,19 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty()){
             spaceshipBoard[x][y] = Optional.of(tile);
             listener.onCurrentTileUpdate(tile.getImagePath());
+            listener.onTileAdditionToSpaceship(tile.getImagePath(), new Coordinate(x,y));
         }
 
         else throw new IllegalAddException("Invalid tile position or occupied");
     }
+
+    public void addInitialTile(Tile tile, int x, int y) throws IllegalAddException {
+        if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty()){
+            spaceshipBoard[x][y] = Optional.of(tile);
+        }
+        else throw new IllegalAddException("Invalid initial tile position or occupied");
+    }
+
 
     public Optional<Tile> getFirstTile() {
         for (Optional<Tile> t : this.reference()) {

@@ -147,6 +147,11 @@ public class Spaceship {
         currentTile = null;
     }
 
+    public void addInitialTile(int x, int y, Tile t) throws IllegalAddException {
+        spaceshipIterator.addInitialTile(t, x, y);
+        currentTile = null;
+    }
+
     public void bookTile(Player player) throws IllegalAddException {
         if (currentTile == null) {
             throw new IllegalAddException("CurrentTile is empty");

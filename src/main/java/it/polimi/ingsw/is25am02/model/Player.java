@@ -3,13 +3,12 @@ package it.polimi.ingsw.is25am02.model;
 import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
-import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
-import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
-import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -35,6 +34,7 @@ public class Player implements UpdateListener {
         this.deckAllowed = false;
         this.numDeck = -1;
         this.spaceship.setListener(this);
+        this.spaceship.getSpaceshipIterator().setListener(this);
     }
 
     public int getLobbyId() {
@@ -90,7 +90,7 @@ public class Player implements UpdateListener {
     @Override
     public void onHourglassUpdate(Hourglass hourglass){
         try {
-            observer.showHourglassUpdate(hourglass);
+            observer.showHourglassUpdate(hourglass.getTimeLeft());
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show hourglass update", e);
 
@@ -100,7 +100,7 @@ public class Player implements UpdateListener {
     @Override
     public void onDiceUpdate(Dice dice){
         try {
-            observer.showDiceUpdate(dice);
+            observer.showDiceUpdate(dice.getResult());
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show dice update", e);
 
@@ -108,9 +108,28 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onUpdateEverything(List<Player> players, Gameboard gameboard, Card currentcard, State state){
+    public void onTileAdditionToSpaceship(String imagepath, Coordinate coordinate){
         try {
-            observer.showUpdateEverything(players, gameboard, currentcard, state);
+            observer.showTileAdditionUpdate(imagepath,getNickname(),coordinate);
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show tile addition update", e);
+        }
+    }
+
+
+    @Override
+    public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state){
+        try {
+            ArrayList<String> nicknamePlayers = new ArrayList<>();
+            HashMap<String, PlayerColor> playersColor = new HashMap<>();
+            HashMap<String, Integer> positions = new HashMap<>();
+            for(Player p:players){
+                nicknamePlayers.add(p.getNickname());
+                playersColor.put(p.getNickname(),p.getColor());
+                positions.put(p.getNickname(),gameboard.getPositions().get(p));
+            }
+
+            observer.showUpdateEverything(level,nicknamePlayers, playersColor,positions,currentcard.getImagePath(),currentcard.getStateCard(),state.getPhase(),state.getCurrentPlayer().getNickname());
         } catch (Exception e) {
             ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
 
@@ -119,7 +138,7 @@ public class Player implements UpdateListener {
 
 
     @Override
-    public void onBoxUpdate(Coordinate coordinate, List<Box> box){
+    public void onBoxUpdate(Coordinate coordinate, List<BoxType> box){
         try {
             observer.showBoxUpdate(coordinate, getNickname(), box);
         } catch (RemoteException e) {

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
-import it.polimi.ingsw.is25am02.model.Game;
 
 import java.util.Timer;
 import java.util.TimerTask;

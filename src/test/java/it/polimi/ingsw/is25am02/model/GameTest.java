@@ -128,7 +128,7 @@ class GameTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 2;
-        Tile storage1 = new SpecialStorage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new SpecialStorage(t2, connectors2, rotationType2, "", maxNum);
         try {
             spaceship1.addTile(7,6, storage1);
         } catch (IllegalAddException e) {
