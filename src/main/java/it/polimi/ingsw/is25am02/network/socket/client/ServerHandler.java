@@ -5,7 +5,6 @@ import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
@@ -59,7 +58,7 @@ public class ServerHandler implements VirtualServer {
     }
 
     @Override
-    public void takeTile(String nickname, Tile tile) throws RemoteException {
+    public void takeTile(String nickname, String tile_imagePath) throws RemoteException {
 
     }
 

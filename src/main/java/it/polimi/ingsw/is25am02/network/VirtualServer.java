@@ -5,7 +5,6 @@ import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -22,7 +21,7 @@ public interface VirtualServer extends Remote {
     // Metodi relativi al flusso di gioco
     void flipHourglass(String nickname) throws RemoteException;
     void takeTile(String nickname) throws RemoteException;
-    void takeTile(String nickname, Tile tile) throws RemoteException;
+    void takeTile(String nickname, String tile_imagePath) throws RemoteException;
     void takeMiniDeck(String nickname, int index) throws RemoteException;
     void returnMiniDeck(String nickname) throws RemoteException;
     void bookTile(String nickname) throws RemoteException;
