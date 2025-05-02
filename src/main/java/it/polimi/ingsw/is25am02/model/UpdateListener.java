@@ -16,8 +16,7 @@ public interface UpdateListener {
     void onHourglassUpdate(Hourglass hourglass);
     void onDiceUpdate(Dice dice);
     void onUpdateEverything(List<Player> players, Gameboard gameboard, Card currentcard, State state);
-    void onBoxRemovalUpdate(Coordinate coordinate, Box box);
-    void onBoxAdditionUpdate(Coordinate coordinate, Box box);
+    void onBoxUpdate(Coordinate coordinate, List<Box> box);
     void onMiniDeckUpdate(int deck);
     void onCurrentCardUpdate(String imagepath, StateCardType state);
     void onCurrentTileUpdate(String imagepath);

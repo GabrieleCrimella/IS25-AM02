@@ -817,6 +817,8 @@ public class Game implements Game_Interface {
             } else{ //Start and End are types of storage
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
             }
+            player.onBoxUpdate(start,player.getSpaceship().getTile(start.x(), start.y()).get().getOccupation());
+            player.onBoxUpdate(end,player.getSpaceship().getTile(end.x(), end.y()).get().getOccupation());
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -986,14 +988,7 @@ public class Game implements Game_Interface {
                     player.getSpaceship().getTile(pos.x(),pos.y()).get().getType().equals(TileType.SPECIAL_STORAGE) ||
                     player.getSpaceship().getTile(pos.x(),pos.y()).get().getType().equals(TileType.STORAGE))){
                 getCurrentCard().removeBox(this, player, player.getSpaceship().getTile(pos.x(),pos.y()).get(), type);
-                if(type.equals(BoxType.BLUE))
-                    player.onBoxRemovalUpdate(pos,new BlueBox(type));
-                else if(type.equals(BoxType.RED))
-                    player.onBoxRemovalUpdate(pos, new RedBox(type));
-                else if(type.equals(BoxType.YELLOW))
-                    player.onBoxRemovalUpdate(pos, new YellowBox(type));
-                else
-                    player.onBoxRemovalUpdate(pos, new GreenBox(type));
+                player.onBoxUpdate(pos,player.getSpaceship().getTile(pos.x(),pos.y()).get().getOccupation());
             } else {
                 throw new TileException("Tile is not a storage or doesn't exits");
             }

@@ -117,20 +117,11 @@ public class Player implements UpdateListener {
         }
     }
 
-    @Override
-    public void onBoxRemovalUpdate(Coordinate coordinate, Box box){
-        try {
-            observer.showBoxRemoval(coordinate, getNickname(), box);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show box removal update", e);
-        }
-
-    }
 
     @Override
-    public void onBoxAdditionUpdate(Coordinate coordinate, Box box){
+    public void onBoxUpdate(Coordinate coordinate, List<Box> box){
         try {
-            observer.showBoxAddition(coordinate, getNickname(), box);
+            observer.showBoxUpdate(coordinate, getNickname(), box);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show box addition update", e);
         }

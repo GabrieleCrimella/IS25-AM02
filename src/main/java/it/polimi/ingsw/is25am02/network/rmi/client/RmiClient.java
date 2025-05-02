@@ -114,44 +114,29 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showBoxRemoval(Coordinate coordinate, String nickname, Box box){
+    public void showBoxUpdate(Coordinate coordinate, String nickname, List<Box> boxList){
+        int numred=0;
+        int numyellow=0;
+        int numblue=0;
+        int numgreen=0;
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    if (box.getType().equals(BoxType.RED)) {
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumRedBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumRedBox()-1);
+                    for(Box box: boxList) {
+                        if (box.getType().equals(BoxType.RED)) {
+                            numred++;
+                        } else if (box.getType().equals(BoxType.YELLOW)) {
+                            numyellow++;
+                        } else if (box.getType().equals(BoxType.GREEN)) {
+                            numgreen++;
+                        } else {
+                            numblue++;
+                        }
                     }
-                    else if(box.getType().equals(BoxType.YELLOW)){
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumYellowBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumYellowBox()-1);
-                    }
-                    else if(box.getType().equals(BoxType.GREEN)){
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumGreenBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumGreenBox()-1);
-                    }
-                    else {
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBlueBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBlueBox()-1);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public void showBoxAddition(Coordinate coordinate, String nickname, Box box){
-        for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(nickname)) {
-                if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    if (box.getType().equals(BoxType.RED)) {
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumRedBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumRedBox()+1);
-                    }
-                    else if(box.getType().equals(BoxType.YELLOW)){
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumYellowBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumYellowBox()+1);
-                    }
-                    else if(box.getType().equals(BoxType.GREEN)){
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumGreenBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumGreenBox()+1);
-                    }
-                    else {
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBlueBox(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBlueBox()+1);
-                    }
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumYellowBox(numyellow);
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumGreenBox(numgreen);
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBlueBox(numblue);
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumRedBox(numred);
                 }
             }
         }
