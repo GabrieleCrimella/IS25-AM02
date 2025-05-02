@@ -129,7 +129,11 @@ public class Player implements UpdateListener {
 
     @Override
     public void onBoxAdditionUpdate(Coordinate coordinate, Box box){
-        observer.showBoxAddition(coordinate, getNickname(), box);
+        try {
+            observer.showBoxAddition(coordinate, getNickname(), box);
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show box addition update", e);
+        }
 
     }
 
