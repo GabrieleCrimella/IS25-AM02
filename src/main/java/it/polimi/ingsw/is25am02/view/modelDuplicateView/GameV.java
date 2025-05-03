@@ -4,10 +4,16 @@ package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
 
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.model.Player;
+import it.polimi.ingsw.is25am02.model.exception.*;
+import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
 import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +58,6 @@ public class GameV {
 
     public DiceV getDiceV() {
         return diceV;
-    }
-
-    public void setDiceV(DiceV diceV) {
-        this.diceV = diceV;
     }
 
     public StateV getCurrentState() {
