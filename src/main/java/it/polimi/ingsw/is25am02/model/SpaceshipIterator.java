@@ -37,6 +37,10 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         }
     }
 
+    public boolean[][] getSpaceshipMask() {
+        return spaceshipMask;
+    }
+
     public void setListener(UpdateListener listener) {
         this.listener = listener;
     }
@@ -160,7 +164,6 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         }
         else throw new IllegalAddException("Invalid initial tile position or occupied");
     }
-
 
     public Optional<Tile> getFirstTile() {
         for (Optional<Tile> t : this.reference()) {

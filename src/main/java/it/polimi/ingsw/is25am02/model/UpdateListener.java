@@ -16,7 +16,7 @@ public interface UpdateListener {
     void onPositionUpdate(int position);
     void onHourglassUpdate();
     void onDiceUpdate(Dice dice);
-    void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state);
+    void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask);
     void onBoxUpdate(Coordinate coordinate, List<BoxType> box);
     void onMiniDeckUpdate(int deck);
     void onCurrentCardUpdate(String imagepath, StateCardType state);

@@ -199,7 +199,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int tileId = Integer.parseInt(tokenizer.nextToken());
                     // Qui dovresti ottenere l'oggetto Tile corrispondente a tileId
                     Tile tile = getTileById(tileId); // Questo metodo dovrebbe essere implementato
-                    controller.takeTile(currentPlayer.getNickname(), tile);
+                    controller.takeTile(currentPlayer.getNickname(), tile.getImagePath());
                     break;
 
                 case "takeMiniDeck":

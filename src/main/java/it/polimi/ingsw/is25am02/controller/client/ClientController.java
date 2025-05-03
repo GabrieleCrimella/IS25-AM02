@@ -2,7 +2,6 @@ package it.polimi.ingsw.is25am02.controller.client;
 
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
@@ -125,9 +124,9 @@ public class ClientController implements VirtualServer {
 
     }
 
-    public void takeTile(String nickname, Tile tile) throws RemoteException {
+    public void takeTile(String nickname, String tile_imagePath) throws RemoteException {
         if(menuControl(MenuState.GAME)&&gameV.buildControl()&&gameV.stateControl(gameV.getCurrentState().getPhase(), gameV.getCurrentState().getCurrentPlayer().getStatePlayer(), gameV.getCurrentState().getCurrentCard().getStateCard(), getPlayerVFromNickname(nickname) )&& gameV.currentTileControl(getPlayerVFromNickname(nickname))) {
-            connection.getServer().takeTile(nickname, tile);
+            connection.getServer().takeTile(nickname, tile_imagePath);
         }
     }
 

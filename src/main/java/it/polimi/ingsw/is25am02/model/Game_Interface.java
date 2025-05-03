@@ -13,7 +13,7 @@ public interface Game_Interface {
     //Phase BUILD
     void flipHourglass(Player player) throws Exception; //todo testare
     void takeTile(Player player);
-    void takeTile(Player player, Tile tile);
+    void takeTile(Player player, String tile_imagePath);
     void takeMiniDeck(Player player, int index);
     void returnMiniDeck(Player player);
     void bookTile(Player player);

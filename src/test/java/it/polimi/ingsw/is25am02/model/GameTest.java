@@ -912,7 +912,7 @@ class GameTest {
         Tile tileDiProva = new Cabin(TileType.CABIN, connectors, RotationType.NORTH, 1 );
         tileDiProva.setVisible();
         game.getHeapTile().getSetTiles().add(tileDiProva);
-        game.takeTile(playerRosso, tileDiProva);
+        game.takeTile(playerRosso, tileDiProva.getImagePath());
 
         //controllo che il currentTile sia quello visibile e lo aggiungo in posizione 75
         assertEquals(tileDiProva, spaceshipRosso.getCurrentTile());
@@ -1128,7 +1128,7 @@ class GameTest {
         Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
-        game.takeTile(playerRosso, Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
         Coordinate pos77 = new Coordinate(7,7);
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
@@ -1136,21 +1136,21 @@ class GameTest {
         Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
-        game.takeTile(playerBlu, Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
         Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
-        game.takeTile(playerVerde, Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
         Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
-        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());
         game.addTile(playerGiallo, pos77,RotationType.NORTH);
 
 
@@ -1271,7 +1271,7 @@ class GameTest {
         Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
-        game.takeTile(playerRosso, Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
         Coordinate pos77 = new Coordinate(7,7);
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
@@ -1279,21 +1279,21 @@ class GameTest {
         Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
-        game.takeTile(playerBlu, Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
         Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
-        game.takeTile(playerVerde, Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
         Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
-        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());
         game.addTile(playerGiallo, pos77,RotationType.NORTH);
 
         //finisce il rosso
@@ -1411,7 +1411,7 @@ class GameTest {
         Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
-        game.takeTile(playerRosso, Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
         Coordinate pos77 = new Coordinate(7,7);
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
@@ -1419,21 +1419,21 @@ class GameTest {
         Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
-        game.takeTile(playerBlu, Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
         Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
-        game.takeTile(playerVerde, Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
         Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
-        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());
         game.addTile(playerGiallo, pos77,RotationType.NORTH);
 
 
@@ -1569,7 +1569,7 @@ class GameTest {
         Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
-        game.takeTile(playerRosso, Cabina77Rosso);
+        game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
         Coordinate pos77 = new Coordinate(7,7);
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
@@ -1577,21 +1577,21 @@ class GameTest {
         Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
-        game.takeTile(playerBlu, Cabina77Blu);
+        game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
         Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
-        game.takeTile(playerVerde, Cabina77Verde);
+        game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
         Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
-        game.takeTile(playerGiallo, Cabina77Giallo);
+        game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());
         game.addTile(playerGiallo, pos77,RotationType.NORTH);
 
 

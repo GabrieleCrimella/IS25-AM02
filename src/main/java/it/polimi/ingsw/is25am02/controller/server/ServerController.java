@@ -9,7 +9,6 @@ import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
@@ -325,13 +324,13 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     }
 
     //todo sostituire Tile con qualhce tipo primitivo univoco che rappresenti però anche rotazione ecc.
-    public void takeTile(String nickname, Tile tile) {
+    public void takeTile(String nickname, String tile_imagePath) {
         methodQueue.offer(() -> {
             try {
                 GameSession g = getGameFromPlayer(nickname);
                 Player player = getPlayerFromNickname(nickname);
                 if (g != null) {
-                    g.getQueue().offer(() -> g.getGame().takeTile(player, tile));
+                    g.getQueue().offer(() -> g.getGame().takeTile(player, tile_imagePath));
                 }
             } catch (PlayerNotFoundException e) {
                 logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method takeTile", e);

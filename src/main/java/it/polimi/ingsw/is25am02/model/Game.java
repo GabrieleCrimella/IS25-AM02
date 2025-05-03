@@ -320,15 +320,20 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void takeTile(Player player, Tile tile) {
+    public void takeTile(Player player, String tile_imagePath) {
         try {
             buildControl();
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
             currentTileControl(player);
 
-            heapTile.removeVisibleTile(tile);
-            player.onTileRemovalFromHTUpdate(tile.getImagePath());
-            player.getSpaceship().setCurrentTile(tile);
+            Optional<Tile> tile = getTileFromImagePath(tile_imagePath);
+            if (tile.isEmpty()) {
+                throw new TileException("Tile not found");
+            }
+
+            heapTile.removeVisibleTile(tile.get());
+            player.onTileRemovalFromHTUpdate(tile.get().getImagePath());
+            player.getSpaceship().setCurrentTile(tile.get());
 
         } catch (IllegalStateException e) {
             try {
@@ -354,7 +359,22 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method taketile (player,tile)");
             }
+        } catch (TileException e) {
+            try {
+                player.getObserver().reportError("error.tile", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method taketile (player,tile)");
+            }
         }
+    }
+
+    private Optional<Tile> getTileFromImagePath(String tileImagePath) {
+        for (Tile tile : heapTile.getVisibleTiles()) {
+            if (tile.getImagePath().equals(tileImagePath)) {
+                return Optional.of(tile);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
