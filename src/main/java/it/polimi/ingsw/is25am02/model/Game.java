@@ -187,7 +187,7 @@ public class Game implements Game_Interface {
                     hourglass.flip(this);
                     globalBoard.decreaseHourGlassFlip();
                 }
-                player.onHourglassUpdate(hourglass);
+                player.onHourglassUpdate();
             } else {
                 throw new IllegalStateException("");
             }

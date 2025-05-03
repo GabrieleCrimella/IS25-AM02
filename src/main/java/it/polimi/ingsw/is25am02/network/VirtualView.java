@@ -44,7 +44,7 @@ public interface VirtualView extends Remote {
 
     void showPositionUpdate(String nickname, int position) throws RemoteException;
 
-    void showHourglassUpdate(long timeleft) throws RemoteException;
+    void showHourglassUpdate() throws RemoteException;
 
     void showDiceUpdate(int result) throws RemoteException;
 

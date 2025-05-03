@@ -88,9 +88,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onHourglassUpdate(Hourglass hourglass){
+    public void onHourglassUpdate(){
         try {
-            observer.showHourglassUpdate(hourglass.getTimeLeft());
+            observer.showHourglassUpdate();
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show hourglass update", e);
 

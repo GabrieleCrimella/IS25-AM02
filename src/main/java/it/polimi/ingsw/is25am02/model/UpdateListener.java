@@ -14,7 +14,7 @@ public interface UpdateListener {
     void onRemoveBatteryUpdate(int battery, Coordinate coordinate);
     void onRemoveCrewUpdate(Coordinate coordinate, int numcrew);
     void onPositionUpdate(int position);
-    void onHourglassUpdate(Hourglass hourglass);
+    void onHourglassUpdate();
     void onDiceUpdate(Dice dice);
     void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state);
     void onBoxUpdate(Coordinate coordinate, List<BoxType> box);
