@@ -118,7 +118,7 @@ public class Player implements UpdateListener {
 
 
     @Override
-    public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state){
+    public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask){
         try {
             ArrayList<String> nicknamePlayers = new ArrayList<>();
             HashMap<String, PlayerColor> playersColor = new HashMap<>();
@@ -129,7 +129,7 @@ public class Player implements UpdateListener {
                 positions.put(p.getNickname(),gameboard.getPositions().get(p));
             }
 
-            observer.showUpdateEverything(level,nicknamePlayers, playersColor,positions,currentcard.getImagePath(),currentcard.getStateCard(),state.getPhase(),state.getCurrentPlayer().getNickname());
+            observer.showUpdateEverything(level,nicknamePlayers, playersColor,positions,currentcard.getImagePath(),currentcard.getStateCard(),state.getPhase(),state.getCurrentPlayer().getNickname(), mask);
         } catch (Exception e) {
             ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
 

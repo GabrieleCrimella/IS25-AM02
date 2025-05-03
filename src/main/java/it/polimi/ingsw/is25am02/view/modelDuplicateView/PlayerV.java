@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public class PlayerV {
     private Optional<TileV>[][] spaceshipBoard;
+    private boolean[][] spaceshipMask;
     private Optional<TileV> currentTile;
     private final String nickname;
     private final PlayerColor color;
@@ -25,11 +26,19 @@ public class PlayerV {
         this.numDeck = numDeck;
     }
 
-    public PlayerV(Optional<TileV>[][] spaceshipBoard, String nickname, PlayerColor color) {
+    public PlayerV(Optional<TileV>[][] spaceshipBoard, String nickname, PlayerColor color, boolean[][] mask) {
         this.spaceshipBoard = spaceshipBoard;
         this.nickname = nickname;
         this.color = color;
         this.statePlayer = StatePlayerType.NOT_FINISHED;
+    }
+
+    public boolean[][] getSpaceshipMask() {
+        return spaceshipMask;
+    }
+
+    public void setSpaceshipMask(boolean[][] spaceshipMask) {
+        this.spaceshipMask = spaceshipMask;
     }
 
     public void setSpaceshipBoardTile(TileV tileV, Coordinate coordinate) {

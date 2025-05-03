@@ -248,7 +248,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     //todo gestire hourglass e dice
     @Override
-    public void showUpdateEverything(int level, List<String> nickPlayers, HashMap<String, PlayerColor> playercolors,HashMap<String, Integer> positions, String currentCardImage, StateCardType stateCard,StateGameType stateGame, String currentPlayer) throws RemoteException {
+    public void showUpdateEverything(int level, List<String> nickPlayers, HashMap<String, PlayerColor> playercolors,HashMap<String, Integer> positions, String currentCardImage, StateCardType stateCard,StateGameType stateGame, String currentPlayer, boolean[][] mask) throws RemoteException {
         ArrayList<PlayerV> players = new ArrayList<>();
         HashMap<Integer, PlayerV> positionsV = new HashMap<>();
         CardV currentCardV = new CardV(stateCard,currentCardImage);
@@ -257,7 +257,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
 
         for(String p: nickPlayers){
-            PlayerV playerV = new PlayerV(null,p,playercolors.get(p));
+            PlayerV playerV = new PlayerV(null,p,playercolors.get(p), mask);
             if(p.equals(currentPlayer)) currentPlayerV = playerV;
             players.add(playerV);
             positionsV.put(positions.get(p),playerV);
