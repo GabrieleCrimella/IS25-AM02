@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.view.modelDuplicateView.tile;
 
+import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 
@@ -7,6 +8,7 @@ public class TileV {
     private final TileType tType;
     //private final String imagePath;
     private RotationType rotationType;
+    private final ConnectorType[] connectors;
     private boolean visible;
     private final String imagePath;
     private int numBattery;
@@ -20,8 +22,9 @@ public class TileV {
 
 
 
-    public TileV(TileType tType, RotationType rotationType, boolean visible, String imagePath, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
+    public TileV(TileType tType, ConnectorType[] connectors, RotationType rotationType, boolean visible, String imagePath, int numBattery, int numHumans, int numPAliens, int numBAliens, int numRedBox, int numYellowBox, int numGreenBox, int numBlueBox) {
         this.tType = tType;
+        this.connectors = connectors;
         this.rotationType = rotationType;
         this.visible = visible;
         this.imagePath = imagePath;
