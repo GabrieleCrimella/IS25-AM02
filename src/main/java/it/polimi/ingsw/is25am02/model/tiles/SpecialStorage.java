@@ -22,6 +22,11 @@ public final class SpecialStorage extends Tile{
     }
 
     @Override
+    public int getNumMaxBox(){
+        return maxNum;
+    }
+
+    @Override
     public int getMaxNum() { return maxNum; }
 
     @Override

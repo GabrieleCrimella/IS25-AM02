@@ -54,10 +54,10 @@ public interface VirtualView extends Remote {
 
     void showCurrentTileUpdate(String imagepath, String nickname) throws RemoteException;
 
-    void showVisibilityUpdate(String imagepath) throws RemoteException;
+    void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox) throws RemoteException;
 
     void showTileRemovalFromHeapTile(String imagepath) throws RemoteException;
 
-    void showTileAdditionUpdate(String imagepath, String nickname, Coordinate coordinate) throws RemoteException;
+    void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname, Coordinate coordinate) throws RemoteException;
 
 }

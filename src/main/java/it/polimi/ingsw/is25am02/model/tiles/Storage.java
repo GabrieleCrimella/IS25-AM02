@@ -39,6 +39,11 @@ public final class Storage extends Tile {
     }
 
     @Override
+    public int getNumMaxBox(){
+        return maxNum;
+    }
+
+    @Override
     public void removeBox(Box box) throws IllegalRemoveException {
         if(occupation.isEmpty()){
             throw new IllegalRemoveException("Storage empty");

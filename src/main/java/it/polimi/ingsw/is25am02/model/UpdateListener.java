@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
@@ -21,8 +22,8 @@ public interface UpdateListener {
     void onMiniDeckUpdate(int deck);
     void onCurrentCardUpdate(String imagepath, StateCardType state);
     void onCurrentTileUpdate(String imagepath);
-    void onVsibilityUpdate(String imagepath);
+    void onVsibilityUpdate(Tile tile);
     void onTileRemovalFromHTUpdate(String imagepath);
-    void onTileAdditionToSpaceship(String imagepath, Coordinate coordinate);
+    void onTileAdditionToSpaceship(Tile tile, Coordinate coordinate);
 
 }

@@ -174,16 +174,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showVisibilityUpdate(String imagepath){
-        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
-            if (tileV.getImagePath().equals(imagepath)) {
-                tileV.setVisible(true);
-                return;
-            }
-        }
+    public void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox){ //todo voglio aggiungere una tile all'heaptile
+        TileV tileV = new TileV(tType,connectors,rotationType, true,imagepath, 0,0,0,0,0,0,0,0,maxBattery, maxBox);
+        gameV.getHeapTilesV().addToHeapTile(tileV);
     }
 
-    // tolgo un tile che è stato messo in una nave
+    // tolgo un tile che è stata messa in una nave
     @Override
     public void showTileRemovalFromHeapTile(String imagepath){
         for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
@@ -234,21 +230,25 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
+    //una tile viene aggiunta ad una nave, potrebbe essere che è nel set di tile oppure che devo crearla
     @Override
-    public void showTileAdditionUpdate(String imagepath, String nickname, Coordinate coordinate){
-        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
-            if (tileV.getImagePath().equals(imagepath)) {
-                for (PlayerV playerv : gameV.getPlayers()) {
-                    if (playerv.getNickname().equals(nickname)) {
-                        playerv.setSpaceshipBoardTile(tileV, coordinate);
+    public void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname, Coordinate coordinate){
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+                    if (tileV.getImagePath().equals(imagepath)) {
+                        tileV.setRotationType(rotationType);
+                        playerv.setSpaceshipBoardTile(tileV,coordinate);
+                        gameV.getHeapTilesV().removeFromHeapTile(tileV);
                         return;
                     }
-                }
+                } //se non trovo la tile nell'heap tile la devo creare
+                TileV tileV = new TileV(tType,connectors,rotationType,false,imagepath,0,0,0,0,0,0,0,0,maxBattery,maxBox);
+                playerv.setSpaceshipBoardTile(tileV,coordinate);
             }
         }
     }
 
-    //todo gestire hourglass e dice
     @Override
     public void showUpdateEverything(int level, List<String> nickPlayers, HashMap<String, PlayerColor> playercolors,HashMap<String, Integer> positions, String currentCardImage, StateCardType stateCard,StateGameType stateGame, String currentPlayer, boolean[][] mask) throws RemoteException {
         ArrayList<PlayerV> players = new ArrayList<>();

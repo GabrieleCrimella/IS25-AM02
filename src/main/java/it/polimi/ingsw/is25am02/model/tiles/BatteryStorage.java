@@ -16,6 +16,11 @@ public final class BatteryStorage extends Tile {
     }
 
     @Override
+    public int getNumMaxBattery(){
+        return maxBattery;
+    }
+
+    @Override
     public int getNumBattery() {
         return battery;
     }

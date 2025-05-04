@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.network.VirtualView;
@@ -108,9 +109,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onTileAdditionToSpaceship(String imagepath, Coordinate coordinate){
+    public void onTileAdditionToSpaceship(Tile tile, Coordinate coordinate){
         try {
-            observer.showTileAdditionUpdate(imagepath,getNickname(),coordinate);
+            observer.showTileAdditionUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(), tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(),getNickname(),coordinate);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show tile addition update", e);
         }
@@ -181,9 +182,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onVsibilityUpdate(String imagepath){
+    public void onVsibilityUpdate(Tile tile){
         try {
-            observer.showVisibilityUpdate(imagepath);
+            observer.showVisibilityUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(), tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox());
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show visibility update", e);
 

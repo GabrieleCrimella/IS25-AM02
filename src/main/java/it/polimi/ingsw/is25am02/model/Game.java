@@ -384,7 +384,7 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
-            player.onVsibilityUpdate(player.getSpaceship().getCurrentTile().getImagePath());
+            player.onVsibilityUpdate(player.getSpaceship().getCurrentTile());
             player.getSpaceship().returnTile();
 
         } catch (IllegalStateException e) {

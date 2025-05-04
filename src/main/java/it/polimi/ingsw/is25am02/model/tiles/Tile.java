@@ -16,6 +16,8 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
     private final String imagePath;
     private RotationType rotationType;
     private boolean visible;
+    private int numMaxBattery;
+    private int numMaxBox;
     //private final int id;
 
     //Constructor
@@ -118,6 +120,14 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         }
         else
             return false;
+    }
+
+    public int getNumMaxBattery() {
+        return 0;
+    }
+
+    public int getNumMaxBox() {
+        return 0;
     }
 
     //storage e specialStorage
