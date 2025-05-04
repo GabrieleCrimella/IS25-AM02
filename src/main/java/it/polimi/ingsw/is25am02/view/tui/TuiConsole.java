@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.view.tui;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
+import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
+import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
 
 import java.io.BufferedReader;
@@ -27,17 +29,20 @@ import java.util.StringTokenizer;
 public class TuiConsole implements Runnable, ConsoleClient {
     private ClientController controller;
     private final JsonMessageManager messManager;
+    private final GraphicPrinter printer;
 
     //è il posto in cui leggo
     private final BufferedReader reader;
     private boolean running;
     private Player currentPlayer;
     private String nickname;
+    private boolean noError = true;
 
     public TuiConsole() throws Exception {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
         this.running = false;
         this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
+        this.printer = new GraphicPrinter();
     }
 
     public void closeConnect() {
@@ -46,6 +51,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
         } catch (Exception e) {
             reportError("error.connection.close", null);
         }
+    }
+
+    public GraphicPrinter getPrinter() {
+        return printer;
     }
 
     public void setController(ClientController control) {
@@ -58,6 +67,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+        printer.setMyName(nickname);
     }
 
     public void setCurrentPlayer(Player player) {
@@ -98,15 +108,18 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
         while (running) {
             try {
-                //todo aggiungere metodo che se il player è in una partita allora
-                //todo pulisce lo schermo e stampa i messaggi di base per la fase corrente
-
+                noError = true;
                 String input = reader.readLine();
 
                 if (input == null || input.trim().isEmpty()) {
                     continue;
                 }
                 processCommand(input.trim());
+
+                if(noError && controller.getMenuState() == MenuState.GAME) {
+                    clearConsole();
+                    printer.print();
+                }
 
             } catch (IOException e) {
                 reportError("error.reading.loop", null);
@@ -515,12 +528,15 @@ public class TuiConsole implements Runnable, ConsoleClient {
     public void displayMessage(String keys, Map<String, String> params) {
         System.out.println(messManager.getMessageWithParams(keys, params));
 
-        if(keys.equals("start")) startCountdown();
+        if(keys.equals("start")) {
+            startCountdown();
+        }
     }
 
     @Override
     public void reportError(String keys, Map<String, String> params) {
         System.err.println(messManager.getMessageWithParams(keys, params));
+        noError = false;
     }
 
     private void startCountdown() {
@@ -532,6 +548,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
             displayMessage("countdown.phrase", null);
             Thread.sleep(1000);
             clearConsole();
+            printer.print();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -539,12 +556,17 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
     private void clearConsole() {
         try {
+            for(int i = 0; i < 7; i++){
+                System.out.print("\n");
+            }
+            /*
             if (System.getProperty("os.name").contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             }
+             */
         } catch (Exception e) {
             reportError("error.terminal", null);
         }

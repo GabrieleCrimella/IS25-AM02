@@ -22,7 +22,6 @@ import java.util.Set;
 public class GameV {
     private String gameName;
     private final List<PlayerV> players;
-
     private final int level;
     private final GameboardV globalBoard;
     private final StateV currentState;

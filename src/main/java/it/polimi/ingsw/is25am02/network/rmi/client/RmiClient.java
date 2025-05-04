@@ -29,7 +29,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     public void startConnection() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1");
+        Registry registry = LocateRegistry.getRegistry("192.168.178.20");
         System.out.println("Tentativo di lookup...");
         server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
@@ -48,13 +48,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     public void setNickname(String nickname) { console.setNickname(nickname); }
 
-
     public VirtualServer getServer() { return server; }
 
     public ConsoleClient getConsole() {
         return console;
     }
 
+    public GameV getGameV() { return gameV; }
 
     @Override
     public void reportError(String keys, Map<String, String> params) throws RemoteException {
@@ -77,7 +77,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)){
                         showBatteryRemoval(coordinate,nickname, playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBattery()-1);
                     }
-                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = null;
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = Optional.empty();
                 }
             }
         }
@@ -256,19 +256,24 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         CardV currentCardV = new CardV(stateCard,currentCardImage);
         PlayerV currentPlayerV = null;
 
-
-
         for(String p: nickPlayers){
-            PlayerV playerV = new PlayerV(null,p,playercolors.get(p), mask);
+            Optional<TileV>[][] grid = new Optional[12][12];
+
+            for (int i = 0; i < 12; i++) {
+                for (int j = 0; j < 12; j++) {
+                    grid[i][j] = Optional.empty();
+                }
+            }
+            PlayerV playerV = new PlayerV(grid,p,playercolors.get(p), mask);
             if(p.equals(currentPlayer)) currentPlayerV = playerV;
             players.add(playerV);
             positionsV.put(positions.get(p),playerV);
         }
-        StateV stateV =new StateV(currentCardV,currentPlayerV,stateGame);
+        StateV stateV = new StateV(currentCardV,currentPlayerV,stateGame);
         GameboardV gameboardV = new GameboardV(positionsV);
         GameV game = new GameV(players,level, gameboardV, stateV, false);
 
+        console.getPrinter().setGame(gameV);
         console.getController().setGameV(game);
-
     }
 }

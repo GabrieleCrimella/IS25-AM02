@@ -8,7 +8,7 @@ public class TileV {
     private final TileType tType;
     //private final String imagePath;
     private RotationType rotationType;
-    private final ConnectorType[] connectors;
+    private ConnectorType[] connectors;
     private boolean visible;
     private final String imagePath;
     private int numBattery;
@@ -44,6 +44,10 @@ public class TileV {
 
     public RotationType getRotationType() {
         return rotationType;
+    }
+
+    public ConnectorType[] getConnectors() {
+        return connectors;
     }
 
     public boolean isVisible() {
@@ -88,6 +92,10 @@ public class TileV {
 
     public void setRotationType(RotationType rotationType) {
         this.rotationType = rotationType;
+    }
+
+    public void setConnectors(ConnectorType[] connectors) {
+        this.connectors = connectors;
     }
 
     public void setVisible(boolean visible) {

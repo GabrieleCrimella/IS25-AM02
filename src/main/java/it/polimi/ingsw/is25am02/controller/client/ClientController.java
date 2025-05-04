@@ -36,10 +36,15 @@ public class ClientController implements VirtualServer {
 
     public void setGameV(GameV gameV) {
         this.gameV = gameV;
+        connection.getConsole().getPrinter().setGame(gameV);
     }
 
     public void setMenuState(MenuState state) {
         menuState = state;
+    }
+
+    public MenuState getMenuState() {
+        return menuState;
     }
 
     public VirtualView getVirtualView() {

@@ -22,7 +22,9 @@ public class GameSession {
     public GameSession(int lobbyId, List<Player> players, int level) {
         this.lobbyId = lobbyId;
         this.game = new Game(players, level);
-        game.getPlayers().getFirst().onUpdateEverything(game.getlevel(),game.getPlayers(), game.getGameboard(), game.getCurrentCard(), game.getCurrentState(), players.getFirst().getSpaceship().getSpaceshipIterator().getSpaceshipMask());
+        for(Player player : game.getPlayers()) {
+            player.onUpdateEverything(game.getlevel(), game.getPlayers(), game.getGameboard(), game.getCurrentCard(), game.getCurrentState(), player.getSpaceship().getSpaceshipIterator().getSpaceshipMask());
+        }
         startGameQueueProcessor();
     }
 
