@@ -31,14 +31,12 @@ public class PlayerV {
         this.nickname = nickname;
         this.color = color;
         this.statePlayer = StatePlayerType.NOT_FINISHED;
+        this.spaceshipMask = mask;
+        this.currentTile = Optional.empty();
     }
 
     public boolean[][] getSpaceshipMask() {
         return spaceshipMask;
-    }
-
-    public void setSpaceshipMask(boolean[][] spaceshipMask) {
-        this.spaceshipMask = spaceshipMask;
     }
 
     public void setSpaceshipBoardTile(TileV tileV, Coordinate coordinate) {

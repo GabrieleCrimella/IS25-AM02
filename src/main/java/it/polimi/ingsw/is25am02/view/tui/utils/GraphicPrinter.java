@@ -52,7 +52,7 @@ public class GraphicPrinter {
         System.out.print("Current spaceship: ");
         for( PlayerV p : game.getPlayers()) {
             if( p.getNickname().equals(myName)) {
-                System.out.printf(" %s ", ROSSO + p.getNickname() + RESET);
+                System.out.printf(" %s ", CIANO + p.getNickname() + RESET);
             } else {
                 System.out.printf(" %s ", p.getNickname());
             }
@@ -80,9 +80,10 @@ public class GraphicPrinter {
         }
 
         //Column numbers
-        System.out.println("      ");
+        System.out.print("      ");
         for (int j = START_COL; j <= END_COL; j++) {
-            System.out.printf("  %-3d  ", j);
+            if(j < 10) System.out.printf("  %d   ", j);
+            else System.out.printf(" %d   ", j);
         }
         System.out.println();
 
@@ -168,7 +169,6 @@ public class GraphicPrinter {
         if (pl.getCurrentTile().isPresent()) {
             TileV curr = pl.getCurrentTile().get();
             System.out.println(curr.getRotationType());
-            System.out.println("+-----+");
             northConnector = connectorSymbol(curr, RotationType.NORTH);
             westConnector = connectorSymbol(curr, RotationType.WEST);
             southConnector = connectorSymbol(curr, RotationType.SOUTH);
@@ -178,6 +178,7 @@ public class GraphicPrinter {
             System.out.println(" -- ");
         }
 
+        System.out.println("+-----+");
         System.out.printf("|  %c  |\n", northConnector);
         System.out.printf("| %c%s%c |\n", westConnector, tile, eastConnector);
         System.out.printf("|  %c  |\n", southConnector);

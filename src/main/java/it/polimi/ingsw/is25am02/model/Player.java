@@ -124,7 +124,7 @@ public class Player implements UpdateListener {
             ArrayList<String> nicknamePlayers = new ArrayList<>();
             HashMap<String, PlayerColor> playersColor = new HashMap<>();
             HashMap<String, Integer> positions = new HashMap<>();
-            for(Player p:players){
+            for(Player p : players){
                 nicknamePlayers.add(p.getNickname());
                 playersColor.put(p.getNickname(),p.getColor());
                 positions.put(p.getNickname(),gameboard.getPositions().get(p));
