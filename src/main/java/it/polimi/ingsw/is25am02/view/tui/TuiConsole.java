@@ -116,7 +116,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                 }
                 processCommand(input.trim());
 
-                if(noError && controller.getMenuState() == MenuState.GAME) {
+                if (noError && controller.getMenuState() == MenuState.GAME) {
                     clearConsole();
                     printer.print();
                 }
@@ -161,11 +161,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "login":
-                    if (tokenizer.countTokens()==0) {
+                    if (tokenizer.countTokens() == 0) {
                         reportError("error.reading.input.login", null);
                         break;
-                    }else if(tokenizer.countTokens()>1){
-                        reportError("error.reading.input.syntax", Map.of("syntax","/login <nickname>"));
+                    } else if (tokenizer.countTokens() > 1) {
+                        reportError("error.reading.input.syntax", Map.of("syntax", "/login <nickname>"));
                         break;
                     }
                     controller.nicknameRegistration(tokenizer.nextToken(), controller.getVirtualView());
@@ -198,6 +198,23 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "hourglass":
                     controller.flipHourglass(currentPlayer.getNickname());
+                    break;
+
+                case "view":
+                    if (tokenizer.countTokens() == 1) {
+                        String name = tokenizer.nextToken();
+                        if (!controller.getPlayers().contains(name)) {
+                            reportError("error.reading.input.denied", Map.of("nick", name));
+                        }
+                        if (name.equals(nickname)) {
+                            printer.print();
+                        } else {
+                            printer.printCurrentSpaceship(name);
+                            printer.printSpaceship(name);
+                        }
+                    } else {
+                        printer.print();
+                    }
                     break;
 
                 case "take":
@@ -250,7 +267,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "add":
                     if (tokenizer.countTokens() < 3) {
-                        reportError("error.reading.input.syntax", Map.of("syntax","/add <x> <y> <rotation>"));
+                        reportError("error.reading.input.syntax", Map.of("syntax", "/add <x> <y> <rotation>"));
                         break;
                     }
                     int addX = Integer.parseInt(tokenizer.nextToken());
@@ -321,7 +338,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "choiceBox":
                     if (!tokenizer.hasMoreTokens()) {
-                        reportError("error.reading.input.syntax", Map.of("syntax","/choiceBox <true/false>"));
+                        reportError("error.reading.input.syntax", Map.of("syntax", "/choiceBox <true/false>"));
                         break;
                     }
                     boolean choiceBox = Boolean.parseBoolean(tokenizer.nextToken());
@@ -528,7 +545,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
     public void displayMessage(String keys, Map<String, String> params) {
         System.out.println(messManager.getMessageWithParams(keys, params));
 
-        if(keys.equals("start")) {
+        if (keys.equals("start")) {
             startCountdown();
         }
     }
@@ -556,7 +573,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
     private void clearConsole() {
         try {
-            for(int i = 0; i < 7; i++){
+            for (int i = 0; i < 7; i++) {
                 System.out.print("\n");
             }
             /*
