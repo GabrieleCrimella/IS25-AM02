@@ -25,5 +25,6 @@ public interface UpdateListener {
     void onVsibilityUpdate(Tile tile);
     void onTileRemovalFromHTUpdate(String imagepath);
     void onTileAdditionToSpaceship(Tile tile, Coordinate coordinate);
+    void onDeckAllowedUpdate();
 
 }

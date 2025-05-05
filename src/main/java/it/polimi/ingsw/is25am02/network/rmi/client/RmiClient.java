@@ -192,6 +192,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
+    public void showDeckAllowUpdate(String player) throws RemoteException{
+        for(PlayerV playerV : gameV.getPlayers()){
+            if(player.equals(playerV.getNickname())){
+                playerV.setDeckAllowed();
+                return;
+            }
+        }
+    }
+
+    @Override
     public void setMenuState(MenuState state) throws RemoteException {
         console.getController().setMenuState(state);
     }
@@ -243,7 +253,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                         return;
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
-                TileV tileV = new TileV(tType,connectors,rotationType,false,imagepath,0,0,0,0,0,0,0,0,maxBattery,maxBox);
+                TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,0,0,0,0,0,0,0,0,maxBattery,maxBox);
                 playerv.setSpaceshipBoardTile(tileV,coordinate);
             }
         }

@@ -13,7 +13,7 @@ public class PlayerV {
     private final String nickname;
     private final PlayerColor color;
     private StatePlayerType statePlayer;
-    private boolean deckAllowed; //todo bisogna aggiornare anche questo
+    private boolean deckAllowed;
     private int numDeck;
     private int credits;
 
@@ -53,6 +53,7 @@ public class PlayerV {
         this.statePlayer = StatePlayerType.NOT_FINISHED;
         this.spaceshipMask = mask;
         this.currentTile = Optional.empty();
+        this.deckAllowed = false;
     }
 
     public boolean[][] getSpaceshipMask() {
@@ -61,6 +62,10 @@ public class PlayerV {
 
     public void setSpaceshipBoardTile(TileV tileV, Coordinate coordinate) {
         spaceshipBoard[coordinate.x()][coordinate.y()] = Optional.of(tileV);
+    }
+
+    public void setDeckAllowed() {
+        this.deckAllowed = true;
     }
 
     public Optional<TileV>[][] getSpaceshipBoard() {

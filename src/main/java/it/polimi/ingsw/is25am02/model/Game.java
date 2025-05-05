@@ -415,6 +415,7 @@ public class Game implements Game_Interface {
             //player can see the minidecks
             if (!player.getDeckAllowed()) {
                 player.setDeckAllowed();
+                player.onDeckAllowedUpdate();
             }
 
         } catch (IllegalStateException e) {

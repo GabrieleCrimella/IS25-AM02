@@ -200,6 +200,15 @@ public class Player implements UpdateListener {
 
     }
 
+    @Override
+    public void onDeckAllowedUpdate(){
+        try {
+            observer.showDeckAllowUpdate(getNickname());
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show deck allow update", e);
+        }
+    }
+
     public Spaceship getSpaceship() {
         return spaceship;
     }
