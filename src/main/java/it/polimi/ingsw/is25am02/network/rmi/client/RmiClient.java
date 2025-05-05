@@ -175,7 +175,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox){ //todo voglio aggiungere una tile all'heaptile
-        TileV tileV = new TileV(tType,connectors,rotationType, true,imagepath, 0,0,0,0,0,0,0,0,maxBattery, maxBox);
+        TileV tileV = new TileV(tType,connectors,rotationType, true,imagepath,maxBattery, maxBox);
         gameV.getHeapTilesV().addToHeapTile(tileV);
     }
 
@@ -253,7 +253,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                         return;
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
-                TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,0,0,0,0,0,0,0,0,maxBattery,maxBox);
+                TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,maxBattery,maxBox);
                 playerv.setSpaceshipBoardTile(tileV,coordinate);
             }
         }

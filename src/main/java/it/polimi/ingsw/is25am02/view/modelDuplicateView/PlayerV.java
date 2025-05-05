@@ -46,7 +46,7 @@ public class PlayerV {
             imagepath = "/images/tiles/GT-new_tiles_16_for web33.jpg";
         }
 
-        TileV initialtileV = new TileV(TileType.CABIN, connectors, RotationType.NORTH, true, imagepath,0,0,0,0,0,0,0,0,0,0);
+        TileV initialtileV = new TileV(TileType.CABIN, connectors, RotationType.NORTH, true, imagepath,0,0);
         setSpaceshipBoardTile(initialtileV,new Coordinate(7,7));
         this.nickname = nickname;
         this.color = color;
