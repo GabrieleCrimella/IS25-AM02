@@ -17,7 +17,7 @@ public interface UpdateListener {
     void onPositionUpdate(int position);
     void onHourglassUpdate();
     void onDiceUpdate(Dice dice);
-    void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask);
+    void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions);
     void onBoxUpdate(Coordinate coordinate, List<BoxType> box);
     void onMiniDeckUpdate(int deck);
     void onCurrentCardUpdate(String imagepath, StateCardType state);
@@ -25,5 +25,6 @@ public interface UpdateListener {
     void onVsibilityUpdate(Tile tile);
     void onTileRemovalFromHTUpdate(String imagepath);
     void onTileAdditionToSpaceship(Tile tile, Coordinate coordinate);
+    void onDeckAllowedUpdate();
 
 }

@@ -56,7 +56,9 @@
 
     "command" : "> Command not supported for this card",
 
-    "argument" : "> Wrong argument choice"
+    "argument" : "> Wrong argument choice",
+
+    "playernull" : "Player is null"
   },
 
   "countdown" : {
@@ -81,7 +83,7 @@
 
   "end" : "> The match is ended",
 
-  "help" : "\nAvailable Commands:\n/help - Show possible commands list\n/exit - Exit from game\n/login <nickname> - Register with your nickname\n/create <maxPlayers> <color> <level> - Create a new lobby\n/lobbies - Show available lobbies\n/join <lobbyId> <color> - Join existing lobby\n/ready - Player is ready to start playing\n\nGame commands:\n/hourglass - Flip hourglass\n/view - Show your spaceship\n/view <nickname> - View the spaceship of another player of the game\n/take - Take a random non visible tile\n/takeTile <id> - Take a specific tile\n/takeMiniDeck <index> - View a minideck\n/returnMiniDeck - Return the minideck\n/book - Book a tile\n/addBooked <index> <x> <y> <rotation> - Add to your ship a tile that you booked\n/return - Return a tile\n/add <x> <y> <rotation> - Add tile to spaceship\n/remove <x> <y> - Remove a tile\n/finish - Signal that you've finished your spaceship\n/check - Check if spaceship is correct\n/addCrew <x> <y> <type> - Add crew members\n/removeCrew <x> <y> - Remove crew members\n/next - Play next card\n/early - Anticipated landing\n/choice <true/false> - Make a choice\n/choiceBox <true/false> - Make a choice regarding a box\n/moveBox <startX> <startY> <endX> <endY> <boxType> <on/off> - Move a box\n/choicePlanet <index> - Chose a planet\n/roll - Roll the dice\n/damage <x> <y> - See damage in position\n/keepBlock <x> <y> - Keep spaceship peace with position\n\nFor other specific commands, check game documentation.",
+  "help" : "\nAvailable Commands:\n/help - Show possible commands list\n/exit - Exit game\n/login <nickname> - Register with your nickname\n/create <maxPlayers> <color> <level> - Create a new lobby\n/lobbies - Show available lobbies\n/join <lobbyId> <color> - Join existing lobby\n/ready - Player is ready to start playing\n\nGame commands:\n/hourglass - Flip hourglass\n/view - Show your spaceship\n/view <nickname> - View the spaceship of another player of the game\n/take - Take a random non visible tile\n/takeTile <id> - Take a specific tile\n/takeMiniDeck <index> - View a minideck\n/returnMiniDeck - Return the minideck\n/book - Book a tile\n/addBooked <index> <x> <y> <rotation> - Add to your ship a tile that you booked\n/return - Return a tile\n/add <x> <y> <rotation> - Add tile to spaceship\n/remove <x> <y> - Remove a tile\n/finish - Signal that you've finished your spaceship\n/check - Check if spaceship is correct\n/addCrew <x> <y> <type> - Add crew members\n/removeCrew <x> <y> - Remove crew members\n/next - Play next card\n/early - Anticipated landing\n/choice <true/false> - Make a choice\n/choiceBox <true/false> - Make a choice regarding a box\n/moveBox <startX> <startY> <endX> <endY> <boxType> <on/off> - Move a box\n/choicePlanet <index> - Chose a planet\n/roll - Roll the dice\n/damage <x> <y> - See damage in position\n/keepBlock <x> <y> - Keep spaceship peace with position\n\nFor other specific commands, check game documentation.",
 
   "lobby" : {
     "creation" : "> The lobby with id {num} has been created!",
