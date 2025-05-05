@@ -256,7 +256,7 @@ public class ClientController implements VirtualServer {
     }
 
     public void choiceDoubleMotor(String nickname, List<Coordinate> motors, List<Coordinate> batteries) throws RemoteException {
-        if(menuControl(MenuState.GAME)) {
+        if(menuControl(MenuState.GAME)&& gameV.stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.CHOICE_ATTRIBUTES, getPlayerVFromNickname(nickname))&& gameV.currentPlayerControl(getPlayerVFromNickname(nickname))) {
             connection.getServer().choiceDoubleMotor(nickname, motors, batteries);
         }
     }
