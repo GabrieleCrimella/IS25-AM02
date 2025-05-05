@@ -28,7 +28,7 @@ public interface VirtualView extends Remote {
 
     void setNickname(String nickname) throws RemoteException;
 
-    void showUpdateEverything(int level, List<String> nickPlayers, HashMap<String, PlayerColor> playercolors,HashMap<String, Integer> positions, String currentCardImage, StateCardType stateCard,StateGameType stateGame, String currentPlayer, boolean[][] mask) throws Exception;
+    void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard,StateGameType stateGame, String currentPlayer, boolean[][] mask, int[] positions) throws Exception;
 
     void showTileRemoval(Coordinate coordinate, String nickname) throws RemoteException;
 

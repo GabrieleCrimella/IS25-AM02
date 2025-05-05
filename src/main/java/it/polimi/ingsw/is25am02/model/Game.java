@@ -514,6 +514,7 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.setStatePlayer(StatePlayerType.FINISHED);
+            player.onPositionUpdate(getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
             alreadyFinished++;
             getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
