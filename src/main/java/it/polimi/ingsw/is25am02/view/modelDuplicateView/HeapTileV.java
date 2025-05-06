@@ -2,24 +2,25 @@ package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
+import java.util.List;
 import java.util.Set;
 
 public class HeapTileV {
-    private Set<TileV> setTileV;
+    private List<TileV> listTileV;
 
-    public Set<TileV> getSetTileV() {
-        return setTileV;
+    public List<TileV> getListTileV() {
+        return listTileV;
     }
 
     public void addToHeapTile(TileV tileV){
-        setTileV.add(tileV);
+        listTileV.add(tileV);
     }
 
     public void removeFromHeapTile(TileV tileV){
-        setTileV.remove(tileV);
+        listTileV.remove(tileV);
     }
 
     public void removeTile(TileV tileV){
-        setTileV.remove(tileV);
+        listTileV.remove(tileV);
     }
 }

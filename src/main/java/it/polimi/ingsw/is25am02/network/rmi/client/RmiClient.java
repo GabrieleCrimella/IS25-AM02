@@ -182,7 +182,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     // tolgo un tile che è stata messa in una nave
     @Override
     public void showTileRemovalFromHeapTile(String imagepath){
-        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+        for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
             if (tileV.getImagePath().equals(imagepath)) {
                 gameV.getHeapTilesV().removeTile(tileV);
                 return;
@@ -228,7 +228,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void showCurrentTileUpdate(String imagepath, String nickname) {
-        for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+        for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
             if (tileV.getImagePath().equals(imagepath)) {
                 for (PlayerV playerv : gameV.getPlayers()) {
                     if (playerv.getNickname().equals(nickname)) {
@@ -245,7 +245,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     public void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname, Coordinate coordinate){
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                for (TileV tileV : gameV.getHeapTilesV().getSetTileV()) {
+                for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                     if (tileV.getImagePath().equals(imagepath)) {
                         tileV.setRotationType(rotationType);
                         playerv.setSpaceshipBoardTile(tileV,coordinate);

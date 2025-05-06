@@ -10,6 +10,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
 
@@ -227,8 +228,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     int tileId = Integer.parseInt(tokenizer.nextToken());
-                    // Qui dovresti ottenere l'oggetto Tile corrispondente a tileId
-                    Tile tile = getTileById(tileId); // Questo metodo dovrebbe essere implementato
+                    TileV tile = getTileById(tileId);
                     controller.takeTile(currentPlayer.getNickname(), tile.getImagePath());
                     break;
 
@@ -532,12 +532,8 @@ public class TuiConsole implements Runnable, ConsoleClient {
         }
     }
 
-    //Metodo per ottenere una Tile in base all'ID
-    //Questo metodo dovrebbe essere implementato in base alla tua struttura dati
-    private Tile getTileById(int tileId) {
-        // Implementazione da completare
-        // Questo è solo un metodo placeholder
-        return null;
+    private TileV getTileById(int tileId) {
+        return controller.getTileFromID(tileId);
     }
 
     //Mostra un messaggio all'utente

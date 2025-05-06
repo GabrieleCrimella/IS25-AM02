@@ -9,6 +9,7 @@ import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 //AliveTypeV diventa int numEnum
 //BoxTypeV diventa int numEnum
 
+//todo fare bene i controlli nella TUIconsole
 public class ClientController implements VirtualServer {
     private final ConnectionClient connection;
     private MenuState menuState;
@@ -54,6 +56,10 @@ public class ClientController implements VirtualServer {
     public void closeConnect() throws Exception {
         connection.closeConnection();
         running = false;
+    }
+
+    public TileV getTileFromID(int id){
+        return gameV.getHeapTilesV().getListTileV().get(id);
     }
 
     public List<String> getPlayers() {
