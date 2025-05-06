@@ -4,12 +4,14 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 public class PlayerV {
     private Optional<TileV>[][] spaceshipBoard;
     private boolean[][] spaceshipMask;
     private Optional<TileV> currentTile;
+    private final HashMap<Integer, TileV> bookedTiles;
     private final String nickname;
     private final PlayerColor color;
     private StatePlayerType statePlayer;
@@ -33,7 +35,6 @@ public class PlayerV {
                 grid[i][j] = Optional.empty();
             }
         }
-        this.spaceshipBoard = grid;
         ConnectorType[] connectors ={ConnectorType.UNIVERSAL,ConnectorType.UNIVERSAL,ConnectorType.UNIVERSAL,ConnectorType.UNIVERSAL};
         String imagepath;
         if(color.equals(PlayerColor.RED)) {
@@ -47,6 +48,7 @@ public class PlayerV {
         }
 
         TileV initialtileV = new TileV(TileType.CABIN, connectors, RotationType.NORTH, true, imagepath,0,0);
+        this.spaceshipBoard = grid;
         setSpaceshipBoardTile(initialtileV,new Coordinate(7,7));
         this.nickname = nickname;
         this.color = color;
@@ -54,6 +56,9 @@ public class PlayerV {
         this.spaceshipMask = mask;
         this.currentTile = Optional.empty();
         this.deckAllowed = false;
+        this.bookedTiles = new HashMap<>();
+        bookedTiles.put(1, null);
+        bookedTiles.put(2, null);
     }
 
     public boolean[][] getSpaceshipMask() {
@@ -100,5 +105,8 @@ public class PlayerV {
         return numDeck;
     }
 
+    public HashMap<Integer, TileV> getBookedTiles() {
+        return bookedTiles;
+    }
 }
 

@@ -137,4 +137,12 @@ public class TileV {
     public void setNumBlueBox(int numBlueBox) {
         this.numBlueBox = numBlueBox;
     }
+
+    public int getNumMaxBattery() {
+        return numMaxBattery;
+    }
+
+    public int getNumMaxBox() {
+        return numMaxBox;
+    }
 }
