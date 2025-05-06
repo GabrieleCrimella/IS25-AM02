@@ -38,8 +38,23 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public boolean[][] getSpaceshipMask() {
-        return spaceshipMask;
+        return transpose(spaceshipMask);
     }
+
+    public static boolean[][] transpose(boolean[][] original) {
+        int rows = original.length;
+        int cols = original[0].length;
+        boolean[][] transposed = new boolean[cols][rows];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                transposed[j][i] = original[i][j];
+            }
+        }
+
+        return transposed;
+    }
+
 
     public void setListener(UpdateListener listener) {
         this.listener = listener;
