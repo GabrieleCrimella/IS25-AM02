@@ -324,7 +324,6 @@ public class GraphicPrinter {
 
         int index = (direction.getNum() - rotation.getNum() + 4) % 4;
         ConnectorType connector = connectors[index];
-
         switch (connector) {
             case SINGLE -> { return '·';}
             case DOUBLE -> {return ':';}
