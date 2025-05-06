@@ -56,6 +56,10 @@ public class ClientController implements VirtualServer {
         running = false;
     }
 
+    public List<String> getPlayers() {
+        return gameV.getPlayers().stream().map(PlayerV::getNickname).toList();
+    }
+
     private PlayerV getPlayerVFromNickname(String nickname) throws RemoteException {
         for (PlayerV p : gameV.getPlayers()) {
             if (p.getNickname().equals(nickname)) {

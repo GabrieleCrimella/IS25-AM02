@@ -53,6 +53,8 @@ public class GraphicPrinter {
         }
     }
 
+    //todo to print the spaceship of someone else, call printCurrentSpaceship with the name of the player and printSpaceship
+
     public void printCurrentSpaceship(String myName) {
         System.out.print("Current spaceship: ");
         for( PlayerV p : game.getPlayers()) {
