@@ -222,6 +222,13 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     break;
 
+                case "heap":
+                    if (controller.buildPhaseControl(nickname))
+                        printer.printHeapTiles();
+                    else
+                        reportError("error.phase", null);
+                    break;
+
                 case "take":
                     controller.takeTile(nickname);
                     break;
