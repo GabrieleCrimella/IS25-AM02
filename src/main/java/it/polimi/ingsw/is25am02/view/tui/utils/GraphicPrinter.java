@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GraphicPrinter {
@@ -316,6 +317,63 @@ public class GraphicPrinter {
             System.out.printf("(%d,%d) %s\t  ", entry.getKey().x(), entry.getKey().y(), sb.toString());
         }
         System.out.println();
+    }
+
+    public void printHeapTiles(){
+        List<TileV> tiles = game.getHeapTilesV().getListTileV();
+        int num = 0;
+        int index;
+
+        while(num <= tiles.size()){
+            index = num;
+            for (int j = 1; j <= 10; j++) {
+                if(num < 10) System.out.printf("   %d    ", num);
+                else if (num < 100) System.out.printf("  %d    ", num);
+                else System.out.printf("  %d   ", num);
+                num++;
+            }
+            System.out.println();
+            for (int j = 1; j <= 10; j++) {
+                System.out.print("+-----+ ");
+            }
+            System.out.println();
+            for (int j = 1; j <= 10; j++) {
+                if (index >= tiles.size() || tiles.get(index) == null) {
+                    System.out.print("|     | ");
+                } else {
+                    char northConnector = connectorSymbol(tiles.get(index), RotationType.NORTH);
+                    System.out.printf("|  %c  | ", northConnector);
+                }
+                index++;
+            }
+            System.out.println();
+            index = num;
+            for (int j = 1; j <= 10; j++) {
+                if (index >= tiles.size() || tiles.get(index) == null) {
+                    System.out.print("|     | ");
+                } else {
+                    char westConnector = connectorSymbol(tiles.get(index), RotationType.WEST);
+                    char eastConnector = connectorSymbol(tiles.get(index), RotationType.EAST);
+                    String tile = stringCurr(tiles.get(index));
+                    System.out.printf("| %c%s%c  | ", westConnector, tile, eastConnector);
+                }
+            }
+            System.out.println();
+            index = num;
+            for (int j = 1; j <= 10; j++) {
+                if (index >= tiles.size() || tiles.get(index) == null) {
+                    System.out.print("|     | ");
+                } else {
+                    char southConnector = connectorSymbol(tiles.get(index), RotationType.SOUTH);
+                    System.out.printf("|  %c  | ", southConnector);
+                }
+            }
+            System.out.println();
+            for (int j = 1; j <= 10; j++) {
+                System.out.print("+-----+ ");
+            }
+            System.out.println();
+        }
     }
 
     private char connectorSymbol (TileV tile, RotationType direction){
