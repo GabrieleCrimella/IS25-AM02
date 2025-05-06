@@ -50,7 +50,7 @@ public class GraphicPrinter {
             printCurrentSpaceship(myName);
             printSpaceship(myName);
             printTileOrientation(myName);
-            //printTileOccupation(myName);
+            printTileOccupation(myName);
         }
     }
 
@@ -319,6 +319,80 @@ public class GraphicPrinter {
         System.out.println();
     }
 
+    public void printTileOccupation(String name) {
+        PlayerV pl = null;
+        for (PlayerV player : game.getPlayers()) {
+            if (player.getNickname().equals(name)) {
+                pl = player;
+            }
+        }
+        if (pl == null) {
+            return;
+        }
+        System.out.println("Tile Occupation: (X,Y) | Quantity | Type ");
+
+        HashMap<Coordinate, TileV> batteries = new HashMap<>();
+        HashMap<Coordinate, TileV> cabins = new HashMap<>();
+        HashMap<Coordinate, TileV> storage = new HashMap<>();
+
+        for(int i=0; i<12; i++){
+            for(int j=0; j<12; j++){
+                if(pl.getSpaceshipBoard()[i][j].isPresent()){
+                    switch(pl.getSpaceshipBoard()[i][j].get().getType()){
+                        case BATTERY -> batteries.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
+                        case CABIN -> cabins.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
+                        case SPECIAL_STORAGE, STORAGE -> storage.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
+                    }
+                }
+            }
+        }
+
+        int maxOnLine = 0;
+        System.out.println();
+        System.out.print("Storage:  ");
+        for(Map.Entry<Coordinate, TileV> entry : storage.entrySet()){
+            if(maxOnLine < 4) {
+                System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
+                System.out.print(printItem(entry.getValue()) + "\t");
+                maxOnLine++;
+            } else {
+                System.out.println();
+                System.out.print("          ");
+                maxOnLine = 0;
+            }
+        }
+
+        maxOnLine = 0;
+        System.out.println();
+        System.out.print("Battery:  ");
+        for(Map.Entry<Coordinate, TileV> entry : batteries.entrySet()){
+            if(maxOnLine < 4) {
+                System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
+                System.out.print(printItem(entry.getValue()) + "\t");
+                maxOnLine++;
+            } else {
+                System.out.println();
+                System.out.print("          ");
+                maxOnLine = 0;
+            }
+        }
+
+        maxOnLine = 0;
+        System.out.println();
+        System.out.print("Crew:  ");
+        for(Map.Entry<Coordinate, TileV> entry : cabins.entrySet()){
+            if(maxOnLine < 4) {
+                System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
+                System.out.print(printItem(entry.getValue()) + "\t");
+                maxOnLine++;
+            } else {
+                System.out.println();
+                System.out.print("       ");
+                maxOnLine = 0;
+            }
+        }
+    }
+
     public void printHeapTiles(){
         List<TileV> tiles = game.getHeapTilesV().getListTileV();
         int num = 0;
@@ -373,6 +447,52 @@ public class GraphicPrinter {
                 System.out.print("+-----+ ");
             }
             System.out.println();
+        }
+    }
+
+    private int countBox(TileV tile){
+        return tile.getNumBlueBox() + tile.getNumRedBox() + tile.getNumGreenBox() + tile.getNumYellowBox();
+    }
+
+    private String printItem(TileV tile){
+        StringBuilder sb = new StringBuilder();
+
+        if (tile.getType() == TileType.BATTERY) {
+            int num = tile.getNumBattery();
+            sb.append((VERDE + "#" + RESET).repeat(Math.max(0, num)));
+            return sb.toString();
+        } else if (tile.getType() == TileType.CABIN) {
+            int crew = tile.getNumHumans();
+            int pAlien = tile.getNumPAliens();
+            int bAlien = tile.getNumBAliens();
+
+            if(crew == 2) {
+                sb.append(BIANCO + "#" + RESET + BIANCO + "#" + RESET);
+                return sb.toString();
+            }
+            else if(crew == 1) {
+                sb.append(BIANCO + "#" + RESET);
+                return sb.toString();
+            }
+            else if(pAlien == 1) {
+                sb.append(MAGENTA + "#" + RESET);
+                return sb.toString();
+            }
+            else if(bAlien == 1) {
+                sb.append(MARRONE + "#" + RESET);
+                return sb.toString();
+            } else return "";
+        } else {
+            int blue = tile.getNumBlueBox();
+            int red = tile.getNumRedBox();
+            int green = tile.getNumGreenBox();
+            int yellow = tile.getNumYellowBox();
+
+            sb.append((BLU + "#" + RESET).repeat(Math.max(0, blue)));
+            sb.append((ROSSO + "#" + RESET).repeat(Math.max(0, red)));
+            sb.append((GIALLO + "#" + RESET).repeat(Math.max(0, green)));
+            sb.append((VERDE + "#" + RESET).repeat(Math.max(0, yellow)));
+            return sb.toString();
         }
     }
 
