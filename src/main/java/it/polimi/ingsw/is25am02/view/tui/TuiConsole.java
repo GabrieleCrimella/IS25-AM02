@@ -18,10 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /*
  * Classe che gestisce l'interfaccia testuale (TUI) del gioco.
@@ -175,7 +172,17 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     int maxPlayers = Integer.parseInt(tokenizer.nextToken());
-                    PlayerColor color = PlayerColor.valueOf(tokenizer.nextToken().toUpperCase());
+
+                    String colorString = tokenizer.nextToken();
+                    Optional<PlayerColor> maybeColor = Arrays.stream(PlayerColor.values())
+                            .filter(t -> t.toString().equalsIgnoreCase(colorString))
+                            .findFirst();
+                    if (maybeColor.isEmpty()) {
+                        reportError("error.reading.input.color", Map.of("color", colorString));
+                        break;
+                    }
+                    PlayerColor color = maybeColor.get();
+
                     int level = Integer.parseInt(tokenizer.nextToken());
                     controller.createLobby(controller.getVirtualView(), nickname, maxPlayers, color, level);
                     break;
