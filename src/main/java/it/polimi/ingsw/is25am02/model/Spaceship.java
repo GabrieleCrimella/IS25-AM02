@@ -298,12 +298,13 @@ public class Spaceship {
 
     public void returnTile() {
         currentTile = null;
+        listener.onCurrentTileNullityUpdate();
     }
 
     public void setCurrentTile(Tile t) throws AlreadyViewingException {
         if (currentTile == null) {
             currentTile = t;
-            listener.onCurrentTileUpdate(t.getImagePath());
+            listener.onCurrentTileUpdate(t);
         } else {
             throw new AlreadyViewingException("CurrentTile already set");
         }

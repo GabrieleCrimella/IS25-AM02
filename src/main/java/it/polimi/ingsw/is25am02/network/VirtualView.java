@@ -52,7 +52,9 @@ public interface VirtualView extends Remote {
 
     void showCurrentCardUpdate(String imagepath, StateCardType stateCard) throws RemoteException;
 
-    void showCurrentTileUpdate(String imagepath, String nickname) throws RemoteException;
+    void showCurrentTileNullityUpdate(String nickname) throws RemoteException;
+
+    void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname) throws RemoteException;
 
     void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox) throws RemoteException;
 

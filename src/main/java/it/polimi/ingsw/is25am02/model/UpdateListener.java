@@ -21,10 +21,11 @@ public interface UpdateListener {
     void onBoxUpdate(Coordinate coordinate, List<BoxType> box);
     void onMiniDeckUpdate(int deck);
     void onCurrentCardUpdate(String imagepath, StateCardType state);
-    void onCurrentTileUpdate(String imagepath);
+    void onCurrentTileUpdate(Tile tile);
     void onVsibilityUpdate(Tile tile);
     void onTileRemovalFromHTUpdate(String imagepath);
     void onTileAdditionToSpaceship(Tile tile, Coordinate coordinate);
     void onDeckAllowedUpdate();
+    void onCurrentTileNullityUpdate();
 
 }

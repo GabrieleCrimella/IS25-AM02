@@ -227,15 +227,27 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showCurrentTileUpdate(String imagepath, String nickname) {
-        for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
-            if (tileV.getImagePath().equals(imagepath)) {
-                for (PlayerV playerv : gameV.getPlayers()) {
-                    if (playerv.getNickname().equals(nickname)) {
+    public void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname) {
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
+                    if (tileV.getImagePath().equals(imagepath)) {
                         playerv.setCurrentTile(Optional.of(tileV));
                         return;
                     }
-                }
+                } //se non trovo la tile nell'heap tile la devo creare
+                TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,maxBattery,maxBox);
+                playerv.setCurrentTile(Optional.of(tileV));
+            }
+        }
+    }
+
+    @Override
+    public void showCurrentTileNullityUpdate(String nickname) {
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                playerv.setCurrentTile(null);
+                return;
             }
         }
     }

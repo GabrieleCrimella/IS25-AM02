@@ -168,14 +168,23 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentTileUpdate(String imagepath){
+    public void onCurrentTileUpdate(Tile tile){
         try {
-            observer.showCurrentTileUpdate(imagepath, getNickname());
+            observer.showCurrentTileUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(),tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(), getNickname());
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show current tile update", e);
 
         }
 
+    }
+
+    @Override
+    public void onCurrentTileNullityUpdate(){
+        try {
+            observer.showCurrentTileNullityUpdate(getNickname());
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show current tile nullity update", e);
+        }
     }
 
     @Override

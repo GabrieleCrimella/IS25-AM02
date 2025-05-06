@@ -166,7 +166,6 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     public void addTile(Tile tile, int x, int y) throws IllegalAddException {
         if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty()){
             spaceshipBoard[x][y] = Optional.of(tile);
-            listener.onCurrentTileUpdate(tile.getImagePath());
             listener.onTileAdditionToSpaceship(tile, new Coordinate(x,y));
         }
 
