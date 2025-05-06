@@ -17,6 +17,7 @@ import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -94,7 +95,6 @@ public class GameV {
 
     public boolean buildControl() {
         if (buildTimeIsOver) {
-            //throw new IllegalPhaseException("the time for building is over, call finishedSpaceship");
             console.reportError("error.buildTimeIsOver", null);
             return false;
         }
@@ -108,18 +108,21 @@ public class GameV {
     public boolean stateControl(StateGameType stateGame, StatePlayerType statePlayer, StateCardType stateCard, PlayerV playerV) {
         if(playerV!=null){
             if (!playerV.getStatePlayer().equals(statePlayer)) {
-                //throw new IllegalStateException("Wrong player state, expected state : " + statePlayer + ", actual state : " + playerV.getStatePlayer());
-                console.reportError("error.state", null);
+                HashMap<String,String> params = new HashMap<>();
+                params.put("correctstate",statePlayer.toString());
+                params.put("wrongstate", playerV.getStatePlayer().toString());
+                console.reportError("error.statePlayer", params);
                 return false;
             }
             if (!getCurrentCard().getStateCard().equals(stateCard)) {
-                console.reportError("error.state", null);
-                //throw new IllegalStateException("Wrong card state, expected state : " + stateCard + ", actual state : " + getCurrentCard().getStateCard());
+                HashMap<String,String> params = new HashMap<>();
+                params.put("correctstate",stateCard.toString());
+                params.put("wrongstate", getCurrentCard().getStateCard().toString());
+                console.reportError("error.stateCard", null);
                 return false;
             }
             if (!getCurrentState().getPhase().equals(stateGame)) {
-                console.reportError("error.state", null);
-                //throw new IllegalStateException("Wrong game state, expected state : " + stateGame + "  actual state : " + getCurrentState().getPhase());
+                console.reportError("error.phase", null);
                 return false;
             }
             return true;
@@ -134,7 +137,6 @@ public class GameV {
         if(playerV!=null){
             if (!playerV.getCurrentTile().isEmpty()) {
                 console.reportError("error.viewing", null);
-                //throw new AlreadyViewingException("Wrong (CurrentTile != null), Player : " + player.getNickname() + ", actual tile : " + player.getSpaceship().getCurrentTile());
                 return false;
             }
             return true;
@@ -146,8 +148,7 @@ public class GameV {
     public boolean deckAllowedControl(PlayerV player) {
         if (player!=null){
             if (!player.getDeckAllowed()) {
-                //todo message
-                //throw new IllegalPhaseException("the player " + player.getNickname() + " is not allowed to see the minidecks");
+                console.reportError("error.deckAllowed", null);
                 return false;
             }
             return true;
@@ -159,19 +160,17 @@ public class GameV {
     public boolean cabinControl(PlayerV playerV, Coordinate pos) {
         if (playerV!=null){
             if (playerV.getSpaceshipBoard()[pos.x()][pos.y()].isEmpty()) {
-                //todo manda messaggio
-
-                //throw new TileException("No Tile in position ( " + pos.x() + ", " + pos.y() + " )");
+                console.reportError("error.tilePosition", null);
                 return false;
             }
             if (!playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getType().equals(TileType.CABIN)) {
-                //todo manda messaggio
-                //throw new TileException("Different TileType, expected " + TileType.CABIN + ", actual " + player.getSpaceship().getTile(pos.x(), pos.y()).get().getType());
+                HashMap<String,String> params = new HashMap<>();
+                params.put("tType",TileType.CABIN.toString());
+                console.reportError("error.tile", params);
                 return false;
             }
             if (!(playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumHumans()==0 && playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumPAliens()==0 && playerV.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumBAliens()==0)) {
-                //todo manda messaggio
-                //throw new TileException("Cabin already full");
+                console.reportError("error.fullCabin", null);
                 return false;
             }
             return true;
@@ -183,8 +182,7 @@ public class GameV {
     public boolean currentPlayerControl(PlayerV playerV) {
         if(playerV!=null){
             if (!playerV.equals(getCurrentState().getCurrentPlayer())) {
-                //todo manda messaggio
-                //throw new IllegalStateException("Wrong leader, actual leader : " + getCurrentState().getCurrentPlayer());
+                console.reportError("error.wrongLeader",null);
                 return false;
             }
             return true;
@@ -196,12 +194,12 @@ public class GameV {
     public boolean typeControl(PlayerV playerV, Coordinate pos, TileType type) {
         if (playerV!=null){
             if (playerV.getSpaceshipBoard()[pos.x()][ pos.y()].isPresent() && !playerV.getSpaceshipBoard()[pos.x()][ pos.y()].get().getType().equals(type)) {
-                //todo manda messaggio
-                //throw new TileException("Tile (" + pos.x() + " " + pos.y() + ") from player " + player.getNickname() +" doesn't possess Type: " + type);
+                HashMap<String,String> params = new HashMap<>();
+                params.put("tType",type.toString());
+                console.reportError("error.tile", null);
                 return false;
             } else if (playerV.getSpaceshipBoard()[pos.x()][ pos.y()].isEmpty()) {
-                //todo manda messaggio
-                //throw new TileException("No Tile in position ( " + pos.x() + ", " + pos.y() + " ) from player " + player.getNickname());
+                console.reportError("error.tilePosition",null);
                 return false;
             }
             return true;

@@ -1,10 +1,10 @@
 {
   "error": {
     "connection": {
-      "close": "Error closing connection",
-      "command": "Error executing command"
+      "close": "> Error closing connection",
+      "command": "> Error executing command"
     },
-    "terminal": "Unable to clean terminal",
+    "terminal": "> Unable to clean terminal",
     "menu": {
       "login": {
         "off": "> You need to login",
@@ -17,7 +17,7 @@
       },
       "wait": "> You have to wait for the game to start",
       "game": "> You are not currently in any game, join a lobby to start",
-      "data": "Insufficient data for {object}",
+      "data": "> Insufficient data for {object}",
       "lobby": "> Lobby not found :(",
       "color": "> Color is already in use",
       "player": {
@@ -25,27 +25,34 @@
       }
     },
     "reading": {
-      "loop": "Error during input reading",
-      "slash": "Commands must starts with '/'",
-      "notFound": "Command not recognized:  {command}",
+      "loop": "> Error during input reading",
+      "slash": "> Commands must starts with '/'",
+      "notFound": "> Command not recognized:  {command}",
       "input": {
-        "login": "Wrong input!! The nickname must be specified",
-        "syntax": "Wrong input!! The correct syntax is {syntax}",
-        "color": "Wrong input!! {color} is not a valid color"
+        "login": "> Wrong input!! The nickname must be specified",
+        "syntax": "> Wrong input!! The correct syntax is {syntax}",
+        "color": "> Wrong input!! {color} is not a valid color"
       },
       "format": "Number format error"
     },
     "hourglass": "> Hourglass already running",
-    "level": "> Command not supported for this level",
+    "level": "> Command not supported this level",
     "phase": "> Command not supported for this phase",
     "state": "> Command not supported for this game state",
+    "stateCard": "> Wrong Card state: must be {correctstate} instead is {wrongstate}",
+    "statePlayer": "> Wrong Player state: must be {correctstate} instead is {wrongstate}",
     "viewing": "> You are already looking at a tile",
+    "buildTimeIsOver": "> Build time is over",
     "remove": "> You were trying to do an illegal remove",
     "add": "> You were trying to do an illegal add",
     "tile": "> You passed a tile with wrong type, correct type is {tType}",
+    "tilePosition": "> No tile in this position",
     "command": "> Command not supported for this card",
     "argument": "> Wrong argument choice",
-    "playernull": "Player is null"
+    "playernull": "> Player is null",
+    "deckAllowed": "> Player not allowed to see mini decks",
+    "fullCabin": "> The cabin is already full",
+    "wrongLeader": "> Wrong leader"
   },
   "countdown": {
     "number": " {num} ...",
