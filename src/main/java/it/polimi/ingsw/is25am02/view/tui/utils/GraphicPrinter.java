@@ -54,7 +54,7 @@ public class GraphicPrinter {
         }
     }
 
-    //todo to print the spaceship of someone else, call printCurrentSpaceship with the name of the player and printSpaceship
+    //to print the spaceship of someone else, call printCurrentSpaceship with the name of the player and printSpaceship
 
     public void printCurrentSpaceship(String myName) {
         System.out.print("Current spaceship: ");
@@ -82,7 +82,6 @@ public class GraphicPrinter {
             }
         }
 
-        //todo pensaci a come sistemare
         if (pl == null) {
             return;
         }
@@ -301,7 +300,7 @@ public class GraphicPrinter {
         }
         System.out.println();
         System.out.print("Cannons:  ");
-        for(Map.Entry<Coordinate, TileV> entry : engines.entrySet()){
+        for(Map.Entry<Coordinate, TileV> entry : cannons.entrySet()){
             System.out.printf("(%d,%d) %s\t  ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getRotationType());
         }
         System.out.println();
@@ -431,6 +430,7 @@ public class GraphicPrinter {
                     String tile = stringCurr(tiles.get(index));
                     System.out.printf("| %c%s%c  | ", westConnector, tile, eastConnector);
                 }
+                index++;
             }
             System.out.println();
             index = num;
@@ -441,6 +441,7 @@ public class GraphicPrinter {
                     char southConnector = connectorSymbol(tiles.get(index), RotationType.SOUTH);
                     System.out.printf("|  %c  | ", southConnector);
                 }
+                index++;
             }
             System.out.println();
             for (int j = 1; j <= 10; j++) {
