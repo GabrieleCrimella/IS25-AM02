@@ -30,7 +30,8 @@
       "notFound": "Command not recognized:  {command}",
       "input": {
         "login": "Wrong input!! The nickname must be specified",
-        "syntax": "Wrong input!! The correct syntax is {syntax}"
+        "syntax": "Wrong input!! The correct syntax is {syntax}",
+        "color": "Wrong input!! {color} is not a valid color"
       },
       "format": "Number format error"
     },
