@@ -34,12 +34,13 @@ public class GameV {
     private ConsoleClient console;
 
 
-    public GameV(List<PlayerV> players, int level, GameboardV globalBoard, StateV currentState, boolean buildTimeIsOver) {
+    public GameV(List<PlayerV> players, int level, GameboardV globalBoard, StateV currentState, boolean buildTimeIsOver, ConsoleClient console) {
         this.players = players;
         this.level = level;
         this.globalBoard = globalBoard;
         this.currentState = currentState;
         this.buildTimeIsOver = buildTimeIsOver;
+        this.console = console;
     }
 
     public List<CardV> getDeck() {
@@ -131,7 +132,7 @@ public class GameV {
 
     public boolean currentTileControl(PlayerV playerV) {
         if(playerV!=null){
-            if (playerV.getCurrentTile() != null) {
+            if (!playerV.getCurrentTile().isEmpty()) {
                 console.reportError("error.viewing", null);
                 //throw new AlreadyViewingException("Wrong (CurrentTile != null), Player : " + player.getNickname() + ", actual tile : " + player.getSpaceship().getCurrentTile());
                 return false;
