@@ -136,7 +136,6 @@ public class ClientController implements VirtualServer {
 
     public void takeTile(String nickname) throws RemoteException {
         if (menuControl(MenuState.GAME) && gameV.buildControl() && gameV.stateControl(gameV.getCurrentState().getPhase(), gameV.getCurrentState().getCurrentPlayer().getStatePlayer(), gameV.getCurrentState().getCurrentCard().getStateCard(), getPlayerVFromNickname(nickname)) && gameV.currentTileControl(getPlayerVFromNickname(nickname))) {
-            //todo manca il player in entrambi gli if
             connection.getServer().takeTile(nickname);
         }
     }

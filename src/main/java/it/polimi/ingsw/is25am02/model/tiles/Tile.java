@@ -27,7 +27,10 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         if (connectors.length != 4) {
             throw new IllegalArgumentException("Connectors array doesn't have exactly 4 elements.");
         }
-        this.connectors = connectors;
+        this.connectors = new ConnectorType[4];
+        for (int i = 0; i < 4; i++) {
+            this.connectors[i] = connectors[i];
+        }
         this.rotationType = rotationType;
         this.imagePath = imagePath;
         this.visible = false;
