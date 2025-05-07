@@ -111,7 +111,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 if (noError && controller.getMenuState() == MenuState.GAME) {
                     clearConsole();
-                    printer.print();
+                    //printer.print();
                 }
 
             } catch (IOException e) {
@@ -231,6 +231,8 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "take":
                     controller.takeTile(nickname);
+                    clearConsole();
+                    printer.print();
                     break;
 
                 case "takeTile":

@@ -42,6 +42,7 @@ public class GameV {
         this.currentState = currentState;
         this.buildTimeIsOver = buildTimeIsOver;
         this.console = console;
+        this.heapTilesV = new HeapTileV();
     }
 
     public List<CardV> getDeck() {
