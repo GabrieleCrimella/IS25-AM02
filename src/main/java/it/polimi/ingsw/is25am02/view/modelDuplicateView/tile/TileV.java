@@ -26,7 +26,10 @@ public class TileV {
 
     public TileV(TileType tType, ConnectorType[] connectors, RotationType rotationType, boolean visible, String imagePath, int numMaxBattery, int numMaxBox) {
         this.tType = tType;
-        this.connectors = connectors;
+        this.connectors = new ConnectorType[4];
+        for (int i = 0; i < 4; i++) {
+            this.connectors[i] = connectors[i];
+        }
         this.rotationType = rotationType;
         this.visible = visible;
         this.imagePath = imagePath;
