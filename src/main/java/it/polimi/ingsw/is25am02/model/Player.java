@@ -32,6 +32,7 @@ public class Player implements UpdateListener {
         this.observer = observer;
         this.lobbyId = lobbyId;
         this.statePlayer = NOT_FINISHED;
+        onPlayerStateUpdate(NOT_FINISHED);
         this.deckAllowed = false;
         this.numDeck = -1;
         this.spaceship.setListener(this);
@@ -265,7 +266,10 @@ public class Player implements UpdateListener {
         return statePlayer;
     }
 
-    public void setStatePlayer(StatePlayerType statePlayer) { this.statePlayer = statePlayer; }
+    public void setStatePlayer(StatePlayerType statePlayer) {
+        this.statePlayer = statePlayer;
+        onPlayerStateUpdate(statePlayer);
+    }
 
     public boolean getDeckAllowed() { return deckAllowed; }
 

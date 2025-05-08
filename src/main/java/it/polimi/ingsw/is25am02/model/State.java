@@ -12,6 +12,7 @@ public class State {
         this.phase = StateGameType.BUILD;
         this.currentCard = new InitialCard(1, "");
         this.currentPlayer = player;
+        currentPlayer.onGameStateUpdate(StateGameType.BUILD);
     }
 
     public Card getCurrentCard() {
@@ -36,5 +37,6 @@ public class State {
 
     public void setPhase(StateGameType phase) {
         this.phase = phase;
+        currentPlayer.onGameStateUpdate(phase);
     }
 }
