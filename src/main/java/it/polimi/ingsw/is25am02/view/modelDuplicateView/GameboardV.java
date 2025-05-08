@@ -9,9 +9,13 @@ public class GameboardV {
     private HashMap<PlayerV, Integer> positions;
     private DiceV dice;
     private HourglassV hourGlass;
+    private int numstep;
 
 
-    public GameboardV(int[] startingpositions) {
+    public GameboardV(int[] startingpositions, int level) {
+        if (level == 0||level==1){
+            this.numstep = 18;
+        } else if (level == 2)  this.numstep = 24;
         this.startingpositions = startingpositions;
         this.dice = new DiceV();
         this.hourGlass = new HourglassV();

@@ -294,7 +294,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             players.add(playerV);
         }
         StateV stateV = new StateV(currentCardV,currentPlayerV,stateGame);
-        GameboardV gameboardV = new GameboardV(startingpositions);
+        GameboardV gameboardV = new GameboardV(startingpositions, level);
         GameV game = new GameV(players,level, gameboardV, stateV, false, console);
 
         setGameV(game);
