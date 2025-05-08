@@ -21,4 +21,8 @@ public class GameboardV {
     public void setPosition(PlayerV playerV, int position) {
         positions.put(playerV,position);
     }
+
+    public int getPosition(PlayerV playerV) {
+        return positions.get(playerV);
+    }
 }

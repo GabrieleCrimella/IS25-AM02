@@ -96,7 +96,8 @@ public class GraphicPrinter {
     }
 
     public void printGameStatus() {
-        System.out.println("Game Status | Game phase: " + game.getCurrentState().getPhase() + "  | Card: " + game.getCurrentState().getCurrentCard().getImagePath() + "  | Player's turn : " + game.getCurrentState().getCurrentPlayer().getNickname());
+        System.out.println("Game Status | Game phase: " + game.getCurrentState().getPhase() + "  | Card: " + game.getCurrentState().getCurrentCard().getImagePath()
+                + "in state " + game.getCurrentState().getCurrentCard().getStateCard() + "  | Player's turn : " + game.getCurrentState().getCurrentPlayer().getNickname());
     }
 
     public void printSpaceship(String name) {
@@ -602,5 +603,14 @@ public class GraphicPrinter {
         } catch (Exception e) {
             console.reportError("error.terminal", null);
         }
+    }
+
+    public void printGameboard() {
+        System.out.println("Gameboard with spaces");
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            System.out.println(game.getPlayers().get(i).getNickname() + ": " + game.getGlobalBoard().getPosition(game.getPlayers().get(i)));
+        }
+
+        System.out.println("If the leader doubles you during the effect of a card and at the end of the card\nyou are still in a double situation you are eliminated from the game");
     }
 }
