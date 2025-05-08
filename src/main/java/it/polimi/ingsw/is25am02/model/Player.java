@@ -230,7 +230,7 @@ public class Player implements UpdateListener {
         return color;
     }
 
-    public VirtualView getObserver() {return observer; }
+    public VirtualView getObserver() { return observer; }
 
     public StatePlayerType getStatePlayer() {
         return statePlayer;

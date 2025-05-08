@@ -36,6 +36,7 @@ public class GraphicPrinter {
     }
 
     public void print() {
+        clearConsole();
         if (game.getCurrentState().getPhase() == StateGameType.BUILD) {
             printCurrentSpaceship(myName);
             printSpaceship(myName);
@@ -546,6 +547,24 @@ public class GraphicPrinter {
             case STORAGE -> { return CIANO + "T" + RESET;}
             case SPECIAL_STORAGE -> { return   ROSA + "D" + RESET;}
             default -> { return RESET;}
+        }
+    }
+
+    private void clearConsole() {
+        try {
+            for (int i = 0; i < 7; i++) {
+                System.out.print("\n");
+            }
+            /*
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+             */
+        } catch (Exception e) {
+            System.err.println("error.terminal");
         }
     }
 }

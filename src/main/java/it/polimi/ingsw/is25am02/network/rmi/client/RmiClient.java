@@ -54,6 +54,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         return console;
     }
 
+    public void setGameV(GameV gameV) { this.gameV = gameV; }
+
     public GameV getGameV() { return gameV; }
 
     @Override
@@ -188,7 +190,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 return;
             }
         }
-
     }
 
     @Override
@@ -221,9 +222,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for(CardV card: gameV.getDeck()){
             if(card.getImagePath().equals(imagepath)){
                 gameV.getCurrentState().setCurrentCard(new CardV(stateCard, imagepath));
+                printOnConsole();
                 return;
             }
         }
+
     }
 
     @Override
@@ -233,11 +236,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                     if (tileV.getImagePath().equals(imagepath)) {
                         playerv.setCurrentTile(Optional.of(tileV));
+                        printOnConsole();
                         return;
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
                 TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,maxBattery,maxBox);
                 playerv.setCurrentTile(Optional.of(tileV));
+                printOnConsole();
+                return;
             }
         }
     }
@@ -246,7 +252,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     public void showCurrentTileNullityUpdate(String nickname) {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                playerv.setCurrentTile(null);
+                playerv.setCurrentTile(Optional.empty());
+                printOnConsole();
                 return;
             }
         }
@@ -262,11 +269,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                         tileV.setRotationType(rotationType);
                         playerv.setSpaceshipBoardTile(tileV,coordinate);
                         gameV.getHeapTilesV().removeFromHeapTile(tileV);
+                        printOnConsole();
                         return;
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
                 TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,maxBattery,maxBox);
                 playerv.setSpaceshipBoardTile(tileV,coordinate);
+                printOnConsole();
+                return;
             }
         }
     }
@@ -287,7 +297,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         GameboardV gameboardV = new GameboardV(startingpositions);
         GameV game = new GameV(players,level, gameboardV, stateV, false, console);
 
+        setGameV(game);
         console.getPrinter().setGame(gameV);
         console.getController().setGameV(game);
+        console.startCountdown();
+        printOnConsole();
+    }
+
+    private void printOnConsole(){
+        console.getPrinter().print();
     }
 }

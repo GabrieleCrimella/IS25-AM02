@@ -4,7 +4,6 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class HeapTileV {
     private List<TileV> listTileV;

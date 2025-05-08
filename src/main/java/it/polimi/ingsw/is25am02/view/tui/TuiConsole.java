@@ -33,7 +33,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
     private final BufferedReader reader;
     private boolean running;
     private String nickname;
-    private boolean noError = true;
 
     public TuiConsole() throws Exception {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
@@ -101,18 +100,12 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
         while (running) {
             try {
-                noError = true;
                 String input = reader.readLine();
 
                 if (input == null || input.trim().isEmpty()) {
                     continue;
                 }
                 processCommand(input.trim());
-
-                if (noError && controller.getMenuState() == MenuState.GAME) {
-                    clearConsole();
-                    //printer.print();
-                }
 
             } catch (IOException e) {
                 reportError("error.reading.loop", null);
@@ -231,8 +224,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "take":
                     controller.takeTile(nickname);
-                    clearConsole();
-                    printer.print();
                     break;
 
                 case "takeTile":
@@ -553,48 +544,23 @@ public class TuiConsole implements Runnable, ConsoleClient {
     @Override
     public void displayMessage(String keys, Map<String, String> params) {
         System.out.println(messManager.getMessageWithParams(keys, params));
-
-        if (keys.equals("start")) {
-            startCountdown();
-        }
     }
 
     @Override
     public void reportError(String keys, Map<String, String> params) {
         System.err.println(messManager.getMessageWithParams(keys, params));
-        noError = false;
     }
 
-    private void startCountdown() {
+    public void startCountdown() {
         try {
             for (int i = 3; i > 0; i--) {
                 displayMessage("countdown.number", Map.of("num", String.valueOf(i)));
-                Thread.sleep(1000);
+                Thread.sleep(300);
             }
             displayMessage("countdown.phrase", null);
-            Thread.sleep(1000);
-            clearConsole();
-            printer.print();
+            Thread.sleep(300);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        }
-    }
-
-    private void clearConsole() {
-        try {
-            for (int i = 0; i < 7; i++) {
-                System.out.print("\n");
-            }
-            /*
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-            }
-             */
-        } catch (Exception e) {
-            reportError("error.terminal", null);
         }
     }
 }

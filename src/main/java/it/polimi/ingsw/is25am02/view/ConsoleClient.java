@@ -13,5 +13,6 @@ public interface ConsoleClient {
     void reportError(String keys, Map<String, String> params);
     void displayMessage(String keys, Map<String, String> params);
     GraphicPrinter getPrinter();
+    void startCountdown();
 
 }
