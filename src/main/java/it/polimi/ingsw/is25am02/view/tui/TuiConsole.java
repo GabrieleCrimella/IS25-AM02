@@ -38,7 +38,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
         this.running = false;
         this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
-        this.printer = new GraphicPrinter();
+        this.printer = new GraphicPrinter(this);
     }
 
     public void closeConnect() {

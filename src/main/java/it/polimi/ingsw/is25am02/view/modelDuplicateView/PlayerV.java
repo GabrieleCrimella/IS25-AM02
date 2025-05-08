@@ -97,6 +97,10 @@ public class PlayerV {
         this.credits = credits;
     }
 
+    public int getCredits() {
+        return credits;
+    }
+
     public StatePlayerType getStatePlayer() {
         return statePlayer;
     }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.view.tui.utils;
 
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
+import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
@@ -13,6 +14,7 @@ import java.util.Map;
 public class GraphicPrinter {
     private GameV game;
     private String myName;
+    private ConsoleClient console;
 
     // Codici ANSI
     private final String RESET = "\u001B[0m";
@@ -26,6 +28,11 @@ public class GraphicPrinter {
     private final String BIANCO = "\u001B[37m";
     private final String MARRONE = "\u001B[38;5;130m";
     private final String ROSA = "\u001B[38;5;217m";
+    private final String GRIGIO = "\u001B[38;5;245m";
+
+    public GraphicPrinter(ConsoleClient console) {
+        this.console = console;
+    }
 
     public void setGame(GameV game) {
         this.game = game;
@@ -52,6 +59,8 @@ public class GraphicPrinter {
             printSpaceship(myName);
             printTileOrientation(myName);
             printTileOccupation(myName);
+            printMyState(myName);
+            printGameStatus();
         }
     }
 
@@ -67,6 +76,27 @@ public class GraphicPrinter {
             }
         }
         System.out.println();
+    }
+
+    public void printMyState(String name) {
+        PlayerV pl = null;
+
+        for (PlayerV player : game.getPlayers()) {
+            if (player.getNickname().equals(name)) {
+                pl = player;
+                break;
+            }
+        }
+
+        if (pl == null) {
+            return;
+        }
+
+        System.out.println("Your Status | Cosmic points: " + pl.getCredits() + " | State: " + pl.getStatePlayer());
+    }
+
+    public void printGameStatus() {
+        System.out.println("Game Status | Game phase: " + game.getCurrentState().getPhase() + "  | Card: " + game.getCurrentState().getCurrentCard().getImagePath() + "  | Player's turn : " + game.getCurrentState().getCurrentPlayer().getNickname());
     }
 
     public void printSpaceship(String name) {
@@ -129,7 +159,7 @@ public class GraphicPrinter {
                         System.out.printf(" %c%s%c |", westConnector, tile, eastConnector);
                     }
                 } else {
-                    System.out.print("  0  |");
+                    System.out.printf("  %s  |", GRIGIO + "0" + RESET);
                 }
             }
             System.out.println();
@@ -274,7 +304,7 @@ public class GraphicPrinter {
         if (pl == null) {
             return;
         }
-        System.out.println("Tile orientations: (X,Y) Direction");
+        System.out.println("Tile orientations: (Row,Column) Direction");
 
         HashMap<Coordinate, TileV> engines = new HashMap<>();
         HashMap<Coordinate, TileV> cannons = new HashMap<>();
@@ -329,7 +359,7 @@ public class GraphicPrinter {
         if (pl == null) {
             return;
         }
-        System.out.println("Tile Occupation: (X,Y) | Quantity | Type ");
+        System.out.println("Tile Occupation: (Row,Column) | Quantity | Type ");
 
         HashMap<Coordinate, TileV> batteries = new HashMap<>();
         HashMap<Coordinate, TileV> cabins = new HashMap<>();
@@ -544,8 +574,14 @@ public class GraphicPrinter {
             case BROWN_CABIN -> { return MARRONE + "O" + RESET;}
             case PURPLE_CABIN -> { return MAGENTA + "O" + RESET;}
             case BATTERY -> { return VERDE + "E" + RESET;}
-            case STORAGE -> { return CIANO + "T" + RESET;}
-            case SPECIAL_STORAGE -> { return   ROSA + "D" + RESET;}
+            case STORAGE -> {
+                if(tile.getNumMaxBox() == 2) return CIANO + "D" + RESET;
+                else return CIANO + "T" + RESET;
+            }
+            case SPECIAL_STORAGE -> {
+                if(tile.getNumMaxBox() == 2) return   ROSA + "D" + RESET;
+                else return   ROSA + "S" + RESET;
+            }
             default -> { return RESET;}
         }
     }
@@ -564,7 +600,7 @@ public class GraphicPrinter {
             }
              */
         } catch (Exception e) {
-            System.err.println("error.terminal");
+            console.reportError("error.terminal", null);
         }
     }
 }
