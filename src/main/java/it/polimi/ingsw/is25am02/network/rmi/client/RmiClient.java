@@ -304,6 +304,22 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         printOnConsole();
     }
 
+    @Override
+    public void showGameStateUpdate(StateGameType newGamestate) throws  RemoteException{
+        gameV.getCurrentState().setPhase(newGamestate);
+    }
+
+    @Override
+    public void showPlayerStateUpdate(StatePlayerType newPlayerstate) throws  RemoteException{
+        gameV.getCurrentState().getCurrentPlayer().setStatePlayer(newPlayerstate);
+    }
+
+    @Override
+    public void showCardStateUpdate(StateCardType newCardstate) throws  RemoteException{
+        gameV.getCurrentCard().setStateCard(newCardstate);
+
+    }
+
     private void printOnConsole(){
         console.getPrinter().print();
     }

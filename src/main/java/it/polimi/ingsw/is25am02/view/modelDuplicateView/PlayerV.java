@@ -65,6 +65,10 @@ public class PlayerV {
         return spaceshipMask;
     }
 
+    public void setStatePlayer(StatePlayerType statePlayer) {
+        this.statePlayer = statePlayer;
+    }
+
     public void setSpaceshipBoardTile(TileV tileV, Coordinate coordinate) {
         spaceshipBoard[coordinate.x()][coordinate.y()] = Optional.of(tileV);
     }

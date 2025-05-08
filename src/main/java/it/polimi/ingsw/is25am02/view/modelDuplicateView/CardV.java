@@ -11,6 +11,10 @@ public class CardV {
         this.imagePath = imagePath;
     }
 
+    public void setStateCard(StateCardType stateCard) {
+        this.stateCard = stateCard;
+    }
+
     public String getImagePath() {
         return imagePath;
     }

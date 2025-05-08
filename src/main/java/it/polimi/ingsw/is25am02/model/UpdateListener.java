@@ -5,6 +5,8 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -27,5 +29,8 @@ public interface UpdateListener {
     void onTileAdditionToSpaceship(Tile tile, Coordinate coordinate);
     void onDeckAllowedUpdate();
     void onCurrentTileNullityUpdate();
+    void onGameStateUpdate(StateGameType stateGameType);
+    void onCardStateUpdate(StateCardType stateCardType);
+    void onPlayerStateUpdate(StatePlayerType statePlayerType);
 
 }

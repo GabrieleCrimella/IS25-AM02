@@ -218,6 +218,35 @@ public class Player implements UpdateListener {
         }
     }
 
+    @Override
+    public void onGameStateUpdate(StateGameType stateGameType){
+        try {
+            observer.showGameStateUpdate(stateGameType);
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show game state update", e);
+        }
+    }
+
+    @Override
+    public void onCardStateUpdate(StateCardType stateCardType){
+        try {
+            observer.showCardStateUpdate(stateCardType);
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show card state update", e);
+        }
+
+    }
+
+    @Override
+    public void onPlayerStateUpdate(StatePlayerType statePlayerType){
+        try {
+            observer.showPlayerStateUpdate(statePlayerType);
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show state player update", e);
+        }
+
+    }
+
     public Spaceship getSpaceship() {
         return spaceship;
     }

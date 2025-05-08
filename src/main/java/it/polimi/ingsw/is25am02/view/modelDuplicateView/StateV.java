@@ -13,6 +13,14 @@ public class StateV {
         this.phase = phase;
     }
 
+    public void setCurrentPlayer(PlayerV currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public void setPhase(StateGameType phase) {
+        this.phase = phase;
+    }
+
     public void setCurrentCard(CardV currentCard) {
         this.currentCard = currentCard;
     }

@@ -64,4 +64,9 @@ public interface VirtualView extends Remote {
 
     void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname, Coordinate coordinate) throws RemoteException;
 
+    void showGameStateUpdate(StateGameType newGamestate) throws  RemoteException;
+
+    void showPlayerStateUpdate(StatePlayerType newPlayerstate) throws  RemoteException;
+
+    void showCardStateUpdate(StateCardType newCardstate) throws  RemoteException;
 }
