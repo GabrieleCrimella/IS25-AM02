@@ -38,7 +38,8 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public boolean[][] getSpaceshipMask() {
-        return transpose(spaceshipMask);
+        return spaceshipMask;
+        //return transpose(spaceshipMask);
     }
 
     public static boolean[][] transpose(boolean[][] original) {
@@ -126,6 +127,25 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
                     }
                 }
             }
+            //flippo la maschera
+            int rows = spaceshipMask.length;
+            int cols = spaceshipMask[0].length;
+
+            //creo transposed che è la version trasposta di spaceshipmask
+            boolean[][] transposed = new boolean[cols][rows];
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    transposed[j][i] = spaceshipMask[i][j];
+                }
+            }
+            //metto transposed al posto di spaceship mask
+            for (int i = 0; i < rows; i++){
+                for (int j = 0; j < cols; j++){
+                    spaceshipMask[i][j] = transposed[i][j];
+                }
+            }
+
         } catch (IOException e) {
             System.out.println("Error reading JSON file - spaceship mask");
             e.printStackTrace();

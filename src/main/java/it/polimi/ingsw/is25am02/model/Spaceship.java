@@ -145,6 +145,7 @@ public class Spaceship {
     public void addTile(int x, int y, Tile t) throws IllegalAddException {
         spaceshipIterator.addTile(t, x, y);
         currentTile = null;
+        listener.onCurrentTileNullityUpdate();
     }
 
     public void addInitialTile(int x, int y, Tile t) throws IllegalAddException {

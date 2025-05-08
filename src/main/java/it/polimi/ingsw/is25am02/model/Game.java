@@ -412,6 +412,7 @@ public class Game implements Game_Interface {
 
             player.getSpaceship().addTile(pos.x(), pos.y(), currentTile);
 
+
             //player can see the minidecks
             if (!player.getDeckAllowed()) {
                 player.setDeckAllowed();
