@@ -725,7 +725,7 @@ public class Game implements Game_Interface {
             } else {
                 this.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
             }
-            player.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard());
+            player.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType());
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);

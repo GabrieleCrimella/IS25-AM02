@@ -32,7 +32,6 @@ public class Player implements UpdateListener {
         this.observer = observer;
         this.lobbyId = lobbyId;
         this.statePlayer = NOT_FINISHED;
-        onPlayerStateUpdate(NOT_FINISHED);
         this.deckAllowed = false;
         this.numDeck = -1;
         this.spaceship.setListener(this);
@@ -128,7 +127,7 @@ public class Player implements UpdateListener {
                 playersColor.put(p.getNickname(),p.getColor());
             }
 
-            observer.showUpdateEverything(level, playersColor,currentcard.getImagePath(),currentcard.getStateCard(),state.getPhase(),state.getCurrentPlayer().getNickname(), mask, positions);
+            observer.showUpdateEverything(level, playersColor,currentcard.getImagePath(),currentcard.getStateCard(),currentcard.getCardType(),state.getPhase(),state.getCurrentPlayer().getNickname(), mask, positions);
         } catch (Exception e) {
             ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
 
@@ -158,9 +157,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentCardUpdate(String imagepath, StateCardType statecard){
+    public void onCurrentCardUpdate(String imagepath, StateCardType statecard, CardType type){
         try {
-            observer.showCurrentCardUpdate(imagepath, statecard);
+            observer.showCurrentCardUpdate(imagepath, statecard, type);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show current card update", e);
 

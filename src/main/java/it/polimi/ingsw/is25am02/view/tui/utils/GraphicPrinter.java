@@ -96,7 +96,7 @@ public class GraphicPrinter {
     }
 
     public void printGameStatus() {
-        System.out.println("Game Status | Game phase: " + game.getCurrentState().getPhase() + "  | Card: " + game.getCurrentState().getCurrentCard().getImagePath()
+        System.out.println("Game Status | Game phase: " + game.getCurrentState().getPhase() + "  | Card: " + game.getCurrentState().getCurrentCard().getCardType()
                 + "in state " + game.getCurrentState().getCurrentCard().getStateCard() + "  | Player's turn : " + game.getCurrentState().getCurrentPlayer().getNickname());
     }
 

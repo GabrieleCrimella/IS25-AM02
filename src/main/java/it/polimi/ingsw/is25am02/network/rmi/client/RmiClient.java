@@ -218,15 +218,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showCurrentCardUpdate(String imagepath, StateCardType stateCard) {
+    public void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType cardType) {
         for(CardV card: gameV.getDeck()){
             if(card.getImagePath().equals(imagepath)){
-                gameV.getCurrentState().setCurrentCard(new CardV(stateCard, imagepath));
+                gameV.getCurrentState().setCurrentCard(new CardV(stateCard, imagepath, cardType));
                 printOnConsole();
                 return;
             }
         }
-
     }
 
     @Override
@@ -282,9 +281,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard,StateGameType stateGame, String currentPlayer, boolean[][] mask,int[] startingpositions) throws RemoteException {
+    public void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType cardType,StateGameType stateGame, String currentPlayer, boolean[][] mask,int[] startingpositions) throws RemoteException {
         ArrayList<PlayerV> players = new ArrayList<>();
-        CardV currentCardV = new CardV(stateCard,currentCardImage);
+        CardV currentCardV = new CardV(stateCard,currentCardImage, cardType);
         PlayerV currentPlayerV = null;
 
         for(String p: playercolors.keySet()){
@@ -317,7 +316,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showCardStateUpdate(StateCardType newCardstate) throws  RemoteException{
         gameV.getCurrentCard().setStateCard(newCardstate);
-
     }
 
     private void printOnConsole(){

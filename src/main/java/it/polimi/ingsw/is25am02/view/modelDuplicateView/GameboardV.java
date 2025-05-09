@@ -29,4 +29,8 @@ public class GameboardV {
     public int getPosition(PlayerV playerV) {
         return positions.get(playerV);
     }
+
+    public int getNumstep() {
+        return numstep;
+    }
 }

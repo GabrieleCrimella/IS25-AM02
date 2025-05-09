@@ -3,10 +3,7 @@ package it.polimi.ingsw.is25am02.model;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
-import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
-import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
-import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -22,7 +19,7 @@ public interface UpdateListener {
     void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions);
     void onBoxUpdate(Coordinate coordinate, List<BoxType> box);
     void onMiniDeckUpdate(int deck);
-    void onCurrentCardUpdate(String imagepath, StateCardType state);
+    void onCurrentCardUpdate(String imagepath, StateCardType state, CardType type);
     void onCurrentTileUpdate(Tile tile);
     void onVsibilityUpdate(Tile tile);
     void onTileRemovalFromHTUpdate(String imagepath);
