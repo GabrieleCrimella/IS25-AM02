@@ -318,6 +318,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         gameV.getCurrentCard().setStateCard(newCardstate);
     }
 
+    @Override
+    public void showCurrentPlayerUpdate(String nickname) throws  RemoteException{
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                gameV.getCurrentState().setCurrentPlayer(playerv);
+            }
+        }
+    }
+
     private void printOnConsole(){
         console.getPrinter().print();
     }
