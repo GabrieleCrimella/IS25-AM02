@@ -69,4 +69,6 @@ public interface VirtualView extends Remote {
     void showPlayerStateUpdate(StatePlayerType newPlayerstate) throws  RemoteException;
 
     void showCardStateUpdate(StateCardType newCardstate) throws  RemoteException;
+
+    void showCurrentPlayerUpdate(String nickname) throws  RemoteException;
 }

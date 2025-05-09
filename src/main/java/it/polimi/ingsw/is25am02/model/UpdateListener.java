@@ -32,5 +32,6 @@ public interface UpdateListener {
     void onGameStateUpdate(StateGameType stateGameType);
     void onCardStateUpdate(StateCardType stateCardType);
     void onPlayerStateUpdate(StatePlayerType statePlayerType);
+    void onCurrentPlayerUpdate(String nickname);
 
 }

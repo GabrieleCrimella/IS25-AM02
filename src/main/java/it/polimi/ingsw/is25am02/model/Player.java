@@ -248,6 +248,15 @@ public class Player implements UpdateListener {
 
     }
 
+    @Override
+    public void onCurrentPlayerUpdate(String nickname){
+        try {
+            observer.showCurrentPlayerUpdate(nickname);
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show current player update", e);
+        }
+    }
+
     public Spaceship getSpaceship() {
         return spaceship;
     }
