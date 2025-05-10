@@ -27,6 +27,7 @@ public final class Cabin extends Tile{
     public void addCrew(AliveType type){
         Alive member = new Alive(type);
         crew.add(member);
+        //todo controlla che tutte le volte che viene utilizzata questa funzione venga chiamato l'update
     }
 
     @Override

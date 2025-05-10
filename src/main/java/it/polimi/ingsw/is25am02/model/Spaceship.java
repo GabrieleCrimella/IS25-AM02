@@ -152,7 +152,7 @@ public class Spaceship {
     public void addTile(int x, int y, Tile t) throws IllegalAddException {
         spaceshipIterator.addTile(t, x, y);
         currentTile = null;
-        listener.onCurrentTileNullityUpdate();
+        //listener.onCurrentTileNullityUpdate();
     }
 
     public void addInitialTile(int x, int y, Tile t) throws IllegalAddException {
@@ -306,13 +306,13 @@ public class Spaceship {
 
     public void returnTile() {
         currentTile = null;
-        listener.onCurrentTileNullityUpdate();
+        //listener.onCurrentTileNullityUpdate();
     }
 
     public void setCurrentTile(Tile t) throws AlreadyViewingException {
         if (currentTile == null) {
             currentTile = t;
-            listener.onCurrentTileUpdate(t);
+            //listener.onCurrentTileUpdate(t);
         } else {
             throw new AlreadyViewingException("CurrentTile already set");
         }
@@ -713,7 +713,8 @@ public class Spaceship {
         if (!cabinAffected.isEmpty()) {
             for (Tile cabin : cabinAffected) {
                 cabin.removeCrew();
-                listener.onRemoveCrewUpdate(new Coordinate(spaceshipIterator.getX(cabin),spaceshipIterator.getY(cabin)) , cabin.getCrew().size());
+                //todo bisognerà aggiungere l'update sotto ma adesso non so se va qui
+                //listener.onRemoveCrewUpdate(new Coordinate(spaceshipIterator.getX(cabin),spaceshipIterator.getY(cabin)) , cabin.getCrew().size());
             }
         }
     }

@@ -45,7 +45,7 @@ public class Player implements UpdateListener {
     @Override
     public void onCreditUpdate(int credit){
         try {
-            observer.showCreditUpdate(getNickname(),credit);
+            observer.showCreditUpdate(nickname,credit);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show credit update", e);
         }
@@ -71,18 +71,18 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onRemoveCrewUpdate(Coordinate coordinate, int numcrew){
+    public void onRemoveCrewUpdate(String nickname, Coordinate coordinate, int numcrew){
         try {
-            observer.showCrewRemoval(coordinate, getNickname(), numcrew);
+            observer.showCrewRemoval(coordinate, nickname, numcrew);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show crew removal", e);
         }
     }
 
     @Override
-    public void onPositionUpdate(int position){
+    public void onPositionUpdate(String nickname, int position){
         try {
-            observer.showPositionUpdate(getNickname(),position);
+            observer.showPositionUpdate(nickname,position);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show position update", e);
         }
@@ -99,9 +99,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onDiceUpdate(Dice dice){
+    public void onDiceUpdate(String nickname,Dice dice){
         try {
-            observer.showDiceUpdate(dice.getResult());
+            observer.showDiceUpdate(nickname, dice.getResult());
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show dice update", e);
 
@@ -109,9 +109,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onTileAdditionToSpaceship(Tile tile, Coordinate coordinate){
+    public void onTileAdditionToSpaceship(String nickname, Tile tile, Coordinate coordinate){
         try {
-            observer.showTileAdditionUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(), tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(),getNickname(),coordinate);
+            observer.showTileAdditionUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(), tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(),nickname,coordinate);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show tile addition update", e);
         }
@@ -168,9 +168,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentTileUpdate(Tile tile){
+    public void onCurrentTileUpdate(String nickname, Tile tile){
         try {
-            observer.showCurrentTileUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(),tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(), getNickname());
+            observer.showCurrentTileUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(),tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(), nickname);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show current tile update", e);
 
@@ -179,16 +179,16 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentTileNullityUpdate(){
+    public void onCurrentTileNullityUpdate(String nickname){
         try {
-            observer.showCurrentTileNullityUpdate(getNickname());
+            observer.showCurrentTileNullityUpdate(nickname);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show current tile nullity update", e);
         }
     }
 
     @Override
-    public void onVsibilityUpdate(Tile tile){
+    public void onVsibilityUpdate(String nickname, Tile tile){
         try {
             observer.showVisibilityUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(), tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox());
         } catch (RemoteException e) {
@@ -238,15 +238,23 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onPlayerStateUpdate(StatePlayerType statePlayerType){
+    public void onPlayerStateUpdate(String nickname, StatePlayerType statePlayerType){
         try {
-            observer.showPlayerStateUpdate(statePlayerType);
+            observer.showPlayerStateUpdate(nickname, statePlayerType);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show state player update", e);
         }
 
     }
 
+    @Override
+    public void onBookTileUpdate(String nickname){
+        try {
+            observer.showBookTileUpdate(nickname);
+        } catch (RemoteException e) {
+            ServerController.logger.log(Level.SEVERE, "error in method show book tile update", e);
+        }
+    }
     @Override
     public void onCurrentPlayerUpdate(String nickname){
         try {
@@ -276,7 +284,7 @@ public class Player implements UpdateListener {
 
     public void setStatePlayer(StatePlayerType statePlayer) {
         this.statePlayer = statePlayer;
-        onPlayerStateUpdate(statePlayer);
+        //onPlayerStateUpdate(statePlayer);
     }
 
     public boolean getDeckAllowed() { return deckAllowed; }

@@ -170,7 +170,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showDiceUpdate(int result){
+    public void showDiceUpdate(String nickname, int result){
         gameV.getDiceV().setResult(result);
 
     }
@@ -217,11 +217,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
+    //todo in base a come scegliamo di fare la current card questa potrebbe dover essere rivista
     @Override
     public void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType cardType) {
         for(CardV card: gameV.getDeck()){
             if(card.getImagePath().equals(imagepath)){
-                gameV.getCurrentState().setCurrentCard(new CardV(stateCard, imagepath, cardType));
+                gameV.getCurrentState().setCurrentCard(card);
                 printOnConsole();
                 return;
             }
@@ -236,13 +237,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     if (tileV.getImagePath().equals(imagepath)) {
                         playerv.setCurrentTile(Optional.of(tileV));
                         printOnConsole();
-                        return;
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
                 TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,maxBattery,maxBox);
                 playerv.setCurrentTile(Optional.of(tileV));
                 printOnConsole();
-                return;
             }
         }
     }
@@ -253,7 +252,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             if (playerv.getNickname().equals(nickname)) {
                 playerv.setCurrentTile(Optional.empty());
                 printOnConsole();
-                return;
+
             }
         }
     }
@@ -262,21 +261,23 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname, Coordinate coordinate){
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(nickname)) {
-                for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
-                    if (tileV.getImagePath().equals(imagepath)) {
+            for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
+                if (tileV.getImagePath().equals(imagepath)) {
+                    gameV.getHeapTilesV().removeFromHeapTile(tileV);
+                    if (playerv.getNickname().equals(nickname)) {
                         tileV.setRotationType(rotationType);
-                        playerv.setSpaceshipBoardTile(tileV,coordinate);
-                        gameV.getHeapTilesV().removeFromHeapTile(tileV);
+                        playerv.setSpaceshipBoardTile(tileV, coordinate);
                         printOnConsole();
-                        return;
+
                     }
-                } //se non trovo la tile nell'heap tile la devo creare
-                TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,maxBattery,maxBox);
-                playerv.setSpaceshipBoardTile(tileV,coordinate);
+                }
+            } //se non trovo la tile nell'heap tile la devo creare
+            if (playerv.getNickname().equals(nickname)) {
+                TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
+                playerv.setSpaceshipBoardTile(tileV, coordinate);
                 printOnConsole();
-                return;
             }
+
         }
     }
 
@@ -309,8 +310,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showPlayerStateUpdate(StatePlayerType newPlayerstate) throws  RemoteException{
-        gameV.getCurrentState().getCurrentPlayer().setStatePlayer(newPlayerstate);
+    public void showPlayerStateUpdate(String nickname, StatePlayerType newPlayerstate) throws  RemoteException{
+        for  (PlayerV playerV : gameV.getPlayers()) {
+            if (playerV.getNickname().equals(nickname)) {
+                playerV.setStatePlayer(newPlayerstate);
+            }
+        }
     }
 
     @Override
@@ -324,6 +329,20 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             if (playerv.getNickname().equals(nickname)) {
                 gameV.getCurrentState().setCurrentPlayer(playerv);
             }
+        }
+    }
+
+    @Override
+    public void showBookTileUpdate(String nickname) throws RemoteException {
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                if (playerv.getBookedTiles().get(1) == null) {
+                    playerv.setBookedTiles(1, playerv.getCurrentTile().get());
+                } else if (playerv.getBookedTiles().get(2) == null) {
+                    playerv.setBookedTiles(1, playerv.getCurrentTile().get());
+                }
+            }
+
         }
     }
 
