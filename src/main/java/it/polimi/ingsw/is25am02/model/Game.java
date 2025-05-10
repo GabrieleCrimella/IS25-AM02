@@ -1495,6 +1495,7 @@ public class Game implements Game_Interface {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
                 p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
+                observers.remove(p.getNickname());
             }
 
             //0 motorPower in OpenSpace
@@ -1503,6 +1504,7 @@ public class Game implements Game_Interface {
                     getGameboard().getPositions().remove(p);
                     p.setStatePlayer(StatePlayerType.OUT_GAME);
                     p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
+                    observers.remove(p.getNickname());
                 }
             }
 
@@ -1511,6 +1513,7 @@ public class Game implements Game_Interface {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
                 p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
+                observers.remove(p.getNickname());
             }
         }
         getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
