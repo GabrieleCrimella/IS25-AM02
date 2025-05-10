@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
@@ -194,7 +195,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public void addTile(String nicknameP, Tile tile, int x, int y) throws IllegalAddException {
-        if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty()){
+        if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty() && checkAddition(tile,x,y)){
             spaceshipBoard[x][y] = Optional.of(tile);
             for (String nick: observers.keySet()){
                 Coordinate pos = new Coordinate (x,y);
@@ -208,6 +209,16 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         }
 
         else throw new IllegalAddException("Invalid tile position or occupied");
+    }
+
+    public boolean checkAddition(Tile tile, int x, int y){//controllo che ci sia almeno una tile in uno dei 4 posti intorno
+        if(spaceshipBoard[x-1][y].isPresent() ||
+                spaceshipBoard[x][y-1].isPresent() ||
+                spaceshipBoard[x+1][y].isPresent() ||
+                spaceshipBoard[x][y+1].isPresent() ){
+            return true;
+        }
+            return false;
     }
 
     public void addInitialTile(Tile tile, int x, int y) throws IllegalAddException {
