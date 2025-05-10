@@ -34,7 +34,7 @@ public interface VirtualView extends Remote {
 
     void showBatteryRemoval(Coordinate coordinate, String nickname, int numBattery) throws RemoteException;
 
-    void showCrewRemoval(Coordinate coordinate, String nickname, int numCrew) throws RemoteException;
+    void showCrewRemoval(Coordinate coordinate, String nickname) throws RemoteException;
 
     void showBoxUpdate(Coordinate coordinate, String nickname, List<BoxType> box) throws RemoteException;
 
@@ -73,4 +73,6 @@ public interface VirtualView extends Remote {
     void showCurrentPlayerUpdate(String nickname) throws  RemoteException;
 
     void showBookTileUpdate(String nickname) throws RemoteException;
+
+    void showAddCrewUpdate(String nickname, Coordinate pos, AliveType type) throws RemoteException;
 }

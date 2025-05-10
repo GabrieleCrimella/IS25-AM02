@@ -29,7 +29,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     public void startConnection() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("192.168.178.20");
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1");
         System.out.println("Tentativo di lookup...");
         server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
@@ -74,7 +74,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
                     if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN)){
-                        showCrewRemoval(coordinate,nickname,playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumHumans()-1);
+                        showCrewRemoval(coordinate,nickname);
                     }
                     else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)){
                         showBatteryRemoval(coordinate,nickname, playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBattery()-1);
@@ -97,12 +97,17 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
+    //todo aggiusta metodo
     @Override
-    public void showCrewRemoval(Coordinate coordinate, String nickname, int numCrew){
+    public void showCrewRemoval(Coordinate coordinate, String nickname){
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumHumans(numCrew);
+                    //qui bisogna controllare se ci sono alieni viola, marroni o umani.
+                    //se ci sono alieni marroni, setta numalieni marroni a 0
+                    //uguale per alieni viola
+                    //se ci sono umani, diminuisci umani di 1.
+                    playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumHumans(0);
                 }
             }
         }
@@ -339,11 +344,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 if (playerv.getBookedTiles().get(1) == null) {
                     playerv.setBookedTiles(1, playerv.getCurrentTile().get());
                 } else if (playerv.getBookedTiles().get(2) == null) {
-                    playerv.setBookedTiles(1, playerv.getCurrentTile().get());
+                    playerv.setBookedTiles(2, playerv.getCurrentTile().get());
                 }
             }
 
         }
+    }
+
+    @Override
+    public void showAddCrewUpdate(String nickname,Coordinate pos, AliveType type) throws RemoteException{
+        //todo finisci metodo
     }
 
     private void printOnConsole(){

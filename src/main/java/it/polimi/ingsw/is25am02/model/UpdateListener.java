@@ -12,7 +12,7 @@ public interface UpdateListener {
     void onCreditUpdate(int credit);
     void onRemoveTileUpdate( Coordinate coordinate);
     void onRemoveBatteryUpdate(int battery, Coordinate coordinate);
-    void onRemoveCrewUpdate(String nickname, Coordinate coordinate, int numcrew);
+    void onRemoveCrewUpdate(String nickname, Coordinate coordinate);
     void onPositionUpdate(String nickname, int position);
     void onHourglassUpdate();
     void onDiceUpdate(String nickname, Dice dice);

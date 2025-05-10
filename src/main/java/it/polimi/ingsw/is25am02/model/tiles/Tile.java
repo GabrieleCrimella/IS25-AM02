@@ -2,12 +2,14 @@ package it.polimi.ingsw.is25am02.model.tiles;
 
 import it.polimi.ingsw.is25am02.model.Alive;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Cannon, DoubleCannon, DoubleMotor, Motors, PurpleCabin, Shield, SpecialStorage, Storage, Structural{
 //todo: ricordiamoci di mettere che all'inizio della preparazione della nave i giocatori trovano già posizionata la "tile iniziale" colorata al centro della loro nave
@@ -18,6 +20,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
     private boolean visible;
     private int numMaxBattery;
     private int numMaxBox;
+    protected ConcurrentHashMap<String, VirtualView> observers;
     //private final int id;
 
     //Constructor
@@ -34,6 +37,10 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         this.rotationType = rotationType;
         this.imagePath = imagePath;
         this.visible = false;
+    }
+
+    public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {
+        this.observers = observers;
     }
 
     public String getImagePath() {
@@ -168,7 +175,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
         throw new UnsupportedOperationException("Not supported method");
     }
 
-    public void addCrew(AliveType type) throws UnsupportedOperationException {
+    public void addCrew(String nicknameP, AliveType type) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported method");
     }
 

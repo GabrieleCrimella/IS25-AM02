@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
@@ -11,8 +12,10 @@ import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 @SuppressWarnings("all")
 public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Optional<Tile>> {
@@ -190,10 +193,18 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         return connectedNear;
     }
 
-    public void addTile(Tile tile, int x, int y) throws IllegalAddException {
+    public void addTile(String nicknameP, Tile tile, int x, int y) throws IllegalAddException {
         if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty()){
             spaceshipBoard[x][y] = Optional.of(tile);
-            //listener.onTileAdditionToSpaceship(tile, new Coordinate(x,y));
+            for (String nick: observers.keySet()){
+                Coordinate pos = new Coordinate (x,y);
+                try {
+                    observers.get(nick).showTileAdditionUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nicknameP, pos);
+                    observers.get(nick).showCurrentTileNullityUpdate(nicknameP);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method show tile addition", e);
+                }
+            }
         }
 
         else throw new IllegalAddException("Invalid tile position or occupied");

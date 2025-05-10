@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType.NOT_FINISHED;
@@ -24,6 +25,7 @@ public class Player implements UpdateListener {
     private boolean deckAllowed;
     private int numDeck;
     private final int lobbyId;
+    private ConcurrentHashMap<String, VirtualView> observers;
 
     public Player(Spaceship spaceship, String nickname, PlayerColor color, VirtualView observer, int lobbyId) {
         this.spaceship = spaceship;
@@ -36,6 +38,10 @@ public class Player implements UpdateListener {
         this.numDeck = -1;
         this.spaceship.setListener(this);
         this.spaceship.getSpaceshipIterator().setListener(this);
+    }
+
+    public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {
+        this.observers = observers;
     }
 
     public int getLobbyId() {
@@ -71,9 +77,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onRemoveCrewUpdate(String nickname, Coordinate coordinate, int numcrew){
+    public void onRemoveCrewUpdate(String nickname, Coordinate coordinate){
         try {
-            observer.showCrewRemoval(coordinate, nickname, numcrew);
+            observer.showCrewRemoval(coordinate, nickname);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show crew removal", e);
         }
@@ -284,7 +290,13 @@ public class Player implements UpdateListener {
 
     public void setStatePlayer(StatePlayerType statePlayer) {
         this.statePlayer = statePlayer;
-        //onPlayerStateUpdate(statePlayer);
+        for (String nick: observers.keySet()){
+            try {
+                observers.get(nick).showPlayerStateUpdate(nickname, statePlayer);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in setstateplayer", e);
+            }
+        }
     }
 
     public boolean getDeckAllowed() { return deckAllowed; }

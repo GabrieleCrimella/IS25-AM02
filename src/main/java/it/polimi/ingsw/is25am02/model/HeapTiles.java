@@ -2,6 +2,9 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
+import it.polimi.ingsw.is25am02.network.VirtualView;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
@@ -11,18 +14,28 @@ import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 public class HeapTiles {
     private final Set<Tile> setTiles;
     private final Random random;
     private final HashMap<PlayerColor, Cabin> cabinStartPlayer;
+    private ConcurrentHashMap<String, VirtualView> observers;
 
     public HeapTiles() {
         this.setTiles = new HashSet<>();
         this.random = new Random();
         cabinStartPlayer = new HashMap<>();
         loadTiles();
+
+    }
+
+    public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {
+        this.observers = observers;
+        setObserversToTiles(observers);
     }
 
     public HashMap<PlayerColor, Cabin> getCabinStartPlayer() {
@@ -116,6 +129,11 @@ public class HeapTiles {
         }
     }
 
+    public void setObserversToTiles(ConcurrentHashMap<String, VirtualView> observers){
+        for (Tile t:setTiles){
+            t.setObservers(observers);
+        }
+    }
     public Tile drawTile() {
         int index = random.nextInt(setTiles.size()); // Seleziona un indice casuale
         Iterator<Tile> iterator = setTiles.iterator();
@@ -126,7 +144,15 @@ public class HeapTiles {
 
         Tile drawnTile = iterator.next();
         setTiles.remove(drawnTile); // Rimuove la tessera estratta
+        for (String nick: observers.keySet()){
+            try {
+                observers.get(nick).showTileRemovalFromHeapTile(drawnTile.getImagePath());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+            }
+        }
         return drawnTile;
+
     }
 
     public Set<Tile> getVisibleTiles() {
@@ -147,10 +173,24 @@ public class HeapTiles {
         if (!setTiles.remove(t)) {
             throw new IllegalRemoveException("The tile: " + t.getType() + " isn't in heaptiles");
         }
+        for (String nick: observers.keySet()){
+            try {
+                observers.get(nick).showTileRemovalFromHeapTile(t.getImagePath());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+            }
+        }
     }
 
     public void addTile(Tile t, boolean visible) {
         if (visible) t.setVisible();
         setTiles.add(t);
+        for (String nick: observers.keySet()){
+            try {
+                observers.get(nick).showVisibilityUpdate(t.getImagePath(), t.getConnectors(), t.getRotationType(), t.getType(), t.getNumMaxBattery(), t.getNumMaxBox());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+            }
+        }
     }
 }

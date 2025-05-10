@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
@@ -8,8 +9,10 @@ import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 @SuppressWarnings("all")
 public class Spaceship {
@@ -149,10 +152,9 @@ public class Spaceship {
         return bookedTiles;
     }
 
-    public void addTile(int x, int y, Tile t) throws IllegalAddException {
-        spaceshipIterator.addTile(t, x, y);
+    public void addTile(String nicknameP, int x, int y, Tile t) throws IllegalAddException {
+        spaceshipIterator.addTile(nicknameP, t, x, y);
         currentTile = null;
-        //listener.onCurrentTileNullityUpdate();
     }
 
     public void addInitialTile(int x, int y, Tile t) throws IllegalAddException {
@@ -168,22 +170,35 @@ public class Spaceship {
         } else {
             if (bookedTiles.get(1) == null) {
                 bookedTiles.put(1, currentTile);
-                returnTile();
             } else if (bookedTiles.get(2) == null) {
                 bookedTiles.put(2, currentTile);
-                returnTile();
             }
             currentTile = null;
+            for (String nick: observers.keySet()){
+                try {
+                    observers.get(nick).showBookTileUpdate(nick);
+                    observers.get(nick).showCurrentTileNullityUpdate(player.getNickname());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                }
+            }
         }
     }
 
-    public void addBookedTile(int index, int x, int y, RotationType rotation) throws IllegalAddException {
+    public void addBookedTile(String nicknameP, int index, int x, int y, RotationType rotation) throws IllegalAddException {
         if (index < 1 || index > 2) {
             throw new IllegalAddException("index must be between 1 and 2");
-        } else {
-            addTile(x, y, bookedTiles.get(index));
+        } else if(currentTile != null){
+            throw new IllegalAddException("You're trying to addbookedtile while currentTile is full");
+        }
+        else {
+            addTile(nicknameP, x, y, bookedTiles.get(index));
             getTile(x,y).get().setRotationType(rotation);
             bookedTiles.put(index, null);
+            for (String nick: observers.keySet()){
+                Coordinate pos = new Coordinate (x,y);
+                //todo show bookedtilenullity (nicknameP, index, pos)
+            }
         }
     }
 
@@ -304,15 +319,28 @@ public class Spaceship {
         }
     }
 
-    public void returnTile() {
+    public void returnTile(String nicknameP) {
         currentTile = null;
+        for (String nick: observers.keySet()){
+            try {
+                observers.get(nick).showCurrentTileNullityUpdate(nicknameP);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+            }
+        }
         //listener.onCurrentTileNullityUpdate();
     }
 
-    public void setCurrentTile(Tile t) throws AlreadyViewingException {
+    public void setCurrentTile(String nicknameP, Tile t) throws AlreadyViewingException {
         if (currentTile == null) {
             currentTile = t;
-            //listener.onCurrentTileUpdate(t);
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showCurrentTileUpdate(t.getImagePath(), t.getConnectors(), t.getRotationType(), t.getType(), t.getNumMaxBattery(), t.getNumMaxBox(),nicknameP);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method set current tile", e);
+                }
+            }
         } else {
             throw new AlreadyViewingException("CurrentTile already set");
         }
