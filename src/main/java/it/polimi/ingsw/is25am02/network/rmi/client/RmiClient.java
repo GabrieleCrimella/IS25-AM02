@@ -356,7 +356,20 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void showAddCrewUpdate(String nickname,Coordinate pos, AliveType type) throws RemoteException{
-        //todo finisci metodo
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                if(type.equals(AliveType.BROWN_ALIEN)){
+                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumBAliens(1);
+                }
+                else if(type.equals(AliveType.PURPLE_ALIEN)){
+                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumPAliens(1);
+                }
+               else{
+                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumHumans(2);
+                }
+            }
+
+        }
     }
 
     @Override
