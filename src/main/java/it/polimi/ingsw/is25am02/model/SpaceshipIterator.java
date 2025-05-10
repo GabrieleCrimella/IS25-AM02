@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
@@ -11,6 +12,7 @@ import javafx.util.Pair;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("all")
 public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Optional<Tile>> {
@@ -19,6 +21,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     private Pair<Integer, Integer> start_pos;
     private int x_current, y_current;
     private UpdateListener listener;
+    private ConcurrentHashMap<String, VirtualView> observers;
     //the first is x, the second is y
 
     private static final String JSON_FILE_PATH = "src/main/resources/json/spaceship.json";
@@ -35,6 +38,10 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
                 spaceshipBoard[i][j] = Optional.empty();
             }
         }
+    }
+
+    public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {
+        this.observers = observers;
     }
 
     public boolean[][] getSpaceshipMask() {

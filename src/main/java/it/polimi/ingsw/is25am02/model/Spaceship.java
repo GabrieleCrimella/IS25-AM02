@@ -4,10 +4,12 @@ import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("all")
 public class Spaceship {
@@ -19,6 +21,7 @@ public class Spaceship {
     private final HashMap<Integer, Tile> bookedTiles;
     private List<boolean[][]> branches;
     private UpdateListener listener;
+    private ConcurrentHashMap<String, VirtualView> observers;
 
     public Spaceship(int level) {
         this.spaceshipIterator = new SpaceshipIterator(level);
@@ -30,6 +33,10 @@ public class Spaceship {
 
         bookedTiles.put(1, null);
         bookedTiles.put(2, null);
+    }
+
+    public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {
+        this.observers = observers;
     }
 
     public SpaceshipIterator getSpaceshipIterator() {

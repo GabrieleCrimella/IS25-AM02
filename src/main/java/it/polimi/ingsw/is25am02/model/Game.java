@@ -4,10 +4,12 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.exception.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("all")
 public class Game implements Game_Interface {
@@ -15,6 +17,7 @@ public class Game implements Game_Interface {
     private boolean buildTimeIsOver;
     private int maxAllowedPlayers;
     private final List<Player> players;
+    private final ConcurrentHashMap<String, VirtualView> observers;
     private final int level;
     private final CardDeck deck;
     private final Hourglass hourglass;
@@ -28,6 +31,14 @@ public class Game implements Game_Interface {
 
     public Game(List<Player> players, int level) {
         this.players = players;
+        this.observers= new ConcurrentHashMap<>();
+        for(Player p : players){
+            observers.put(p.getNickname(), p.getObserver());
+        }
+        for(Player p : players){
+            p.getSpaceship().setObservers(observers);
+            p.getSpaceship().getSpaceshipIterator().setObservers(observers);
+        }
         this.level = level;
         this.diceResult = 0;
         this.buildTimeIsOver = false;
