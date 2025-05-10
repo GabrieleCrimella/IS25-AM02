@@ -197,7 +197,11 @@ public class Spaceship {
             bookedTiles.put(index, null);
             for (String nick: observers.keySet()){
                 Coordinate pos = new Coordinate (x,y);
-                //todo show bookedtilenullity (nicknameP, index, pos)
+                try {
+                    observers.get(nick).showBookedTileNullityUpdate(nick,index,pos);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method showbookedtilenullity update", e);
+                }
             }
         }
     }
