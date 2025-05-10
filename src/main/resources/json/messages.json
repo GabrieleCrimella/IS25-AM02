@@ -77,5 +77,11 @@
     "show": "id: {num},\t owner: {owner},\t players: {att}/{max}",
     "state": "> LobbyId {num} {state}"
   },
+  "helper": {
+    "build": {
+      "0" : "Welcome trucker now begins the construction phase of your ship! \nLet's start with some simple rules, by doing /take you take a tile from the pile and place it in the current tile slot \nat this point you can decide whether to rotate it, add it to your ship or return it to the pile and take a new one. \nBuild your ship according to your needs and use /legend to see the meanings of the pieces. Have fun!",
+      "1" : "Welcome trucker now begins the construction phase of your ship! \nLet's start with some simple rules, by doing /take you take a tile from the pile and place it in the current tile slot \nat this point you can decide whether to rotate it, add it to your ship, reserve it for later (you can only reserve 2 tiles at a time) \nor return it to the pile and take a new one. Build your ship according to your needs and use /legend to see the meanings of the pieces. \nRemember that you can also turn the timer to put pressure on your opponents and force them to move. Have fun!"
+    }
+  },
   "exit": "Exit the game..."
 }

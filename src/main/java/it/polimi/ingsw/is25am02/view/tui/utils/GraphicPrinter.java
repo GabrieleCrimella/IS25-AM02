@@ -452,7 +452,7 @@ public class GraphicPrinter {
                 index++;
             }
             System.out.println();
-            index = num;
+            index = num-10;
             for (int j = 1; j <= 10; j++) {
                 if (index >= tiles.size() || tiles.get(index) == null) {
                     System.out.print("|     | ");
@@ -460,12 +460,12 @@ public class GraphicPrinter {
                     char westConnector = connectorSymbol(tiles.get(index), RotationType.WEST);
                     char eastConnector = connectorSymbol(tiles.get(index), RotationType.EAST);
                     String tile = stringCurr(tiles.get(index));
-                    System.out.printf("| %c%s%c  | ", westConnector, tile, eastConnector);
+                    System.out.printf("| %c%s%c | ", westConnector, tile, eastConnector);
                 }
                 index++;
             }
             System.out.println();
-            index = num;
+            index = num-10;
             for (int j = 1; j <= 10; j++) {
                 if (index >= tiles.size() || tiles.get(index) == null) {
                     System.out.print("|     | ");
@@ -606,11 +606,26 @@ public class GraphicPrinter {
     }
 
     public void printGameboard() {
-        System.out.println("Gameboard with spaces");
+        System.out.println("Gameboard with spaces: " + game.getGlobalBoard().getNumstep());
         for (int i = 0; i < game.getPlayers().size(); i++) {
-            System.out.println(game.getPlayers().get(i).getNickname() + ": " + game.getGlobalBoard().getPosition(game.getPlayers().get(i)));
+            int step = game.getGlobalBoard().getPosition(game.getPlayers().get(i));
+            if(step >= game.getGlobalBoard().getNumstep()) { step = step % game.getGlobalBoard().getNumstep(); }
+            System.out.println(game.getPlayers().get(i).getNickname() + ": " + step);
         }
-
         System.out.println("If the leader doubles you during the effect of a card and at the end of the card\nyou are still in a double situation you are eliminated from the game");
+    }
+
+    public void printRules() {
+        if (game.getCurrentState().getPhase() == StateGameType.BUILD) {
+            if(game.getLevel() == 0) {
+                console.displayMessage("helper.build.0", null);
+            } else {
+                console.displayMessage("helper.build.1", null);
+            }
+        } else if (game.getCurrentState().getPhase() == StateGameType.CHECK || game.getCurrentState().getPhase() == StateGameType.CORRECTION) {
+
+        } else {
+
+        }
     }
 }
