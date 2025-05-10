@@ -383,6 +383,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
+    @Override
+    public void showEarlyLandingUpdate(String nickname) throws RemoteException{
+        for (PlayerV playerv : gameV.getPlayers()) {
+            if (playerv.getNickname().equals(nickname)) {
+                gameV.getGlobalBoard().getPositions().remove(playerv);
+            }
+        }
+    }
+
     private void printOnConsole(){
         console.getPrinter().print();
     }

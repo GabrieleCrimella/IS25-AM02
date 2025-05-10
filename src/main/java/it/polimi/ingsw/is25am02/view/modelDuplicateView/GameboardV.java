@@ -11,6 +11,9 @@ public class GameboardV {
     private HourglassV hourGlass;
     private int numstep;
 
+    public HashMap<PlayerV, Integer> getPositions() {
+        return positions;
+    }
 
     public GameboardV(int[] startingpositions, int level) {
         if (level == 0||level==1){

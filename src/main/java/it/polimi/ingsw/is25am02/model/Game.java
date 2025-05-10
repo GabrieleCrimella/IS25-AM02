@@ -487,7 +487,6 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo mancano gli update necessari per questo metodo
     @Override
     public void addBookedTile(Player player, int index, Coordinate pos, RotationType  rotation) {
         try {
@@ -759,7 +758,6 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo update per gameboard
     @Override
     public void earlyLanding(Player player) {
         try {
@@ -768,6 +766,13 @@ public class Game implements Game_Interface {
 
             getGameboard().getPositions().remove(player);
 
+            for (String nick: observers.keySet()){
+                try {
+                    observers.get(nick).showEarlyLandingUpdate(player.getNickname());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method show update early landing", e);
+                }
+            }
             player.setStatePlayer(StatePlayerType.OUT_GAME);
 
             getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
