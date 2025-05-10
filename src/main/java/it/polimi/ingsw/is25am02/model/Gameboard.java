@@ -72,7 +72,6 @@ public class Gameboard {
         hourGlassFlip--;
     }
 
-
     //Solo per testing
     public void initializeGameBoard(List<Player> orderedPlayers) {
         //la lista passata è una lista ordinata in base a quando ogni player ha finito la nave.
@@ -101,7 +100,9 @@ public class Gameboard {
         }
 
         positions.put(player, target_position);
-        player.onPositionUpdate(target_position);
+        for (Player p: positions.keySet()) {
+            p.onPositionUpdate(player.getNickname(),  target_position);
+        }
     }
 
     public LinkedList<Player> getRanking() {

@@ -46,7 +46,7 @@ public interface VirtualView extends Remote {
 
     void showHourglassUpdate() throws RemoteException;
 
-    void showDiceUpdate(int result) throws RemoteException;
+    void showDiceUpdate(String nickname, int result) throws RemoteException;
 
     void showMinideckUpdate(String nickname, int deck) throws RemoteException;
 
@@ -66,9 +66,11 @@ public interface VirtualView extends Remote {
 
     void showGameStateUpdate(StateGameType newGamestate) throws  RemoteException;
 
-    void showPlayerStateUpdate(StatePlayerType newPlayerstate) throws  RemoteException;
+    void showPlayerStateUpdate(String nickname, StatePlayerType newPlayerstate) throws  RemoteException;
 
     void showCardStateUpdate(StateCardType newCardstate) throws  RemoteException;
 
     void showCurrentPlayerUpdate(String nickname) throws  RemoteException;
+
+    void showBookTileUpdate(String nickname) throws RemoteException;
 }

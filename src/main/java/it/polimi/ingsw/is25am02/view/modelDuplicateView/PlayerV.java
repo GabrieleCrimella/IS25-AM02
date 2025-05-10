@@ -116,5 +116,12 @@ public class PlayerV {
     public HashMap<Integer, TileV> getBookedTiles() {
         return bookedTiles;
     }
+
+    public  void setBookedTiles(int position, TileV tileV) {
+        bookedTiles.put(position, tileV);
+
+    }
+
+
 }
 
