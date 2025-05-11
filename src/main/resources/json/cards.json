@@ -6,7 +6,8 @@
     "aliveLost" : 2,
     "creditWin"  : 3 ,
     "daysLost": 1,
-    "image": "/images/cards/GT-cards_I_IT_0117.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0117.jpg",
+    "comment": "Abandoned ship: alive lost 2, credit won 3, days lost 1"
   },
   {
     "type": "ABANDONED_SHIP",
@@ -15,7 +16,8 @@
     "aliveLost" : 3,
     "creditWin"  : 4,
     "daysLost": 1,
-    "image": "/images/cards/GT-cards_I_IT_0118.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0118.jpg",
+    "comment": "Abandoned ship: alive lost 3, credit won 4, days lost 1"
   },
   {
     "type": "ABANDONED_SHIP",
@@ -24,7 +26,8 @@
     "aliveLost" : 5,
     "creditWin"  : 8,
     "daysLost": 2,
-    "image": "/images/cards/GT-cards_II_IT_0118.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0118.jpg",
+    "comment": "Abandoned ship: alive lost 5, credit won 8, days lost 2"
   },
   {
     "type": "ABANDONED_SHIP",
@@ -33,7 +36,8 @@
     "aliveLost" : 4,
     "creditWin"  : 6,
     "daysLost": 1,
-    "image": "/images/cards/GT-cards_II_IT_0117.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0117.jpg",
+    "comment": "Abandoned ship: alive lost 4, credit won 6, days lost 1"
   },
   {
     "type": "ABANDONED_STATION",
@@ -45,7 +49,8 @@
       "YELLOW",
       "GREEN"
     ],
-    "image": "/images/cards/GT-cards_I_IT_0119.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0119.jpg",
+    "comment": "Abandoned station: alive needed 5, days lost 1, boxes won 1 yellow and 1 green"
   },
   {
     "type": "ABANDONED_STATION",
@@ -57,7 +62,8 @@
       "RED",
       "RED"
     ],
-    "image": "/images/cards/GT-cards_I_IT_0120.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0120.jpg",
+    "comment": "Abandoned station: alive needed 2, days lost 1, boxes won 2 red"
   },
   {
     "type": "ABANDONED_STATION",
@@ -69,7 +75,8 @@
       "RED",
       "YELLOW"
     ],
-    "image": "/images/cards/GT-cards_II_IT_0119.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0119.jpg",
+    "comment": "Abandoned station: alive needed 2, days lost 1, boxes won 1 red and 1 yellow"
   },
   {
     "type": "ABANDONED_STATION",
@@ -82,7 +89,8 @@
       "YELLOW",
       "GREEN"
     ],
-    "image": "/images/cards/GT-cards_II_IT_0120.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0120.jpg",
+    "comment": "Abandoned station: alive needed 2, days lost 1, boxes won 2 yellow and 1 green"
   },
   {
     "type": "PIRATE",
@@ -96,7 +104,8 @@
       [1, "north"],
       [0, "north"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_013.jpg"
+    "image": "/images/cards/GT-cards_I_IT_013.jpg",
+    "comment": "Pirate: cannon power 5, credit won 4, days lost 1, shots: SMALL from north, BIG from north, SMALL from north"
   },
   {
     "type": "PIRATE",
@@ -110,7 +119,8 @@
       [0, "north"],
       [1, "north"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_013.jpg"
+    "image": "/images/cards/GT-cards_II_IT_013.jpg",
+    "comment": "Pirate: cannon power 6, credit won 7, days lost 2, shots: BIG from north, SMALL from north, BIG from north"
   },
   {
     "type": "TRAFFICKER",
@@ -124,7 +134,8 @@
       "GREEN",
       "BLUE"
     ],
-    "image": "/images/cards/GT-cards_I_IT_012.jpg"
+    "image": "/images/cards/GT-cards_I_IT_012.jpg",
+    "comment": "Trafficker: cannon power 4, boxes lost 2, days lost 1, boxes won 1 yellow, 1 green, 1 blue"
   },
   {
     "type": "TRAFFICKER",
@@ -138,7 +149,8 @@
       "YELLOW",
       "YELLOW"
     ],
-    "image": "/images/cards/GT-cards_II_IT_012.jpg"
+    "image": "/images/cards/GT-cards_II_IT_012.jpg",
+    "comment": "Trafficker: cannon power 8, boxes lost 3, days lost 1, boxes won 1 red, 2 yellow"
   },
   {
     "type": "SLAVEOWNER",
@@ -148,7 +160,8 @@
     "daysLost": 1,
     "aliveLost": 3,
     "creditWin"  : 5,
-    "image": "/images/cards/GT-cards_I_IT_01.jpg"
+    "image": "/images/cards/GT-cards_I_IT_01.jpg",
+    "comment": "Slave owner: cannon power 6, alive lost 3, days lost 1, credit won 5"
   },
   {
     "type": "SLAVEOWNER",
@@ -158,67 +171,78 @@
     "daysLost": 2,
     "aliveLost": 4,
     "creditWin"  : 8,
-    "image": "/images/cards/GT-cards_II_IT_01.jpg"
+    "image": "/images/cards/GT-cards_II_IT_01.jpg",
+    "comment": "Slave owner: cannon power 7, alive lost 4, days lost 2, credit won 8"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": true,
-    "image": "/images/cards/GT-cards_I_IT_015.jpg"
+    "image": "/images/cards/GT-cards_I_IT_015.jpg",
+    "comment": "Open space"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_I_IT_016.jpg"
+    "image": "/images/cards/GT-cards_I_IT_016.jpg",
+    "comment": "Open space"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_I_IT_017.jpg"
+    "image": "/images/cards/GT-cards_I_IT_017.jpg",
+    "comment": "Open space"
   },
   {
     "type": "OPENSPACE",
     "level": 1,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_I_IT_018.jpg"
+    "image": "/images/cards/GT-cards_I_IT_018.jpg",
+    "comment": "Open space"
   },
   {
     "type": "OPENSPACE",
     "level": 2,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_II_IT_016.jpg"
+    "image": "/images/cards/GT-cards_II_IT_016.jpg",
+    "comment": "Open space"
   },
   {
     "type": "OPENSPACE",
     "level": 2,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_II_IT_017.jpg"
+    "image": "/images/cards/GT-cards_II_IT_017.jpg",
+    "comment": "Open space"
   },
   {
     "type": "OPENSPACE",
     "level": 2,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_II_IT_018.jpg"
+    "image": "/images/cards/GT-cards_II_IT_018.jpg",
+    "comment": "Open space"
   },
   {
     "type": "STARDUST",
     "level": 1,
     "testFlight": true,
-    "image": "/images/cards/GT-cards_I_IT_014.jpg"
+    "image": "/images/cards/GT-cards_I_IT_014.jpg",
+    "comment": "Stardust"
   },
   {
     "type": "STARDUST",
     "level": 2,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_II_IT_014.jpg"
+    "image": "/images/cards/GT-cards_II_IT_014.jpg",
+    "comment": "Stardust"
   },
   {
     "type": "EPIDEMY",
     "level": 2,
     "testFlight": false,
-    "image": "/images/cards/GT-cards_II_IT_015.jpg"
+    "image": "/images/cards/GT-cards_II_IT_015.jpg",
+    "comment": "Epidemy"
   },
   {
     "type": "METEORITES",
@@ -231,7 +255,8 @@
       [0, "east"],
       [0, "south"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_0110.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0110.jpg",
+    "comment": "Meteorites: SMALL from north, SMALL from north, SMALL from west, SMALL from east, SMALL from south"
   },
   {
     "type": "METEORITES",
@@ -242,7 +267,8 @@
       [0, "west"],
       [0, "east"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_019.jpg"
+    "image": "/images/cards/GT-cards_I_IT_019.jpg",
+    "comment": "Meteorites: BIG from north, SMALL from west, SMALL from east"
   },
   {
     "type": "METEORITES",
@@ -253,7 +279,8 @@
       [0, "north"],
       [1, "north"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_0111.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0111.jpg",
+    "comment": "Meteorites: BIG from north, SMALL from north, BIG from north"
   },
   {
     "type": "METEORITES",
@@ -266,7 +293,8 @@
       [0, "east"],
       [0, "east"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_0111.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0111.jpg",
+    "comment": "Meteorites: SMALL from north, SMALL from north, BIG from east, SMALL from east, SMALL from east"
   },
   {
     "type": "METEORITES",
@@ -279,7 +307,8 @@
       [0, "west"],
       [0, "west"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_019.jpg"
+    "image": "/images/cards/GT-cards_II_IT_019.jpg",
+    "comment": "Meteorites: SMALL from north, SMALL from north, BIG from west, SMALL from west, SMALL from west"
   },
   {
     "type": "METEORITES",
@@ -291,7 +320,8 @@
       [0, "south"],
       [0, "south"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_0110.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0110.jpg",
+    "comment": "Meteorites: BIG from north, BIG from north, SMALL from south, SMALL from south"
   },
   {
     "type": "PLANETS",
@@ -303,7 +333,8 @@
       ["RED", "BLUE", "BLUE"],
       ["YELLOW"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_0113.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0113.jpg",
+    "comment": "Planets: planet 1 - 2 red, planet 2 - 1 red, 2 blue, planet 3 - 1 yellow, 2 days lost"
   },
   {
     "type": "PLANETS",
@@ -314,7 +345,8 @@
       ["YELLOW", "GREEN", "BLUE", "BLUE"],
       ["YELLOW", "YELLOW"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_0114.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0114.jpg",
+    "comment": "Planets: planet 1 - 1 yellow, 1 green, 2 blue, planet 2 - 2 yellow, 3 days lost"
   },
   {
     "type": "PLANETS",
@@ -326,7 +358,8 @@
       ["YELLOW"],
       ["BLUE", "BLUE", "BLUE"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_0115.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0115.jpg",
+    "comment": "Planets: planet 1 - 2 green, planet 2 - 1 yellow, planet 3 - 3 blue, 1 day lost"
   },
   {
     "type": "PLANETS",
@@ -339,7 +372,8 @@
       ["RED","BLUE", "BLUE", "BLUE"],
       ["RED", "GREEN"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_0112.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0112.jpg",
+    "comment": "Planets: planet 1 - 1 red, 1 green, 3 blue, planet 2 - 1 red, 1 yellow, 1 blue, planet 3 - 1 red, 3 blue, planet 4 - 1 red, 1 green, 3 days lost"
   },
   {
     "type": "PLANETS",
@@ -350,7 +384,8 @@
       ["RED", "RED"],
       ["GREEN", "GREEN","GREEN", "GREEN"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_0113.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0113.jpg",
+    "comment": "Planets: planet 1 - 2 red, planet 2 - 4 green, 3 days lost"
   },
   {
     "type": "PLANETS",
@@ -362,7 +397,8 @@
       ["RED", "RED","GREEN", "GREEN"],
       ["RED","BLUE", "BLUE", "BLUE", "BLUE"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_0112.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0112.jpg",
+    "comment": "Planets: planet 1 - 3 red, 1 yellow, planet 2 - 2 red, 2 green, planet 3 - 1 red, 4 blue, 4 days lost"
   },
   {
     "type": "PLANETS",
@@ -375,7 +411,8 @@
       ["GREEN","GREEN"],
       ["YELLOW"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_0114.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0114.jpg",
+    "comment": "Planets: planet 1 - 1 red, 1 yellow, planet 2 - 1 yellow, 1 green, 1 blue, planet 3 - 2 green, planet 4 - 1 yellow, 2 days lost"
   },
   {
     "type": "PLANETS",
@@ -387,7 +424,8 @@
       ["YELLOW", "YELLOW"],
       ["BLUE", "BLUE", "BLUE", "BLUE"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_0115.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0115.jpg",
+    "comment": "Planets: planet 1 - 4 green, planet 2 - 2 yellow, planet 3 - 4 blue"
   },
   {
     "type": "WARZONE1",
@@ -399,7 +437,8 @@
       [0, "south"],
       [1, "south"]
     ],
-    "image": "/images/cards/GT-cards_I_IT_0116.jpg"
+    "image": "/images/cards/GT-cards_I_IT_0116.jpg",
+    "comment": "War zone 1: player with less alive loses 3 days of flight, player with less motor power loses 2 alive, player with less cannon power take shots SMALL from south and BIG from south"
   },
   {
     "type": "WARZONE2",
@@ -413,6 +452,7 @@
       [0, "east"],
       [1, "south"]
     ],
-    "image": "/images/cards/GT-cards_II_IT_0116.jpg"
+    "image": "/images/cards/GT-cards_II_IT_0116.jpg",
+    "comment": "War zone 2: player with less cannon power loses 4 days of flight, player with less motor power loses 3 boxes, player with less alive take shots SMALL from north, SMALL from west, SMALL from east, BIG from south"
   }
 ]
