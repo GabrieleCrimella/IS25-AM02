@@ -44,7 +44,7 @@ public interface VirtualView extends Remote {
 
     void showPositionUpdate(String nickname, int position) throws RemoteException;
 
-    void showHourglassUpdate() throws RemoteException;
+    void showHourglassUpdate(long timeLeft) throws RemoteException;
 
     void showDiceUpdate(String nickname, int result) throws RemoteException;
 
@@ -79,4 +79,6 @@ public interface VirtualView extends Remote {
     void showBookedTileNullityUpdate(String nickname, int index, Coordinate pos) throws RemoteException;
 
     void showEarlyLandingUpdate(String nickname) throws RemoteException;
+
+    void showBuildTimeIsOverUpdate() throws RemoteException;
 }

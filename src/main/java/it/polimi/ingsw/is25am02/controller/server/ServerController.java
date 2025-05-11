@@ -310,6 +310,22 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         });
     }
 
+    public void hourglass(String nickname) {
+        methodQueue.offer(() -> {
+            try {
+                GameSession g = getGameFromPlayer(nickname);
+                Player player = getPlayerFromNickname(nickname);
+                if (g != null) {
+                    g.getQueue().offer(() -> g.getGame().hourglass(player)); //todo questo è il metodo sbagliato
+                }
+            } catch (PlayerNotFoundException e) {
+                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method flipHourglass", e);
+            }
+        });
+    }
+
+
+
     public void takeTile(String nickname) {
         methodQueue.offer(() -> {
             try {

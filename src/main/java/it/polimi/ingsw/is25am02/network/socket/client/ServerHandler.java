@@ -53,6 +53,11 @@ public class ServerHandler implements VirtualServer {
     }
 
     @Override
+    public void hourglass(String nickname) throws RemoteException{
+
+    }
+
+    @Override
     public void takeTile(String nickname) throws RemoteException {
 
     }

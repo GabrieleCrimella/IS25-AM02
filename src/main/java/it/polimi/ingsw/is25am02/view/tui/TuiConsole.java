@@ -194,8 +194,12 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     controller.joinLobby(controller.getVirtualView(), lobbyId, nickname, joinColor);
                     break;
 
-                case "hourglass":
+                case "flipHourglass":
                     controller.flipHourglass(nickname);
+                    break;
+
+                case "hourglass":
+                    controller.hourglass(nickname);
                     break;
 
                 case "view":

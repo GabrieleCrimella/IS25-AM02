@@ -20,6 +20,7 @@ public interface VirtualServer extends Remote {
 
     // Metodi relativi al flusso di gioco
     void flipHourglass(String nickname) throws RemoteException;
+    void hourglass(String nickname) throws RemoteException;
     void takeTile(String nickname) throws RemoteException;
     void takeTile(String nickname, String tile_imagePath) throws RemoteException;
     void takeMiniDeck(String nickname, int index) throws RemoteException;

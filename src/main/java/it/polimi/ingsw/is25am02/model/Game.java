@@ -212,7 +212,7 @@ public class Game implements Game_Interface {
                     hourglass.flip(this);
                     globalBoard.decreaseHourGlassFlip();
                 }
-                player.onHourglassUpdate();
+                //player.onHourglassUpdate();
             } else {
                 throw new IllegalStateException("");
             }
@@ -222,6 +222,31 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method getLobbies");
             }
+        } catch (LevelException e) {
+            try {
+                player.getObserver().reportError("error.level", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method getLobbies");
+            }
+        } catch (IllegalPhaseException e) {
+            try {
+                player.getObserver().reportError("error.phase", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method getLobbies");
+            }
+        }
+    }
+
+    @Override
+    public void hourglass(Player player) {
+        try {
+            levelControl();
+            buildControl();
+            try {
+                player.getObserver().showHourglassUpdate(hourglass.getTimeLeft());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method hourglass", e);
+            };
         } catch (LevelException e) {
             try {
                 player.getObserver().reportError("error.level", null);

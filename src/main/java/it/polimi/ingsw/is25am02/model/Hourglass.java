@@ -1,7 +1,12 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
+import it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType;
+
+import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 
 public class Hourglass {
     private Timer timer;
@@ -17,6 +22,7 @@ public class Hourglass {
 
     public long getTimeLeft() {
         return timeLeft;
+
     }
 
     public boolean getRunning() {
@@ -40,6 +46,17 @@ public class Hourglass {
                     running = false;
                     if (game.getGameboard().getHourGlassFlip() == 0) {
                         game.setBuildTimeIsOver();
+                        for (Player p : game.getPlayers()) {
+                            try {
+                                if (p.getStatePlayer().equals(StatePlayerType.NOT_FINISHED)){
+                                    p.setStatePlayer(StatePlayerType.FINISHED);
+                                }
+                                p.onPlayerStateUpdate(p.getNickname(), p.getStatePlayer());
+                                p.getObserver().showBuildTimeIsOverUpdate();
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in fliphourglass", e);
+                            }
+                        }
                     }
                 }
             }
