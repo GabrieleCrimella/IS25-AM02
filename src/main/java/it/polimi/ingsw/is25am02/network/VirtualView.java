@@ -11,6 +11,7 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
+import javafx.util.Pair;
 
 import java.rmi.Remote;
 import java.util.*;
@@ -28,7 +29,7 @@ public interface VirtualView extends Remote {
 
     void setNickname(String nickname) throws RemoteException;
 
-    void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType type,StateGameType stateGame, String currentPlayer, boolean[][] mask, int[] positions) throws Exception;
+    void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType type,String comment, StateGameType stateGame, String currentPlayer, boolean[][] mask, int[] positions, HashMap<Integer , List<List<Object>>> deck) throws Exception;
 
     void showTileRemoval(Coordinate coordinate, String nickname) throws RemoteException;
 
@@ -50,7 +51,7 @@ public interface VirtualView extends Remote {
 
     void showMinideckUpdate(String nickname, int deck) throws RemoteException;
 
-    void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType type) throws RemoteException;
+    void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType type, String comment) throws RemoteException;
 
     void showCurrentTileNullityUpdate(String nickname) throws RemoteException;
 

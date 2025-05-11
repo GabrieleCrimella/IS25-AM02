@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
+import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
+import javafx.util.Pair;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -227,14 +229,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     //todo in base a come scegliamo di fare la current card questa potrebbe dover essere rivista
     @Override
-    public void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType cardType) {
-        for(CardV card: gameV.getDeck()){
-            if(card.getImagePath().equals(imagepath)){
-                gameV.getCurrentState().setCurrentCard(card);
-                printOnConsole();
-                return;
-            }
-        }
+    public void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType cardType, String comment) {
+        CardV card = new CardV(stateCard,imagepath,cardType, comment);
+        gameV.getCurrentState().setCurrentCard(card);
+        printOnConsole();
     }
 
     @Override
@@ -290,9 +288,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType cardType,StateGameType stateGame, String currentPlayer, boolean[][] mask,int[] startingpositions) throws RemoteException {
+    public void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType cardType,String currentComment, StateGameType stateGame, String currentPlayer, boolean[][] mask,int[] startingpositions, HashMap<Integer , List<List<Object>>> deck) throws RemoteException {
         ArrayList<PlayerV> players = new ArrayList<>();
-        CardV currentCardV = new CardV(stateCard,currentCardImage, cardType);
+        CardV currentCardV = new CardV(stateCard,currentCardImage, cardType, currentComment);
         PlayerV currentPlayerV = null;
 
         for(String p: playercolors.keySet()){
@@ -301,9 +299,32 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             if(p.equals(currentPlayer)) currentPlayerV = playerV;
             players.add(playerV);
         }
+
+        HashMap<Integer, List<CardV>> deckCardV = new HashMap<>();
+        for (Map.Entry<Integer, List<List<Object>>> entry : deck.entrySet()) {
+            Integer key = entry.getKey();
+            List<List<Object>> cardDataList = entry.getValue();
+
+            List<CardV> cardVList = new ArrayList<>();
+
+            for (List<Object> cardData : cardDataList) {
+                StateCardType stateCardV = (StateCardType) cardData.get(0);
+                String imagePath = (String) cardData.get(1);
+                String comment = (String) cardData.get(2);
+                CardType cardTypeV = (CardType) cardData.get(3);
+
+                // Corretto l'ordine per il costruttore
+                CardV cardV = new CardV(stateCardV, imagePath, cardTypeV, comment);
+                cardVList.add(cardV);
+            }
+
+            deckCardV.put(key, cardVList);
+        }
+        CardDeckV cardDeckV = new CardDeckV(deckCardV);
+
         StateV stateV = new StateV(currentCardV,currentPlayerV,stateGame);
         GameboardV gameboardV = new GameboardV(startingpositions, level);
-        GameV game = new GameV(players,level, gameboardV, stateV, false, console);
+        GameV game = new GameV(players,level, gameboardV, stateV, false, console, cardDeckV);
 
         setGameV(game);
         console.getPrinter().setGame(gameV);
