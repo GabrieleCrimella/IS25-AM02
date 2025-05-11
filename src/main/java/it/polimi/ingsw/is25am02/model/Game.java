@@ -212,7 +212,13 @@ public class Game implements Game_Interface {
                     hourglass.flip(this);
                     globalBoard.decreaseHourGlassFlip();
                 }
-                player.onHourglassUpdate();
+                for (String nick: observers.keySet()){
+                    try {
+                        observers.get(nick).showHourglassUpdate();
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method hour glass update", e);
+                    }
+                }
             } else {
                 throw new IllegalStateException("");
             }
@@ -248,7 +254,13 @@ public class Game implements Game_Interface {
 
             player.setNumDeck(index);
             deck.giveDeck(index);
-            player.onMiniDeckUpdate(index);
+            for (String nick: observers.keySet()){
+                try {
+                    observers.get(nick).showMinideckUpdate(nick,index);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                }
+            }
 
         } catch (LevelException e) {
             try {
@@ -288,6 +300,15 @@ public class Game implements Game_Interface {
 
             deck.returnDeck(player.getNumDeck());
             player.setNumDeck(-1);
+
+            for (String nick: observers.keySet()){
+                try {
+                    observers.get(nick).showMinideckUpdate(nick,-1);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method return mini deck update", e);
+                }
+            }
+
 
         } catch (LevelException e) {
             try {
@@ -430,7 +451,13 @@ public class Game implements Game_Interface {
             //player can see the minidecks
             if (!player.getDeckAllowed()) {
                 player.setDeckAllowed();
-                player.onDeckAllowedUpdate();
+                for (String nick: observers.keySet()) {
+                    try {
+                        observers.get(nick).showDeckAllowUpdate(nick);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                    }
+                }
             }
         } catch (IllegalStateException e) {
             try {
@@ -806,7 +833,7 @@ public class Game implements Game_Interface {
 
 
             for (Player p : players) {
-                p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType());
+                p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
             }
         } catch (IllegalStateException e) {
             try {
