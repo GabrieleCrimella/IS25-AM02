@@ -174,9 +174,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     //viene chiamato quando viene girata la clessidra
     @Override
-    public void showHourglassUpdate(){
-        gameV.getHourglass().flip();
-
+    public void showHourglassUpdate(long timeLeft){
+        //gameV.getHourglass().flip();
+        gameV.getHourglass().setTimeLeft(timeLeft);
     }
 
     @Override
@@ -411,6 +411,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 gameV.getGlobalBoard().getPositions().remove(playerv);
             }
         }
+    }
+    @Override
+    public void showBuildTimeIsOverUpdate() throws RemoteException{
+        gameV.setBuildTimeIsOver(true);
     }
 
     private void printOnConsole(){

@@ -44,6 +44,11 @@ public class GameV {
         this.console = console;
         this.heapTilesV = new HeapTileV();
         this.deck = deck;
+        this.buildTimeIsOver = false;
+    }
+
+    public void setBuildTimeIsOver(boolean buildTimeIsOver) {
+        this.buildTimeIsOver = buildTimeIsOver;
     }
 
 

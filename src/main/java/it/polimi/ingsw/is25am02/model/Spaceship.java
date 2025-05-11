@@ -176,7 +176,7 @@ public class Spaceship {
             currentTile = null;
             for (String nick: observers.keySet()){
                 try {
-                    observers.get(nick).showBookTileUpdate(nick);
+                    observers.get(nick).showBookTileUpdate(player.getNickname());
                     observers.get(nick).showCurrentTileNullityUpdate(player.getNickname());
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
