@@ -17,7 +17,7 @@ public class State {
 
     public State(Player player) {
         this.phase = StateGameType.BUILD;
-        this.currentCard = new InitialCard(1, "");
+        this.currentCard = new InitialCard(1, "","");
         this.currentPlayer = player;
     }
 
@@ -41,7 +41,7 @@ public class State {
         this.currentCard = currentCard;
         for (String nick: observers.keySet()){
             try {
-                observers.get(nick).showCurrentCardUpdate(currentCard.getImagePath(), currentCard.getStateCard(), currentCard.getCardType());
+                observers.get(nick).showCurrentCardUpdate(currentCard.getImagePath(), currentCard.getStateCard(), currentCard.getCardType(), currentCard.getComment());
             } catch (RemoteException e) {
                 ServerController.logger.log(Level.SEVERE, "error in method SetCurrentCard", e);
             }
