@@ -34,8 +34,8 @@ public class Game implements Game_Interface {
 
     public Game(List<Player> players, int level) {
         this.players = players;
-        this.observers= new ConcurrentHashMap<>();
-        for(Player p : players){
+        this.observers = new ConcurrentHashMap<>();
+        for (Player p : players) {
             observers.put(p.getNickname(), p.getObserver());
         }
         this.level = level;
@@ -53,7 +53,7 @@ public class Game implements Game_Interface {
         this.currentState = new State(players.getFirst());
         this.deck = new CardDeck(level);
         this.hourglass = new Hourglass();
-        for(Player p : players){
+        for (Player p : players) {
             p.getSpaceship().setObservers(observers);
             p.getSpaceship().getSpaceshipIterator().setObservers(observers);
             heapTile.setObservers(observers);
@@ -62,51 +62,38 @@ public class Game implements Game_Interface {
     }
 
     //for testing
-    public void tilesSituation(){
+    public void tilesSituation() {
         System.out.println("Visible Tiles:");
         Set<Tile> visibleTiles;
         visibleTiles = getVisibleTiles();
-        for (Tile tile:visibleTiles){
-            if (tile==null){
+        for (Tile tile : visibleTiles) {
+            if (tile == null) {
                 System.out.print("|    |");
-            }
-            else if (tile.getType().equals(TileType.BATTERY)){
+            } else if (tile.getType().equals(TileType.BATTERY)) {
                 System.out.print("| B  |");
-            }
-            else if (tile.getType().equals(TileType.BROWN_CABIN)){
+            } else if (tile.getType().equals(TileType.BROWN_CABIN)) {
                 System.out.print("| BC |");
-            }
-            else if (tile.getType().equals(TileType.CABIN)){
+            } else if (tile.getType().equals(TileType.CABIN)) {
                 System.out.print("| CB |");
-            }
-            else if (tile.getType().equals(TileType.CANNON)){
+            } else if (tile.getType().equals(TileType.CANNON)) {
                 System.out.print("| CN |");
-            }
-            else if (tile.getType().equals(TileType.D_CANNON)){
+            } else if (tile.getType().equals(TileType.D_CANNON)) {
                 System.out.print("|DCN |");
-            }
-            else if (tile.getType().equals(TileType.D_MOTOR)){
+            } else if (tile.getType().equals(TileType.D_MOTOR)) {
                 System.out.print("| DM |");
-            }
-            else if (tile.getType().equals(TileType.MOTOR)){
+            } else if (tile.getType().equals(TileType.MOTOR)) {
                 System.out.print("| M  |");
-            }
-            else if (tile.getType().equals(TileType.PURPLE_CABIN)){
+            } else if (tile.getType().equals(TileType.PURPLE_CABIN)) {
                 System.out.print("| PC |");
-            }
-            else if (tile.getType().equals(TileType.SHIELD)){
+            } else if (tile.getType().equals(TileType.SHIELD)) {
                 System.out.print("| SH |");
-            }
-            else if (tile.getType().equals(TileType.SPECIAL_STORAGE)){
+            } else if (tile.getType().equals(TileType.SPECIAL_STORAGE)) {
                 System.out.print("| SS |");
-            }
-            else if (tile.getType().equals(TileType.STORAGE)){
+            } else if (tile.getType().equals(TileType.STORAGE)) {
                 System.out.print("| S  |");
-            }
-            else if (tile.getType().equals(TileType.STRUCTURAL)){
+            } else if (tile.getType().equals(TileType.STRUCTURAL)) {
                 System.out.print("| ST |");
-            }
-            else{
+            } else {
                 System.out.print("| Z |");
             }
         }
@@ -153,7 +140,7 @@ public class Game implements Game_Interface {
         this.diceResult = globalBoard.getDice().pickRandomNumber();
     }
 
-    public void setDiceResultForTesting(int  diceResult) {
+    public void setDiceResultForTesting(int diceResult) {
         this.diceResult = diceResult;
 
     }
@@ -174,7 +161,9 @@ public class Game implements Game_Interface {
         return currentState.getCurrentCard();
     }
 
-    public List<Player> getWinners() { return winners; }
+    public List<Player> getWinners() {
+        return winners;
+    }
 
     public void nextPlayer() {
         int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
@@ -534,7 +523,7 @@ public class Game implements Game_Interface {
     }
 
     @Override
-    public void addBookedTile(Player player, int index, Coordinate pos, RotationType  rotation) {
+    public void addBookedTile(Player player, int index, Coordinate pos, RotationType rotation) {
         try {
             levelControl();
             buildControl();
@@ -579,7 +568,7 @@ public class Game implements Game_Interface {
             alreadyFinished++;
 
             getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
-            for (String nick: observers.keySet()){
+            for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
                 } catch (RemoteException e) {
@@ -593,7 +582,7 @@ public class Game implements Game_Interface {
 
             if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
-                if(level !=0){
+                if (level != 0) {
                     deck.createFinalDeck(); //mischio i mazzetti e creo il deck finale
                 }
             }
@@ -644,7 +633,7 @@ public class Game implements Game_Interface {
         try {
             stateControl(StateGameType.CORRECTION, StatePlayerType.WRONG_SHIP, StateCardType.FINISH, player);
 
-            player.getSpaceship().removeTile(pos.x(), pos.y());
+            player.getSpaceship().removeTile(player.getNickname(), pos.x(), pos.y());
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -690,28 +679,28 @@ public class Game implements Game_Interface {
             cabinControl(player, pos);
 
             if (type.equals(AliveType.HUMAN)) { //se type è human aggiungo due umani
-                giveTile(player, pos).addCrew(player.getNickname(),type);
-                for (String nick: observers.keySet()){
+                giveTile(player, pos).addCrew(player.getNickname(), type);
+                for (String nick : observers.keySet()) {
                     try {
-                        observers.get(nick).showAddCrewUpdate(player.getNickname(),pos, type);
+                        observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                     }
                 }
-                giveTile(player, pos).addCrew(player.getNickname(),type);
-                for (String nick: observers.keySet()){
+                giveTile(player, pos).addCrew(player.getNickname(), type);
+                for (String nick : observers.keySet()) {
                     try {
-                        observers.get(nick).showAddCrewUpdate(player.getNickname(),pos, type);
+                        observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                     }
                 }
             } else if (type.equals(AliveType.BROWN_ALIEN)) { // se type è brown_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
                 if (checkTileNear(player, pos, TileType.BROWN_CABIN)) {
-                    giveTile(player, pos).addCrew(player.getNickname(),type);
-                    for (String nick: observers.keySet()){
+                    giveTile(player, pos).addCrew(player.getNickname(), type);
+                    for (String nick : observers.keySet()) {
                         try {
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(),pos, type);
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }
@@ -719,10 +708,10 @@ public class Game implements Game_Interface {
                 }
             } else if (type.equals(AliveType.PURPLE_ALIEN)) { // se type è purple_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
                 if (checkTileNear(player, pos, TileType.PURPLE_CABIN)) {
-                    giveTile(player, pos).addCrew(player.getNickname(),type);
-                    for (String nick: observers.keySet()){
+                    giveTile(player, pos).addCrew(player.getNickname(), type);
+                    for (String nick : observers.keySet()) {
                         try {
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(),pos, type);
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }
@@ -770,20 +759,20 @@ public class Game implements Game_Interface {
             List<Tile> cabins = player.getSpaceship().getTilesByType(TileType.CABIN);
             for (Tile c : cabins) {
                 if (c.getCrew().isEmpty()) {
-                    c.addCrew(player.getNickname(),AliveType.HUMAN);
-                    for (String nick: observers.keySet()){
+                    c.addCrew(player.getNickname(), AliveType.HUMAN);
+                    for (String nick : observers.keySet()) {
                         try {
-                            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(c),player.getSpaceship().getSpaceshipIterator().getX(c));
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(),pos, AliveType.HUMAN);
+                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getX(c));
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN);
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }
                     }
-                    c.addCrew(player.getNickname(),AliveType.HUMAN);
-                    for (String nick: observers.keySet()){
+                    c.addCrew(player.getNickname(), AliveType.HUMAN);
+                    for (String nick : observers.keySet()) {
                         try {
-                            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(c),player.getSpaceship().getSpaceshipIterator().getX(c));
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(),pos, AliveType.HUMAN);
+                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getX(c));
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN);
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }
@@ -812,7 +801,7 @@ public class Game implements Game_Interface {
 
             getGameboard().getPositions().remove(player);
 
-            for (String nick: observers.keySet()){
+            for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showEarlyLandingUpdate(player.getNickname());
                 } catch (RemoteException e) {
@@ -899,9 +888,9 @@ public class Game implements Game_Interface {
             typeControl(player, pos, TileType.CABIN);
 
             getCurrentCard().removeCrew(this, player, giveTile(player, pos));
-            for (String nick: observers.keySet()){
+            for (String nick : observers.keySet()) {
                 try {
-                    observers.get(nick).showCrewRemoval(pos,player.getNickname());
+                    observers.get(nick).showCrewRemoval(pos, player.getNickname());
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                 }
@@ -970,11 +959,11 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
             moveControl(player, start, end, boxType);
 
-            if(start.x() == -1 && start.y() == -1){ //Start equals Planet
+            if (start.x() == -1 && start.y() == -1) { //Start equals Planet
                 getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
-            } else if(end.x() == -1 && end.y() == -1){ //End equals Planet
+            } else if (end.x() == -1 && end.y() == -1) { //End equals Planet
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), getCurrentCard().getBoxesWon(), boxType, on);
-            } else{ //Start and End are types of storage
+            } else { //Start and End are types of storage
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
             }
             //player.onBoxUpdate(start,player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
@@ -1146,10 +1135,10 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.REMOVE, player);
             currentPlayerControl(player);
 
-            if(player.getSpaceship().getTile(pos.x(),pos.y()).isPresent() && (
-                    player.getSpaceship().getTile(pos.x(),pos.y()).get().getType().equals(TileType.SPECIAL_STORAGE) ||
-                    player.getSpaceship().getTile(pos.x(),pos.y()).get().getType().equals(TileType.STORAGE))){
-                getCurrentCard().removeBox(this, player, player.getSpaceship().getTile(pos.x(),pos.y()).get(), type);
+            if (player.getSpaceship().getTile(pos.x(), pos.y()).isPresent() && (
+                    player.getSpaceship().getTile(pos.x(), pos.y()).get().getType().equals(TileType.SPECIAL_STORAGE) ||
+                            player.getSpaceship().getTile(pos.x(), pos.y()).get().getType().equals(TileType.STORAGE))) {
+                getCurrentCard().removeBox(this, player, player.getSpaceship().getTile(pos.x(), pos.y()).get(), type);
                 //player.onBoxUpdate(pos,player.getSpaceship().getTile(pos.x(),pos.y()).get().getOccupationTypes());
                 //todo metti questo update nella carta
             } else {
@@ -1226,7 +1215,7 @@ public class Game implements Game_Interface {
             setDiceResult();
             getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
 
-            for (Player p: players){
+            for (Player p : players) {
                 p.onDiceUpdate(player.getNickname(), getGameboard().getDice());
             }
         } catch (IllegalStateException e) {
@@ -1243,11 +1232,11 @@ public class Game implements Game_Interface {
         try {
             stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
-            if(player.getSpaceship().getTile(pos.x(), pos.y()).isPresent()){
+            if (player.getSpaceship().getTile(pos.x(), pos.y()).isPresent()) {
                 typeControl(player, pos, TileType.BATTERY);
             }
 
-            getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(),pos.y()));
+            getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(), pos.y()));
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1290,7 +1279,7 @@ public class Game implements Game_Interface {
             getCurrentCard().effect(game);
 
         } catch (IllegalStateException e) {
-            for(Player p: players){
+            for (Player p : players) {
                 try {
                     p.getObserver().reportError("error.state", null);
                 } catch (Exception ex) {
@@ -1308,7 +1297,7 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.CORRECTION, StatePlayerType.WRONG_SHIP, StateCardType.FINISH, player);
             currentPlayerControl(player);
 
-            player.getSpaceship().keepBlock(pos);
+            player.getSpaceship().keepBlock(player.getNickname(), pos);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1381,7 +1370,7 @@ public class Game implements Game_Interface {
             //todo chiama un metodo della view per mostrare la classifica
 
         } catch (IllegalStateException e) {
-            for(Player p: players){
+            for (Player p : players) {
                 try {
                     p.getObserver().reportError("error.state", null);
                 } catch (Exception ex) {
@@ -1429,8 +1418,8 @@ public class Game implements Game_Interface {
 
     private void typeControl(Player player, Coordinate pos, TileType type) throws TileException {
         if (player.getSpaceship().getTile(pos.x(), pos.y()).isPresent() && !player.getSpaceship().getTile(pos.x(), pos.y()).get().getType().equals(type)) {
-            throw new TileException("Tile (" + pos.x() + " " + pos.y() + ") from player " + player.getNickname() +" doesn't possess Type: " + type);
-        } else if (player.getSpaceship().getTile(pos.x(),pos.y()).isEmpty()) {
+            throw new TileException("Tile (" + pos.x() + " " + pos.y() + ") from player " + player.getNickname() + " doesn't possess Type: " + type);
+        } else if (player.getSpaceship().getTile(pos.x(), pos.y()).isEmpty()) {
             throw new TileException("No Tile in position ( " + pos.x() + ", " + pos.y() + " ) from player " + player.getNickname());
         }
     }
@@ -1473,21 +1462,21 @@ public class Game implements Game_Interface {
         }
     }
 
-    private void choicesControl(Player player, List<Coordinate> c1, List<Coordinate> c2, TileType t1)  throws TileException {
-        if(c1.size() != c2.size()) {
+    private void choicesControl(Player player, List<Coordinate> c1, List<Coordinate> c2, TileType t1) throws TileException {
+        if (c1.size() != c2.size()) {
             throw new TileException("Wrong number of tiles");
         }
-        for(int i = 0; i < c1.size(); i++) {
+        for (int i = 0; i < c1.size(); i++) {
             typeControl(player, c1.get(i), t1);
             typeControl(player, c2.get(i), TileType.BATTERY);
         }
 
         HashMap<Coordinate, Integer> control = new HashMap<>();
-        for(Coordinate c : c2) {
+        for (Coordinate c : c2) {
             control.put(c, control.getOrDefault(c, 0) + 1);
         }
-        for(Coordinate c : c2) {
-            if(control.get(c) > giveTile(player,c).getNumBattery()){
+        for (Coordinate c : c2) {
+            if (control.get(c) > giveTile(player, c).getNumBattery()) {
                 throw new TileException("Battery limit exceeded");
             }
         }
@@ -1495,32 +1484,32 @@ public class Game implements Game_Interface {
 
     private void moveControl(Player player, Coordinate start, Coordinate end, BoxType boxType) throws IllegalAddException, TileException {
         //check that start contains the required boxtype
-        if(start.x() != -1){ //Tile
-            if(giveTile(player, start).getType().equals(TileType.SPECIAL_STORAGE) || giveTile(player, start).getType().equals(TileType.STORAGE)){
-                if(giveTile(player, start).getOccupation().stream().noneMatch(p -> p.getType().equals(boxType))){
+        if (start.x() != -1) { //Tile
+            if (giveTile(player, start).getType().equals(TileType.SPECIAL_STORAGE) || giveTile(player, start).getType().equals(TileType.STORAGE)) {
+                if (giveTile(player, start).getOccupation().stream().noneMatch(p -> p.getType().equals(boxType))) {
                     throw new IllegalAddException("Start doesn't contains any box with type " + boxType);
                 }
             } else {
                 throw new TileException("Start isn't a TileType Storage or Special Storage");
             }
-        } else{ //Card list
-            if(getCurrentCard().getBoxesWon().stream().noneMatch(p -> p.getType().equals(boxType))){
+        } else { //Card list
+            if (getCurrentCard().getBoxesWon().stream().noneMatch(p -> p.getType().equals(boxType))) {
                 throw new IllegalAddException("Start doesn't contains any box with type " + boxType);
             }
         }
 
         //check that end can contain the new box
         //check storage with red box transition
-        if(end.x() != -1){ //Tile
-            if(giveTile(player, end).getType().equals(TileType.SPECIAL_STORAGE)){
-                if(giveTile(player, end).getOccupation().size() == giveTile(player, end).getMaxNum()){
+        if (end.x() != -1) { //Tile
+            if (giveTile(player, end).getType().equals(TileType.SPECIAL_STORAGE)) {
+                if (giveTile(player, end).getOccupation().size() == giveTile(player, end).getMaxNum()) {
                     throw new IllegalAddException("End is already full");
                 }
-            } else if(giveTile(player, end).getType().equals(TileType.STORAGE)){
-                if(giveTile(player, end).getOccupation().size() == giveTile(player, end).getMaxNum()){
+            } else if (giveTile(player, end).getType().equals(TileType.STORAGE)) {
+                if (giveTile(player, end).getOccupation().size() == giveTile(player, end).getMaxNum()) {
                     throw new IllegalAddException("End is already full");
                 }
-                if(boxType == BoxType.RED){
+                if (boxType == BoxType.RED) {
                     throw new IllegalAddException("End is type Storage, it doesn't contain red box");
                 }
             } else {
@@ -1529,7 +1518,7 @@ public class Game implements Game_Interface {
         }
 
         //check start != end
-        if(start.x() == end.x() && start.y() == end.y()){
+        if (start.x() == end.x() && start.y() == end.y()) {
             throw new IllegalAddException("start and end are both equal");
         }
     }
@@ -1564,7 +1553,7 @@ public class Game implements Game_Interface {
     }
 
     private Tile giveTile(Player player, Coordinate pos) throws TileException {
-        if(player.getSpaceship().getTile(pos.x(), pos.y()).isPresent()){
+        if (player.getSpaceship().getTile(pos.x(), pos.y()).isPresent()) {
             return player.getSpaceship().getTile(pos.x(), pos.y()).get();
         } else {
             throw new TileException("Tile doesn't exist");

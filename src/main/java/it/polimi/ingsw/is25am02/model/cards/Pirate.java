@@ -99,7 +99,7 @@ public class Pirate extends Enemies {
     @Override
     public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException, IllegalPhaseException {
         if (losers.contains(player) && phase == 2) {
-            boolean res = player.getSpaceship().shotDamage(shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
+            boolean res = player.getSpaceship().shotDamage(player.getNickname(), shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
             if (res) {
                 game.getCurrentCard().setStateCard(StateCardType.DECISION);
@@ -120,7 +120,7 @@ public class Pirate extends Enemies {
     @Override
     public void keepBlocks(Game game, Player player, Coordinate pos) throws IllegalPhaseException {
         if (losers.contains(player) && phase == 2) {
-            player.getSpaceship().keepBlock(pos);
+            player.getSpaceship().keepBlock(player.getNickname(), pos);
 
             if (player.equals(losers.getLast()) && currentIndex < losers.size() - 1) {
                 currentIndex++;

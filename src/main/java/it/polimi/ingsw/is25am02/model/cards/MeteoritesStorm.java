@@ -32,7 +32,7 @@ public class MeteoritesStorm extends Card {
 
     @Override
     public void keepBlocks(Game game, Player player, Coordinate pos){
-        player.getSpaceship().keepBlock(pos);
+        player.getSpaceship().keepBlock(player.getNickname(), pos);
 
         if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
             currentIndex++;
@@ -50,7 +50,7 @@ public class MeteoritesStorm extends Card {
 
     @Override
     public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException {
-        boolean res = player.getSpaceship().meteoriteDamage(meteorites.get(currentIndex).getKey(), meteorites.get(currentIndex).getValue(), game.getDiceResult(), storage);
+        boolean res = player.getSpaceship().meteoriteDamage(player.getNickname(), meteorites.get(currentIndex).getKey(), meteorites.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
         if(res){
             game.getCurrentCard().setStateCard(StateCardType.DECISION);

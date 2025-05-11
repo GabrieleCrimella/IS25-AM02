@@ -181,7 +181,7 @@ public class WarZone_II extends Card{
     @Override
     public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException {
         if(currentPhase == 4) {
-            boolean res = player.getSpaceship().shotDamage(shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
+            boolean res = player.getSpaceship().shotDamage(player.getNickname(), shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
             if (res) {
                 game.getCurrentCard().setStateCard(StateCardType.DECISION);
@@ -201,7 +201,7 @@ public class WarZone_II extends Card{
     @Override
     public void keepBlocks(Game game, Player player, Coordinate pos){
         if(currentPhase == 4) {
-            player.getSpaceship().keepBlock(pos);
+            player.getSpaceship().keepBlock(player.getNickname(), pos);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
         }
         else throw new IllegalStateException();
