@@ -31,11 +31,11 @@ public class GameV {
     private DiceV diceV;
     private boolean buildTimeIsOver; //todo bisogna aggiornarlo in una update
     private HourglassV hourglass;
-    private List<CardV> deck;
+    private CardDeckV deck;
     private ConsoleClient console;
 
 
-    public GameV(List<PlayerV> players, int level, GameboardV globalBoard, StateV currentState, boolean buildTimeIsOver, ConsoleClient console) {
+    public GameV(List<PlayerV> players, int level, GameboardV globalBoard, StateV currentState, boolean buildTimeIsOver, ConsoleClient console, CardDeckV deck) {
         this.players = players;
         this.level = level;
         this.globalBoard = globalBoard;
@@ -43,11 +43,9 @@ public class GameV {
         this.buildTimeIsOver = buildTimeIsOver;
         this.console = console;
         this.heapTilesV = new HeapTileV();
+        this.deck = deck;
     }
 
-    public List<CardV> getDeck() {
-        return deck;
-    }
 
     public HeapTileV getHeapTilesV() {
         return heapTilesV;
