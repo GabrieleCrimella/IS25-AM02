@@ -16,11 +16,17 @@ public abstract class Card {
     private StateCardType stateCard;
     private final String imagePath;
     private boolean testFlight;
+    private String comment;
 
-    public Card(int level, StateCardType stateCard, String imagePath) {
+    public Card(int level, StateCardType stateCard, String imagePath, String comment) {
         this.level = level;
         this.stateCard = stateCard;
         this.imagePath = imagePath;
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
     public String getImagePath() {
