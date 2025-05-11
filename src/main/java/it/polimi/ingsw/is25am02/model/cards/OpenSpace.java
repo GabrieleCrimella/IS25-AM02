@@ -15,8 +15,8 @@ public class OpenSpace extends Card {
     private final CardType cardType;
     HashMap<Player,Integer> fly;
 
-    public OpenSpace(int level, String imagepath) {
-        super(level, StateCardType.CHOICE_ATTRIBUTES, imagepath);
+    public OpenSpace(int level, String imagepath, String comment) {
+        super(level, StateCardType.CHOICE_ATTRIBUTES, imagepath,comment);
         this.cardType = CardType.OPENSPACE;
         this.fly = new HashMap<>();
     }

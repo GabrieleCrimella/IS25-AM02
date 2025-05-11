@@ -18,8 +18,8 @@ public class MeteoritesStorm extends Card {
     private final CardType cardType;
 
 
-    public MeteoritesStorm(int level, ArrayList<Pair<Integer,RotationType>> meteorites, String imagepath) {
-        super(level,StateCardType.ROLL, imagepath);
+    public MeteoritesStorm(int level, ArrayList<Pair<Integer,RotationType>> meteorites, String imagepath,String comment) {
+        super(level,StateCardType.ROLL, imagepath, comment);
         this.meteorites = meteorites;
         currentIndex = 0;
         this.cardType = CardType.METEORITES_STORM;

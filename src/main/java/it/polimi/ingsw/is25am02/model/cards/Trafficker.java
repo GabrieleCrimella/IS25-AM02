@@ -25,8 +25,8 @@ public class Trafficker extends Card {
     private final LinkedList<BoxType> boxesWonTypes;
     private final CardType cardType;
 
-    public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes, String imagepath) {
-        super(level, StateCardType.CHOICE_ATTRIBUTES, imagepath);
+    public Trafficker(int level, BoxStore store, int cannonPowers, int daysLost, int boxesLost, LinkedList<Box> boxesWon, LinkedList<BoxType> boxesWonTypes, String imagepath,String comment) {
+        super(level, StateCardType.CHOICE_ATTRIBUTES, imagepath,comment);
         this.cannonPowers = cannonPowers;
         this.daysLost = daysLost;
         this.boxesLost = boxesLost;

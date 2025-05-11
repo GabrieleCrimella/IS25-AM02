@@ -29,8 +29,8 @@ public class WarZone_II extends Card{
     private final ArrayList<Pair<Integer, RotationType>> shots;
     private final CardType cardType;
 
-    public WarZone_II(int level, int flyback, int boxesLost, ArrayList<Pair<Integer, RotationType>> shots, String imagepath) {
-        super(level, StateCardType.DECISION, imagepath);
+    public WarZone_II(int level, int flyback, int boxesLost, ArrayList<Pair<Integer, RotationType>> shots, String imagepath,String comment) {
+        super(level, StateCardType.DECISION, imagepath,comment);
         this.flyback = flyback;
         this.boxesLost = boxesLost;
         this.shots = shots;

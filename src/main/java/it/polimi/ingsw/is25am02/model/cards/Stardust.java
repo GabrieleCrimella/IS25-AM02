@@ -12,8 +12,8 @@ public class Stardust extends Card {
 
     private final CardType cardType;
 
-    public Stardust(int level, String imagepath) {
-        super(level, StateCardType.DECISION, imagepath);
+    public Stardust(int level, String imagepath,String comment) {
+        super(level, StateCardType.DECISION, imagepath,comment);
         this.cardType = CardType.STARDUST;
     }
 

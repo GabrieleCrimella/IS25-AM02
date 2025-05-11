@@ -6,11 +6,10 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.network.VirtualView;
+import javafx.util.Pair;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
@@ -125,15 +124,32 @@ public class Player implements UpdateListener {
 
 
     @Override
-    public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions){
+    public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions, HashMap<Integer , Pair<List<Card>,Boolean>> deck){
         try {
-            ArrayList<String> nicknamePlayers = new ArrayList<>();
             HashMap<String, PlayerColor> playersColor = new HashMap<>();
             for(Player p : players){
                 playersColor.put(p.getNickname(),p.getColor());
             }
+            HashMap<Integer , List<List<Object>>> deckV = new HashMap<>();
+            for (Map.Entry<Integer, Pair<List<Card>, Boolean>> entry : deck.entrySet()) {
+                Integer key = entry.getKey();
+                List<Card> cardList = entry.getValue().getKey();
 
-            observer.showUpdateEverything(level, playersColor,currentcard.getImagePath(),currentcard.getStateCard(),currentcard.getCardType(),state.getPhase(),state.getCurrentPlayer().getNickname(), mask, positions);
+                List<List<Object>> convertedCardList = new ArrayList<>();
+
+                for (Card card : cardList) {
+                    List<Object> cardAttributes = new ArrayList<>();
+                    cardAttributes.add(card.getStateCard());
+                    cardAttributes.add(card.getImagePath());
+                    cardAttributes.add(card.getComment());
+                    cardAttributes.add(card.getCardType());
+
+                    convertedCardList.add(cardAttributes);
+                }
+                deckV.put(key, convertedCardList);
+            }
+
+            observer.showUpdateEverything(level, playersColor,currentcard.getImagePath(),currentcard.getStateCard(),currentcard.getCardType(),currentcard.getComment(),state.getPhase(),state.getCurrentPlayer().getNickname(), mask, positions, deckV);
         } catch (Exception e) {
             ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
 
@@ -163,9 +179,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentCardUpdate(String imagepath, StateCardType statecard, CardType type){
+    public void onCurrentCardUpdate(String imagepath, StateCardType statecard, CardType type, String comment){
         try {
-            observer.showCurrentCardUpdate(imagepath, statecard, type);
+            observer.showCurrentCardUpdate(imagepath, statecard, type, comment);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show current card update", e);
 
