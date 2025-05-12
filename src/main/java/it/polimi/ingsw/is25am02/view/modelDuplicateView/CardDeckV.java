@@ -5,9 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CardDeckV {
-    private HashMap<Integer , List<CardV>> deck;
+    private final HashMap<Integer , List<CardV>> deck;
 
     public CardDeckV(HashMap<Integer , List<CardV>> deck) {
         this.deck = deck;
+    }
+
+    public HashMap<Integer, List<CardV>> getDeck() {
+        return deck;
     }
 }

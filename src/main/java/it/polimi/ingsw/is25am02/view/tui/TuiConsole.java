@@ -251,6 +251,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "returnMiniDeck":
                     controller.returnMiniDeck(nickname);
+                    printer.print();
                     break;
 
                 case "book":

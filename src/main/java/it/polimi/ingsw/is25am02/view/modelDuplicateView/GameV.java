@@ -88,6 +88,10 @@ public class GameV {
         return gameName;
     }
 
+    public CardDeckV getDeck() {
+        return deck;
+    }
+
     //controlli
     public boolean levelControl(){
         if (level == 0) {

@@ -77,6 +77,9 @@
     "show": "id: {num},\t owner: {owner},\t players: {att}/{max}",
     "state": "> LobbyId {num} {state}"
   },
+  "hourglass" : {
+    "time" : "Time left: {tim}"
+  },
   "helper": {
     "build": {
       "0" : "Welcome trucker now begins the construction phase of your ship! \nLet's start with some simple rules, by doing /take you take a tile from the pile and place it in the current tile slot \nat this point you can decide whether to rotate it, add it to your ship or return it to the pile and take a new one. \nBuild your ship according to your needs and use /legend to see the meanings of the pieces. Have fun!",

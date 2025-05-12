@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.view.tui.utils;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
@@ -61,6 +62,7 @@ public class GraphicPrinter {
             printTileOccupation(myName);
             printMyState(myName);
             printGameStatus();
+            printCardComment();
         }
     }
 
@@ -98,6 +100,19 @@ public class GraphicPrinter {
     public void printGameStatus() {
         System.out.println("Game Status | Game phase: " + game.getCurrentState().getPhase() + "  | Card: " + game.getCurrentState().getCurrentCard().getCardType()
                 + "in state " + game.getCurrentState().getCurrentCard().getStateCard() + "  | Player's turn : " + game.getCurrentState().getCurrentPlayer().getNickname());
+    }
+
+    public void printCardComment() {
+        System.out.println("Card Comment | Comment: " + game.getCurrentState().getCurrentCard().getComment());
+    }
+
+    public void printDeck(int num){
+        clearConsole();
+        List<CardV> cards = game.getDeck().getDeck().get(num);
+        System.out.println("Deck:");
+        for (CardV card : cards) {
+            System.out.println(card.getCardType() + " | " + card.getComment());
+        }
     }
 
     public void printSpaceship(String name) {
@@ -274,7 +289,7 @@ public class GraphicPrinter {
                 char westConnector = connectorSymbol(bookedTiles.get(j), RotationType.WEST);
                 char eastConnector = connectorSymbol(bookedTiles.get(j), RotationType.EAST);
                 String tile = stringCurr(bookedTiles.get(j));
-                System.out.printf(" %c%s%c  |", westConnector, tile, eastConnector);
+                System.out.printf(" %c%s%c |", westConnector, tile, eastConnector);
             }
         }
         System.out.println();
