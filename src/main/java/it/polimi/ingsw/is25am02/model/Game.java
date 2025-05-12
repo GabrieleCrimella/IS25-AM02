@@ -54,6 +54,7 @@ public class Game implements Game_Interface {
         this.deck = new CardDeck(level);
         this.hourglass = new Hourglass();
         for (Player p : players) {
+            p.setObservers(observers);
             p.getSpaceship().setObservers(observers);
             p.getSpaceship().getSpaceshipIterator().setObservers(observers);
             heapTile.setObservers(observers);

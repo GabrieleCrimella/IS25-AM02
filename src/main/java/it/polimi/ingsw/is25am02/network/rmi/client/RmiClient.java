@@ -354,6 +354,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerV : gameV.getPlayers()) {
             if (playerV.getNickname().equals(nickname)) {
                 playerV.setStatePlayer(newPlayerstate);
+                if (nickname.equals(console.getNickname()))
+                    displayMessage("info.gameState", Map.of("state", String.valueOf(newPlayerstate)));
             }
         }
     }

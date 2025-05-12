@@ -66,6 +66,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
         printer.setMyName(nickname);
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     /**
      * Avvia l'interfaccia testuale in un thread separato
      */
