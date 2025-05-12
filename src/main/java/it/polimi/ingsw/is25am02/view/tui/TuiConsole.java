@@ -4,10 +4,7 @@ import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Player;
-import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
-import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
@@ -294,7 +291,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "check":
-                    controller.checkSpaceship(nickname);
+                    if (controller.getState(nickname) == StatePlayerType.WRONG_SHIP)
+                        controller.checkWrongSpaceship(nickname);
+                    else
+                        controller.checkSpaceship(nickname);
                     break;
 
                 case "remove":

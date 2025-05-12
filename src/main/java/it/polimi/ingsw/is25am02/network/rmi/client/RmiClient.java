@@ -44,6 +44,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         System.out.println(">> RMI Client stopped.");
     }
 
+
+
     public void setView(ConsoleClient choice) {
         console = choice;
     }

@@ -841,7 +841,6 @@ public class Game implements Game_Interface {
                 this.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
             }
 
-
             for (Player p : players) {
                 p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
             }
