@@ -84,7 +84,14 @@
     "build": {
       "0" : "Welcome trucker now begins the construction phase of your ship! \nLet's start with some simple rules, by doing /take you take a tile from the pile and place it in the current tile slot \nat this point you can decide whether to rotate it, add it to your ship or return it to the pile and take a new one. \nBuild your ship according to your needs and use /legend to see the meanings of the pieces. Have fun!",
       "1" : "Welcome trucker now begins the construction phase of your ship! \nLet's start with some simple rules, by doing /take you take a tile from the pile and place it in the current tile slot \nat this point you can decide whether to rotate it, add it to your ship, reserve it for later (you can only reserve 2 tiles at a time) \nor return it to the pile and take a new one. Build your ship according to your needs and use /legend to see the meanings of the pieces. \nRemember that you can also turn the timer to put pressure on your opponents and force them to move. Have fun!"
-    }
+    },
+    "check" : "Now you are in the check phase, typing /check will check \nif your ship is ready to leave for the galactic adventure. \nIf there are errors you will have to fix it before you can leave",
+    "correction" : "Your ship has some errors that need to be corrected before you launch, here are the checks you need to do:\n1) Single connectors must not be connected to double connectors\n2) Smooth sides must not be adjacent to connectors\n3) Each engine must point towards the back of the ship and must not have components in the box immediately behind the exhaust\n4) Each cannon must not have components placed immediately in front of its firing mouth\n5) The ship must be fully connected (no separate sections)",
+    "initialization" : {
+      "0" : "Your ship is ready to sail into deep space now you just need to add your crew using /addCrew",
+      "1" : "Your ship is ready to sail into deep space now you just need to add your crew using /addCrew.\nRemember that:\n1) You must have 2 humans on your starting cabin\n2) Your ship cannot accommodate more than 1 alien of each type"
+    },
+    "match" : "The adventure has begun, keep an eye on the game status to know \nif it's your turn, which card is in play and what your opponents are doing.\nGood luck!"
   },
   "exit": "Exit the game..."
 }
