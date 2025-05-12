@@ -18,6 +18,7 @@ public class PlayerV {
     private boolean deckAllowed;
     private int numDeck;
     private int credits;
+    private boolean isShipBroken;
 
     public void setCurrentTile(Optional<TileV> currentTile) {
         this.currentTile = currentTile;
@@ -28,6 +29,7 @@ public class PlayerV {
     }
 
     public PlayerV(String nickname, PlayerColor color, boolean[][] mask) {
+        isShipBroken = false;
         Optional<TileV>[][] grid = new Optional[12][12];
 
         for (int i = 0; i < 12; i++) {
@@ -35,21 +37,21 @@ public class PlayerV {
                 grid[i][j] = Optional.empty();
             }
         }
-        ConnectorType[] connectors ={ConnectorType.UNIVERSAL,ConnectorType.UNIVERSAL,ConnectorType.UNIVERSAL,ConnectorType.UNIVERSAL};
+        ConnectorType[] connectors = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         String imagepath;
-        if(color.equals(PlayerColor.RED)) {
+        if (color.equals(PlayerColor.RED)) {
             imagepath = "/images/tiles/GT-new_tiles_16_for web52.jpg";
-        } else if(color.equals(PlayerColor.YELLOW)) {
+        } else if (color.equals(PlayerColor.YELLOW)) {
             imagepath = "/images/tiles/GT-new_tiles_16_for web61.jpg";
-        } else if(color.equals(PlayerColor.GREEN)) {
+        } else if (color.equals(PlayerColor.GREEN)) {
             imagepath = "/images/tiles/GT-new_tiles_16_for web34.jpg";
         } else {
             imagepath = "/images/tiles/GT-new_tiles_16_for web33.jpg";
         }
 
-        TileV initialtileV = new TileV(TileType.CABIN, connectors, RotationType.NORTH, true, imagepath,0,0);
+        TileV initialtileV = new TileV(TileType.CABIN, connectors, RotationType.NORTH, true, imagepath, 0, 0);
         this.spaceshipBoard = grid;
-        setSpaceshipBoardTile(initialtileV,new Coordinate(7,7));
+        setSpaceshipBoardTile(initialtileV, new Coordinate(7, 7));
         this.nickname = nickname;
         this.color = color;
         this.statePlayer = StatePlayerType.NOT_FINISHED;
@@ -59,6 +61,14 @@ public class PlayerV {
         this.bookedTiles = new HashMap<>();
         bookedTiles.put(1, null);
         bookedTiles.put(2, null);
+    }
+
+    public boolean isShipBroken() {
+        return isShipBroken;
+    }
+
+    public void setShipBroken(boolean shipBroken) {
+        isShipBroken = shipBroken;
     }
 
     public boolean[][] getSpaceshipMask() {
@@ -117,7 +127,7 @@ public class PlayerV {
         return bookedTiles;
     }
 
-    public  void setBookedTiles(int position, TileV tileV) {
+    public void setBookedTiles(int position, TileV tileV) {
         bookedTiles.put(position, tileV);
 
     }

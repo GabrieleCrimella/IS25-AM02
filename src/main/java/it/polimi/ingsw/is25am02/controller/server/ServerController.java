@@ -275,7 +275,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     private Player getPlayerFromNickname(String nickname) throws PlayerNotFoundException {
         for (GameSession g : activeGames.values()) {
             for (Player p : g.getGame().getPlayers()) {
-                if (p.getNickname().equals(nickname)) {
+                if (p.getNickname().equalsIgnoreCase(nickname)) {
                     return p;
                 }
             }

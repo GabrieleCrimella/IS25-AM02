@@ -422,7 +422,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int damageY = Integer.parseInt(tokenizer.nextToken());
                     controller.calculateDamage(nickname, new Coordinate(damageX, damageY));
                     break;
-
+/*
                 case "keepBlock":
                     if (tokenizer.countTokens() < 2) {
                         reportError("error.reading.input.syntax", Map.of("syntax", "/keepBlock <x> <y>"));
@@ -432,7 +432,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int keepY = Integer.parseInt(tokenizer.nextToken());
                     controller.keepBlock(nickname, new Coordinate(keepX, keepY));
                     break;
-
+*/
                 default:
                     reportError("error.reading.notFound", Map.of("command", command));
                     break;
@@ -566,5 +566,51 @@ public class TuiConsole implements Runnable, ConsoleClient {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    public void spaceshipBrokenUpdate(String details, Coordinate[][] ships) {
+        int i, spaceshipNumber = 0;
+        System.out.println(">> Spaceship broken!!");
+        for (i = 0; i < ships.length; i++) {
+            System.out.print("Spaceship " + i + ": ");
+            for (int j = 0; j < ships[i].length; j++) {
+                System.out.print("(" + ships[i][j].x() + "," + ships[i][j].y() + ") - ");
+            }
+            System.out.println();
+        }
+
+        do {
+            System.out.println("> enter the number of the spaceship you want to maintain (0," + (i - 1) + ")");
+            try {
+                String input = reader.readLine();
+                spaceshipNumber = Integer.parseInt(input);
+                if (spaceshipNumber >= 0 && spaceshipNumber < i) {
+                    switch (details) {
+                        case "build":
+                            controller.keepBlock(nickname, ships[spaceshipNumber][0]);
+                            break;
+                        case "meteoritesStorm":
+                            //todo chiamare il metodo keepBlocks su MeteoritesStorm
+                            break;
+                        case "pirate":
+                            //todo chiamare il metodo keepBlocks su Pirate
+                            break;
+                        case "warZonaI":
+                            //todo chiamare il metodo keepBlocks su WarZonaI
+                            break;
+                        case "warZonaII":
+                            //todo chiamare il metodo keepBlocks su WarZonaII
+                            break;
+                    }
+                    break;
+                } else {
+                    System.out.println("Invalid spaceship number. Please try again.");
+                }
+            } catch (IOException e) {
+                //todo capire come gestirlo
+                reportError("error.reading.loop", null);
+            }
+
+        } while (spaceshipNumber < 0 || spaceshipNumber >= i);
     }
 }

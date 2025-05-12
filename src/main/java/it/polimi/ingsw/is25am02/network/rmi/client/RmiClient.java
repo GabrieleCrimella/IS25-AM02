@@ -48,17 +48,30 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         console = choice;
     }
 
-    public void setNickname(String nickname) { console.setNickname(nickname); }
+    public void setNickname(String nickname) {
+        console.setNickname(nickname);
+    }
 
-    public VirtualServer getServer() { return server; }
+    public VirtualServer getServer() {
+        return server;
+    }
 
     public ConsoleClient getConsole() {
         return console;
     }
 
-    public void setGameV(GameV gameV) { this.gameV = gameV; }
+    public void setGameV(GameV gameV) {
+        this.gameV = gameV;
+    }
 
-    public GameV getGameV() { return gameV; }
+    public GameV getGameV() {
+        return gameV;
+    }
+
+    @Override
+    public void spaceshipBrokenUpdate(String details, Coordinate[][] ships) throws RemoteException {
+        console.spaceshipBrokenUpdate(details, ships);
+    }
 
     @Override
     public void reportError(String keys, Map<String, String> params) throws RemoteException {
@@ -71,15 +84,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showTileRemoval(Coordinate coordinate, String nickname){ //tolgo dal player p la tile in posizione coordinate
+    public void showTileRemoval(Coordinate coordinate, String nickname) { //tolgo dal player p la tile in posizione coordinate
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN)){
-                        showCrewRemoval(coordinate,nickname);
-                    }
-                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)){
-                        showBatteryRemoval(coordinate,nickname, playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBattery()-1);
+                if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()) {
+                    if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN)) {
+                        showCrewRemoval(coordinate, nickname);
+                    } else if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY)) {
+                        showBatteryRemoval(coordinate, nickname, playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBattery() - 1);
                     }
                     playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = Optional.empty();
                 }
@@ -88,11 +100,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showBatteryRemoval(Coordinate coordinate, String nickname, int numBattery){
-    //voglio mettere nella tile in coordinate nella spaceship copiata una batteria in meno
+    public void showBatteryRemoval(Coordinate coordinate, String nickname, int numBattery) {
+        //voglio mettere nella tile in coordinate nella spaceship copiata una batteria in meno
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
+                if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()) {
                     playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBattery(numBattery);
                 }
             }
@@ -100,18 +112,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showCrewRemoval(Coordinate coordinate, String nickname){
+    public void showCrewRemoval(Coordinate coordinate, String nickname) {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBAliens()>0){
+                if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()) {
+                    if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumBAliens() > 0) {
                         playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumBAliens(0);
-                    }
-                    else if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumPAliens()>0){
+                    } else if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumPAliens() > 0) {
                         playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumPAliens(0);
-                    }
-                    else{
-                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumHumans(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumHumans()-1);
+                    } else {
+                        playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().setNumHumans(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].get().getNumHumans() - 1);
                     }
                 }
             }
@@ -119,15 +129,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showBoxUpdate(Coordinate coordinate, String nickname, List<BoxType> boxList){
-        int numred=0;
-        int numyellow=0;
-        int numblue=0;
-        int numgreen=0;
+    public void showBoxUpdate(Coordinate coordinate, String nickname, List<BoxType> boxList) {
+        int numred = 0;
+        int numyellow = 0;
+        int numblue = 0;
+        int numgreen = 0;
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                if(playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()){
-                    for(BoxType box: boxList) {
+                if (playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()].isPresent()) {
+                    for (BoxType box : boxList) {
                         if (box.equals(BoxType.RED)) {
                             numred++;
                         } else if (box.equals(BoxType.YELLOW)) {
@@ -148,7 +158,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showCreditUpdate(String nickname, int cosmicCredits){
+    public void showCreditUpdate(String nickname, int cosmicCredits) {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 playerv.setCredits(cosmicCredits);
@@ -159,12 +169,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     //todo cosa deve fare?
     @Override
-    public void showUpdatedOthers(){
+    public void showUpdatedOthers() {
 
     }
 
     @Override
-    public void showPositionUpdate(String nickname, int position){
+    public void showPositionUpdate(String nickname, int position) {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 gameV.getGlobalBoard().setPosition(playerv, position);
@@ -174,26 +184,26 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     //viene chiamato quando viene girata la clessidra
     @Override
-    public void showHourglassUpdate(long timeLeft){
+    public void showHourglassUpdate(long timeLeft) {
         //gameV.getHourglass().flip();
         gameV.getHourglass().setTimeLeft(timeLeft);
     }
 
     @Override
-    public void showDiceUpdate(String nickname, int result){
+    public void showDiceUpdate(String nickname, int result) {
         gameV.getDiceV().setResult(result);
 
     }
 
     @Override
-    public void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox){ //todo voglio aggiungere una tile all'heaptile
-        TileV tileV = new TileV(tType,connectors,rotationType, true,imagepath,maxBattery, maxBox);
+    public void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox) { //todo voglio aggiungere una tile all'heaptile
+        TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
         gameV.getHeapTilesV().addToHeapTile(tileV);
     }
 
     // tolgo un tile che è stata messa in una nave
     @Override
-    public void showTileRemovalFromHeapTile(String imagepath){
+    public void showTileRemovalFromHeapTile(String imagepath) {
         for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
             if (tileV.getImagePath().equals(imagepath)) {
                 gameV.getHeapTilesV().removeTile(tileV);
@@ -203,9 +213,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showDeckAllowUpdate(String player) throws RemoteException{
-        for(PlayerV playerV : gameV.getPlayers()){
-            if(player.equals(playerV.getNickname())){
+    public void showDeckAllowUpdate(String player) throws RemoteException {
+        for (PlayerV playerV : gameV.getPlayers()) {
+            if (player.equals(playerV.getNickname())) {
                 playerV.setDeckAllowed();
                 return;
             }
@@ -218,9 +228,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showMinideckUpdate(String nickname, int deck){
-        for(PlayerV playerV : gameV.getPlayers()){
-            if(nickname.equals(playerV.getNickname())){
+    public void showMinideckUpdate(String nickname, int deck) {
+        for (PlayerV playerV : gameV.getPlayers()) {
+            if (nickname.equals(playerV.getNickname())) {
                 playerV.setNumDeck(deck);
                 return;
             }
@@ -230,13 +240,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     //todo in base a come scegliamo di fare la current card questa potrebbe dover essere rivista
     @Override
     public void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType cardType, String comment) {
-        CardV card = new CardV(stateCard,imagepath,cardType, comment);
+        CardV card = new CardV(stateCard, imagepath, cardType, comment);
         gameV.getCurrentState().setCurrentCard(card);
         printOnConsole();
     }
 
     @Override
-    public void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname) {
+    public void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox, String nickname) {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
@@ -245,7 +255,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                         printOnConsole();
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
-                TileV tileV = new TileV(tType,connectors,rotationType,true,imagepath,maxBattery,maxBox);
+                TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
                 playerv.setCurrentTile(Optional.of(tileV));
                 printOnConsole();
             }
@@ -265,7 +275,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     //una tile viene aggiunta ad una nave, potrebbe essere che è nel set di tile oppure che devo crearla
     @Override
-    public void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname, Coordinate coordinate){
+    public void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox, String nickname, Coordinate coordinate) {
         for (PlayerV playerv : gameV.getPlayers()) {
             for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                 if (tileV.getImagePath().equals(imagepath)) {
@@ -288,15 +298,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType cardType,String currentComment, StateGameType stateGame, String currentPlayer, boolean[][] mask,int[] startingpositions, HashMap<Integer , List<List<Object>>> deck) throws RemoteException {
+    public void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType cardType, String currentComment, StateGameType stateGame, String currentPlayer, boolean[][] mask, int[] startingpositions, HashMap<Integer, List<List<Object>>> deck) throws RemoteException {
         ArrayList<PlayerV> players = new ArrayList<>();
-        CardV currentCardV = new CardV(stateCard,currentCardImage, cardType, currentComment);
+        CardV currentCardV = new CardV(stateCard, currentCardImage, cardType, currentComment);
         PlayerV currentPlayerV = null;
 
-        for(String p: playercolors.keySet()){
+        for (String p : playercolors.keySet()) {
 
-            PlayerV playerV = new PlayerV(p,playercolors.get(p), mask);
-            if(p.equals(currentPlayer)) currentPlayerV = playerV;
+            PlayerV playerV = new PlayerV(p, playercolors.get(p), mask);
+            if (p.equals(currentPlayer)) currentPlayerV = playerV;
             players.add(playerV);
         }
 
@@ -322,9 +332,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
         CardDeckV cardDeckV = new CardDeckV(deckCardV);
 
-        StateV stateV = new StateV(currentCardV,currentPlayerV,stateGame);
+        StateV stateV = new StateV(currentCardV, currentPlayerV, stateGame);
         GameboardV gameboardV = new GameboardV(startingpositions, level);
-        GameV game = new GameV(players,level, gameboardV, stateV, false, console, cardDeckV);
+        GameV game = new GameV(players, level, gameboardV, stateV, false, console, cardDeckV);
 
         setGameV(game);
         console.getPrinter().setGame(gameV);
@@ -334,13 +344,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showGameStateUpdate(StateGameType newGamestate) throws  RemoteException{
+    public void showGameStateUpdate(StateGameType newGamestate) throws RemoteException {
         gameV.getCurrentState().setPhase(newGamestate);
     }
 
     @Override
-    public void showPlayerStateUpdate(String nickname, StatePlayerType newPlayerstate) throws  RemoteException{
-        for  (PlayerV playerV : gameV.getPlayers()) {
+    public void showPlayerStateUpdate(String nickname, StatePlayerType newPlayerstate) throws RemoteException {
+        for (PlayerV playerV : gameV.getPlayers()) {
             if (playerV.getNickname().equals(nickname)) {
                 playerV.setStatePlayer(newPlayerstate);
             }
@@ -348,12 +358,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showCardStateUpdate(StateCardType newCardstate) throws  RemoteException{
+    public void showCardStateUpdate(StateCardType newCardstate) throws RemoteException {
         gameV.getCurrentCard().setStateCard(newCardstate);
     }
 
     @Override
-    public void showCurrentPlayerUpdate(String nickname) throws  RemoteException{
+    public void showCurrentPlayerUpdate(String nickname) throws RemoteException {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 gameV.getCurrentState().setCurrentPlayer(playerv);
@@ -376,16 +386,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showAddCrewUpdate(String nickname,Coordinate pos, AliveType type) throws RemoteException{
+    public void showAddCrewUpdate(String nickname, Coordinate pos, AliveType type) throws RemoteException {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                if(type.equals(AliveType.BROWN_ALIEN)){
+                if (type.equals(AliveType.BROWN_ALIEN)) {
                     playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumBAliens(1);
-                }
-                else if(type.equals(AliveType.PURPLE_ALIEN)){
+                } else if (type.equals(AliveType.PURPLE_ALIEN)) {
                     playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumPAliens(1);
-                }
-               else{
+                } else {
                     playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumHumans(2);
                 }
             }
@@ -394,30 +402,31 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showBookedTileNullityUpdate(String nickname, int index, Coordinate pos) throws RemoteException{
+    public void showBookedTileNullityUpdate(String nickname, int index, Coordinate pos) throws RemoteException {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
-                playerv.setSpaceshipBoardTile(playerv.getBookedTiles().get(index),pos);
-                playerv.getBookedTiles().put(index,null);
+                playerv.setSpaceshipBoardTile(playerv.getBookedTiles().get(index), pos);
+                playerv.getBookedTiles().put(index, null);
             }
 
         }
     }
 
     @Override
-    public void showEarlyLandingUpdate(String nickname) throws RemoteException{
+    public void showEarlyLandingUpdate(String nickname) throws RemoteException {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 gameV.getGlobalBoard().getPositions().remove(playerv);
             }
         }
     }
+
     @Override
-    public void showBuildTimeIsOverUpdate() throws RemoteException{
+    public void showBuildTimeIsOverUpdate() throws RemoteException {
         gameV.setBuildTimeIsOver(true);
     }
 
-    private void printOnConsole(){
+    private void printOnConsole() {
         console.getPrinter().print();
     }
 }

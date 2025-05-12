@@ -1,17 +1,8 @@
 package it.polimi.ingsw.is25am02.network;
 
-import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.model.Card;
-import it.polimi.ingsw.is25am02.model.Gameboard;
-import it.polimi.ingsw.is25am02.model.State;
-import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
-import it.polimi.ingsw.is25am02.view.modelDuplicateView.*;
-import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
-import javafx.util.Pair;
 
 import java.rmi.Remote;
 import java.util.*;
@@ -32,6 +23,8 @@ public interface VirtualView extends Remote {
     void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType type,String comment, StateGameType stateGame, String currentPlayer, boolean[][] mask, int[] positions, HashMap<Integer , List<List<Object>>> deck) throws Exception;
 
     void showTileRemoval(Coordinate coordinate, String nickname) throws RemoteException;
+
+    void spaceshipBrokenUpdate(String details, Coordinate[][] ships) throws RemoteException;
 
     void showBatteryRemoval(Coordinate coordinate, String nickname, int numBattery) throws RemoteException;
 
