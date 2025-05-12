@@ -244,7 +244,8 @@ public class Game implements Game_Interface {
             buildControl();
             try {
                 player.getObserver().showHourglassUpdate(hourglass.getTimeLeft());
-            } catch (RemoteException e) {
+                player.getObserver().displayMessage("hourglass.time", Map.of("tim", String.valueOf(hourglass.getTimeLeft())));
+            } catch (Exception e) {
                 ServerController.logger.log(Level.SEVERE, "error in method hourglass", e);
             };
         } catch (LevelException e) {

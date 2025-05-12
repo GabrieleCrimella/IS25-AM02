@@ -37,4 +37,8 @@ public class CardV {
     public CardType getCardType() {
         return cardType;
     }
+
+    public String getComment() {
+        return comment;
+    }
 }
