@@ -45,6 +45,7 @@ public class GraphicPrinter {
 
     public void print() {
         clearConsole();
+        printRules();
         if (game.getCurrentState().getPhase() == StateGameType.BUILD) {
             printCurrentSpaceship(myName);
             printSpaceship(myName);
@@ -637,10 +638,19 @@ public class GraphicPrinter {
             } else {
                 console.displayMessage("helper.build.1", null);
             }
-        } else if (game.getCurrentState().getPhase() == StateGameType.CHECK || game.getCurrentState().getPhase() == StateGameType.CORRECTION) {
-
+        } else if (game.getCurrentState().getPhase() == StateGameType.CHECK) {
+            console.displayMessage("helper.check", null);
+        } else if(game.getCurrentState().getPhase() == StateGameType.CORRECTION){
+            console.displayMessage("helper.correction", null);
+        } else if(game.getCurrentState().getPhase() == StateGameType.INITIALIZATION_SPACESHIP){
+            if(game.getLevel() == 0) {
+                console.displayMessage("helper.initialization.0", null);
+            } else {
+                console.displayMessage("helper.initialization.1", null);
+            }
         } else {
-
+            console.displayMessage("helper.match", null);
         }
+        System.out.println();
     }
 }
