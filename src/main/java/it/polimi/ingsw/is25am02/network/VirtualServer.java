@@ -28,6 +28,8 @@ public interface VirtualServer extends Remote {
     void bookTile(String nickname) throws RemoteException;
     void addBookedTile(String nickname, int index, Coordinate pos, RotationType rotation) throws RemoteException;
     void returnTile(String nickname) throws RemoteException;
+    //void rotateTile(String nickname) throws RemoteException;
+    //void rotateBookedTile(String nickname, int index) throws RemoteException;
     void addTile(String nickname, Coordinate pos, RotationType rotation) throws RemoteException;
     void shipFinished(String nickname) throws RemoteException;
     void checkSpaceship(String nickname) throws RemoteException;

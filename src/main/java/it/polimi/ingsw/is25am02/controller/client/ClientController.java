@@ -201,9 +201,7 @@ public class ClientController implements VirtualServer {
 
     public void rotateTile(String nickname) throws RemoteException {
         if (menuControl(MenuState.GAME) && gameV.buildControl() && gameV.stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, getPlayerVFromNickname(nickname))) {
-            gameV.getPlayers().stream()
-                    .filter(t -> t.getNickname().equalsIgnoreCase(nickname))
-                    .findFirst().flatMap(PlayerV::getCurrentTile)
+            getPlayerVFromNickname(nickname).getCurrentTile()
                     .ifPresentOrElse(
                             t -> t.setRotationType(
                                     switch (t.getRotationType()) {
@@ -214,6 +212,22 @@ public class ClientController implements VirtualServer {
                                     }),
                             () -> connection.getConsole().reportError("error.viewing", null)
                     );
+        }
+    }
+
+    public void rotateBookedTile(String nickname, int index) throws RemoteException {
+        if (menuControl(MenuState.GAME) && gameV.buildControl() && gameV.stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, getPlayerVFromNickname(nickname))) {
+            TileV temp = getPlayerVFromNickname(nickname).getBookedTiles().get(index);
+            if (temp == null) {
+                connection.getConsole().reportError("error.reading.format", null);
+                return;
+            }
+            temp.setRotationType(switch (temp.getRotationType()) {
+                case NORTH -> EAST;
+                case EAST -> SOUTH;
+                case SOUTH -> WEST;
+                case WEST -> NORTH;
+            });
         }
     }
 

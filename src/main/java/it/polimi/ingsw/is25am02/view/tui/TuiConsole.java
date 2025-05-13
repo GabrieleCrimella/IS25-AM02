@@ -116,6 +116,8 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
     //Elabora il comando inserito dall'utente
     private void processCommand(String input) {
+        int index = 0;
+
         if (!input.startsWith("/")) {
             reportError("error.reading.slash", null);
             return;
@@ -264,14 +266,19 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "addBooked":
-                    if (tokenizer.countTokens() < 4) {
+                    if (tokenizer.countTokens() < 3) {
                         reportError("error.reading.input.syntax", Map.of("syntax", "/addBooked <index> <x> <y> <rotation>"));
                         break;
                     }
-                    int index = Integer.parseInt(tokenizer.nextToken());
+                    index = Integer.parseInt(tokenizer.nextToken());
                     int x = Integer.parseInt(tokenizer.nextToken());
                     int y = Integer.parseInt(tokenizer.nextToken());
-                    RotationType rotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
+                    //RotationType rotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
+                    RotationType rotation = controller.getPlayerVFromNickname(nickname).getBookedTiles().get(index).getRotationType();
+                    if (rotation == null) {
+                        reportError("error.reading.format", null);
+                        break;
+                    }
                     controller.addBookedTile(nickname, index, new Coordinate(x, y), rotation);
                     break;
 
@@ -280,7 +287,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "add":
-                    //todo ricordarsi di togliere rotation dalla guida del manuale
                     if (tokenizer.countTokens() < 2) {
                         reportError("error.reading.input.syntax", Map.of("syntax", "/add <x> <y>"));
                         break;
@@ -292,6 +298,23 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "rotate":
                     controller.rotateTile(nickname);
+                    printer.print();
+                    break;
+
+                case "rotateBookedTile":
+                    HashMap<Integer, TileV> bookedTileV = controller.getPlayerVFromNickname(nickname).getBookedTiles();
+                    List<TileV> tileSistemate = new ArrayList<>(bookedTileV.values());
+                    tileSistemate.removeIf(Objects::isNull);
+                    if (!tokenizer.hasMoreTokens() && tileSistemate.size() == 1) {
+                        index = controller.getPlayerVFromNickname(nickname).getBookedTiles().keySet().iterator().next();
+                    } else if (tokenizer.countTokens() == 1) {
+                        index = Integer.parseInt(tokenizer.nextToken());
+                    } else {
+                        reportError("error.reading.input.syntax", Map.of("syntax", "/rotateBookedTile [<index>]"));
+                        break;
+                    }
+
+                    controller.rotateBookedTile(nickname, index);
                     printer.print();
                     break;
 
