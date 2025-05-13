@@ -194,7 +194,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showDiceUpdate(String nickname, int result) {
         gameV.getDiceV().setResult(result);
-
     }
 
     @Override

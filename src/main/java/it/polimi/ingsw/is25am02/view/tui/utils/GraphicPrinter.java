@@ -653,4 +653,17 @@ public class GraphicPrinter {
         }
         System.out.println();
     }
+
+    public void printLegend() {
+        System.out.println("\nLegend:");
+        System.out.println("Connectors : (!) Universal    (:) Double    (.) Single");
+        System.out.println("Tiles : ");
+        System.out.println(BIANCO + "#" + RESET + " Structural\n" + MAGENTA + "G" + RESET + " Single cannon");
+        System.out.println(VERDE_FOGLIA + "G" + RESET + " Double cannon\n" + MARRONE + "M" + RESET + " Single engine");
+        System.out.println(VERDE_FOGLIA + "M" + RESET + " Double engine\n" + BIANCO + "C" + RESET + " Cabin");
+        System.out.println(ROSA + "S" + RESET + " Single special storage\n" + ROSA + "D" + RESET + " Double special storage");
+        System.out.println(CIANO + "D" + RESET + " Double storage\n" + CIANO + "T" + RESET + " Triple storage");
+        System.out.println(MAGENTA + "O" + RESET + " Purple cabin\n" + MARRONE + "O" + RESET + " Brown cabin");
+        System.out.println(VERDE + "E" + RESET + " Battery storage\n" + VERDE_FOGLIA + "S" + RESET + " Shield");
+    }
 }
