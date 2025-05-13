@@ -24,7 +24,7 @@ public class Epidemy extends Card {
     public void effect(Game game){
         for(Player p : game.getGameboard().getRanking()){
             try {
-                p.getSpaceship().epidemyRemove();
+                p.getSpaceship().epidemyRemove(p.getNickname());
             } catch (IllegalRemoveException e) {
                 System.out.println(e.getMessage());
             }

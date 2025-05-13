@@ -4,12 +4,15 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 
+import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Card {
     private final int level;
@@ -17,6 +20,7 @@ public abstract class Card {
     private final String imagePath;
     private boolean testFlight;
     private String comment;
+    protected ConcurrentHashMap<String, VirtualView> observers;
 
     public Card(int level, StateCardType stateCard, String imagePath, String comment, boolean testFlight) {
         this.level = level;
@@ -24,6 +28,10 @@ public abstract class Card {
         this.imagePath = imagePath;
         this.comment = comment;
         this.testFlight = testFlight;
+    }
+
+    public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {
+        this.observers = observers;
     }
 
     public String getComment() {
@@ -46,6 +54,13 @@ public abstract class Card {
 
     public void setStateCard(StateCardType stateCardType) {
         this.stateCard = stateCardType;
+        for (String nick:observers.keySet()) {
+            try {
+                observers.get(nick).showCardStateUpdate(stateCardType);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void choice(Game game, Player player, boolean choice) throws UnsupportedOperationException, IllegalPhaseException {

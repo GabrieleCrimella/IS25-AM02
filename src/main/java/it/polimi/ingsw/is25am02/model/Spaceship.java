@@ -606,7 +606,14 @@ public class Spaceship {
                 if (isExposed(rotationType, num)) {
                     if (isShielded(rotationType) && storage.isPresent()) {
                         storage.get().removeBattery();
-                        listener.onRemoveBatteryUpdate(storage.get().getNumBattery(), new Coordinate(spaceshipIterator.getX(storage.get()), spaceshipIterator.getY(storage.get())));
+                        for (String nick:observers.keySet()) {
+                            try {
+                                Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
+                                observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method removeBattery", e);
+                            }
+                        }
                         return isSpaceshipDivided();
                     } else {
                         removeTile(nicknameP, targetTileX, targetTileY);
@@ -621,7 +628,14 @@ public class Spaceship {
                         return false;
                     } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
                         storage.get().removeBattery();
-                        listener.onRemoveBatteryUpdate(storage.get().getNumBattery(), new Coordinate(spaceshipIterator.getX(storage.get()), spaceshipIterator.getY(storage.get())));
+                        for (String nick:observers.keySet()) {
+                            try {
+                                Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
+                                observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method removebattery", e);
+                            }
+                        }
                         return false;
                     } else {
                         removeTile(nicknameP, targetTileX, targetTileY);
@@ -643,7 +657,14 @@ public class Spaceship {
                         return isSpaceshipDivided();
                     } else {
                         storage.get().removeBattery();
-                        listener.onRemoveBatteryUpdate(storage.get().getNumBattery(), new Coordinate(spaceshipIterator.getX(storage.get()), spaceshipIterator.getY(storage.get())));
+                        for (String nick:observers.keySet()) {
+                            try {
+                                Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
+                                observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                            }
+                        }
                         return false;
                     }
                 } else return false;
@@ -696,7 +717,7 @@ public class Spaceship {
         return BoxType.getBoxTypeByNum(numBestType).equals(type);
     }
 
-    public void epidemyRemove() throws IllegalRemoveException {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
+    public void epidemyRemove(String nicknameP) throws IllegalRemoveException {// devo controllare che le tessere intorno siano cabine connesse, se si elimino un alive
         //per ogni cabina piena controlla se ha una cabina piena affiancata, se si e non è già nella lista, allora insierisci nella lista
         //dopo togli un umano/alieno da ogni cabina nella lista
         List<Tile> cabinAffected = new ArrayList<>();
@@ -728,8 +749,14 @@ public class Spaceship {
         if (!cabinAffected.isEmpty()) {
             for (Tile cabin : cabinAffected) {
                 cabin.removeCrew();
-                //todo bisognerà aggiungere l'update sotto ma adesso non so se va qui
-                //listener.onRemoveCrewUpdate(new Coordinate(spaceshipIterator.getX(cabin),spaceshipIterator.getY(cabin)) , cabin.getCrew().size());
+                for (String nick:observers.keySet()) {
+                    Coordinate pos = new Coordinate (getSpaceshipIterator().getX(cabin),getSpaceshipIterator().getY(cabin));
+                    try {
+                        observers.get(nick).showCrewRemoval(pos, nicknameP);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                    }
+                }
             }
         }
     }

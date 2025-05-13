@@ -1,10 +1,15 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
+
+import java.rmi.RemoteException;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;
 
@@ -40,6 +45,18 @@ public class AbbandonedShip extends Card{
             //Applico effetti (Volo e Crediti)
             player.getSpaceship().addCosmicCredits(creditWin);
             game.getGameboard().move((-1)*flyBack, player);
+            for (String nick:observers.keySet()) {
+                try {
+                    observers.get(nick).showCreditUpdate(player.getNickname(),player.getSpaceship().getCosmicCredits());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                }
+                try {
+                    observers.get(nick).showPositionUpdate(player.getNickname(),game.getGameboard().getPositions().get(player));
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                }
+            }
         } else {
             game.nextPlayer();
         }
@@ -48,6 +65,15 @@ public class AbbandonedShip extends Card{
     @Override
     public void removeCrew(Game game, Player player, Tile cabin) throws IllegalRemoveException {
         cabin.removeCrew();
+        for (String nick:observers.keySet()) {
+            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
+            try {
+                observers.get(nick).showCrewRemoval(pos, player.getNickname());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+            }
+        }
+
         AliveRemoved++;
 
         if (AliveRemoved == AliveLost) {

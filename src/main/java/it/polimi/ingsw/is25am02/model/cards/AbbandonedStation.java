@@ -1,15 +1,21 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
+import it.polimi.ingsw.is25am02.network.VirtualView;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 
+import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;
 
@@ -56,6 +62,13 @@ public class AbbandonedStation extends Card {
         if(player.getSpaceship().calculateNumAlive() >= AliveNeeded && choice){ //se ho abbastanza giocatori per salire sulla nave
             setStateCard(StateCardType.BOXMANAGEMENT);
             game.getGameboard().move((-1)*daysLost, player);
+            for (String nick:observers.keySet()) {
+                try {
+                    observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                }
+            }
         }
         else {
             game.nextPlayer();

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
@@ -12,7 +13,9 @@ import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
 
+import java.rmi.RemoteException;
 import java.util.*;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;
 
@@ -67,6 +70,13 @@ public class WarZone_I extends Card {
                     }
                 }
                 game.getGameboard().move((-1)*flyback, p);
+                for (String nick:observers.keySet()) {
+                    try {
+                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choicecrew", e);
+                    }
+                }
                 currentPhase++;
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
             }
@@ -86,6 +96,14 @@ public class WarZone_I extends Card {
             declarationMotor.put(player, player.getSpaceship().calculateMotorPower(dMotors));
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+                for (String nick:observers.keySet()) {
+                    try {
+                        Coordinate pos = new Coordinate (battery.x(),battery.y());
+                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublemotor", e);
+                    }
+                }
             }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {
@@ -110,6 +128,14 @@ public class WarZone_I extends Card {
         if(currentPhase == 2) {
             try {
                 cabin.removeCrew();
+                for (String nick:observers.keySet()) {
+                    try {
+                        Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
+                        observers.get(nick).showCrewRemoval(pos, player.getNickname());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method removecrew", e);
+                    }
+                }
                 aliveRemoved++;
             } catch (IllegalRemoveException e) {
                 System.out.println(e.getMessage());
@@ -134,6 +160,14 @@ public class WarZone_I extends Card {
             declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+                for (String nick:observers.keySet()) {
+                    try {
+                        Coordinate pos = new Coordinate (battery.x(),battery.y());
+                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                    }
+                }
             }
 
             if (player.equals(game.getGameboard().getRanking().getLast())) {

@@ -413,11 +413,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     controller.choicePlanet(nickname, planetIndex);
                     break;
 
-                case "choiceDoublemotor":
+                case "choiceDoubleMotor":
                     processChoiceDoubleMotor(tokenizer);
                     break;
 
-                case "choiceDoublecannon":
+                case "choiceDoubleCannon":
                     processChoiceDoubleCannon(tokenizer);
                     break;
 
@@ -490,6 +490,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
             int numMotors = Integer.parseInt(tokenizer.nextToken());
             List<Coordinate> motors = new ArrayList<>();
+            List<Coordinate> batteries = new ArrayList<>();
+            if (numMotors == 0){
+                controller.choiceDoubleMotor(nickname, motors, batteries);
+            }
 
             for (int i = 0; i < numMotors; i++) {
                 if (tokenizer.countTokens() < 2) {
@@ -507,7 +511,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
             }
 
             int numBatteries = Integer.parseInt(tokenizer.nextToken());
-            List<Coordinate> batteries = new ArrayList<>();
 
             for (int i = 0; i < numBatteries; i++) {
                 if (tokenizer.countTokens() < 2) {

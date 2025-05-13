@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
@@ -11,9 +12,11 @@ import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.CHOICE_ATTRIBUTES;
 
@@ -54,6 +57,14 @@ public class Pirate extends Enemies {
             double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+                for (String nick:observers.keySet()) {
+                    try {
+                        Coordinate pos = new Coordinate (battery.x(),battery.y());
+                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                    }
+                }
             }
 
             //Paragoni
@@ -83,6 +94,18 @@ public class Pirate extends Enemies {
                 //Applico effetti (Volo e Crediti)
                 player.getSpaceship().addCosmicCredits(getCredit());
                 game.getGameboard().move((-1) * getDaysLost(), player);
+                for (String nick:observers.keySet()) {
+                    try {
+                        observers.get(nick).showCreditUpdate(player.getNickname(),player.getSpaceship().getCosmicCredits());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                    }
+                    try {
+                        observers.get(nick).showPositionUpdate(player.getNickname(),game.getGameboard().getPositions().get(player));
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                    }
+                }
             }
 
             if (losers.isEmpty()) {

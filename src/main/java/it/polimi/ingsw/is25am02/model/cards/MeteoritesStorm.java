@@ -54,7 +54,6 @@ public class MeteoritesStorm extends Card {
 
         if(res){
             game.getCurrentCard().setStateCard(StateCardType.DECISION);
-            //todo tramite observers chiamare il metodo spaceshipBrokenUpdate sul client passando come parametro details meteoritesStorm
         }
         else{
             if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
