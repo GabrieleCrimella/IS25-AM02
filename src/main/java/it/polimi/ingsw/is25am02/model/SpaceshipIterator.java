@@ -287,19 +287,19 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public Optional<Tile> getUpTile(Tile t) {
-        return spaceshipBoard[getX(t)][getY(t) - 1];
+        return spaceshipBoard[getX(t)-1][getY(t)];
     }
 
     public Optional<Tile> getDownTile(Tile t) {
-        return spaceshipBoard[getX(t)][getY(t) + 1];
+        return spaceshipBoard[getX(t)+1][getY(t)];
     }
 
     public Optional<Tile> getLeftTile(Tile t) {
-        return spaceshipBoard[getX(t) - 1][getY(t)];
+        return spaceshipBoard[getX(t)][getY(t)-1];
     }
 
     public Optional<Tile> getRightTile(Tile t) {
-        return spaceshipBoard[getX(t) + 1][getY(t)];
+        return spaceshipBoard[getX(t)][getY(t)+1];
     }
 
     public Optional<Tile> getFrontTile(Tile t) {
