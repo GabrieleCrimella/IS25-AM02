@@ -250,16 +250,20 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox, String nickname) {
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(nickname) && console.getNickname().equals(nickname)) {
+            if (playerv.getNickname().equals(nickname)) {
                 for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                     if (tileV.getImagePath().equals(imagepath)) {
                         playerv.setCurrentTile(Optional.of(tileV));
-                        printOnConsole();
+                        if (console.getNickname().equals(nickname)){
+                            printOnConsole();
+                        }
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
                 playerv.setCurrentTile(Optional.of(tileV));
-                printOnConsole();
+                if (console.getNickname().equals(nickname)){
+                    printOnConsole();
+                }
             }
         }
     }
@@ -267,9 +271,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showCurrentTileNullityUpdate(String nickname) {
         for (PlayerV playerv : gameV.getPlayers()) {
-            if (playerv.getNickname().equals(nickname) && console.getNickname().equals(nickname)) {
+            if (playerv.getNickname().equals(nickname)) {
                 playerv.setCurrentTile(Optional.empty());
-                printOnConsole();
+                if (console.getNickname().equals(nickname)){
+                    printOnConsole();
+                }
 
             }
         }
@@ -282,18 +288,22 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                 if (tileV.getImagePath().equals(imagepath)) {
                     gameV.getHeapTilesV().removeFromHeapTile(tileV);
-                    if (playerv.getNickname().equals(nickname) && console.getNickname().equals(nickname)) {
+                    if (playerv.getNickname().equals(nickname) ) {
                         tileV.setRotationType(rotationType);
                         playerv.setSpaceshipBoardTile(tileV, coordinate);
-                        printOnConsole();
+                        if (console.getNickname().equals(nickname)){
+                            printOnConsole();
+                        }
 
                     }
                 }
             } //se non trovo la tile nell'heap tile la devo creare
-            if (playerv.getNickname().equals(nickname) && console.getNickname().equals(nickname)) {
+            if (playerv.getNickname().equals(nickname)) {
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
                 playerv.setSpaceshipBoardTile(tileV, coordinate);
-                printOnConsole();
+                if (console.getNickname().equals(nickname)){
+                    printOnConsole();
+                }
             }
 
         }

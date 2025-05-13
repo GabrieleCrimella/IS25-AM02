@@ -18,11 +18,12 @@ public abstract class Card {
     private boolean testFlight;
     private String comment;
 
-    public Card(int level, StateCardType stateCard, String imagePath, String comment) {
+    public Card(int level, StateCardType stateCard, String imagePath, String comment, boolean testFlight) {
         this.level = level;
         this.stateCard = stateCard;
         this.imagePath = imagePath;
         this.comment = comment;
+        this.testFlight = testFlight;
     }
 
     public String getComment() {

@@ -128,7 +128,7 @@ public class CardDeck {
                         creditWin = levelNode.get("creditWin").asInt();
                         daysLost = levelNode.get("daysLost").asInt();
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new AbbandonedShip(level, aliveLost, creditWin, daysLost, imagepath, comment));
+                        initialDeck.add(new AbbandonedShip(level, aliveLost, creditWin, daysLost, imagepath, comment, testFlight));
                         break;
                     case "ABANDONED_STATION":
                         aliveNeeded = levelNode.get("aliveNeeded").asInt();
@@ -148,7 +148,7 @@ public class CardDeck {
                             boxesWonType.add(box);
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonType, imagepath, comment));
+                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonType, imagepath, comment,testFlight));
                         break;
                     case "PIRATE":
                         cannonPower = levelNode.get("cannonPower").asInt();
@@ -170,7 +170,7 @@ public class CardDeck {
                             shots.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Pirate(level, cannonPower, daysLost, creditWin, shots, imagepath, comment));
+                        initialDeck.add(new Pirate(level, cannonPower, daysLost, creditWin, shots, imagepath, comment,testFlight));
                         break;
                     case "TRAFFICKER":
                         cannonPower = levelNode.get("cannonPower").asInt();
@@ -191,7 +191,7 @@ public class CardDeck {
                             boxesWonType.add(box);
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, boxesWon, boxesWonType, imagepath,comment));
+                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, boxesWon, boxesWonType, imagepath,comment,testFlight));
                         break;
                     case "SLAVEOWNER":
                         cannonPower = levelNode.get("cannonPower").asInt();
@@ -199,19 +199,19 @@ public class CardDeck {
                         aliveLost = levelNode.get("aliveLost").asInt();
                         creditWin = levelNode.get("creditWin").asInt();
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new SlaveOwner(level, cannonPower, daysLost, creditWin, aliveLost, imagepath,comment));
+                        initialDeck.add(new SlaveOwner(level, cannonPower, daysLost, creditWin, aliveLost, imagepath,comment,testFlight));
                         break;
                     case "OPENSPACE":
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new OpenSpace(level,imagepath,comment));
+                        initialDeck.add(new OpenSpace(level,imagepath,comment,testFlight));
                         break;
                     case "STARDUST":
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Stardust(level, imagepath,comment));
+                        initialDeck.add(new Stardust(level, imagepath,comment,testFlight));
                         break;
                     case "EPIDEMY":
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Epidemy(level, imagepath,comment));
+                        initialDeck.add(new Epidemy(level, imagepath,comment,testFlight));
                         break;
                     case "METEORITES":
                         meteorites.clear();
@@ -230,7 +230,7 @@ public class CardDeck {
                             meteorites.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new MeteoritesStorm(level, meteorites,imagepath,comment));
+                        initialDeck.add(new MeteoritesStorm(level, meteorites,imagepath,comment,testFlight));
                         break;
                     case "PLANETS":
                         daysLost = levelNode.get("daysLost").asInt();
@@ -255,7 +255,7 @@ public class CardDeck {
                             planetOffersTypes.add(boxList); // Aggiungi la lista alla lista principale
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Planet(level, store, daysLost, planetOffers, planetOffersTypes, imagepath,comment));
+                        initialDeck.add(new Planet(level, store, daysLost, planetOffers, planetOffersTypes, imagepath,comment,testFlight));
                         break;
                     case "WARZONE1":
                         daysLost = levelNode.get("daysLost").asInt();
@@ -276,7 +276,7 @@ public class CardDeck {
                             shots.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new WarZone_I(level, daysLost, aliveLost, shots, imagepath,comment));
+                        initialDeck.add(new WarZone_I(level, daysLost, aliveLost, shots, imagepath,comment,testFlight));
                         break;
                     case "WARZONE2":
                         daysLost = levelNode.get("daysLost").asInt();
@@ -297,7 +297,7 @@ public class CardDeck {
                             shots.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new WarZone_II(level, daysLost, boxesLost, shots, imagepath,comment));
+                        initialDeck.add(new WarZone_II(level, daysLost, boxesLost, shots, imagepath,comment,testFlight));
                         break;
                 }
             }

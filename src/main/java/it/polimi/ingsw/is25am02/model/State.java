@@ -17,7 +17,7 @@ public class State {
 
     public State(Player player) {
         this.phase = StateGameType.BUILD;
-        this.currentCard = new InitialCard(1, "","");
+        this.currentCard = new InitialCard(1, "","", false);
         this.currentPlayer = player;
     }
 
