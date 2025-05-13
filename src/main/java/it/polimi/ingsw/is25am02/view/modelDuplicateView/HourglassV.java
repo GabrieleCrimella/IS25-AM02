@@ -21,6 +21,10 @@ public class HourglassV {
         this.timeLeft = timeLeft;
     }
 
+    public long getTimeLeft() {
+        return timeLeft;
+    }
+
     //viene reimpostata la clessidra da capo
     public void flip(){
         timeLeft = durata;
