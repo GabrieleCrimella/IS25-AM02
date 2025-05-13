@@ -112,7 +112,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             }
         }
     }
-
+    //todo questo rimuove in automatica, sarebbe meglio che si prendesse la lista di alive, vedesse il tipo e quanti ce ne sono e lo settasse corretto.
     @Override
     public void showCrewRemoval(Coordinate coordinate, String nickname) {
         for (PlayerV playerv : gameV.getPlayers()) {
@@ -194,7 +194,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showDiceUpdate(String nickname, int result) {
         gameV.getDiceV().setResult(result);
-
     }
 
     @Override
@@ -255,12 +254,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                     if (tileV.getImagePath().equals(imagepath)) {
                         playerv.setCurrentTile(Optional.of(tileV));
-                        printOnConsole();
+                        if (console.getNickname().equals(nickname)){
+                            printOnConsole();
+                        }
                     }
                 } //se non trovo la tile nell'heap tile la devo creare
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
                 playerv.setCurrentTile(Optional.of(tileV));
-                printOnConsole();
+                if (console.getNickname().equals(nickname)){
+                    printOnConsole();
+                }
             }
         }
     }
@@ -270,7 +273,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 playerv.setCurrentTile(Optional.empty());
-                printOnConsole();
+                if (console.getNickname().equals(nickname)){
+                    printOnConsole();
+                }
 
             }
         }
@@ -283,10 +288,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                 if (tileV.getImagePath().equals(imagepath)) {
                     gameV.getHeapTilesV().removeFromHeapTile(tileV);
-                    if (playerv.getNickname().equals(nickname)) {
+                    if (playerv.getNickname().equals(nickname) ) {
                         tileV.setRotationType(rotationType);
                         playerv.setSpaceshipBoardTile(tileV, coordinate);
-                        printOnConsole();
+                        if (console.getNickname().equals(nickname)){
+                            printOnConsole();
+                        }
 
                     }
                 }
@@ -294,7 +301,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             if (playerv.getNickname().equals(nickname)) {
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
                 playerv.setSpaceshipBoardTile(tileV, coordinate);
-                printOnConsole();
+                if (console.getNickname().equals(nickname)){
+                    printOnConsole();
+                }
             }
 
         }

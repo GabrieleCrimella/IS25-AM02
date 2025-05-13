@@ -6,7 +6,6 @@ import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 
 public class TileV {
     private final TileType tType;
-    //private final String imagePath;
     private RotationType rotationType;
     private ConnectorType[] connectors;
     private boolean visible;

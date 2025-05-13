@@ -14,6 +14,8 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import static it.polimi.ingsw.is25am02.utils.enumerations.RotationType.*;
+
 //PlayerV diventa String nickname
 //PlayerColorV diventa int numEnum
 //tile in take tile non so come fare!!, id? immagine?
@@ -23,6 +25,7 @@ import java.util.List;
 //BoxTypeV diventa int numEnum
 
 //todo fare bene i controlli nella TUIconsole
+
 public class ClientController implements VirtualServer {
     private final ConnectionClient connection;
     private MenuState menuState;
@@ -66,7 +69,7 @@ public class ClientController implements VirtualServer {
         return gameV.getPlayers().stream().map(PlayerV::getNickname).toList();
     }
 
-    private PlayerV getPlayerVFromNickname(String nickname) throws RemoteException {
+    public PlayerV getPlayerVFromNickname(String nickname) throws RemoteException {
         for (PlayerV p : gameV.getPlayers()) {
             if (p.getNickname().equals(nickname)) {
                 return p;
@@ -194,6 +197,24 @@ public class ClientController implements VirtualServer {
             connection.getServer().returnTile(nickname);
         }
 
+    }
+
+    public void rotateTile(String nickname) throws RemoteException {
+        if (menuControl(MenuState.GAME) && gameV.buildControl() && gameV.stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, getPlayerVFromNickname(nickname))) {
+            gameV.getPlayers().stream()
+                    .filter(t -> t.getNickname().equalsIgnoreCase(nickname))
+                    .findFirst().flatMap(PlayerV::getCurrentTile)
+                    .ifPresentOrElse(
+                            t -> t.setRotationType(
+                                    switch (t.getRotationType()) {
+                                        case NORTH -> EAST;
+                                        case EAST -> SOUTH;
+                                        case SOUTH -> WEST;
+                                        case WEST -> NORTH;
+                                    }),
+                            () -> connection.getConsole().reportError("error.viewing", null)
+                    );
+        }
     }
 
     public void addTile(String nickname, Coordinate pos, RotationType rotation) throws RemoteException {

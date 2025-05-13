@@ -195,6 +195,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     controller.joinLobby(controller.getVirtualView(), lobbyId, nickname, joinColor);
                     break;
 
+                case "legend":
+                    getPrinter().printLegend();
+                    break;
+
                 case "flipHourglass":
                     controller.flipHourglass(nickname);
                     break;
@@ -276,14 +280,19 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "add":
-                    if (tokenizer.countTokens() < 3) {
-                        reportError("error.reading.input.syntax", Map.of("syntax", "/add <x> <y> <rotation>"));
+                    //todo ricordarsi di togliere rotation dalla guida del manuale
+                    if (tokenizer.countTokens() < 2) {
+                        reportError("error.reading.input.syntax", Map.of("syntax", "/add <x> <y>"));
                         break;
                     }
                     int addX = Integer.parseInt(tokenizer.nextToken());
                     int addY = Integer.parseInt(tokenizer.nextToken());
-                    RotationType addRotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
-                    controller.addTile(nickname, new Coordinate(addX, addY), addRotation);
+                    controller.addTile(nickname, new Coordinate(addX, addY), controller.getPlayerVFromNickname(nickname).getCurrentTile().get().getRotationType());
+                    break;
+
+                case "rotate":
+                    controller.rotateTile(nickname);
+                    printer.print();
                     break;
 
                 case "finish":
