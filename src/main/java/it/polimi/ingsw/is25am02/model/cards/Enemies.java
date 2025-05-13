@@ -8,8 +8,8 @@ public abstract class Enemies extends Card {
     private final int daysLost;
     private final int credit;
 
-    public Enemies(int level, int cannonPowers, int daysLost, int credit, StateCardType stateCard, String imagepath, String comment) {
-        super(level, stateCard, imagepath,comment);
+    public Enemies(int level, int cannonPowers, int daysLost, int credit, StateCardType stateCard, String imagepath, String comment,boolean testFlight) {
+        super(level, stateCard, imagepath,comment,testFlight);
         this.cannonPowers = cannonPowers;
         this.daysLost = daysLost;
         this.credit = credit;

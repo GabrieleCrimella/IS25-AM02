@@ -28,8 +28,8 @@ public class WarZone_I extends Card {
     private int currentPhase;
     private final CardType cardType;
 
-    public WarZone_I(int level, int flyback, int aliveLost, ArrayList<Pair<Integer, RotationType>> shots, String imagepath,String comment) {
-        super(level, StateCardType.CHOICE_ATTRIBUTES, imagepath,comment);
+    public WarZone_I(int level, int flyback, int aliveLost, ArrayList<Pair<Integer, RotationType>> shots, String imagepath,String comment,boolean testFlight) {
+        super(level, StateCardType.CHOICE_ATTRIBUTES, imagepath,comment,testFlight);
         this.flyback = flyback;
         this.aliveLost = aliveLost;
         this.aliveRemoved = 0;

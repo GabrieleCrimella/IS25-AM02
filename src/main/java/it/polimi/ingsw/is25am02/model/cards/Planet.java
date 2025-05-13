@@ -25,8 +25,8 @@ public class Planet extends Card {
     private final BoxStore store;
     private LinkedList<Box> boxesWon;
 
-    public Planet(int level, BoxStore store, int daysLost, ArrayList<LinkedList<Box>> planetOffers, ArrayList<LinkedList<BoxType>> planetOffersTypes, String imagepath,String comment) {
-        super(level, StateCardType.DECISION, imagepath,comment);
+    public Planet(int level, BoxStore store, int daysLost, ArrayList<LinkedList<Box>> planetOffers, ArrayList<LinkedList<BoxType>> planetOffersTypes, String imagepath,String comment,boolean testFlight) {
+        super(level, StateCardType.DECISION, imagepath,comment,testFlight);
         this.store = store;
         this.daysLost = daysLost;
         this.planetOffers = planetOffers;
