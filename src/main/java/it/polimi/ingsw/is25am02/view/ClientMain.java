@@ -11,7 +11,7 @@ public class ClientMain {
         ConnectionClient connection;
         ConsoleClient console;
         try {
-            if (args.length == 2) {
+            if (args.length == 3) {
                 connection = switch (args[0]) {
                     case "rmi" -> new RmiClient();
                     case "socket" -> new SocketClient();
@@ -24,7 +24,7 @@ public class ClientMain {
                 };
                 ClientController controller = new ClientController(connection);
 
-                connection.startConnection();
+                connection.startConnection(args[2]);
                 connection.setView(console);
 
                 console.start();

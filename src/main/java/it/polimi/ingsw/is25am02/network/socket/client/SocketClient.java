@@ -7,7 +7,7 @@ import it.polimi.ingsw.is25am02.view.ConsoleClient;
 public class SocketClient implements ConnectionClient {
     private ServerHandler handler;
     @Override
-    public void startConnection() throws Exception {
+    public void startConnection(String ip) throws Exception {
 
     }
 
