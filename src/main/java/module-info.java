@@ -8,7 +8,9 @@ module it.polimi.ingsw.is25am02 {
     requires com.google.gson;
 
 
-    opens it.polimi.ingsw.is25am02 to javafx.fxml;
-    exports it.polimi.ingsw.is25am02;
+    opens it.polimi.ingsw.is25am02.view.gui to javafx.fxml;
+    exports it.polimi.ingsw.is25am02.view.gui to javafx.graphics;
+    //exports it.polimi.ingsw.is25am02;
     exports it.polimi.ingsw.is25am02.network;
+    opens it.polimi.ingsw.is25am02.view.gui.controllers to javafx.fxml;
 }

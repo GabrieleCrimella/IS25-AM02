@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
+           fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController"
+           fx:id="root"
+           focusTraversable="true">
+
+    <!-- Immagine di sfondo -->
+    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+        <Image url="@../image/background.jpg" />
+    </ImageView>
+
+    <!-- Contenuto sopra l'immagine -->
+    <VBox alignment="CENTER" spacing="15" >
+        <Label text="galaxy trucker" style="-fx-font-size: 48px; -fx-text-fill: white; -fx-font-weight: bold;" />
+        <TextField fx:id="nicknameField" promptText="Inserisci il nickname" maxWidth="300" />
+        <Button text="login" fx:id="loginButton" maxWidth="150" />
+    </VBox>
+
+</StackPane>
