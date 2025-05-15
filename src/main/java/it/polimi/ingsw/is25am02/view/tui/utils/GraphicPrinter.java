@@ -100,7 +100,7 @@ public class GraphicPrinter {
 
     public void printGameStatus() {
         System.out.println("Game Status | Game phase: " + game.getCurrentState().getPhase() + "  | Card: " + game.getCurrentState().getCurrentCard().getCardType()
-                + "in state " + game.getCurrentState().getCurrentCard().getStateCard() + "  | Player's turn : " + game.getCurrentState().getCurrentPlayer().getNickname());
+                + " in state " + game.getCurrentState().getCurrentCard().getStateCard() + "  | Player's turn : " + game.getCurrentState().getCurrentPlayer().getNickname());
     }
 
     public void printCardComment() {
@@ -257,7 +257,7 @@ public class GraphicPrinter {
 
         System.out.print("Booked tile with Rotation: ");
         if(bookedTiles.get(1) == null) System.out.print(" - ");
-        else { System.out.print(bookedTiles.get(1).getRotationType()); }
+        else { System.out.print(bookedTiles.get(1).getRotationType() + " "); }
         if(bookedTiles.get(2) == null) System.out.print(" - ");
         else { System.out.print(bookedTiles.get(2).getRotationType()); }
         System.out.println();
@@ -345,8 +345,8 @@ public class GraphicPrinter {
             for(Map.Entry<Coordinate, TileV> entry : engines.entrySet()){
                 System.out.printf("(%d,%d) %s\t  ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getRotationType());
             }
+            System.out.println();
         }
-        System.out.println();
         System.out.print("Cannons:  ");
         for(Map.Entry<Coordinate, TileV> entry : cannons.entrySet()){
             System.out.printf("(%d,%d) %s\t  ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getRotationType());
@@ -395,7 +395,6 @@ public class GraphicPrinter {
         }
 
         int maxOnLine = 0;
-        System.out.println();
         System.out.print("Storage:  ");
         for(Map.Entry<Coordinate, TileV> entry : storage.entrySet()){
             if(maxOnLine < 4) {
@@ -429,7 +428,15 @@ public class GraphicPrinter {
         System.out.print("Crew:  ");
         for(Map.Entry<Coordinate, TileV> entry : cabins.entrySet()){
             if(maxOnLine < 4) {
-                System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
+                if (entry.getValue().getNumPAliens()>0){
+                    System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumPAliens(), 1);
+                }
+                else if (entry.getValue().getNumBAliens()>0){
+                    System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumBAliens(), 1);
+                }
+                else{
+                    System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumHumans(), 2);
+                }
                 System.out.print(printItem(entry.getValue()) + "\t");
                 maxOnLine++;
             } else {
@@ -438,6 +445,7 @@ public class GraphicPrinter {
                 maxOnLine = 0;
             }
         }
+        System.out.println();
     }
 
     public void printHeapTiles(){

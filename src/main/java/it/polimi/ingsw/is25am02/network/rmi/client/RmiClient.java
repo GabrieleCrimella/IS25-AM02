@@ -30,8 +30,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         super();
     }
 
-    public void startConnection() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1");
+    public void startConnection(String ip) throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry(ip);
         System.out.println("Tentativo di lookup...");
         server = (VirtualServer) registry.lookup("RMIServer");
         System.out.println("Lookup riuscito...");
@@ -276,7 +276,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 if (console.getNickname().equals(nickname)){
                     printOnConsole();
                 }
-
             }
         }
     }
@@ -291,9 +290,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     if (playerv.getNickname().equals(nickname) ) {
                         tileV.setRotationType(rotationType);
                         playerv.setSpaceshipBoardTile(tileV, coordinate);
-                        if (console.getNickname().equals(nickname)){
-                            printOnConsole();
-                        }
+                        //if (console.getNickname().equals(nickname)){
+                            //printOnConsole();
+                        //}
 
                     }
                 }
@@ -301,9 +300,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             if (playerv.getNickname().equals(nickname)) {
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
                 playerv.setSpaceshipBoardTile(tileV, coordinate);
-                if (console.getNickname().equals(nickname)){
-                    printOnConsole();
-                }
+                //if (console.getNickname().equals(nickname)){
+                //    printOnConsole();
+                //}
             }
 
         }
@@ -422,7 +421,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 playerv.setSpaceshipBoardTile(playerv.getBookedTiles().get(index), pos);
                 playerv.getBookedTiles().put(index, null);
             }
-
+        }
+        if (console.getNickname().equals(nickname)){
+            printOnConsole();
         }
     }
 
