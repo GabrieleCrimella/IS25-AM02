@@ -428,7 +428,15 @@ public class GraphicPrinter {
         System.out.print("Crew:  ");
         for(Map.Entry<Coordinate, TileV> entry : cabins.entrySet()){
             if(maxOnLine < 4) {
-                System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
+                if (entry.getValue().getNumPAliens()>0){
+                    System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumPAliens(), 1);
+                }
+                else if (entry.getValue().getNumBAliens()>0){
+                    System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumBAliens(), 1);
+                }
+                else{
+                    System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumHumans(), 2);
+                }
                 System.out.print(printItem(entry.getValue()) + "\t");
                 maxOnLine++;
             } else {
