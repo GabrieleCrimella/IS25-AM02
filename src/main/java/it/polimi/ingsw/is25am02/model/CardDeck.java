@@ -53,7 +53,7 @@ public class CardDeck {
                 finalDeck.add(card);
             }
 
-            Collections.shuffle(finalDeck);
+            //Collections.shuffle(finalDeck);
         }
     }
 

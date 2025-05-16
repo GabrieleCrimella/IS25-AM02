@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.view.modelDuplicateView;
 
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameboardV {
@@ -15,7 +16,7 @@ public class GameboardV {
         return positions;
     }
 
-    public GameboardV(int[] startingpositions, int level) {
+    public GameboardV(int[] startingpositions, int level, ArrayList<PlayerV> players) {
         if (level == 0||level==1){
             this.numstep = 18;
         } else if (level == 2)  this.numstep = 24;
@@ -23,6 +24,9 @@ public class GameboardV {
         this.dice = new DiceV();
         this.hourGlass = new HourglassV();
         this.positions = new HashMap<>();
+        for(PlayerV player : players){
+            positions.put(player, -1);
+        }
     }
 
     public void setPosition(PlayerV playerV, int position) {

@@ -33,6 +33,7 @@ public class GraphicPrinter {
 
     public GraphicPrinter(ConsoleClient console) {
         this.console = console;
+        this.game = null;
     }
 
     public void setGame(GameV game) {
@@ -61,6 +62,7 @@ public class GraphicPrinter {
             printSpaceship(myName);
             printTileOrientation(myName);
             printTileOccupation(myName);
+            System.out.println();
             printMyState(myName);
             printGameStatus();
             printCardComment();
@@ -673,5 +675,59 @@ public class GraphicPrinter {
         System.out.println(CIANO + "D" + RESET + " Double storage\n" + CIANO + "T" + RESET + " Triple storage");
         System.out.println(MAGENTA + "O" + RESET + " Purple cabin\n" + MARRONE + "O" + RESET + " Brown cabin");
         System.out.println(VERDE + "E" + RESET + " Battery storage\n" + VERDE_FOGLIA + "S" + RESET + " Shield");
+    }
+
+    public void printStatus() {
+        System.out.println("\nStatus:");
+        for(PlayerV i : game.getPlayers()){
+            System.out.println(i.getNickname() + " status : " + i.getStatePlayer());
+        }
+        System.out.println("Game : " + game.getCurrentState().getPhase());
+    }
+
+    public void printHelp() {
+        PlayerV myself = null;
+        if(game == null){
+            console.displayMessage("command.pregame", null);
+        } else {
+            if(game.getCurrentState().getPhase() == StateGameType.BUILD) {
+                console.displayMessage("command.build", null);
+            } else if(game.getCurrentState().getPhase() == StateGameType.CHECK) {
+                console.displayMessage("command.check", null);
+            } else if (game.getCurrentState().getPhase() == StateGameType.CORRECTION) {
+                for(PlayerV player : game.getPlayers()){
+                    if(player.getNickname().equals(myName)){
+                        myself = player;
+                        break;
+                    }
+                }
+                if(myself != null && myself.getStatePlayer().equals(StatePlayerType.CORRECT_SHIP)) {
+                    console.displayMessage("command.correction.true", null);
+                } else {
+                    console.displayMessage("command.correction.false", null);
+                }
+            } else if(game.getCurrentState().getPhase() == StateGameType.INITIALIZATION_SPACESHIP) {
+                console.displayMessage("command.initial", null);
+            } else if(game.getCurrentState().getPhase() == StateGameType.TAKE_CARD) {
+                console.displayMessage("command.take", null);
+            } else if(game.getCurrentState().getPhase() == StateGameType.EFFECT_ON_PLAYER) {
+                switch (game.getCurrentState().getCurrentCard().getCardType()) {
+                    case PLANET:
+                        console.displayMessage("command.planet", null);
+                    case ABANDONED_STATION:
+                        console.displayMessage("command.ab_station", null);
+                    case TRAFFICKER:
+                        console.displayMessage("command.trafficker", null);
+                    case ABANDONED_SHIP:
+                        console.displayMessage("command.ab_ship", null);
+                    case SLAVE_OWNER:
+                        console.displayMessage("command.slave_owner", null);
+                    case OPENSPACE:
+                        console.displayMessage("command.openspace", null);
+                    case METEORITES_STORM:
+                        console.displayMessage("command.meteorites_storm", null);
+                }
+            }
+        }
     }
 }
