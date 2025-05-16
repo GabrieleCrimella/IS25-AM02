@@ -576,7 +576,9 @@ public class Game implements Game_Interface {
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
-                } catch (RemoteException e) {
+                    player.setStatePlayer(StatePlayerType.FINISHED);
+                    player.getObserver().displayMessage("info.finished", null);
+                } catch (Exception e) {
                     ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
                 }
             }
@@ -610,21 +612,25 @@ public class Game implements Game_Interface {
 
             if (player.getSpaceship().checkSpaceship()) {
                 player.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+                player.getObserver().displayMessage("info.spaceship.right", null);
             } else {
                 player.setStatePlayer(StatePlayerType.WRONG_SHIP);
+                player.getObserver().reportError("info.spaceship.wrong", null);
             }
             alreadyChecked++;
 
             if (alreadyChecked == players.size()) {
-                this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
                 for (Player p : players) {
                     if (p.getStatePlayer().equals(StatePlayerType.WRONG_SHIP)) {
                         this.currentState.setPhase(StateGameType.CORRECTION);
                         alreadyChecked--;
                     }
                 }
+                if(alreadyChecked == players.size()){
+                    this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+                }
             }
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             try {
                 player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
@@ -759,18 +765,10 @@ public class Game implements Game_Interface {
             for (Tile c : cabins) {
                 if (c.getCrew().isEmpty()) {
                     c.addCrew(player.getNickname(), AliveType.HUMAN);
-                    for (String nick : observers.keySet()) {
-                        try {
-                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getY(c));
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
-                        }
-                    }
                     c.addCrew(player.getNickname(), AliveType.HUMAN);
                     for (String nick : observers.keySet()) {
                         try {
-                            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(c),player.getSpaceship().getSpaceshipIterator().getY(c));
+                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getY(c));
                             observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
@@ -781,9 +779,11 @@ public class Game implements Game_Interface {
             //when all players are ready the game starts
             if (readyPlayer == players.size()) {
                 getCurrentState().setPhase(StateGameType.TAKE_CARD);
+            } else {
+                player.getObserver().displayMessage("info.ready", null);
             }
 
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             try {
                 player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {

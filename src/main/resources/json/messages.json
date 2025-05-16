@@ -59,7 +59,13 @@
     "phrase": "Start!!"
   },
   "info": {
-    "gameState": "------- Game State -------\n\t{state}\n--------------------------"
+    "gameState": "------- Game State -------\n\t{state}\n--------------------------",
+    "finished" : "> Wait until everyone is finished then use /check and check your ship",
+    "spaceship" : {
+      "right" : "> Your ship is correct now use /addCrew to add the crew type you want to the ship\nor use /ready to signal that you are ready and get auto-completion",
+      "wrong" : "> Your ship is wrong remove some tiles to make it right"
+    },
+    "ready" : "> We are waiting for all players to be ready to start the game"
   },
   "disconnect": {
     "lobby_owner": "> The owner has disconnected from the lobby, so you got kicked out",
@@ -92,6 +98,26 @@
       "1" : "Your ship is ready to sail into deep space now you just need to add your crew using /addCrew.\nRemember that:\n1) You must have 2 humans on your starting cabin\n2) Your ship cannot accommodate more than 1 alien of each type"
     },
     "match" : "The adventure has begun, keep an eye on the game status to know \nif it's your turn, which card is in play and what your opponents are doing.\nGood luck!"
+  },
+  "command" : {
+    "pregame" : "\nAvailable Commands:\n/login <nickname> - Register with your nickname\n/create <maxPlayers> <color> <level> - Create a new lobby\n/lobbies - Show available lobbies\n/join <lobbyId> <color> - Join existing lobby\n/exit - Exit game\n",
+    "build" : "\nGame commands:\n/flipHourglass - Flip hourglass\n/hourglass - See timeleft in hourglass\n/view - Show your spaceship\n/view <nickname> - View the spaceship of another player of the game\n/take - Take a random not visible tile\n/takeTile <id> - Take a specific tile\n/heap - See heap tiles \n/takeMiniDeck <index> - View a minideck\n/returnMiniDeck - Return the minideck\n/book - Book a tile\n/addBooked <index> <riga> <colonna> - Add to your ship a tile that you booked\n/return - Return a tile\n/add <riga> <colonna> - Add tile to spaceship\n/rotate - Rotate the current tile\n/rotateBookedTile [<indice>] - rotates the reserved tile of index <index>. If the index is not present, rotates the only tile present in that slot\n/finish - Signal that you've finished your spaceship\n",
+    "check" : "\nGame commands:\n/check - Check if spaceship is correct\n/ready - Player is ready to start playing\n/addCrew <riga> <colonna> <type> - Add crew members\n/",
+    "correction" : {
+      "true" : "\nYour ship is right you can't do anything now but wait for the others, check their progress with /status",
+      "false" : "\nGame commands:\n/check - Check if spaceship is correct\n/remove <riga> <colonna> - Remove a tile"
+    },
+    "initial" : "\nGame commands:\n/ready - Player is ready to start playing\n/addCrew <riga> <colonna> <type> - Add crew members\n",
+    "take" : "\nGame commands:\n/next - Play next card",
+    "effect" : {
+      "planet" : "\nGame commands:\n/choicePlanet <index> - Chose a planet\n/moveBox <startX> <startY> <endX> <endY> <boxType> <on/off> - Move a box\n",
+      "ab_station" : "\nGame commands:\n/choiceBox <true/false> - Make a choice regarding a box\n/moveBox <startX> <startY> <endX> <endY> <boxType> <on/off> - Move a box\n",
+      "trafficker": "\nGame commands:\n/choiceDoubleCannon <numCannons> <cannon1X> <cannon1Y> ... <numBatteries> <battery1X> <battery1Y> ... - Choose how many double cannons to activate\n/removeBox <row> <column> <boxType> - Remove box on specified storage\n/choiceBox <true/false> - Make a choice regarding a box\n/moveBox <startX> <startY> <endX> <endY> <boxType> <on/off> - Move a box\n",
+      "ab_ship" : "\nGame commands:\n/choice <true/false> - Make a choice regarding a box\n/removeCrew <row> <column> - Remove crew members\n",
+      "slave_owner" : "\nGame commands:\n/choiceDoubleCannon <numCannons> <cannon1X> <cannon1Y> ... <numBatteries> <battery1X> <battery1Y> ... - Choose how many double cannons to activate\n/removeCrew <row> <column> - Remove crew members\n/choice <true/false> - Make a choice\n",
+      "openspace" : "\nGame commands:\n/choiceDoubleMotor <numMotors> <motor1X> <motor1Y> ... <numBatteries> <battery1X> <battery1Y> ...\n",
+      "meteorites_storm" : "\nGame commands:\n/roll - Roll the dice\n"
+    }
   },
   "exit": "Exit the game..."
 }

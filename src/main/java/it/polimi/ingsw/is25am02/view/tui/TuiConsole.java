@@ -85,13 +85,13 @@ public class TuiConsole implements Runnable, ConsoleClient {
     //Mostra il messaggio di benvenuto all'avvio del gioco
     private void printWelcomeMessage() {
         displayMessage("welcome", null);
-        printHelp();
+        displayMessage("help", null);
     }
 
 
     //Mostra l'elenco dei comandi disponibili
     private void printHelp() {
-        displayMessage("help", null);
+        getPrinter().printHelp();
     }
 
     //Metodo principale del thread che gestisce l'input dell'utente
@@ -142,6 +142,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
                 case "gameboard":
                     printer.printGameboard();
+                    break;
+
+                case "status":
+                    getPrinter().printStatus();
                     break;
 
                 case "exit":
