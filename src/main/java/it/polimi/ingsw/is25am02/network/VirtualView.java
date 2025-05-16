@@ -68,7 +68,7 @@ public interface VirtualView extends Remote {
 
     void showBookTileUpdate(String nickname) throws RemoteException;
 
-    void showAddCrewUpdate(String nickname, Coordinate pos, AliveType type) throws RemoteException;
+    void showAddCrewUpdate(String nickname, Coordinate pos, AliveType type, int num) throws RemoteException;
 
     void showBookedTileNullityUpdate(String nickname, int index, Coordinate pos) throws RemoteException;
 

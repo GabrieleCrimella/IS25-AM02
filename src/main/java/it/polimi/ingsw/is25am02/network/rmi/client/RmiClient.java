@@ -399,15 +399,15 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showAddCrewUpdate(String nickname, Coordinate pos, AliveType type) throws RemoteException {
+    public void showAddCrewUpdate(String nickname, Coordinate pos, AliveType type, int num) throws RemoteException {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 if (type.equals(AliveType.BROWN_ALIEN)) {
-                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumBAliens(playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumBAliens()+1);
+                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumBAliens(num);
                 } else if (type.equals(AliveType.PURPLE_ALIEN)) {
-                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumPAliens(playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumPAliens()+1);
+                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumPAliens(num);
                 } else {
-                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumHumans(playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().getNumHumans()+1);
+                    playerv.getSpaceshipBoard()[pos.x()][pos.y()].get().setNumHumans(num);
                 }
             }
 

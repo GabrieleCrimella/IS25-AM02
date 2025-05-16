@@ -686,17 +686,10 @@ public class Game implements Game_Interface {
 
             if (type.equals(AliveType.HUMAN)) { //se type è human aggiungo due umani
                 giveTile(player, pos).addCrew(player.getNickname(), type);
-                for (String nick : observers.keySet()) {
-                    try {
-                        observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
-                    }
-                }
                 giveTile(player, pos).addCrew(player.getNickname(), type);
                 for (String nick : observers.keySet()) {
                     try {
-                        observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
+                        observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                     }
@@ -706,7 +699,7 @@ public class Game implements Game_Interface {
                     giveTile(player, pos).addCrew(player.getNickname(), type);
                     for (String nick : observers.keySet()) {
                         try {
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }
@@ -717,7 +710,7 @@ public class Game implements Game_Interface {
                     giveTile(player, pos).addCrew(player.getNickname(), type);
                     for (String nick : observers.keySet()) {
                         try {
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type);
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }
@@ -768,8 +761,8 @@ public class Game implements Game_Interface {
                     c.addCrew(player.getNickname(), AliveType.HUMAN);
                     for (String nick : observers.keySet()) {
                         try {
-                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getX(c));
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN);
+                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getY(c));
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }
@@ -777,8 +770,8 @@ public class Game implements Game_Interface {
                     c.addCrew(player.getNickname(), AliveType.HUMAN);
                     for (String nick : observers.keySet()) {
                         try {
-                            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(c),player.getSpaceship().getSpaceshipIterator().getX(c));
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(),pos, AliveType.HUMAN);
+                            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(c),player.getSpaceship().getSpaceshipIterator().getY(c));
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                         }

@@ -140,6 +140,10 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     printHelp();
                     break;
 
+                case "gameboard":
+                    printer.printGameboard();
+                    break;
+
                 case "exit":
                     displayMessage("exit", null);
 
