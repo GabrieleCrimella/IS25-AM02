@@ -576,8 +576,6 @@ public class Game implements Game_Interface {
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
-                    player.setStatePlayer(StatePlayerType.FINISHED);
-                    player.getObserver().displayMessage("info.finished", null);
                 } catch (Exception e) {
                     ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
                 }
@@ -585,17 +583,33 @@ public class Game implements Game_Interface {
 
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
                 player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
+                if(player.getSpaceship().getNumOfWastedTiles() > 0){
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showCreditUpdate(player.getNickname(), (-1)*player.getSpaceship().getNumOfWastedTiles());
+                        } catch (Exception e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                        }
+                    }
+                }
             }
 
             if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
-            if (level !=0) {
-                deck.createFinalDeck(); //mischio i mazzetti e creo il deck finale
-            }
-
+                if (level !=0) {
+                    deck.createFinalDeck(); //mischio i mazzetti e creo il deck finale
+                }
+            } else {
+                player.getObserver().displayMessage("info.finished", null);
             }
 
         } catch (IllegalStateException e) {
+            try {
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method shipfinished");
+            }
+        } catch (Exception e) {
             try {
                 player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
@@ -622,12 +636,13 @@ public class Game implements Game_Interface {
             if (alreadyChecked == players.size()) {
                 for (Player p : players) {
                     if (p.getStatePlayer().equals(StatePlayerType.WRONG_SHIP)) {
-                        this.currentState.setPhase(StateGameType.CORRECTION);
                         alreadyChecked--;
                     }
                 }
                 if(alreadyChecked == players.size()){
                     this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+                } else {
+                    this.currentState.setPhase(StateGameType.CORRECTION);
                 }
             }
         } catch (Exception e) {
@@ -778,6 +793,7 @@ public class Game implements Game_Interface {
             }
             //when all players are ready the game starts
             if (readyPlayer == players.size()) {
+                currentState.setCurrentPlayer(globalBoard.getRanking().getFirst());
                 getCurrentState().setPhase(StateGameType.TAKE_CARD);
             } else {
                 player.getObserver().displayMessage("info.ready", null);
@@ -980,7 +996,7 @@ public class Game implements Game_Interface {
                 for (String nick: observers.keySet()) {
                     try {
                         observers.get(nick).showBoxUpdate(end,player.getNickname(),player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
-                        observers.get(nick).showBoxUpdate(end,player.getNickname(),player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
+                        observers.get(nick).showBoxUpdate(start,player.getNickname(),player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
                     }

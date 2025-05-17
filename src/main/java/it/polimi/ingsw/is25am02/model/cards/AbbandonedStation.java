@@ -4,8 +4,6 @@ import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
-import it.polimi.ingsw.is25am02.network.VirtualView;
-import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
@@ -14,7 +12,6 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;

@@ -159,6 +159,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 }
             }
         }
+        if (console.getNickname().equals(nickname)){
+            printOnConsole();
+        }
     }
 
     @Override
@@ -166,7 +169,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 playerv.setCredits(cosmicCredits);
-
             }
         }
     }
@@ -307,7 +309,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         PlayerV currentPlayerV = null;
 
         for (String p : playercolors.keySet()) {
-
             PlayerV playerV = new PlayerV(p, playercolors.get(p), mask);
             if (p.equals(currentPlayer)) currentPlayerV = playerV;
             players.add(playerV);
@@ -349,9 +350,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showGameStateUpdate(StateGameType newGamestate) throws RemoteException {
         gameV.getCurrentState().setPhase(newGamestate);
-        if(newGamestate.equals(StateGameType.TAKE_CARD) || newGamestate.equals(StateGameType.EFFECT_ON_PLAYER) || newGamestate.equals(StateGameType.INITIALIZATION_SPACESHIP)) {
-            printOnConsole();
-        }
+        printOnConsole();
     }
 
     @Override
@@ -366,6 +365,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showCardStateUpdate(StateCardType newCardstate) throws RemoteException {
         gameV.getCurrentCard().setStateCard(newCardstate);
+        printOnConsole();
     }
 
     @Override

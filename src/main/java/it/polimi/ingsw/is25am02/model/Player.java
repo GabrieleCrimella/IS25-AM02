@@ -149,7 +149,7 @@ public class Player implements UpdateListener {
                 deckV.put(key, convertedCardList);
             }
 
-            observer.showUpdateEverything(level, playersColor,currentcard.getImagePath(),currentcard.getStateCard(),currentcard.getCardType(),currentcard.getComment(),state.getPhase(),state.getCurrentPlayer().getNickname(), mask, positions, deckV);
+            observer.showUpdateEverything(level, playersColor,currentcard.getImagePath(),currentcard.getStateCard(),currentcard.getCardType(),currentcard.getComment(),state.getPhase(), nickname, mask, positions, deckV);
         } catch (Exception e) {
             ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
 

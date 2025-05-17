@@ -148,7 +148,7 @@ public class CardDeck {
                             boxesWonType.add(box);
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonType, imagepath, comment,testFlight));
+                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, new LinkedList<>(boxesWon), new LinkedList<>(boxesWonType), imagepath, comment,testFlight));
                         break;
                     case "PIRATE":
                         cannonPower = levelNode.get("cannonPower").asInt();
@@ -191,7 +191,7 @@ public class CardDeck {
                             boxesWonType.add(box);
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, boxesWon, boxesWonType, imagepath,comment,testFlight));
+                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, new LinkedList<>(boxesWon), new LinkedList<>(boxesWonType), imagepath,comment,testFlight));
                         break;
                     case "SLAVEOWNER":
                         cannonPower = levelNode.get("cannonPower").asInt();

@@ -60,17 +60,17 @@
   },
   "info": {
     "gameState": "------- Game State -------\n\t{state}\n--------------------------",
-    "finished" : "> Wait until everyone is finished then use /check and check your ship",
+    "finished" : "> Wait until everyone is finished then use /check and check your ship,\n  use /status to see how other players are doing",
     "spaceship" : {
-      "right" : "> Your ship is correct now use /addCrew to add the crew type you want to the ship\nor use /ready to signal that you are ready and get auto-completion",
+      "right" : "> Your ship is correct, wait until everyone is checked right",
       "wrong" : "> Your ship is wrong remove some tiles to make it right"
     },
-    "ready" : "> We are waiting for all players to be ready to start the game"
+    "ready" : "> We are waiting for all players to be ready to start the game, use /status to see how other players are doing"
   },
   "disconnect": {
     "lobby_owner": "> The owner has disconnected from the lobby, so you got kicked out",
     "lobby": "> A player has disconnected from the lobby, now the lobby has {att}/{max} players",
-    "game": ">A player has disconnected from the game, so the game is over"
+    "game": "> A player has disconnected from the game, so the game is over"
   },
   "welcome": "========================================\n=       Galaxy Trucker (CLI)           =\n========================================",
   "start": "> Game started!",
@@ -94,8 +94,8 @@
     "check" : "Now you are in the check phase, typing /check will check \nif your ship is ready to leave for the galactic adventure. \nIf there are errors you will have to fix it before you can leave",
     "correction" : "Your ship has some errors that need to be corrected before you launch, here are the checks you need to do:\n1) Single connectors must not be connected to double connectors\n2) Smooth sides must not be adjacent to connectors\n3) Each engine must point towards the back of the ship and must not have components in the box immediately behind the exhaust\n4) Each cannon must not have components placed immediately in front of its firing mouth\n5) The ship must be fully connected (no separate sections)",
     "initialization" : {
-      "0" : "Your ship is ready to sail into deep space now you just need to add your crew using /addCrew",
-      "1" : "Your ship is ready to sail into deep space now you just need to add your crew using /addCrew.\nRemember that:\n1) You must have 2 humans on your starting cabin\n2) Your ship cannot accommodate more than 1 alien of each type"
+      "0" : "Your ship is ready to sail into deep space now you just need to add your crew using /addCrew\nor /ready for an automatic filling",
+      "1" : "Your ship is ready to sail into deep space now you just need to add your crew using /addCrew\nor /ready for an automatic filling\nRemember that:\n1) You must have 2 humans on your starting cabin\n2) Your ship cannot accommodate more than 1 alien of each type"
     },
     "match" : "The adventure has begun, keep an eye on the game status to know \nif it's your turn, which card is in play and what your opponents are doing.\nGood luck!"
   },

@@ -549,8 +549,8 @@ public class GraphicPrinter {
 
             sb.append((BLU + "#" + RESET).repeat(Math.max(0, blue)));
             sb.append((ROSSO + "#" + RESET).repeat(Math.max(0, red)));
-            sb.append((GIALLO + "#" + RESET).repeat(Math.max(0, green)));
-            sb.append((VERDE + "#" + RESET).repeat(Math.max(0, yellow)));
+            sb.append((VERDE + "#" + RESET).repeat(Math.max(0, green)));
+            sb.append((GIALLO + "#" + RESET).repeat(Math.max(0, yellow)));
             return sb.toString();
         }
     }
@@ -713,19 +713,19 @@ public class GraphicPrinter {
             } else if(game.getCurrentState().getPhase() == StateGameType.EFFECT_ON_PLAYER) {
                 switch (game.getCurrentState().getCurrentCard().getCardType()) {
                     case PLANET:
-                        console.displayMessage("command.planet", null);
+                        console.displayMessage("command.effect.planet", null);
                     case ABANDONED_STATION:
-                        console.displayMessage("command.ab_station", null);
+                        console.displayMessage("command.effect.ab_station", null);
                     case TRAFFICKER:
-                        console.displayMessage("command.trafficker", null);
+                        console.displayMessage("command.effect.trafficker", null);
                     case ABANDONED_SHIP:
-                        console.displayMessage("command.ab_ship", null);
+                        console.displayMessage("command.effect.ab_ship", null);
                     case SLAVE_OWNER:
-                        console.displayMessage("command.slave_owner", null);
+                        console.displayMessage("command.effect.slave_owner", null);
                     case OPENSPACE:
-                        console.displayMessage("command.openspace", null);
+                        console.displayMessage("command.effect.openspace", null);
                     case METEORITES_STORM:
-                        console.displayMessage("command.meteorites_storm", null);
+                        console.displayMessage("command.effect.meteorites_storm", null);
                 }
             }
         }
