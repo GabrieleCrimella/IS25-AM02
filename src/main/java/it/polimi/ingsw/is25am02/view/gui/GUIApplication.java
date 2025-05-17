@@ -1,5 +1,8 @@
 package it.polimi.ingsw.is25am02.view.gui;
 
+import it.polimi.ingsw.is25am02.view.ConsoleClient;
+import it.polimi.ingsw.is25am02.view.gui.controllers.GUIController;
+import it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -61,6 +64,8 @@ public class GUIApplication extends Application {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
             System.setProperty("prism.allowhidpi", "false");
         }
+        // ✅ Inizializzazione
+        GUIController.getInstance(new Stage());
     }
 
     public static void main(String[] args) {
@@ -98,10 +103,10 @@ public class GUIApplication extends Application {
         stage.setTitle("Galaxy Trucker");
         stage.setMinHeight(MIN_HEIGHT);
         stage.setMinWidth(MIN_WIDTH);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/icon.webp")));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/icon.png")));
 
         // Set the current stage on all controllers.
-        //Controller.setStage(stage);
+        GUIController.setStage(stage);
 
         URL fxml1URL = (getClass().getResource("/fxml/HomeScene.fxml"));
         if (fxml1URL == null) {
@@ -121,10 +126,10 @@ public class GUIApplication extends Application {
         stage.setScene(scene);
 
         // Set the current scene on all controllers.
-        //Controller.setScene(scene);
+        GUIController.setScene(scene);
 
         // Get the controller from the loader.
-        //Controller controller = loader.getController();
+        HomeSceneController controller = loader.getController();
 
         // Call the beforeShow method of the controller.
         // This method is used to perform actions right before the window is shown.
@@ -184,4 +189,6 @@ public class GUIApplication extends Application {
         Font.loadFont(getClass().getResourceAsStream("/fonts/MedievalSharp-Book.ttf"), 10);
         Font.loadFont(getClass().getResourceAsStream("/fonts/CalSans-SemiBold.ttf"), 10);
     }
+
+    //todo si potrebbe aggiugnere anche il caricamento dei fonts
 }
