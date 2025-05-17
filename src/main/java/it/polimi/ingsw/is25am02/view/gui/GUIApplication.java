@@ -1,8 +1,12 @@
 package it.polimi.ingsw.is25am02.view.gui;
 
+import it.polimi.ingsw.is25am02.controller.client.ClientController;
+import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.gui.controllers.GUIController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController;
+import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -20,41 +24,40 @@ import javafx.stage.Screen;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.Map;
 import java.util.logging.Logger;
 
-/**
- * Class representing the GUI application.
- * It extends the JavaFX Application class and implements the View interface.
- */
-public class GUIApplication extends Application {
-    /**
-     * Logger for this class.
-     */
+
+public class GUIApplication extends Application implements ConsoleClient, Runnable {
     public static final Logger logger = Logger.getLogger(GUIApplication.class.getName());
-
-    /**
-     * Minimum width of the application window.
-     */
     public static int MIN_WIDTH = 1560;
-
-    /**
-     * Minimum height of the application window.
-     */
     public static int MIN_HEIGHT = 900;
-
-    /**
-     * Timestamp of the last FullScreenAction with the application.
-     */
     private static Instant lastFullScreenAction = null;
-
-    /**
-     * Method to launch the UI.
-     * It calls the launch method of the Application class.
-     * If the screen size is too small, it sets the property prism.allowhidpi to false.
-     * This is done to prevent the application from being rendered too big on small screens.
-     */
+    private final Object controllerLock = new Object();
+    private volatile boolean guiInitialized = false;
+    private volatile boolean controllerSet = false;
 
     public GUIApplication() {
+
+
+
+    }
+
+
+    @Override
+    public void init() {
+        logger.info("GUIApp started");
+        loadFonts();
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException {
+        GUIController.getInstance(stage);
+        synchronized (controllerLock) {
+            guiInitialized = true;
+            controllerLock.notifyAll();
+        }
+
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double width = screenBounds.getWidth();
         double height = screenBounds.getHeight();
@@ -64,33 +67,6 @@ public class GUIApplication extends Application {
         if (width < MIN_WIDTH || height < MIN_HEIGHT) {
             System.setProperty("prism.allowhidpi", "false");
         }
-        // ✅ Inizializzazione
-        GUIController.getInstance(new Stage());
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    /**
-     * Method to initialize the application.
-     * It logs that the application has started and loads the fonts.
-     */
-    @Override
-    public void init() {
-        logger.info("GUIApp started");
-        loadFonts();
-    }
-
-    /**
-     * Method to start the application.
-     * It sets up the stage and loads the home scene.
-     *
-     * @param stage the primary stage
-     * @throws IOException if there is an error loading the home scene
-     */
-    @Override
-    public void start(Stage stage) throws IOException {
 
         // Set the stage to close the application when the window is closed.
         stage.setOnCloseRequest(event -> {
@@ -138,12 +114,7 @@ public class GUIApplication extends Application {
         stage.show();
     }
 
-    /**
-     * Method to handle full screen events.
-     *
-     * @param stage the stage
-     * @param scene the scene
-     */
+
     private void handleFullscreenEvents(Stage stage, Scene scene) {
         String fullScreenButton;
         // Set the full screen button based on the OS.
@@ -171,23 +142,100 @@ public class GUIApplication extends Application {
         //Controller.showToast(ToastLevels.INFO, "Welcome!", "Press " + fullScreenButton + " to enter full screen.");
     }
 
-    /**
-     * Workaround to prevent multiple full screen events from being triggered. I hate JavaFX.
-     *
-     * @return true if the event should be discarded, false otherwise.
-     */
     private boolean shouldDiscardEvent() {
         return lastFullScreenAction != null
                 && lastFullScreenAction.plusMillis(900).isAfter(Instant.now());
     }
 
-    /**
-     * Method to load the fonts.
-     * It loads the MedievalSharp-Book and CalSans-SemiBold fonts.
-     */
     private void loadFonts() {
         Font.loadFont(getClass().getResourceAsStream("/fonts/MedievalSharp-Book.ttf"), 10);
         Font.loadFont(getClass().getResourceAsStream("/fonts/CalSans-SemiBold.ttf"), 10);
+    }
+
+    @Override
+    public void setController(ClientController controller) {
+        synchronized (controllerLock) {
+            while (!guiInitialized) {
+                try {
+                    controllerLock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Interrupted while waiting for GUIController initialization", e);
+                }
+            }
+            GUIController.getInstance().setController(controller);
+            controllerSet = true;
+            controllerLock.notifyAll(); // notify anyone waiting on getController()
+        }
+
+    }
+
+    @Override
+    public ClientController getController() {
+        synchronized (controllerLock) {
+            while (!controllerSet) {
+                try {
+                    controllerLock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Interrupted while waiting for ClientController to be set", e);
+                }
+            }
+            return GUIController.getInstance().getController();
+        }
+    }
+
+    @Override
+    public void setNickname(String nickname) {
+
+    }
+
+    @Override
+    public String getNickname() {
+        return "";
+    }
+
+    @Override
+    public void start() {
+        Thread guiThread = new Thread(this);
+        guiThread.setDaemon(true); // o true, se vuoi che si chiuda con il processo principale
+        guiThread.start();
+
+    }
+
+    @Override
+    public void reportError(String keys, Map<String, String> params) {
+
+    }
+
+    @Override
+    public void displayMessage(String keys, Map<String, String> params) {
+
+    }
+
+    @Override
+    public void setLobbiesView(Map<Integer, Lobby> lobbies) {
+
+    }
+
+    @Override
+    public GraphicPrinter getPrinter() {
+        return null;
+    }
+
+    @Override
+    public void startCountdown() {
+
+    }
+
+    @Override
+    public void spaceshipBrokenUpdate(String details, Coordinate[][] ships) {
+
+    }
+
+    @Override
+    public void run() {
+        launch();
     }
 
     //todo si potrebbe aggiugnere anche il caricamento dei fonts

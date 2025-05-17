@@ -1,12 +1,13 @@
-package it.polimi.ingsw.is25am02.controller.server;
+package it.polimi.ingsw.is25am02.utils;
 
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lobby {
+public class Lobby implements Serializable {
     private final int id;
     private final int maxPlayers;
     private final List<Player> players;

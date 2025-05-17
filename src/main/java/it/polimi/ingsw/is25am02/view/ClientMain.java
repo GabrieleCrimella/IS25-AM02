@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.rmi.client.RmiClient;
 import it.polimi.ingsw.is25am02.network.socket.client.SocketClient;
+import it.polimi.ingsw.is25am02.view.gui.GUIApplication;
 import it.polimi.ingsw.is25am02.view.tui.TuiConsole;
 
 public class ClientMain {
@@ -19,7 +20,7 @@ public class ClientMain {
                 };
                 console = switch (args[1]) {
                     case "tui" -> new TuiConsole();
-                    case "gui" -> new TuiConsole(); //da cambiare
+                    case "gui" -> new GUIApplication();
                     default -> throw new Exception("Wrong UI");
                 };
                 ClientController controller = new ClientController(connection);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.network;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
+import it.polimi.ingsw.is25am02.utils.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
@@ -15,6 +16,8 @@ public interface VirtualView extends Remote {
     void reportError(String keys, Map<String, String> params) throws Exception;
 
     void displayMessage(String keys, Map<String, String> params) throws Exception;
+
+   void setLobbiesView(Map<Integer, Lobby> lobbies) throws RemoteException ;
 
     void setMenuState(MenuState state) throws RemoteException;
 
