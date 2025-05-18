@@ -39,12 +39,9 @@ public class HomeSceneController {
 
             // Richiamo il metodo di registrazione
             clientController.nicknameRegistration(nickname, clientController.getVirtualView());
-            System.out.println("passo 1");
             // Salvataggio del nickname nel clientController
             GUIController c = GUIController.getInstance();
-            System.out.println("passo 2");
             c.setNickname(nickname);
-            System.out.println("passo 3");
 
             // Cambio scena verso la lobby
             //todo va fatto solo se il server cambia stato

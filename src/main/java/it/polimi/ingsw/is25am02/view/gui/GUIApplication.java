@@ -28,18 +28,17 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class GUIApplication extends Application implements ConsoleClient, Runnable {
+public class GUIApplication extends Application implements ConsoleClient {
     public static final Logger logger = Logger.getLogger(GUIApplication.class.getName());
     public static int MIN_WIDTH = 1560;
     public static int MIN_HEIGHT = 900;
     private static Instant lastFullScreenAction = null;
-    private final Object controllerLock = new Object();
-    private volatile boolean guiInitialized = false;
-    private volatile boolean controllerSet = false;
+//    private final Object controllerLock = new Object();
+//    private volatile boolean guiInitialized = false;
+//    private volatile boolean controllerSet = false;
 
     public GUIApplication() {
-
-
+        GUIController.initEmpty();
 
     }
 
@@ -48,15 +47,17 @@ public class GUIApplication extends Application implements ConsoleClient, Runnab
     public void init() {
         logger.info("GUIApp started");
         loadFonts();
+
+
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         GUIController.getInstance(stage);
-        synchronized (controllerLock) {
-            guiInitialized = true;
-            controllerLock.notifyAll();
-        }
+//        synchronized (controllerLock) {
+//            guiInitialized = true;
+//            controllerLock.notifyAll();
+//        }
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double width = screenBounds.getWidth();
@@ -154,35 +155,37 @@ public class GUIApplication extends Application implements ConsoleClient, Runnab
 
     @Override
     public void setController(ClientController controller) {
-        synchronized (controllerLock) {
-            while (!guiInitialized) {
-                try {
-                    controllerLock.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException("Interrupted while waiting for GUIController initialization", e);
-                }
-            }
-            GUIController.getInstance().setController(controller);
-            controllerSet = true;
-            controllerLock.notifyAll(); // notify anyone waiting on getController()
-        }
+        GUIController.getInstance().setController(controller);
+//        synchronized (controllerLock) {
+//            while (!guiInitialized) {
+//                try {
+//                    controllerLock.wait();
+//                } catch (InterruptedException e) {
+//                    Thread.currentThread().interrupt();
+//                    throw new RuntimeException("Interrupted while waiting for GUIController initialization", e);
+//                }
+//            }
+//            GUIController.getInstance().setController(controller);
+//            controllerSet = true;
+//            controllerLock.notifyAll(); // notify anyone waiting on getController()
+//        }
 
     }
 
     @Override
     public ClientController getController() {
-        synchronized (controllerLock) {
-            while (!controllerSet) {
-                try {
-                    controllerLock.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException("Interrupted while waiting for ClientController to be set", e);
-                }
-            }
-            return GUIController.getInstance().getController();
-        }
+//        synchronized (controllerLock) {
+//            while (!controllerSet) {
+//                try {
+//                    controllerLock.wait();
+//                } catch (InterruptedException e) {
+//                    Thread.currentThread().interrupt();
+//                    throw new RuntimeException("Interrupted while waiting for ClientController to be set", e);
+//                }
+//            }
+//            return GUIController.getInstance().getController();
+//        }
+        return GUIController.getInstance().getController();
     }
 
     @Override
@@ -197,9 +200,10 @@ public class GUIApplication extends Application implements ConsoleClient, Runnab
 
     @Override
     public void start() {
-        Thread guiThread = new Thread(this);
-        guiThread.setDaemon(true); // o true, se vuoi che si chiuda con il processo principale
-        guiThread.start();
+//        Thread guiThread = new Thread(this);
+//        guiThread.setDaemon(true); // o true, se vuoi che si chiuda con il processo principale
+//        guiThread.start();
+        launch();
 
     }
 
@@ -233,10 +237,6 @@ public class GUIApplication extends Application implements ConsoleClient, Runnab
 
     }
 
-    @Override
-    public void run() {
-        launch();
-    }
 
     //todo si potrebbe aggiugnere anche il caricamento dei fonts
 }

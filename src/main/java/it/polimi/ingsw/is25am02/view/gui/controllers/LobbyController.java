@@ -63,6 +63,11 @@ public class LobbyController {
     }
 
     @FXML
+    private void onCreateLobby(MouseEvent event) {
+
+    }
+
+    @FXML
     private void onRefreshLobbies(MouseEvent event) {
         refreshLobbyList();
     }

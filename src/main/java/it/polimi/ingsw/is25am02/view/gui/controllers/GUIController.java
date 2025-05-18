@@ -5,9 +5,13 @@ import it.polimi.ingsw.is25am02.utils.Lobby;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +35,6 @@ public class GUIController implements Runnable {
     }
 
     public static synchronized GUIController getInstance() {
-        System.out.println("GUIController instance check1");
         if (instance == null) {
             throw new IllegalStateException("GUIController non è stato ancora inizializzato!");
         }
@@ -39,20 +42,24 @@ public class GUIController implements Runnable {
     }
 
     public static synchronized GUIController getInstance(Stage primaryStage) {
-        System.out.println("GUIController instance check2");
         if (instance == null) {
             instance = new GUIController(primaryStage);
+        } else if (instance.primaryStage == null) {
+            instance.primaryStage = primaryStage;
         }
         return instance;
     }
 
 
     public void setController(ClientController controller) {
-        if(controller != null)
-            System.out.println("CONTROLLER OK");
-        else
-            System.out.println("CONTROLLER NO");
+
         this.controller = controller;
+    }
+
+    public static synchronized void initEmpty() {
+        if (instance == null) {
+            instance = new GUIController(null); // stage verrà impostato dopo
+        }
     }
 
     public static void setScene(Scene scene) {
@@ -67,6 +74,32 @@ public class GUIController implements Runnable {
         return nickname;
     }
 
+    private void handleFullscreenEvents(Stage stage, Scene scene) {
+        String fullScreenButton;
+        // Set the full screen button based on the OS.
+        if (!System.getProperty("os.name").toLowerCase().contains("mac")) {
+            fullScreenButton = "F11";
+        } else {
+            fullScreenButton = "Cmd+F";
+        }
+//        // Show a toast message when entering full screen.
+//        stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue) {
+//                Controller.showToast(ToastLevels.INFO, "Full Screen Enabled", "Press " + fullScreenButton + " to exit full screen.");
+//            }
+//        });
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        // Set full screen shortcut
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            if (System.getProperty("os.name").toLowerCase().contains("mac") && event.isMetaDown() && event.getCode() == KeyCode.F ) {
+   
+                stage.setFullScreen(!stage.isFullScreen());
+            } else if (event.getCode() == KeyCode.F11) {
+                stage.setFullScreen(!stage.isFullScreen());
+            }
+        });
+        //Controller.showToast(ToastLevels.INFO, "Welcome!", "Press " + fullScreenButton + " to enter full screen.");
+    }
 
 
     public void setNickname(String nickname) {
@@ -75,7 +108,7 @@ public class GUIController implements Runnable {
 
     public <T> T switchScene(String fxmlName, String title) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/fxml/" + fxmlName + ".fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlName + ".fxml"));
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle(title);

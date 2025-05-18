@@ -2,12 +2,34 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
-    <ListView fx:id="lobbyList" prefHeight="200" prefWidth="300" />
-    <Label fx:id="errorLabel" textFill="red" />
-    <HBox spacing="10">
-        <Button fx:id="joinButton" text="Join Lobby" onMouseClicked="#onJoinLobby" />
-        <Button fx:id="refreshButton" text="Refresh" onMouseClicked="#onRefreshLobbies" />
-    </HBox>
-</VBox>
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController">
+    <!-- Background image -->
+    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+        <Image url="@../image/background.jpg" />
+    </ImageView>
+
+    <!-- Main layout over the background -->
+    <VBox spacing="30" alignment="CENTER" style="-fx-padding: 40;">
+        <!-- Error label -->
+        <Label fx:id="errorLabel" textFill="red" />
+
+        <!-- Big buttons -->
+        <VBox spacing="20" alignment="CENTER">
+            <Button fx:id="joinButton" text="Join Lobby"
+                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: blue; -fx-background-color: yellow;"
+                    onMouseClicked="#onJoinLobby" prefWidth="300" prefHeight="80" />
+            <Button fx:id="createButton" text="Create Lobby"
+                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: blue; -fx-background-color: yellow;"
+                    onMouseClicked="#onCreateLobby" prefWidth="300" prefHeight="80" />
+        </VBox>
+
+        <!-- Small refresh button -->
+        <Button fx:id="refreshButton" text="Refresh Lobbies"
+                style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: blue; -fx-background-color: yellow;"
+                onMouseClicked="#onRefreshLobbies" prefWidth="180" prefHeight="40" />
+    </VBox>
+</StackPane>
