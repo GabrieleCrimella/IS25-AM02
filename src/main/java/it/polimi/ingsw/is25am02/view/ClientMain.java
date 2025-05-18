@@ -28,8 +28,9 @@ public class ClientMain {
                 connection.startConnection(args[2]);
                 connection.setView(console);
 
-                console.start();
                 console.setController(controller);
+                console.start();
+
             } else {
                 System.out.println("Usage: java -jar client.jar <UI> <ConnectionType>");
                 throw new Exception("...");
