@@ -294,12 +294,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     gameV.getHeapTilesV().removeFromHeapTile(tileV);
                     if (playerv.getNickname().equals(nickname) ) {
                         tileV.setRotationType(rotationType);
+                        if(tType == TileType.BATTERY) tileV.setNumBattery(maxBattery);
                         playerv.setSpaceshipBoardTile(tileV, coordinate);
                     }
                 }
             } //se non trovo la tile nell'heap tile la devo creare
             if (playerv.getNickname().equals(nickname)) {
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
+                if(tType == TileType.BATTERY) tileV.setNumBattery(maxBattery);
                 playerv.setSpaceshipBoardTile(tileV, coordinate);
             }
 

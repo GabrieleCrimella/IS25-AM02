@@ -397,7 +397,7 @@ public class GraphicPrinter {
         }
 
         int maxOnLine = 0;
-        System.out.print("Storage:  ");
+        System.out.print("Storage:  \t");
         for(Map.Entry<Coordinate, TileV> entry : storage.entrySet()){
             if(maxOnLine < 4) {
                 System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
@@ -412,10 +412,10 @@ public class GraphicPrinter {
 
         maxOnLine = 0;
         System.out.println();
-        System.out.print("Battery:  ");
+        System.out.print("Battery: \t");
         for(Map.Entry<Coordinate, TileV> entry : batteries.entrySet()){
             if(maxOnLine < 4) {
-                System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
+                System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumBattery(), entry.getValue().getNumMaxBattery());
                 System.out.print(printItem(entry.getValue()) + "\t");
                 maxOnLine++;
             } else {
@@ -427,7 +427,7 @@ public class GraphicPrinter {
 
         maxOnLine = 0;
         System.out.println();
-        System.out.print("Crew:  ");
+        System.out.print("Crew:  \t");
         for(Map.Entry<Coordinate, TileV> entry : cabins.entrySet()){
             if(maxOnLine < 4) {
                 if (entry.getValue().getNumPAliens()>0){
