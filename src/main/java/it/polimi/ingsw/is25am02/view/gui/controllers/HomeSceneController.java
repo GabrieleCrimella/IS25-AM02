@@ -21,21 +21,14 @@ public class HomeSceneController {
     private Label errorLabel;
 
     // Richiamo il ClientController dal singleton di GUIController
-    private final ClientController clientController = GUIController.getInstance().getController();
+    private ClientController clientController;
 
-    /**
-     * Inizializzazione del controller.
-     */
+
+
     @FXML
-    public void initialize() {
-        loginButton.setOnMouseClicked(this::onLogin);
-    }
-
-    /**
-     * Evento di login.
-     */
-    private void onLogin(MouseEvent event) {
+    private void onLogin() {
         String nickname = nicknameField.getText().trim();
+        clientController = GUIController.getInstance().getController();
 
         if (nickname.isEmpty()) {
             showError("Il nickname non può essere vuoto.");
@@ -43,15 +36,19 @@ public class HomeSceneController {
         }
 
         try {
+
             // Richiamo il metodo di registrazione
             clientController.nicknameRegistration(nickname, clientController.getVirtualView());
-
+            System.out.println("passo 1");
             // Salvataggio del nickname nel clientController
             GUIController c = GUIController.getInstance();
+            System.out.println("passo 2");
             c.setNickname(nickname);
+            System.out.println("passo 3");
 
             // Cambio scena verso la lobby
-            GUIController.getInstance().switchScene("Lobby", "Seleziona una Lobby");
+            //todo va fatto solo se il server cambia stato
+            GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby");
         } catch (Exception e) {
             showError("Errore durante il login: " + e.getMessage());
         }

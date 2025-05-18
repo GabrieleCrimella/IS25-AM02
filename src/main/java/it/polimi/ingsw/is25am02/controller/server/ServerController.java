@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.controller.server.exception.PlayerNotFoundExcept
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.Spaceship;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.Lobby;
 import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
@@ -207,6 +208,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     for (Integer lobbyId : lobbies.keySet()) {
                         client.displayMessage("lobby.show", Map.of("num", String.valueOf(lobbyId), "owner", lobbies.get(lobbyId).getPlayers().getFirst().getNickname(), "att", String.valueOf(lobbies.get(lobbyId).getPlayers().size()), "max", String.valueOf(lobbies.get(lobbyId).getMaxPlayers())));
                     }
+                    client.setLobbiesView(lobbies);
                 }
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "connection problem in method getLobbies", e);

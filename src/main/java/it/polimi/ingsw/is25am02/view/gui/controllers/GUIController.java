@@ -1,54 +1,58 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.network.VirtualView;
-import it.polimi.ingsw.is25am02.view.ConsoleClient;
-import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
-import javafx.application.Platform;
+import it.polimi.ingsw.is25am02.utils.Lobby;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import it.polimi.ingsw.is25am02.utils.Coordinate;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GUIController implements Runnable, ConsoleClient {
+public class GUIController implements Runnable {
     private String nickname;
     private ClientController controller;
     private static GUIController instance;
     private Stage primaryStage;
-
-    // Mappa per tenere traccia dei controller
+    private Map<Integer, Lobby> lobbies;
     private Map<String, Object> controllers = new HashMap<>();
-
-    /**
-     * The current scene.
-     */
     private static Scene scene;
-    /**
-     * The current stage.
-     */
     private static Stage stage;
+
+    public ClientController getController() {
+        return controller;
+    }
+
 
     private GUIController(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public static GUIController getInstance() {
+    public static synchronized GUIController getInstance() {
+        System.out.println("GUIController instance check1");
         if (instance == null) {
             throw new IllegalStateException("GUIController non è stato ancora inizializzato!");
         }
         return instance;
     }
 
-    public static GUIController getInstance(Stage primaryStage) {
+    public static synchronized GUIController getInstance(Stage primaryStage) {
+        System.out.println("GUIController instance check2");
         if (instance == null) {
             instance = new GUIController(primaryStage);
         }
         return instance;
+    }
+
+
+    public void setController(ClientController controller) {
+        if(controller != null)
+            System.out.println("CONTROLLER OK");
+        else
+            System.out.println("CONTROLLER NO");
+        this.controller = controller;
     }
 
     public static void setScene(Scene scene) {
@@ -63,45 +67,7 @@ public class GUIController implements Runnable, ConsoleClient {
         return nickname;
     }
 
-    @Override
-    public void start() {
 
-    }
-
-    @Override
-    public void reportError(String keys, Map<String, String> params) {
-
-    }
-
-    @Override
-    public void displayMessage(String keys, Map<String, String> params) {
-
-    }
-
-    @Override
-    public GraphicPrinter getPrinter() {
-        return null;
-    }
-
-    @Override
-    public void startCountdown() {
-
-    }
-
-    @Override
-    public void spaceshipBrokenUpdate(String details, Coordinate[][] ships) {
-
-    }
-
-    @Override
-    public void setController(ClientController controller) {
-        this.controller = controller;
-    }
-
-    @Override
-    public ClientController getController() {
-        return controller;
-    }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -121,6 +87,7 @@ public class GUIController implements Runnable, ConsoleClient {
 
             return controller;
         } catch (IOException e) {
+            //todo
             e.printStackTrace();
             return null;
         }

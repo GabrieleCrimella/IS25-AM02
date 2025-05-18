@@ -1,11 +1,9 @@
 package it.polimi.ingsw.is25am02.view.tui;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.controller.client.MenuState;
+import it.polimi.ingsw.is25am02.utils.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
-import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
@@ -599,9 +597,15 @@ public class TuiConsole implements Runnable, ConsoleClient {
     }
 
     @Override
+    public void setLobbiesView(Map<Integer, Lobby> lobbies) {
+        //serve per la gui
+    }
+
+    @Override
     public void reportError(String keys, Map<String, String> params) {
         System.err.println(messManager.getMessageWithParams(keys, params));
     }
+
 
     public void startCountdown() {
         try {
