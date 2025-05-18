@@ -942,7 +942,6 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo qui mancano gli update perchè odio i box
     @Override
     public void choiceBox(Player player, boolean choice) {
         try {
@@ -965,13 +964,12 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo qui mancano gli update perchè odio i box
     @Override
     public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) {
         try {
             stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.BOXMANAGEMENT, player);
             currentPlayerControl(player);
-            moveControl(player, start, end, boxType);
+            moveControl(player, start, end, boxType, on);
 
             if (start.x() == -1 && start.y() == -1) { //Start equals Planet
                 getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
@@ -993,12 +991,14 @@ public class Game implements Game_Interface {
                 }
             } else { //Start and End are types of storage
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
-                for (String nick: observers.keySet()) {
-                    try {
-                        observers.get(nick).showBoxUpdate(end,player.getNickname(),player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
-                        observers.get(nick).showBoxUpdate(start,player.getNickname(),player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                if(on) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
+                            observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                        }
                     }
                 }
             }
@@ -1515,7 +1515,11 @@ public class Game implements Game_Interface {
         }
     }
 
-    private void moveControl(Player player, Coordinate start, Coordinate end, BoxType boxType) throws IllegalAddException, TileException {
+    private void moveControl(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean choice) throws IllegalAddException, TileException {
+        if(!choice) {
+            return;
+        }
+
         //check that start contains the required boxtype
         if (start.x() != -1) { //Tile
             if (giveTile(player, start).getType().equals(TileType.SPECIAL_STORAGE) || giveTile(player, start).getType().equals(TileType.STORAGE)) {
