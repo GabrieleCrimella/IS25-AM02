@@ -984,7 +984,7 @@ public class Game implements Game_Interface {
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), getCurrentCard().getBoxesWon(), boxType, on);
                 for (String nick: observers.keySet()) {
                     try {
-                        observers.get(nick).showBoxUpdate(end,player.getNickname(),player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
+                        observers.get(nick).showBoxUpdate(start,player.getNickname(),player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
                     }
