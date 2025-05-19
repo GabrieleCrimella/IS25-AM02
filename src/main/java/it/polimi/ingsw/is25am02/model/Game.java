@@ -50,7 +50,7 @@ public class Game implements Game_Interface {
                 System.out.println(e.getMessage());
             }
         }
-        this.currentState = new State(players.getFirst());
+        this.currentState = new State(players.getFirst(), this);
         this.deck = new CardDeck(level);
         this.hourglass = new Hourglass();
         for (Player p : players) {
@@ -175,6 +175,7 @@ public class Game implements Game_Interface {
         if (globalBoard.getRanking().indexOf(getCurrentPlayer()) == globalBoard.getRanking().size() - 1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(StateCardType.FINISH);
+            getCurrentState().setPhase(StateGameType.TAKE_CARD);
         } else if (globalBoard.getRanking().get(index + 1).getStatePlayer() == StatePlayerType.IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
             currentState.setCurrentPlayer(getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
         }
@@ -1496,6 +1497,10 @@ public class Game implements Game_Interface {
     }
 
     private void choicesControl(Player player, List<Coordinate> c1, List<Coordinate> c2, TileType t1) throws TileException {
+        if(c1.size() == 0 && c2.size() == 0){
+            return;
+        }
+
         if (c1.size() != c2.size()) {
             throw new TileException("Wrong number of tiles");
         }

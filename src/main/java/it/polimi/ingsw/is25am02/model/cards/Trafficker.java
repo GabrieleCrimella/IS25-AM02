@@ -133,7 +133,6 @@ public class Trafficker extends Card {
         }
     }
 
-    //todo se non ho abbastanza box allora tolgo le batterie
     @Override
     public void removeBox(Game game, Player player, Tile storage, BoxType type) throws IllegalRemoveException {
         if(player.getSpaceship().isMostExpensive(type) && !player.getSpaceship().noBox() ){
@@ -178,7 +177,7 @@ public class Trafficker extends Card {
 
             if (boxesRemove == boxesLost) {
                 setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                game.nextPlayer();
             }
         }
         else throw new IllegalStateException();
