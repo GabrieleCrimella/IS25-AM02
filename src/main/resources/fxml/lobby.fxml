@@ -6,9 +6,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import java.lang.Integer?>
+<?import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor?>
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController">
     <!-- Background image -->
-    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+    <ImageView fitWidth="800" fitHeight="600" preserveRatio="false">
         <Image url="@../image/background.jpg" />
     </ImageView>
 
@@ -26,6 +30,38 @@
                     style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: blue; -fx-background-color: yellow;"
                     onMouseClicked="#onCreateLobby" prefWidth="300" prefHeight="80" />
         </VBox>
+
+        <VBox spacing="10" alignment="CENTER" fx:id="createForm" visible="false">
+            <Label text="Max Players:" />
+            <Spinner fx:id="maxPlayersSpinner" min="2" max="10" initialValue="4" />
+
+            <Label text="Level:" />
+            <ChoiceBox fx:id="levelChoiceBox">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <Integer fx:value= "0"/>
+                        <Integer fx:value="2"/>
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+
+            <Label text="Color:" />
+            <ChoiceBox fx:id="colorChoiceBox">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <PlayerColor fx:value="RED"/>
+                        <PlayerColor fx:value="GREEN"/>
+                        <PlayerColor fx:value="BLUE"/>
+                        <PlayerColor fx:value="YELLOW"/>
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+
+            <Button text="Confirm Create"
+                    onMouseClicked="#onConfirmCreateLobby"
+                    style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+        </VBox>
+
 
         <!-- Small refresh button -->
         <Button fx:id="refreshButton" text="Refresh Lobbies"

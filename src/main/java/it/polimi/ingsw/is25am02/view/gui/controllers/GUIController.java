@@ -74,33 +74,6 @@ public class GUIController implements Runnable {
         return nickname;
     }
 
-    private void handleFullscreenEvents(Stage stage, Scene scene) {
-        String fullScreenButton;
-        // Set the full screen button based on the OS.
-        if (!System.getProperty("os.name").toLowerCase().contains("mac")) {
-            fullScreenButton = "F11";
-        } else {
-            fullScreenButton = "Cmd+F";
-        }
-//        // Show a toast message when entering full screen.
-//        stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue) {
-//                Controller.showToast(ToastLevels.INFO, "Full Screen Enabled", "Press " + fullScreenButton + " to exit full screen.");
-//            }
-//        });
-        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        // Set full screen shortcut
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
-            if (System.getProperty("os.name").toLowerCase().contains("mac") && event.isMetaDown() && event.getCode() == KeyCode.F ) {
-   
-                stage.setFullScreen(!stage.isFullScreen());
-            } else if (event.getCode() == KeyCode.F11) {
-                stage.setFullScreen(!stage.isFullScreen());
-            }
-        });
-        //Controller.showToast(ToastLevels.INFO, "Welcome!", "Press " + fullScreenButton + " to enter full screen.");
-    }
-
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -114,7 +87,6 @@ public class GUIController implements Runnable {
             primaryStage.setTitle(title);
             primaryStage.show();
 
-            // Recupero il controller e lo salvo nella mappa
             T controller = loader.getController();
             controllers.put(fxmlName, controller);
 

@@ -37,9 +37,7 @@ public class HomeSceneController {
 
         try {
 
-            // Richiamo il metodo di registrazione
             clientController.nicknameRegistration(nickname, clientController.getVirtualView());
-            // Salvataggio del nickname nel clientController
             GUIController c = GUIController.getInstance();
             c.setNickname(nickname);
 
@@ -51,10 +49,7 @@ public class HomeSceneController {
         }
     }
 
-    /**
-     * Mostra un errore nella Label.
-     * @param message Messaggio di errore da mostrare.
-     */
+
     private void showError(String message) {
         Platform.runLater(() -> {
             if (errorLabel != null) {

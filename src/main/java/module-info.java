@@ -13,4 +13,6 @@ module it.polimi.ingsw.is25am02 {
     //exports it.polimi.ingsw.is25am02;
     exports it.polimi.ingsw.is25am02.network;
     opens it.polimi.ingsw.is25am02.view.gui.controllers to javafx.fxml;
+    opens it.polimi.ingsw.is25am02.utils.enumerations to javafx.fxml;
+
 }

@@ -6,10 +6,9 @@ import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -26,6 +25,19 @@ public class LobbyController {
 
     @FXML
     private Button refreshButton;
+
+    @FXML
+    private VBox createForm;
+
+    @FXML
+    private Spinner<Integer> maxPlayersSpinner;
+
+    @FXML
+    private ChoiceBox<Integer> levelChoiceBox;
+
+    @FXML
+    private ChoiceBox<PlayerColor> colorChoiceBox;
+
 
     @FXML
     private Label errorLabel;
@@ -64,8 +76,28 @@ public class LobbyController {
 
     @FXML
     private void onCreateLobby(MouseEvent event) {
+        createForm.setVisible(true);
 
     }
+
+    @FXML
+    private void onConfirmCreateLobby(MouseEvent event) {
+        int maxplayers = maxPlayersSpinner.getValue();
+        int level = levelChoiceBox.getValue();
+        PlayerColor color = colorChoiceBox.getValue();
+
+        if ( color == null) {
+            errorLabel.setText("Please select both level and color.");
+            return;
+        }
+
+        try {
+            clientController.createLobby(clientController.getVirtualView(), controller.getNickname(), maxplayers, color, level);
+        } catch (RemoteException e) {
+            errorLabel.setText("Error " + e.getMessage());
+        }
+    }
+
 
     @FXML
     private void onRefreshLobbies(MouseEvent event) {
