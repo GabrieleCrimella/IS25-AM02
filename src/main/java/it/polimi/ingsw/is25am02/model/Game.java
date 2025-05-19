@@ -571,16 +571,17 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.setStatePlayer(StatePlayerType.FINISHED);
-            alreadyFinished++;
 
-            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
+
+            getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[3 - alreadyFinished]);
             for (String nick : observers.keySet()) {
                 try {
-                    observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[players.size() - alreadyFinished]);
+                    observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[3 - alreadyFinished]);
                 } catch (Exception e) {
                     ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
                 }
             }
+            alreadyFinished++;
 
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
                 player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
@@ -630,6 +631,7 @@ public class Game implements Game_Interface {
                 player.getObserver().displayMessage("info.spaceship.right", null);
             } else {
                 player.setStatePlayer(StatePlayerType.WRONG_SHIP);
+                currentState.setPhase(StateGameType.CORRECTION);
                 player.getObserver().reportError("info.spaceship.wrong", null);
             }
             alreadyChecked++;
@@ -849,6 +851,7 @@ public class Game implements Game_Interface {
             outOfGame();
             currentPlayerControl(player);
 
+            currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             if (deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
                 this.getCurrentState().setPhase(StateGameType.RESULT);
             } else {
