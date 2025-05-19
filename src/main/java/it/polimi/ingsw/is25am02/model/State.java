@@ -13,12 +13,14 @@ public class State {
     private Card currentCard;
     private Player currentPlayer;
     private StateGameType phase;
+    private Game game;
     private ConcurrentHashMap<String, VirtualView> observers;
 
-    public State(Player player) {
+    public State(Player player, Game game) {
         this.phase = StateGameType.BUILD;
         this.currentCard = new InitialCard(1, "","", false);
         this.currentPlayer = player;
+        this.game = game;
     }
 
     public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {
@@ -63,6 +65,9 @@ public class State {
         this.phase = phase;
         for (String nick: observers.keySet()){
             try {
+                if(phase == StateGameType.TAKE_CARD){
+                    observers.get(nick).showCurrentPlayerUpdate(game.getGameboard().getRanking().getFirst().getNickname());
+                }
                 observers.get(nick).showGameStateUpdate(phase);
             } catch (RemoteException e) {
                 ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);

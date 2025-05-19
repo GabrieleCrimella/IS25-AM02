@@ -499,6 +499,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
             List<Coordinate> batteries = new ArrayList<>();
             if (numMotors == 0){
                 controller.choiceDoubleMotor(nickname, motors, batteries);
+                return;
             }
 
             for (int i = 0; i < numMotors; i++) {
@@ -548,6 +549,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
             int numCannons = Integer.parseInt(tokenizer.nextToken());
             List<Coordinate> cannons = new ArrayList<>();
+            List<Coordinate> batteries = new ArrayList<>();
+            if (numCannons == 0){
+                controller.choiceDoubleMotor(nickname, cannons, batteries);
+                return;
+            }
 
             for (int i = 0; i < numCannons; i++) {
                 if (tokenizer.countTokens() < 2) {
@@ -565,7 +571,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
             }
 
             int numBatteries = Integer.parseInt(tokenizer.nextToken());
-            List<Coordinate> batteries = new ArrayList<>();
 
             for (int i = 0; i < numBatteries; i++) {
                 if (tokenizer.countTokens() < 2) {
@@ -576,7 +581,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
                 int batteryY = Integer.parseInt(tokenizer.nextToken());
                 batteries.add(new Coordinate(batteryX, batteryY));
             }
-
             controller.choiceDoubleCannon(nickname, cannons, batteries);
 
         } catch (NumberFormatException e) {
