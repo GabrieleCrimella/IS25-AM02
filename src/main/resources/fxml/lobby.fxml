@@ -7,7 +7,6 @@
 <?import javafx.geometry.Insets?>
 
 <?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 <?import java.lang.Integer?>
 <?import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor?>
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController">
@@ -20,6 +19,9 @@
     <VBox spacing="30" alignment="CENTER" style="-fx-padding: 40;">
         <!-- Error label -->
         <Label fx:id="errorLabel" textFill="red" />
+
+        <ListView fx:id="lobbyList" prefHeight="200" prefWidth="300" visible="false" />
+
 
         <!-- Big buttons -->
         <VBox spacing="20" alignment="CENTER">

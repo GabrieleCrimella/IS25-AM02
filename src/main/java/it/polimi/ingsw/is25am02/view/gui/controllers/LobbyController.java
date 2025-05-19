@@ -2,9 +2,12 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
+import it.polimi.ingsw.is25am02.utils.Lobby;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -13,12 +16,13 @@ import javafx.scene.layout.VBox;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LobbyController {
     private PlayerV p;
 
     @FXML
-    private ListView<String> lobbyList;
+    private ListView<Lobby> lobbyList;
 
     @FXML
     private Button joinButton;
@@ -49,28 +53,90 @@ public class LobbyController {
     public void initialize(ClientController clientController) {
         controller=GUIController.getInstance();
         this.clientController = clientController;
+        controller.setLobbyController(this);
         try {
-            p=clientController.getPlayerVFromNickname(controller.getNickname());
+            clientController.getLobbies(clientController.getVirtualView());
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            errorLabel.setText("get lobbies non funziona");
         }
-        loadLobbies();
+
+        lobbyList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Lobby lobby, boolean empty) {
+                super.updateItem(lobby, empty);
+                if (empty || lobby == null) {
+                    setText(null);
+                } else {
+                    setText("Lobby " + lobby.getId() );
+                }
+            }
+        });
+    }
+
+    public void setLobbies(List<Lobby> lobbies) {
+        ObservableList<Lobby> observableList = FXCollections.observableArrayList(lobbies);
+        lobbyList.setItems(observableList);
+        lobbyList.setVisible(true);
+
+        // CellFactory personalizzato
+        lobbyList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Lobby lobby, boolean empty) {
+                super.updateItem(lobby, empty);
+                if (empty || lobby == null) {
+                    setText(null);
+                } else {
+                    System.out.println("OKOK");
+                    String lobbyDescription = String.format(
+                            "Lobby ID: %d | Giocatori: %d/%d | Livello: %d",
+                            lobby.getId(),
+                            lobby.getPlayers().size(),
+                            lobby.getMaxPlayers(),
+                            lobby.getLevel()
+                    );
+                    setText(lobbyDescription);
+                }
+            }
+        });
+    }
+
+
+    public void setLobbyListFromMap(Map<Integer, Lobby> lobbyMap) {
+        setLobbies(new ArrayList<>(lobbyMap.values()));
+        Platform.runLater(() -> {
+            lobbyList.getItems().setAll(lobbyMap.values());
+            errorLabel.setText("");
+        });
     }
 
     @FXML
     private void onJoinLobby(MouseEvent event) {
-        String selectedLobby = lobbyList.getSelectionModel().getSelectedItem();
+        Lobby selectedLobby = lobbyList.getSelectionModel().getSelectedItem();
+        if (!lobbyList.isVisible()) {
+            lobbyList.setVisible(true);  // Necessario se hai messo managed="false"
+            refreshLobbyList();          // Popola la lista appena la mostri
+            errorLabel.setText("Seleziona una lobby dalla lista.");
+            return;
+        }
         if (selectedLobby == null) {
+            refreshLobbyList();
             errorLabel.setText("Seleziona una lobby!");
         } else {
-            //todo parametri sotto da cambiare
-            boolean success = false;
+
+            PlayerColor color = colorChoiceBox.getValue();
+            if (color == null) {
+                errorLabel.setText("Scegli un colore.");
+                return;
+            }
+
             try {
-                clientController.joinLobby(clientController.getVirtualView(), 1, p.getNickname(), PlayerColor.GREEN);
-                errorLabel.setText("");
+                int lobbyId = selectedLobby.getId();
+                clientController.joinLobby(clientController.getVirtualView(), lobbyId, controller.getNickname(), color);
+                errorLabel.setText("");  // Pulisce eventuali errori precedenti
             } catch (RemoteException e) {
                 errorLabel.setText("Impossibile accedere alla lobby.");
             }
+
         }
     }
 
@@ -93,6 +159,8 @@ public class LobbyController {
 
         try {
             clientController.createLobby(clientController.getVirtualView(), controller.getNickname(), maxplayers, color, level);
+            System.out.println("lobby creata");
+            createForm.setVisible(false);
         } catch (RemoteException e) {
             errorLabel.setText("Error " + e.getMessage());
         }
@@ -105,26 +173,24 @@ public class LobbyController {
     }
 
     private void refreshLobbyList() {
-        lobbyList.getItems().clear();
-        List<String> lobbies = null;
         try {
             clientController.getLobbies(clientController.getVirtualView());
+
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            displayError("Errore nel recupero delle lobby.");
         }
-        lobbyList.getItems().addAll(lobbies);
     }
 
     private void loadLobbies() {
-        //List<String> lobbies = clientController.getAvailableLobbies();
-        List<String> lobbies = new ArrayList<>();
-        lobbies.add("Lobby 1 - Gabri");
-        lobbies.add("Lobby 2 - Marco");
-        lobbies.add("Lobby 3 - Luca");
-        Platform.runLater(() -> {
-            lobbyList.getItems().setAll(lobbies);
-            errorLabel.setText("");
-        });
+//        List<String> lobbies = clientController.getAvailableLobbies();
+//        List<String> lobbies = new ArrayList<>();
+//        lobbies.add("Lobby 1 - Gabri");
+//        lobbies.add("Lobby 2 - Marco");
+//        lobbies.add("Lobby 3 - Luca");
+//        Platform.runLater(() -> {
+//            lobbyList.getItems().setAll(lobbies);
+//            errorLabel.setText("");
+//        });
     }
 
     private void displayError(String message) {
