@@ -33,6 +33,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     public static int MIN_WIDTH = 1560;
     public static int MIN_HEIGHT = 900;
     private static Instant lastFullScreenAction = null;
+    private Map<Integer, Lobby> lobbies;
 
 
     public GUIApplication() {
@@ -154,16 +155,28 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void reportError(String keys, Map<String, String> params) {
+        Platform.runLater(() -> {
+            GUIController.getInstance().showError(keys);
+        });
 
     }
 
     @Override
     public void displayMessage(String keys, Map<String, String> params) {
 
+
     }
 
     @Override
     public void setLobbiesView(Map<Integer, Lobby> lobbies) {
+        this.lobbies = lobbies;
+
+        // Richiama il controller della GUI
+        Platform.runLater(() -> {
+            GUIController.getInstance()
+                    .getLobbyController()
+                    .setLobbyListFromMap(lobbies);
+        });
 
     }
 

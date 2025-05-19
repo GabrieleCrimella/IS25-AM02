@@ -43,7 +43,11 @@ public class HomeSceneController {
 
             // Cambio scena verso la lobby
             //todo va fatto solo se il server cambia stato
-            GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby");
+
+            GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
+                g.initialize(clientController);
+
+            });
         } catch (Exception e) {
             showError("Errore durante il login: " + e.getMessage());
         }

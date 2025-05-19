@@ -79,15 +79,38 @@ public class GUIController implements Runnable {
         this.nickname = nickname;
     }
 
-    public <T> T switchScene(String fxmlName, String title) {
+    private LobbyController lobbyController;
+
+    public void setLobbyController(LobbyController controller) {
+        this.lobbyController = controller;
+    }
+
+    public LobbyController getLobbyController() {
+        return lobbyController;
+    }
+
+    public void showError(String keys){
+        System.out.println(keys);
+    }
+
+
+
+    public <T> T switchScene(String fxmlName, String title, java.util.function.Consumer<T> initializer) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlName + ".fxml"));
+
+
             Parent root = loader.load();
+            T controller = loader.getController();
+
+            if (initializer != null) {
+                initializer.accept(controller);
+            }
+
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle(title);
             primaryStage.show();
 
-            T controller = loader.getController();
             controllers.put(fxmlName, controller);
 
             return controller;
