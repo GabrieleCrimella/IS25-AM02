@@ -69,8 +69,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void spaceshipBrokenUpdate(String details, Coordinate[][] ships) throws RemoteException {
-        console.spaceshipBrokenUpdate(details, ships);
+    public void spaceshipBrokenUpdate(String nickname) throws RemoteException {
+        printOnConsole();
+        displayMessage("", null);
     }
 
     @Override

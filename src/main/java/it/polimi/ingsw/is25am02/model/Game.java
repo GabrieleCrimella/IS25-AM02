@@ -16,6 +16,10 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.DECISION;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.EFFECT_ON_PLAYER;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType.IN_GAME;
+
 @SuppressWarnings("all")
 public class Game implements Game_Interface {
     private int diceResult;
@@ -190,7 +194,7 @@ public class Game implements Game_Interface {
             getCurrentCard().setStateCard(StateCardType.FINISH);
             getCurrentState().setPhase(StateGameType.TAKE_CARD);
         }
-        else if (getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index+1)).getStatePlayer() == StatePlayerType.IN_GAME ) {
+        else if (getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index+1)).getStatePlayer() == IN_GAME ) {
             currentState.setCurrentPlayer(getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index +1)));
         }
     }
@@ -684,7 +688,6 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo serve modo alternativo per fare update perchè la remove tile rimuove più tile in una volta
     @Override
     public void removeTile(Player player, Coordinate pos) {
         try {
@@ -801,7 +804,7 @@ public class Game implements Game_Interface {
         try {
             stateControl(StateGameType.INITIALIZATION_SPACESHIP, StatePlayerType.CORRECT_SHIP, StateCardType.FINISH, player);
 
-            player.setStatePlayer(StatePlayerType.IN_GAME);
+            player.setStatePlayer(IN_GAME);
             readyPlayer++;
 
             //1) in case the player doesn't want to initialize all the cabins by himself
@@ -842,7 +845,7 @@ public class Game implements Game_Interface {
     public void earlyLanding(Player player) {
         try {
             levelControl();
-            stateControl(StateGameType.TAKE_CARD, StatePlayerType.IN_GAME, StateCardType.FINISH, player);
+            stateControl(StateGameType.TAKE_CARD, IN_GAME, StateCardType.FINISH, player);
 
             getGameboard().getPositions().remove(player);
 
@@ -874,7 +877,7 @@ public class Game implements Game_Interface {
     @Override
     public void playNextCard(Player player) {
         try {
-            stateControl(StateGameType.TAKE_CARD, StatePlayerType.IN_GAME, StateCardType.FINISH, player);
+            stateControl(StateGameType.TAKE_CARD, IN_GAME, StateCardType.FINISH, player);
             outOfGame();
             currentPlayerControl(player);
 
@@ -887,7 +890,7 @@ public class Game implements Game_Interface {
                     order.add(pOrder.getNickname());
                 }
                 getCurrentState().getCurrentCard().setCurrentOrder(order);
-                this.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+                this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
             }
 
             for (Player p : players) {
@@ -908,7 +911,7 @@ public class Game implements Game_Interface {
     @Override
     public void choice(Player player, boolean choice) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.DECISION, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             currentPlayerControl(player);
 
             getCurrentCard().choice(this, player, choice);
@@ -936,7 +939,7 @@ public class Game implements Game_Interface {
     @Override
     public void removeCrew(Player player, Coordinate pos) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.REMOVE, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.REMOVE, player);
             currentPlayerControl(player);
             typeControl(player, pos, TileType.CABIN);
 
@@ -984,7 +987,7 @@ public class Game implements Game_Interface {
     @Override
     public void choiceBox(Player player, boolean choice) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.DECISION, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             currentPlayerControl(player);
 
             getCurrentCard().choiceBox(this, player, choice);
@@ -1006,7 +1009,7 @@ public class Game implements Game_Interface {
     @Override
     public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.BOXMANAGEMENT, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.BOXMANAGEMENT, player);
             currentPlayerControl(player);
             moveControl(player, start, end, boxType, on);
 
@@ -1066,7 +1069,7 @@ public class Game implements Game_Interface {
     @Override
     public void choicePlanet(Player player, int index) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.DECISION, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
             currentPlayerControl(player);
 
             getCurrentCard().choicePlanet(this, player, index);
@@ -1094,7 +1097,7 @@ public class Game implements Game_Interface {
     @Override
     public void choiceDoubleMotor(Player player, List<Coordinate> motors, List<Coordinate> batteries) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
             choicesControl(player, motors, batteries, TileType.D_MOTOR);
 
@@ -1135,7 +1138,7 @@ public class Game implements Game_Interface {
     @Override
     public void choiceDoubleCannon(Player player, List<Coordinate> cannons, List<Coordinate> batteries) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
             choicesControl(player, cannons, batteries, TileType.D_CANNON);
 
@@ -1176,7 +1179,7 @@ public class Game implements Game_Interface {
     @Override
     public void choiceCrew(Player player) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
 
             getCurrentCard().choiceCrew(this, player);
@@ -1204,7 +1207,7 @@ public class Game implements Game_Interface {
     @Override
     public void removeBox(Player player, Coordinate pos, BoxType type) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.REMOVE, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.REMOVE, player);
             currentPlayerControl(player);
 
             if (player.getSpaceship().getTile(pos.x(), pos.y()).isPresent() && (
@@ -1246,7 +1249,7 @@ public class Game implements Game_Interface {
     @Override
     public void removeBattery(Player player, Coordinate pos) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.REMOVE, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.REMOVE, player);
             currentPlayerControl(player);
             typeControl(player, pos, TileType.BATTERY);
 
@@ -1281,7 +1284,7 @@ public class Game implements Game_Interface {
     @Override
     public void rollDice(Player player) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.ROLL, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.ROLL, player);
             currentPlayerControl(player);
 
             setDiceResult();
@@ -1302,7 +1305,7 @@ public class Game implements Game_Interface {
     @Override
     public void calculateDamage(Player player, Coordinate pos) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.CHOICE_ATTRIBUTES, player);
             currentPlayerControl(player);
             if (player.getSpaceship().getTile(pos.x(), pos.y()).isPresent()) {
                 typeControl(player, pos, TileType.BATTERY);
@@ -1345,7 +1348,7 @@ public class Game implements Game_Interface {
     @Override
     public void effect(Game game) {
         try {
-            stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.DECISION, getCurrentPlayer());
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, getCurrentPlayer());
             currentPlayerControl(getCurrentPlayer());
 
             getCurrentCard().effect(game);
@@ -1361,16 +1364,22 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo non c'è l'update necessario per questo metodo
     @Override
     public void keepBlock(Player player, Coordinate pos) {
         try {
-            //stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
-            stateControl(StateGameType.CORRECTION, StatePlayerType.WRONG_SHIP, StateCardType.FINISH, player);
+            stateControl(EFFECT_ON_PLAYER, IN_GAME, DECISION, player);
+            //stateControl(StateGameType.CORRECTION, StatePlayerType.WRONG_SHIP, StateCardType.FINISH, player);
             currentPlayerControl(player);
 
-            player.getSpaceship().keepBlock(player.getNickname(), pos);
+            //player.getSpaceship().keepBlock(player.getNickname(), pos);
+            getCurrentCard().keepBlocks(this,player,pos);
         } catch (IllegalStateException e) {
+            try {
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method keepBlock");
+            }
+        } catch (IllegalPhaseException e) {
             try {
                 player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
@@ -1402,7 +1411,7 @@ public class Game implements Game_Interface {
                     }
                 }
 
-                if (p.getStatePlayer() == StatePlayerType.IN_GAME) {
+                if (p.getStatePlayer() == IN_GAME) {
                     int exposedConnectors;
                     //Ranking points
                     p.getSpaceship().addCosmicCredits(getGameboard().getRewardPosition()[getGameboard().getRanking().indexOf(p)]);
@@ -1427,7 +1436,7 @@ public class Game implements Game_Interface {
 
             //Best Spaceship
             for (Player p : getPlayers()) {
-                if (p.getStatePlayer() == StatePlayerType.IN_GAME && p.getSpaceship().calculateExposedConnectors() == minExposedConnectors) {
+                if (p.getStatePlayer() == IN_GAME && p.getSpaceship().calculateExposedConnectors() == minExposedConnectors) {
                     p.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
                 }
             }

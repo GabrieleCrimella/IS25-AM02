@@ -30,7 +30,7 @@ public interface VirtualView extends Remote {
 
     void showTileRemoval(Coordinate coordinate, String nickname) throws RemoteException;
 
-    void spaceshipBrokenUpdate(String details, Coordinate[][] ships) throws RemoteException;
+    void spaceshipBrokenUpdate(String nickname) throws RemoteException;
 
     void showBatteryRemoval(Coordinate coordinate, String nickname, int numBattery) throws RemoteException;
 

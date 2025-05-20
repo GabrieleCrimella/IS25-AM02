@@ -487,8 +487,8 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int keepX = Integer.parseInt(tokenizer.nextToken());
                     int keepY = Integer.parseInt(tokenizer.nextToken());
                     controller.keepBlock(nickname, new Coordinate(keepX, keepY));
-                    break;
-*/
+                    break; */
+
                 default:
                     reportError("error.reading.notFound", Map.of("command", command));
                     break;
@@ -642,8 +642,8 @@ public class TuiConsole implements Runnable, ConsoleClient {
         }
     }
 
-    public void spaceshipBrokenUpdate(String details, Coordinate[][] ships) {
-        int i, spaceshipNumber = 0;
+    public void spaceshipBrokenUpdate(String nickname) {
+        /*int i, spaceshipNumber = 0;
         System.out.println(">> Spaceship broken!!");
         for (i = 0; i < ships.length; i++) {
             System.out.print("Spaceship " + i + ": ");
@@ -659,32 +659,15 @@ public class TuiConsole implements Runnable, ConsoleClient {
                 String input = reader.readLine();
                 spaceshipNumber = Integer.parseInt(input);
                 if (spaceshipNumber >= 0 && spaceshipNumber < i) {
-                    switch (details) {
-                        case "build":
-                            controller.keepBlock(nickname, ships[spaceshipNumber][0]);
-                            break;
-                        case "meteoritesStorm":
-                            //todo chiamare il metodo keepBlocks su MeteoritesStorm
-                            break;
-                        case "pirate":
-                            //todo chiamare il metodo keepBlocks su Pirate
-                            break;
-                        case "warZonaI":
-                            //todo chiamare il metodo keepBlocks su WarZonaI
-                            break;
-                        case "warZonaII":
-                            //todo chiamare il metodo keepBlocks su WarZonaII
-                            break;
-                    }
-                    break;
+                    controller.keepBlock(nickname, ships[spaceshipNumber][0]);
                 } else {
                     System.out.println("Invalid spaceship number. Please try again.");
                 }
             } catch (IOException e) {
-                //todo capire come gestirlo
                 reportError("error.reading.loop", null);
             }
 
         } while (spaceshipNumber < 0 || spaceshipNumber >= i);
+         */
     }
 }

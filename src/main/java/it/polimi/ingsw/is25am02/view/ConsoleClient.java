@@ -22,5 +22,5 @@ public interface ConsoleClient {
     void setBuildView(int level, PlayerColor color);
     GraphicPrinter getPrinter();
     void startCountdown();
-    void spaceshipBrokenUpdate(String details, Coordinate[][] ships);
+    void spaceshipBrokenUpdate(String details);
 }

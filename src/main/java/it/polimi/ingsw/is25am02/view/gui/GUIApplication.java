@@ -208,7 +208,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     }
 
     @Override
-    public void spaceshipBrokenUpdate(String details, Coordinate[][] ships) {
+    public void spaceshipBrokenUpdate(String details) {
 
     }
 
