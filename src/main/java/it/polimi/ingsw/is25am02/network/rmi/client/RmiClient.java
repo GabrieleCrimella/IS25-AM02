@@ -382,6 +382,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 gameV.getCurrentState().setCurrentPlayer(playerv);
             }
         }
+        printOnConsole();
     }
 
     @Override

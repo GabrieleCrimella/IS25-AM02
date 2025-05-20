@@ -427,7 +427,7 @@ public class GraphicPrinter {
 
         maxOnLine = 0;
         System.out.println();
-        System.out.print("Crew:  \t");
+        System.out.print("Crew:     \t");
         for(Map.Entry<Coordinate, TileV> entry : cabins.entrySet()){
             if(maxOnLine < 4) {
                 if (entry.getValue().getNumPAliens()>0){
@@ -726,6 +726,8 @@ public class GraphicPrinter {
                         console.displayMessage("command.effect.openspace", null);
                     case METEORITES_STORM:
                         console.displayMessage("command.effect.meteorites_storm", null);
+                    default:
+                        console.displayMessage("error.command", null);
                 }
             }
         }
