@@ -280,7 +280,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     index = Integer.parseInt(tokenizer.nextToken());
                     int x = Integer.parseInt(tokenizer.nextToken());
                     int y = Integer.parseInt(tokenizer.nextToken());
-                    //RotationType rotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
                     RotationType rotation = controller.getPlayerVFromNickname(nickname).getBookedTiles().get(index).getRotationType();
                     if (rotation == null) {
                         reportError("error.reading.format", null);

@@ -714,20 +714,28 @@ public class GraphicPrinter {
                 switch (game.getCurrentState().getCurrentCard().getCardType()) {
                     case PLANET:
                         console.displayMessage("command.effect.planet", null);
+                        break;
                     case ABANDONED_STATION:
                         console.displayMessage("command.effect.ab_station", null);
+                        break;
                     case TRAFFICKER:
                         console.displayMessage("command.effect.trafficker", null);
+                        break;
                     case ABANDONED_SHIP:
                         console.displayMessage("command.effect.ab_ship", null);
+                        break;
                     case SLAVE_OWNER:
                         console.displayMessage("command.effect.slave_owner", null);
+                        break;
                     case OPENSPACE:
                         console.displayMessage("command.effect.openspace", null);
+                        break;
                     case METEORITES_STORM:
                         console.displayMessage("command.effect.meteorites_storm", null);
+                        break;
                     default:
                         console.displayMessage("error.command", null);
+                        break;
                 }
             }
         }

@@ -242,10 +242,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerV : gameV.getPlayers()) {
             if (nickname.equals(playerV.getNickname())) {
                 playerV.setNumDeck(deck);
-                console.getPrinter().printDeck(deck);
                 return;
             }
         }
+        if (console.getNickname().equals(nickname) && deck != -1) {
+            console.getPrinter().printDeck(deck);
+        }
+
     }
 
     //todo in base a come scegliamo di fare la current card questa potrebbe dover essere rivista
