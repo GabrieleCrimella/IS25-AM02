@@ -81,7 +81,12 @@ public class Trafficker extends Card {
             game.nextPlayer();
         }
         else{
-            setStateCard(StateCardType.REMOVE);
+            if(noMore(player)){
+                setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                game.nextPlayer();
+            } else {
+                setStateCard(StateCardType.REMOVE);
+            }
         }
 
     }
