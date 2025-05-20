@@ -12,7 +12,8 @@
 <StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
            fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController"
            fx:id="root"
-           focusTraversable="true">
+           focusTraversable="true"
+           stylesheets="@../style/style.css">
 
     <!-- Immagine di sfondo -->
     <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
@@ -20,11 +21,11 @@
     </ImageView>
 
     <!-- Contenuto sopra l'immagine -->
-    <VBox alignment="CENTER" spacing="15" >
-        <Label fx:id="errorLabel" text="" style="-fx-text-fill: yellow;" />
-        <Label text="Welcome to Galaxy Trucker" style="-fx-font-size: 72px; -fx-text-fill: yellow; -fx-font-weight: bold;" />
+    <VBox alignment="CENTER" spacing="15" styleClass="main-container">
+        <Label fx:id="errorLabel" text="" styleClass="error-label" />
+        <Label text="Welcome to Galaxy Trucker" styleClass="title-label" />
         <TextField fx:id="nicknameField" promptText="Inserisci il nickname" maxWidth="300" />
-        <Button text="login" onMouseClicked="#onLogin" fx:id="loginButton" maxWidth="150" />
+        <Button text="login" onMouseClicked="#onLogin" fx:id="loginButton" maxWidth="150" styleClass="main-button" />
     </VBox>
 
 </StackPane>

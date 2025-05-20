@@ -1,0 +1,20 @@
+.main-container {
+    -fx-padding: 40;
+}
+
+.error-label {
+    -fx-text-fill: yellow;
+}
+
+.main-button {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: blue;
+    -fx-background-color: yellow;
+}
+
+.title-label {
+    -fx-font-size: 72px;
+    -fx-text-fill: yellow;
+    -fx-font-weight: bold;
+}
