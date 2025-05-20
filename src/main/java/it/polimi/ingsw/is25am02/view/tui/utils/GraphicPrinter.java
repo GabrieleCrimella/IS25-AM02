@@ -638,7 +638,8 @@ public class GraphicPrinter {
             if(step >= game.getGlobalBoard().getNumstep()) { step = step % game.getGlobalBoard().getNumstep(); }
             System.out.println(game.getPlayers().get(i).getNickname() + ": " + step);
         }
-        System.out.println("If the leader doubles you during the effect of a card and at the end of the card\nyou are still in a double situation you are eliminated from the game");
+        System.out.println("If the leader doubles you during the effect of a card and at the end of the card\nyou are still in a double situation you are eliminated from the game" +
+                "\nIMPORTANT WARNING: during the effect of a card the ranking is not updated, \nwhen it reaches the finish state the ranking situation is correct");
     }
 
     public void printRules() {

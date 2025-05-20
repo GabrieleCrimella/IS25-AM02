@@ -72,7 +72,6 @@ public class Planet extends Card {
         return planetOffersTypes;
     }
 
-    //todo non so come funziona la movebox ma qui manca l'update
     @Override
     public void choicePlanet(Game game, Player player, int index) throws IllegalArgumentException{
         LinkedList<Box> planetList = new LinkedList<>();

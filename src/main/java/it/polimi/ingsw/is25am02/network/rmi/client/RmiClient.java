@@ -180,6 +180,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 playerv.setCredits(cosmicCredits);
             }
         }
+        if (console.getNickname().equals(nickname)){
+            printOnConsole();
+        }
     }
 
     //todo cosa deve fare?

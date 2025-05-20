@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -73,10 +74,6 @@ public class SlaveOwner extends Enemies{
             for (String nick:observers.keySet()) {
                 try {
                     observers.get(nick).showCreditUpdate(player.getNickname(),player.getSpaceship().getCosmicCredits());
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method choice", e);
-                }
-                try {
                     observers.get(nick).showPositionUpdate(player.getNickname(),game.getGameboard().getPositions().get(player));
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in method choice", e);
@@ -101,15 +98,26 @@ public class SlaveOwner extends Enemies{
         AliveRemoved++;
 
         if (AliveRemoved == AliveLost) {
-            if(player.equals(game.getGameboard().getRanking().getLast())){
-                game.getCurrentCard().setStateCard(StateCardType.FINISH);
-                game.getCurrentState().setPhase(TAKE_CARD);
-            }
-            else{
-                game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-                game.nextPlayer();
+            game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+            game.nextPlayer();
+            AliveRemoved = 0;
+            return;
+        }
+
+        if(noMore(player)){
+            setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+            game.nextPlayer();
+        }
+    }
+
+    private boolean noMore(Player player) {
+        List<Tile> cabins = player.getSpaceship().getTilesByType(TileType.CABIN);
+        for(Tile tile : cabins) {
+            if(!tile.getCrew().isEmpty()) {
+                return false;
             }
         }
+        return true;
     }
 
 }
