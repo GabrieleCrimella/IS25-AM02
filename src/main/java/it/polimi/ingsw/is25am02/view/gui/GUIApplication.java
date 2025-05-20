@@ -1,9 +1,12 @@
 package it.polimi.ingsw.is25am02.view.gui;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
+import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
+import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
+import it.polimi.ingsw.is25am02.view.gui.controllers.BuildController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.GUIController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController;
@@ -181,6 +184,17 @@ public class GUIApplication extends Application implements ConsoleClient {
             });
         });
 
+    }
+
+    @Override
+    public void setBuildView(int level, PlayerColor color) {
+        System.out.println("setBuildView - ho ricevuto una richiesta di build");
+
+        Platform.runLater(()->{
+            GUIController.getInstance().<BuildController>switchScene("build", "Build", controller -> {
+                controller.initialize(level, color);
+            });
+        });
     }
 
     @Override

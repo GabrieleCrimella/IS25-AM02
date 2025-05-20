@@ -267,6 +267,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                                 for (Player player : lobby.getPlayers()) {
                                     //player.getObserver().displayMessage("start", null);
                                     player.getObserver().setMenuState(MenuState.GAME);
+                                    player.getObserver().setBuildView(lobby.getLevel(), player.getColor());
                                 }
                             } else {
                                 client.displayMessage("lobby.join", Map.of("num", String.valueOf(lobby.getId())));

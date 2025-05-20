@@ -18,13 +18,15 @@ public interface VirtualView extends Remote {
 
     void displayMessage(String keys, Map<String, String> params) throws Exception;
 
-   void setLobbiesView(Map<Integer, LobbyView> lobbies) throws RemoteException ;
+    void setLobbiesView(Map<Integer, LobbyView> lobbies) throws RemoteException;
+
+    void setBuildView(int level, PlayerColor color) throws RemoteException;
 
     void setMenuState(MenuState state) throws RemoteException;
 
     void setNickname(String nickname) throws RemoteException;
 
-    void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType type,String comment, StateGameType stateGame, String currentPlayer, boolean[][] mask, int[] positions, HashMap<Integer , List<List<Object>>> deck) throws Exception;
+    void showUpdateEverything(int level, HashMap<String, PlayerColor> playercolors, String currentCardImage, StateCardType stateCard, CardType type, String comment, StateGameType stateGame, String currentPlayer, boolean[][] mask, int[] positions, HashMap<Integer, List<List<Object>>> deck) throws Exception;
 
     void showTileRemoval(Coordinate coordinate, String nickname) throws RemoteException;
 
@@ -52,23 +54,23 @@ public interface VirtualView extends Remote {
 
     void showCurrentTileNullityUpdate(String nickname) throws RemoteException;
 
-    void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname) throws RemoteException;
+    void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox, String nickname) throws RemoteException;
 
     void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox) throws RemoteException;
 
     void showTileRemovalFromHeapTile(String imagepath) throws RemoteException;
 
-    void showDeckAllowUpdate( String player) throws  RemoteException;
+    void showDeckAllowUpdate(String player) throws RemoteException;
 
-    void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox,String nickname, Coordinate coordinate) throws RemoteException;
+    void showTileAdditionUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox, String nickname, Coordinate coordinate) throws RemoteException;
 
-    void showGameStateUpdate(StateGameType newGamestate) throws  RemoteException;
+    void showGameStateUpdate(StateGameType newGamestate) throws RemoteException;
 
-    void showPlayerStateUpdate(String nickname, StatePlayerType newPlayerstate) throws  RemoteException;
+    void showPlayerStateUpdate(String nickname, StatePlayerType newPlayerstate) throws RemoteException;
 
-    void showCardStateUpdate(StateCardType newCardstate) throws  RemoteException;
+    void showCardStateUpdate(StateCardType newCardstate) throws RemoteException;
 
-    void showCurrentPlayerUpdate(String nickname) throws  RemoteException;
+    void showCurrentPlayerUpdate(String nickname) throws RemoteException;
 
     void showBookTileUpdate(String nickname) throws RemoteException;
 

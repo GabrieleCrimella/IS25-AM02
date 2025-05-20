@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
+import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +16,7 @@ public class BuildController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize(int level, PlayerColor color) {
 
         String imagePath;
         switch (level) {

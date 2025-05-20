@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.view.tui;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
+import it.polimi.ingsw.is25am02.controller.client.MenuState;
 import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
@@ -610,6 +611,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
     @Override
     public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
         //serve per la gui
+    }
+
+    @Override
+    public void setBuildView(int level, PlayerColor color) {
+
     }
 
     @Override

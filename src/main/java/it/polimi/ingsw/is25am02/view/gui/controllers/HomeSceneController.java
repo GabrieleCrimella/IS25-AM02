@@ -46,7 +46,6 @@ public class HomeSceneController {
 
             GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
                 g.initialize(clientController);
-
             });
         } catch (Exception e) {
             showError("Errore durante il login: " + e.getMessage());
