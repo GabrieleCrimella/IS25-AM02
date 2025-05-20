@@ -60,7 +60,8 @@ public class WarZone_I extends Card {
         if(currentPhase == 1) {
             declarationCrew.put(player, player.getSpaceship().calculateNumAlive());
 
-            if (player.equals(game.getGameboard().getRanking().getLast())) {
+            //if (player.equals(game.getGameboard().getRanking().getLast())) {
+            if (player.getNickname().equals(getCurrentOrder().getLast())) {
                 Player p = null;
                 int minCrew = Integer.MAX_VALUE;
                 for (Map.Entry<Player, Integer> entry : declarationCrew.entrySet()) {
@@ -78,7 +79,8 @@ public class WarZone_I extends Card {
                     }
                 }
                 currentPhase++;
-                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
             }
             else game.nextPlayer();
         }
@@ -106,7 +108,8 @@ public class WarZone_I extends Card {
                 }
             }
 
-            if (player.equals(game.getGameboard().getRanking().getLast())) {
+            if (player.getNickname().equals(getCurrentOrder().getLast())) {
+            //if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 int minMotor = Integer.MAX_VALUE;
                 for (Map.Entry<Player, Integer> entry : declarationMotor.entrySet()) {
@@ -143,7 +146,8 @@ public class WarZone_I extends Card {
 
             if (aliveRemoved == aliveLost) {
                 game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
                 currentPhase++;
             }
         }
@@ -169,8 +173,8 @@ public class WarZone_I extends Card {
                     }
                 }
             }
-
-            if (player.equals(game.getGameboard().getRanking().getLast())) {
+            if (player.getNickname().equals(getCurrentOrder().getLast())) {
+            //if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 double minCannon = Double.MAX_VALUE;
                 for (Map.Entry<Player, Double> entry : declarationCannon.entrySet()) {

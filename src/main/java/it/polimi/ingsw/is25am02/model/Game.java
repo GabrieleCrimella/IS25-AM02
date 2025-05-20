@@ -1,6 +1,8 @@
 package it.polimi.ingsw.is25am02.model;
 
+import it.polimi.ingsw.is25am02.controller.server.GameSession;
 import it.polimi.ingsw.is25am02.controller.server.ServerController;
+import it.polimi.ingsw.is25am02.controller.server.exception.PlayerNotFoundException;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.model.exception.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalStateException;
@@ -170,8 +172,9 @@ public class Game implements Game_Interface {
     }
 
     public void nextPlayer() {
-        int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
-
+        int index = getCurrentCard().getCurrentOrder().indexOf(getCurrentPlayer().getNickname());
+        //int index = getGameboard().getRanking().indexOf(getCurrentPlayer());
+        /*
         if (globalBoard.getRanking().indexOf(getCurrentPlayer()) == globalBoard.getRanking().size() - 1) {//se il giocatore è l'ultimo allora il currentPlayer deve diventare il nuovo primo e lo stato della carta diventa FINISH{
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(StateCardType.FINISH);
@@ -179,6 +182,26 @@ public class Game implements Game_Interface {
         } else if (globalBoard.getRanking().get(index + 1).getStatePlayer() == StatePlayerType.IN_GAME) {//se il prossimo giocatore è in gioco allora lo metto come prossimo giocatore corrente
             currentState.setCurrentPlayer(getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
         }
+
+         */
+
+        if (getCurrentCard().getCurrentOrder().indexOf(getCurrentPlayer().getNickname()) == getCurrentCard().getCurrentOrder().size() - 1) {
+            currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
+            getCurrentCard().setStateCard(StateCardType.FINISH);
+            getCurrentState().setPhase(StateGameType.TAKE_CARD);
+        }
+        else if (getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index+1)).getStatePlayer() == StatePlayerType.IN_GAME ) {
+            currentState.setCurrentPlayer(getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index +1)));
+        }
+    }
+
+    public Player getPlayerFromNickname(String nickname) {
+        for (Player p : getPlayers()) {
+            if (p.getNickname().equalsIgnoreCase(nickname)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     private Optional<Tile> getTileFromImagePath(String tileImagePath) {
@@ -859,11 +882,19 @@ public class Game implements Game_Interface {
             if (deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
                 this.getCurrentState().setPhase(StateGameType.RESULT);
             } else {
+                LinkedList<String> order = new LinkedList<>();
+                for (Player pOrder : getGameboard().getRanking()){
+                    order.add(pOrder.getNickname());
+                }
+                getCurrentState().getCurrentCard().setCurrentOrder(order);
                 this.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
             }
 
             for (Player p : players) {
                 p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
+            }
+            if(getCurrentCard().getCardType().equals(CardType.STARDUST) || getCurrentCard().getCardType().equals(CardType.EPIDEMY) ){
+                getCurrentCard().effect(this);
             }
         } catch (IllegalStateException e) {
             try {
