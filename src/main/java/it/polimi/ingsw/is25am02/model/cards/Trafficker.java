@@ -157,6 +157,7 @@ public class Trafficker extends Card {
             if(boxesRemove == boxesLost){
                 setStateCard(StateCardType.CHOICE_ATTRIBUTES);
                 game.nextPlayer();
+                boxesRemove = 0;
                 return;
             }
 
@@ -185,6 +186,7 @@ public class Trafficker extends Card {
             if (boxesRemove == boxesLost) {
                 setStateCard(StateCardType.CHOICE_ATTRIBUTES);
                 game.nextPlayer();
+                boxesRemove = 0;
             }
 
             if(noMore(player)){
