@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
+           fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.BuildController"
+           fx:id="root"
+           focusTraversable="true">
+
+    <ImageView fx:id="backgroundImageView" fitWidth="1920" fitHeight="1080" preserveRatio="false">
+        <Image url="@../image/background.jpg" />
+    </ImageView>
+
+
+
+</StackPane>
