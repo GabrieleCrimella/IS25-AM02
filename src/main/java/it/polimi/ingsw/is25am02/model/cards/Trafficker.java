@@ -206,6 +206,7 @@ public class Trafficker extends Card {
                     return false;
                 }
             }
+            boxesRemove = 0;
             return true;
         }
         return false;

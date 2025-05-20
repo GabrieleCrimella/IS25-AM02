@@ -117,6 +117,7 @@ public class SlaveOwner extends Enemies{
                 return false;
             }
         }
+        AliveRemoved = 0;
         return true;
     }
 
