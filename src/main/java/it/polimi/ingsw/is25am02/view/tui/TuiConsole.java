@@ -1,8 +1,9 @@
 package it.polimi.ingsw.is25am02.view.tui;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
@@ -601,7 +602,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
     }
 
     @Override
-    public void setLobbiesView(Map<Integer, Lobby> lobbies) {
+    public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
         //serve per la gui
     }
 

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.is25am02.network;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.rmi.Remote;
@@ -17,7 +18,7 @@ public interface VirtualView extends Remote {
 
     void displayMessage(String keys, Map<String, String> params) throws Exception;
 
-   void setLobbiesView(Map<Integer, Lobby> lobbies) throws RemoteException ;
+   void setLobbiesView(Map<Integer, LobbyView> lobbies) throws RemoteException ;
 
     void setMenuState(MenuState state) throws RemoteException;
 

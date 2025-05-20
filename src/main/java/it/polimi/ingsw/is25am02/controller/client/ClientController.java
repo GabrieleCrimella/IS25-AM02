@@ -122,6 +122,7 @@ public class ClientController implements VirtualServer {
 
     public void getLobbies(VirtualView client) throws RemoteException {
         if (menuControl(MenuState.MENU)) {
+            System.out.println("invio richiesta al server per ottenere la lista delle lobby");
             connection.getServer().getLobbies(client);
         }
     }

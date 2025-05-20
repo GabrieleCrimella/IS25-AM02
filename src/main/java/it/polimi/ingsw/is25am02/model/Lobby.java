@@ -1,6 +1,5 @@
-package it.polimi.ingsw.is25am02.utils;
+package it.polimi.ingsw.is25am02.model;
 
-import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 
 import java.io.Serializable;

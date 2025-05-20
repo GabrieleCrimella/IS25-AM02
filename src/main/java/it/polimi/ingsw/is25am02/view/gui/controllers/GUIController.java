@@ -1,19 +1,16 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.model.Lobby;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class GUIController implements Runnable {
     private String nickname;
@@ -24,11 +21,11 @@ public class GUIController implements Runnable {
     private Map<String, Object> controllers = new HashMap<>();
     private static Scene scene;
     private static Stage stage;
+    private LobbyController lobbyController;
 
     public ClientController getController() {
         return controller;
     }
-
 
     private GUIController(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -79,8 +76,6 @@ public class GUIController implements Runnable {
         this.nickname = nickname;
     }
 
-    private LobbyController lobbyController;
-
     public void setLobbyController(LobbyController controller) {
         this.lobbyController = controller;
     }
@@ -89,16 +84,24 @@ public class GUIController implements Runnable {
         return lobbyController;
     }
 
-    public void showError(String keys){
+    public void showError(String keys) {
         System.out.println(keys);
     }
 
 
-
-    public <T> T switchScene(String fxmlName, String title, java.util.function.Consumer<T> initializer) {
+    public <T> T switchScene(String fxmlName, String title, Consumer<T> initializer) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlName + ".fxml"));
+            // Se il controller è già presente, non ricaricare la scena ma aggiorna solo i dati
+            if (controllers.containsKey(fxmlName)) {
+                System.out.println("La scena '" + fxmlName + "' è già caricata. Riutilizzo il controller.");
+                T controller = (T) controllers.get(fxmlName);
+                if (initializer != null) {
+                    initializer.accept(controller);
+                }
+                return controller;
+            }
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlName + ".fxml"));
 
             Parent root = loader.load();
             T controller = loader.getController();

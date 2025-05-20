@@ -1,8 +1,9 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.*;
@@ -83,7 +84,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void setLobbiesView(Map<Integer, Lobby> lobbies) throws RemoteException {
+    public void setLobbiesView(Map<Integer, LobbyView> lobbies) throws RemoteException {
         console.setLobbiesView(lobbies);
     }
 

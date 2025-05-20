@@ -2,7 +2,8 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.model.Lobby;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import javafx.application.Platform;
@@ -22,7 +23,7 @@ public class LobbyController {
     private PlayerV p;
 
     @FXML
-    private ListView<Lobby> lobbyList;
+    private ListView<LobbyView> lobbyList;
 
     @FXML
     private Button joinButton;
@@ -62,26 +63,33 @@ public class LobbyController {
 
         lobbyList.setCellFactory(param -> new ListCell<>() {
             @Override
-            protected void updateItem(Lobby lobby, boolean empty) {
+            protected void updateItem(LobbyView lobby, boolean empty) {
                 super.updateItem(lobby, empty);
                 if (empty || lobby == null) {
                     setText(null);
                 } else {
-                    setText("Lobby " + lobby.getId() );
+                    String lobbyDescription = String.format(
+                            "Lobby ID: %d | Giocatori: %d/%d | Livello: %d",
+                            lobby.getId(),
+                            lobby.getNicknames().size(),
+                            lobby.getMaxPlayers(),
+                            lobby.getLevel()
+                    );
+                    setText(lobbyDescription);
                 }
             }
         });
     }
 
-    public void setLobbies(List<Lobby> lobbies) {
-        ObservableList<Lobby> observableList = FXCollections.observableArrayList(lobbies);
+    public void setLobbies(List<LobbyView> lobbies) {
+        ObservableList<LobbyView> observableList = FXCollections.observableArrayList(lobbies);
         lobbyList.setItems(observableList);
         lobbyList.setVisible(true);
 
         // CellFactory personalizzato
         lobbyList.setCellFactory(param -> new ListCell<>() {
             @Override
-            protected void updateItem(Lobby lobby, boolean empty) {
+            protected void updateItem(LobbyView lobby, boolean empty) {
                 super.updateItem(lobby, empty);
                 if (empty || lobby == null) {
                     setText(null);
@@ -90,7 +98,7 @@ public class LobbyController {
                     String lobbyDescription = String.format(
                             "Lobby ID: %d | Giocatori: %d/%d | Livello: %d",
                             lobby.getId(),
-                            lobby.getPlayers().size(),
+                            lobby.getNicknames().size(),
                             lobby.getMaxPlayers(),
                             lobby.getLevel()
                     );
@@ -101,17 +109,18 @@ public class LobbyController {
     }
 
 
-    public void setLobbyListFromMap(Map<Integer, Lobby> lobbyMap) {
-        setLobbies(new ArrayList<>(lobbyMap.values()));
+    public void setLobbyListFromMap(Map<Integer, LobbyView> lobbyMap) {
         Platform.runLater(() -> {
-            lobbyList.getItems().setAll(lobbyMap.values());
+            System.out.println("Aggiornamento lista lobby in GUI...");
+            setLobbies(new ArrayList<>(lobbyMap.values()));
+            //lobbyList.getItems().setAll(lobbyMap.values());
             errorLabel.setText("");
         });
     }
 
     @FXML
     private void onJoinLobby(MouseEvent event) {
-        Lobby selectedLobby = lobbyList.getSelectionModel().getSelectedItem();
+        LobbyView selectedLobby = lobbyList.getSelectionModel().getSelectedItem();
         if (!lobbyList.isVisible()) {
             lobbyList.setVisible(true);  // Necessario se hai messo managed="false"
             refreshLobbyList();          // Popola la lista appena la mostri
@@ -169,6 +178,7 @@ public class LobbyController {
 
     @FXML
     private void onRefreshLobbies(MouseEvent event) {
+        System.out.println("Refresh button clicked");
         refreshLobbyList();
     }
 

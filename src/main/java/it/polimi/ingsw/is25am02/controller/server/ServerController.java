@@ -5,7 +5,8 @@ import it.polimi.ingsw.is25am02.controller.server.exception.PlayerNotFoundExcept
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.Spaceship;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
-import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.model.Lobby;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
@@ -16,6 +17,7 @@ import it.polimi.ingsw.is25am02.network.VirtualView;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -23,6 +25,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ServerController extends UnicastRemoteObject implements VirtualServer {
@@ -208,13 +211,39 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     for (Integer lobbyId : lobbies.keySet()) {
                         client.displayMessage("lobby.show", Map.of("num", String.valueOf(lobbyId), "owner", lobbies.get(lobbyId).getPlayers().getFirst().getNickname(), "att", String.valueOf(lobbies.get(lobbyId).getPlayers().size()), "max", String.valueOf(lobbies.get(lobbyId).getMaxPlayers())));
                     }
-                    client.setLobbiesView(lobbies);
+                    client.setLobbiesView(convertToLobbyViewMap(lobbies));
+                    System.out.println("ricevuta richiesta lsita lobby");
                 }
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "connection problem in method getLobbies", e);
             }
         });
     }
+
+    public static Map<Integer, LobbyView> convertToLobbyViewMap(Map<Integer, Lobby> lobbies) {
+        Map<Integer, LobbyView> result = new HashMap<>();
+
+        for (Map.Entry<Integer, Lobby> entry : lobbies.entrySet()) {
+            Lobby lobby = entry.getValue();
+
+            List<String> nicknames = lobby.getPlayers()
+                    .stream()
+                    .map(player -> player.getNickname())
+                    .collect(Collectors.toList());
+
+            LobbyView view = new LobbyView(
+                    lobby.getId(),
+                    lobby.getMaxPlayers(),
+                    nicknames,
+                    lobby.getLevel()
+            );
+
+            result.put(entry.getKey(), view);
+        }
+
+        return result;
+    }
+
 
     public synchronized void joinLobby(VirtualView client, int lobbyId, String nickname, PlayerColor color) {
         methodQueue.offer(() -> {
@@ -325,7 +354,6 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             }
         });
     }
-
 
 
     public void takeTile(String nickname) {

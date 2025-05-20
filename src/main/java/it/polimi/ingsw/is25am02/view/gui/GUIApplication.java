@@ -1,11 +1,13 @@
 package it.polimi.ingsw.is25am02.view.gui;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.utils.Lobby;
+import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.gui.controllers.GUIController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController;
+import it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -33,7 +35,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     public static int MIN_WIDTH = 1560;
     public static int MIN_HEIGHT = 900;
     private static Instant lastFullScreenAction = null;
-    private Map<Integer, Lobby> lobbies;
+    private Map<Integer, LobbyView> lobbies;
 
 
     public GUIApplication() {
@@ -168,14 +170,16 @@ public class GUIApplication extends Application implements ConsoleClient {
     }
 
     @Override
-    public void setLobbiesView(Map<Integer, Lobby> lobbies) {
+    public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
+        System.out.println("setLobbiesView - ho ricevuto una lista di lobbies");
         this.lobbies = lobbies;
 
         // Richiama il controller della GUI
         Platform.runLater(() -> {
-            GUIController.getInstance()
-                    .getLobbyController()
-                    .setLobbyListFromMap(lobbies);
+            GUIController gui = GUIController.getInstance();
+            gui.<LobbyController>switchScene("lobby", "Lobby", controller -> {
+                controller.setLobbyListFromMap(lobbies);
+            });
         });
 
     }
