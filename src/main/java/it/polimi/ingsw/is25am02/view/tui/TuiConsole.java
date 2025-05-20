@@ -139,6 +139,13 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     printHelp();
                     break;
 
+                case "cheat": //todo è solo per velocizzarci, non segnarlo sui comandi
+                    for (int i = 0; i < 40; i++) {
+                        controller.takeTile(nickname);
+                        controller.returnTile(nickname);
+                    }
+                    break;
+
                 case "gameboard":
                     printer.printGameboard();
                     break;
@@ -280,7 +287,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     index = Integer.parseInt(tokenizer.nextToken());
                     int x = Integer.parseInt(tokenizer.nextToken());
                     int y = Integer.parseInt(tokenizer.nextToken());
-                    //RotationType rotation = RotationType.valueOf(tokenizer.nextToken().toUpperCase());
                     RotationType rotation = controller.getPlayerVFromNickname(nickname).getBookedTiles().get(index).getRotationType();
                     if (rotation == null) {
                         reportError("error.reading.format", null);
@@ -552,7 +558,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
             List<Coordinate> cannons = new ArrayList<>();
             List<Coordinate> batteries = new ArrayList<>();
             if (numCannons == 0){
-                controller.choiceDoubleMotor(nickname, cannons, batteries);
+                controller.choiceDoubleCannon(nickname, cannons, batteries);
                 return;
             }
 

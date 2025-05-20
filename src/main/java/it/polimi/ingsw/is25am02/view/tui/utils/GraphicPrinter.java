@@ -427,7 +427,7 @@ public class GraphicPrinter {
 
         maxOnLine = 0;
         System.out.println();
-        System.out.print("Crew:  \t");
+        System.out.print("Crew:     \t");
         for(Map.Entry<Coordinate, TileV> entry : cabins.entrySet()){
             if(maxOnLine < 4) {
                 if (entry.getValue().getNumPAliens()>0){
@@ -638,7 +638,8 @@ public class GraphicPrinter {
             if(step >= game.getGlobalBoard().getNumstep()) { step = step % game.getGlobalBoard().getNumstep(); }
             System.out.println(game.getPlayers().get(i).getNickname() + ": " + step);
         }
-        System.out.println("If the leader doubles you during the effect of a card and at the end of the card\nyou are still in a double situation you are eliminated from the game");
+        System.out.println("If the leader doubles you during the effect of a card and at the end of the card\nyou are still in a double situation you are eliminated from the game" +
+                "\nIMPORTANT WARNING: during the effect of a card the ranking is not updated, \nwhen it reaches the finish state the ranking situation is correct");
     }
 
     public void printRules() {
@@ -714,18 +715,28 @@ public class GraphicPrinter {
                 switch (game.getCurrentState().getCurrentCard().getCardType()) {
                     case PLANET:
                         console.displayMessage("command.effect.planet", null);
+                        break;
                     case ABANDONED_STATION:
                         console.displayMessage("command.effect.ab_station", null);
+                        break;
                     case TRAFFICKER:
                         console.displayMessage("command.effect.trafficker", null);
+                        break;
                     case ABANDONED_SHIP:
                         console.displayMessage("command.effect.ab_ship", null);
+                        break;
                     case SLAVE_OWNER:
                         console.displayMessage("command.effect.slave_owner", null);
+                        break;
                     case OPENSPACE:
                         console.displayMessage("command.effect.openspace", null);
+                        break;
                     case METEORITES_STORM:
                         console.displayMessage("command.effect.meteorites_storm", null);
+                        break;
+                    default:
+                        console.displayMessage("error.command", null);
+                        break;
                 }
             }
         }

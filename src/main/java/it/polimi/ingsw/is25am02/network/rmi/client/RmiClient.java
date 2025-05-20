@@ -118,6 +118,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 }
             }
         }
+
+        if (console.getNickname().equals(nickname)){
+            printOnConsole();
+        }
     }
     //todo questo rimuove in automatica, sarebbe meglio che si prendesse la lista di alive, vedesse il tipo e quanti ce ne sono e lo settasse corretto.
     @Override
@@ -175,6 +179,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             if (playerv.getNickname().equals(nickname)) {
                 playerv.setCredits(cosmicCredits);
             }
+        }
+        if (console.getNickname().equals(nickname)){
+            printOnConsole();
         }
     }
 
@@ -242,10 +249,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerV : gameV.getPlayers()) {
             if (nickname.equals(playerV.getNickname())) {
                 playerV.setNumDeck(deck);
-                console.getPrinter().printDeck(deck);
                 return;
             }
         }
+        if (console.getNickname().equals(nickname) && deck != -1) {
+            console.getPrinter().printDeck(deck);
+        }
+
     }
 
     //todo in base a come scegliamo di fare la current card questa potrebbe dover essere rivista
@@ -382,6 +392,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 gameV.getCurrentState().setCurrentPlayer(playerv);
             }
         }
+        printOnConsole();
     }
 
     @Override

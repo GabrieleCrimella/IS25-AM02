@@ -52,7 +52,7 @@ public class CardDeck {
             if (card.getTestFlight()) {
                 finalDeck.add(card);
             }
-
+            //todo togli dopo
             //Collections.shuffle(finalDeck);
         }
     }

@@ -458,18 +458,22 @@ public class Game implements Game_Interface {
             buildControl();
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
-            Tile currentTile = player.getSpaceship().getCurrentTile();
-            currentTile.setRotationType(rotation);
+            if (player.getSpaceship().getCurrentTile() != null) { //todo servirebbe un exception
+                Tile currentTile = player.getSpaceship().getCurrentTile();
 
-            player.getSpaceship().addTile(player.getNickname(), pos.x(), pos.y(), currentTile);
-            //player can see the minidecks
-            if (!player.getDeckAllowed()) {
-                player.setDeckAllowed();
-                for (String nick: observers.keySet()) {
-                    try {
-                        observers.get(nick).showDeckAllowUpdate(nick);
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+
+                currentTile.setRotationType(rotation);
+
+                player.getSpaceship().addTile(player.getNickname(), pos.x(), pos.y(), currentTile);
+                //player can see the minidecks
+                if (!player.getDeckAllowed()) {
+                    player.setDeckAllowed();
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showDeckAllowUpdate(nick);
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                        }
                     }
                 }
             }

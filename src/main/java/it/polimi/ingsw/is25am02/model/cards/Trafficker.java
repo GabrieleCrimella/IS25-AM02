@@ -12,6 +12,7 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -156,6 +157,13 @@ public class Trafficker extends Card {
             if(boxesRemove == boxesLost){
                 setStateCard(StateCardType.CHOICE_ATTRIBUTES);
                 game.nextPlayer();
+                boxesRemove = 0;
+                return;
+            }
+
+            if(noMore(player)){
+                setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                game.nextPlayer();
             }
         }
         else throw new RuntimeException();
@@ -178,8 +186,28 @@ public class Trafficker extends Card {
             if (boxesRemove == boxesLost) {
                 setStateCard(StateCardType.CHOICE_ATTRIBUTES);
                 game.nextPlayer();
+                boxesRemove = 0;
+                return;
+            }
+
+            if(noMore(player)){
+                setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                game.nextPlayer();
             }
         }
         else throw new IllegalStateException();
+    }
+
+    private boolean noMore(Player player) {
+        if(player.getSpaceship().noBox()){
+            List<Tile> batteries = player.getSpaceship().getTilesByType(TileType.BATTERY);
+            for(Tile tile : batteries){
+                if(tile.getNumBattery() != 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
