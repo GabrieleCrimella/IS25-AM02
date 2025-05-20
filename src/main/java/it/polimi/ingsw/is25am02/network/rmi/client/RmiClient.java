@@ -118,6 +118,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 }
             }
         }
+
+        if (console.getNickname().equals(nickname)){
+            printOnConsole();
+        }
     }
     //todo questo rimuove in automatica, sarebbe meglio che si prendesse la lista di alive, vedesse il tipo e quanti ce ne sono e lo settasse corretto.
     @Override
