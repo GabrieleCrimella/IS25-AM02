@@ -21,6 +21,7 @@ public abstract class Card {
     private boolean testFlight;
     private String comment;
     protected ConcurrentHashMap<String, VirtualView> observers;
+    private LinkedList<String> currentOrder;
 
     public Card(int level, StateCardType stateCard, String imagePath, String comment, boolean testFlight) {
         this.level = level;
@@ -28,6 +29,15 @@ public abstract class Card {
         this.imagePath = imagePath;
         this.comment = comment;
         this.testFlight = testFlight;
+
+    }
+
+    public LinkedList<String> getCurrentOrder() {
+        return currentOrder;
+    }
+
+    public void setCurrentOrder(LinkedList<String> currentOrder) {
+        this.currentOrder = currentOrder;
     }
 
     public void setObservers(ConcurrentHashMap<String, VirtualView> observers) {

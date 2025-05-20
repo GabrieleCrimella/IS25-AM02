@@ -70,8 +70,8 @@ public class WarZone_II extends Card{
                     }
                 }
             }
-
-            if (player.equals(game.getGameboard().getRanking().getLast())) {
+            if (player.getNickname().equals(getCurrentOrder().getLast())) {
+            //if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 double minCannon = Double.MAX_VALUE;
                 for (Map.Entry<Player, Double> entry : declarationCannon.entrySet()) {
@@ -88,7 +88,8 @@ public class WarZone_II extends Card{
                         ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
                     }
                 }
-                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
                 currentPhase++;
             } else game.nextPlayer();
         } else throw new IllegalStateException();
@@ -113,8 +114,8 @@ public class WarZone_II extends Card{
                     }
                 }
             }
-
-            if (player.equals(game.getGameboard().getRanking().getLast())) {
+            if(player.getNickname().equals(getCurrentOrder().getLast())) {
+            //if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 int minMotor = Integer.MAX_VALUE;
                 for (Map.Entry<Player, Integer> entry : declarationMotor.entrySet()) {
@@ -156,7 +157,8 @@ public class WarZone_II extends Card{
 
                 if (boxesRemoved == boxesLost) {
                     setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                    //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
                     currentPhase++;
                 }
             } else throw new RuntimeException();
@@ -181,7 +183,8 @@ public class WarZone_II extends Card{
 
                 if (boxesRemoved == boxesLost) {
                     setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                    //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
                     currentPhase++;
                 }
             }
@@ -202,8 +205,8 @@ public class WarZone_II extends Card{
     public void choiceCrew(Game game, Player player) {
         if(currentPhase == 3) {
             declarationCrew.put(player, player.getSpaceship().calculateNumAlive());
-
-            if (player.equals(game.getGameboard().getRanking().getLast())) {
+            if (player.getNickname().equals(getCurrentOrder().getLast())) {
+            //if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 int minCrew = Integer.MAX_VALUE;
                 for (Map.Entry<Player, Integer> entry : declarationCrew.entrySet()) {

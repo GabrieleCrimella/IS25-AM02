@@ -10,6 +10,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
 import javafx.util.Pair;
 
 import java.rmi.RemoteException;
@@ -71,7 +72,8 @@ public class Pirate extends Enemies {
             if (playerPower > getCannonPowers()) {
                 setStateCard(StateCardType.DECISION);
             } else if (playerPower == getCannonPowers()) {
-                if (player.equals(game.getGameboard().getRanking().getLast()) && !losers.isEmpty()) {
+                //if (player.equals(game.getGameboard().getRanking().getLast()) && !losers.isEmpty()) {
+                if (player.getNickname().equals(getCurrentOrder().getLast()) && !losers.isEmpty()){
                     setStateCard(StateCardType.ROLL);
                     phase++;
                 } else {
@@ -79,7 +81,8 @@ public class Pirate extends Enemies {
                 }
             } else {
                 losers.add(player);
-                if (player.equals(game.getGameboard().getRanking().getLast())) {
+                //if (player.equals(game.getGameboard().getRanking().getLast())) {
+                if (player.getNickname().equals(getCurrentOrder().getLast()) && !losers.isEmpty()){
                     setStateCard(StateCardType.ROLL);
                     phase++;
                 }
@@ -110,6 +113,7 @@ public class Pirate extends Enemies {
 
             if (losers.isEmpty()) {
                 setStateCard(StateCardType.FINISH);
+                game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
             } else {
                 setStateCard(StateCardType.ROLL);

@@ -7,9 +7,11 @@ import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
 
 import java.rmi.RemoteException;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.logging.Level;
 
 public class Stardust extends Card {
@@ -28,7 +30,12 @@ public class Stardust extends Card {
 
     @Override
     public void effect(Game game){
-        Iterator<Player> it = game.getGameboard().getRanking().descendingIterator();
+        //Iterator<Player> it = game.getGameboard().getRanking().descendingIterator();
+        LinkedList<Player> playersOrdered = new LinkedList<>();
+        for (String orderedNick : getCurrentOrder()){
+            playersOrdered.add(game.getPlayerFromNickname(orderedNick));
+        }
+        Iterator<Player> it = playersOrdered.descendingIterator();
         while (it.hasNext()) {
             Player player = it.next();
             game.getGameboard().move((-1) * player.getSpaceship().calculateExposedConnectors(), player );
@@ -41,5 +48,6 @@ public class Stardust extends Card {
             }
         }
         setStateCard(StateCardType.FINISH);
+        game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
     }
 }
