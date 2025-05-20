@@ -5,32 +5,30 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
-
 <?import javafx.collections.FXCollections?>
 <?import java.lang.Integer?>
 <?import java.lang.String?>
-<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController">
+
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController"
+           stylesheets="@../style/style.css">
     <!-- Background image -->
     <ImageView fitWidth="800" fitHeight="600" preserveRatio="false">
         <Image url="@../image/background.jpg" />
     </ImageView>
 
     <!-- Main layout over the background -->
-    <VBox spacing="30" alignment="CENTER" style="-fx-padding: 40;">
+    <VBox spacing="30" alignment="CENTER" styleClass="main-container">
         <!-- Error label -->
-        <Label fx:id="errorLabel" textFill="red"  />
+        <Label fx:id="errorLabel" styleClass="error-label" />
 
         <ListView fx:id="lobbyList" prefHeight="200" prefWidth="300" visible="false"/>
 
-
         <!-- Big buttons -->
         <VBox spacing="20" alignment="CENTER">
-            <Button fx:id="joinButton" text="Join Lobby"
-                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: blue; -fx-background-color: yellow;"
-                    onMouseClicked="#onJoinLobby" prefWidth="300" prefHeight="80" />
-            <Button fx:id="createButton" text="Create Lobby"
-                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: blue; -fx-background-color: yellow;"
-                    onMouseClicked="#onCreateLobby" prefWidth="300" prefHeight="80" />
+            <Button fx:id="joinButton" text="Join Lobby" onMouseClicked="#onJoinLobby"
+                    prefWidth="300" prefHeight="80" styleClass="main-button" />
+            <Button fx:id="createButton" text="Create Lobby" onMouseClicked="#onCreateLobby"
+                    prefWidth="300" prefHeight="80" styleClass="main-button" />
         </VBox>
 
         <VBox spacing="10" alignment="CENTER" fx:id="createForm" visible="false">
@@ -41,7 +39,7 @@
             <ChoiceBox fx:id="levelChoiceBox">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <Integer fx:value= "0"/>
+                        <Integer fx:value="0"/>
                         <Integer fx:value="2"/>
                     </FXCollections>
                 </items>
@@ -59,15 +57,11 @@
                 </items>
             </ChoiceBox>
 
-            <Button text="Confirm Create"
-                    onMouseClicked="#onConfirmCreateLobby"
-                    style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <Button text="Confirm Create" onMouseClicked="#onConfirmCreateLobby" styleClass="confirm-button" />
         </VBox>
 
-
         <!-- Small refresh button -->
-        <Button fx:id="refreshButton" text="Refresh Lobbies"
-                style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: blue; -fx-background-color: yellow;"
-                onMouseClicked="#onRefreshLobbies" prefWidth="180" prefHeight="40" />
+        <Button fx:id="refreshButton" text="Refresh Lobbies" onMouseClicked="#onRefreshLobbies"
+                prefWidth="180" prefHeight="40" styleClass="refresh-button" />
     </VBox>
 </StackPane>
