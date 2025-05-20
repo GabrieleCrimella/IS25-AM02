@@ -552,7 +552,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
             List<Coordinate> cannons = new ArrayList<>();
             List<Coordinate> batteries = new ArrayList<>();
             if (numCannons == 0){
-                controller.choiceDoubleMotor(nickname, cannons, batteries);
+                controller.choiceDoubleCannon(nickname, cannons, batteries);
                 return;
             }
 
