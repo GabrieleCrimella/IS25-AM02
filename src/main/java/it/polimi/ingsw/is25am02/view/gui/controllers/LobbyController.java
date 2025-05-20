@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 public class LobbyController {
+    @FXML
+    public Button createButton;
     private PlayerV p;
 
     @FXML
@@ -46,7 +48,7 @@ public class LobbyController {
     private ChoiceBox<Integer> levelChoiceBox;
 
     @FXML
-    private ChoiceBox<PlayerColor> colorChoiceBox;
+    private ChoiceBox<String> colorChoiceBox;
 
 
     @FXML
@@ -84,6 +86,15 @@ public class LobbyController {
                 }
             }
         });
+    }
+
+    private void hideButtonShowLoading(){
+        joinButton.setVisible(false);
+        refreshButton.setVisible(false);
+        createForm.setVisible(false);
+        createButton.setVisible(false);
+        lobbyList.setVisible(false);
+        errorLabel.setText("Loading...");
     }
 
     public void setLobbies(List<LobbyView> lobbies) {
@@ -149,6 +160,7 @@ public class LobbyController {
             try {
                 clientController.joinLobby(clientController.getVirtualView(), lobby.getId(), controller.getNickname(), selectedColor);
                 dialog.close();  // Chiudi la finestra se tutto ok
+                hideButtonShowLoading();
             } catch (RemoteException ex) {
                 errorLabel.setText("Errore durante il join: " + ex.getMessage());
             }
@@ -186,8 +198,7 @@ public class LobbyController {
             refreshLobbyList();
             errorLabel.setText("Seleziona una lobby!");
         } else {
-
-            PlayerColor color = colorChoiceBox.getValue();
+            PlayerColor color = PlayerColor.valueOf(colorChoiceBox.getValue());
             if (color == null) {
                 errorLabel.setText("Scegli un colore.");
                 return;
@@ -197,6 +208,7 @@ public class LobbyController {
                 int lobbyId = selectedLobby.getId();
                 clientController.joinLobby(clientController.getVirtualView(), lobbyId, controller.getNickname(), color);
                 errorLabel.setText("");  // Pulisce eventuali errori precedenti
+                hideButtonShowLoading();
             } catch (RemoteException e) {
                 errorLabel.setText("Impossibile accedere alla lobby.");
             }
@@ -214,7 +226,7 @@ public class LobbyController {
     private void onConfirmCreateLobby(MouseEvent event) {
         int maxplayers = maxPlayersSpinner.getValue();
         int level = levelChoiceBox.getValue();
-        PlayerColor color = colorChoiceBox.getValue();
+        PlayerColor color = PlayerColor.valueOf(colorChoiceBox.getValue());
 
         if ( color == null) {
             errorLabel.setText("Please select both level and color.");
@@ -225,6 +237,7 @@ public class LobbyController {
             clientController.createLobby(clientController.getVirtualView(), controller.getNickname(), maxplayers, color, level);
             System.out.println("lobby creata");
             createForm.setVisible(false);
+            hideButtonShowLoading();
         } catch (RemoteException e) {
             errorLabel.setText("Error " + e.getMessage());
         }

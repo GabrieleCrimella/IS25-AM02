@@ -8,7 +8,7 @@
 
 <?import javafx.collections.FXCollections?>
 <?import java.lang.Integer?>
-<?import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor?>
+<?import java.lang.String?>
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController">
     <!-- Background image -->
     <ImageView fitWidth="800" fitHeight="600" preserveRatio="false">
@@ -51,10 +51,10 @@
             <ChoiceBox fx:id="colorChoiceBox">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <PlayerColor fx:value="RED"/>
-                        <PlayerColor fx:value="GREEN"/>
-                        <PlayerColor fx:value="BLUE"/>
-                        <PlayerColor fx:value="YELLOW"/>
+                        <String fx:value="RED"/>
+                        <String fx:value="GREEN"/>
+                        <String fx:value="BLUE"/>
+                        <String fx:value="YELLOW"/>
                     </FXCollections>
                 </items>
             </ChoiceBox>
