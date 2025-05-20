@@ -139,6 +139,13 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     printHelp();
                     break;
 
+                case "cheat": //todo è solo per velocizzarci, non segnarlo sui comandi
+                    for (int i = 0; i < 40; i++) {
+                        controller.takeTile(nickname);
+                        controller.returnTile(nickname);
+                    }
+                    break;
+
                 case "gameboard":
                     printer.printGameboard();
                     break;
