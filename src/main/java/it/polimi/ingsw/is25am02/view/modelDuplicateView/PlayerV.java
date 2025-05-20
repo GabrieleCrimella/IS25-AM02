@@ -40,13 +40,13 @@ public class PlayerV {
         ConnectorType[] connectors = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         String imagepath;
         if (color.equals(PlayerColor.RED)) {
-            imagepath = "/images/tiles/GT-new_tiles_16_for web52.jpg";
+            imagepath = "/image/tiles/GT-new_tiles_16_for web52.jpg";
         } else if (color.equals(PlayerColor.YELLOW)) {
-            imagepath = "/images/tiles/GT-new_tiles_16_for web61.jpg";
+            imagepath = "/image/tiles/GT-new_tiles_16_for web61.jpg";
         } else if (color.equals(PlayerColor.GREEN)) {
-            imagepath = "/images/tiles/GT-new_tiles_16_for web34.jpg";
+            imagepath = "/image/tiles/GT-new_tiles_16_for web34.jpg";
         } else {
-            imagepath = "/images/tiles/GT-new_tiles_16_for web33.jpg";
+            imagepath = "/image/tiles/GT-new_tiles_16_for web33.jpg";
         }
 
         TileV initialtileV = new TileV(TileType.CABIN, connectors, RotationType.NORTH, true, imagepath, 0, 0);

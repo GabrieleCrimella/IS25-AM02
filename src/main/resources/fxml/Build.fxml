@@ -1,22 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
-           fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.BuildController"
-           fx:id="root"
-           focusTraversable="true">
+<StackPane fx:id="root" prefHeight="1080" prefWidth="1400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.BuildController">
 
-    <ImageView fx:id="backgroundImageView" fitWidth="1920" fitHeight="1080" preserveRatio="false">
-        <Image url="@../image/background.jpg" />
-    </ImageView>
+   <!-- Immagine cardboard centrata, senza distorsione -->
+   <ImageView fx:id="backgroundImageView" fitWidth="1400" layoutX="0" layoutY="0" preserveRatio="true">
+      <Image url="@../image/cardboard/cardboard-1b.jpg" />
+   </ImageView>
+
+   <Pane fx:id="boardPane" layoutX="0" layoutY="0" prefHeight="1080" prefWidth="1400">
+      <children>
+         <Pane layoutX="239.0" layoutY="417.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="427.0" layoutY="450.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="427.0" layoutY="263.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="613.0" layoutY="77.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="613.0" layoutY="263.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="610.0" layoutY="450.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="793.0" layoutY="263.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="793.0" layoutY="450.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="984.0" layoutY="450.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="793.0" layoutY="637.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="984.0" layoutY="637.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="793.0" layoutY="791.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="984.0" layoutY="817.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="613.0" layoutY="637.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="427.0" layoutY="637.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="239.0" layoutY="637.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="239.0" layoutY="817.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="427.0" layoutY="817.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="59.0" layoutY="450.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="53.0" layoutY="637.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="53.0" layoutY="817.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="239.0" layoutY="263.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="427.0" layoutY="77.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="793.0" layoutY="77.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="984.0" layoutY="263.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="1164.0" layoutY="817.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="1164.0" layoutY="637.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="1164.0" layoutY="417.0" prefHeight="180.0" prefWidth="180.0" />
+         <Pane layoutX="1004.0" layoutY="66.0" prefHeight="180.0" prefWidth="180.0">
+            <children>
+
+               <ImageView fx:id="draggableTile" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                  <Image url="@../image/tiles/GT-new_tiles_16_for web6.jpg" />
+               </ImageView>
+            </children></Pane>
+         <Pane layoutX="1184.0" layoutY="66.0" prefHeight="180.0" prefWidth="180.0" />
+      </children>
+   </Pane>
 
 
 

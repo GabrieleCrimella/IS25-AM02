@@ -3,7 +3,8 @@
 }
 
 .error-label {
-    -fx-text-fill: yellow;
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
 }
 
 .main-button {
