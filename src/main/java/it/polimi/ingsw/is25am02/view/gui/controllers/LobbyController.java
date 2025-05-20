@@ -10,9 +10,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -86,15 +91,15 @@ public class LobbyController {
         lobbyList.setItems(observableList);
         lobbyList.setVisible(true);
 
-        // CellFactory personalizzato
         lobbyList.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(LobbyView lobby, boolean empty) {
                 super.updateItem(lobby, empty);
                 if (empty || lobby == null) {
+                    setGraphic(null);
                     setText(null);
                 } else {
-                    System.out.println("OKOK");
+                    // Descrizione lobby
                     String lobbyDescription = String.format(
                             "Lobby ID: %d | Giocatori: %d/%d | Livello: %d",
                             lobby.getId(),
@@ -102,11 +107,61 @@ public class LobbyController {
                             lobby.getMaxPlayers(),
                             lobby.getLevel()
                     );
-                    setText(lobbyDescription);
+                    Label lobbyLabel = new Label(lobbyDescription);
+                    lobbyLabel.setStyle("-fx-font-size: 14px;");
+
+                    // Bottone Join
+                    Button joinButton = new Button("Join");
+                    joinButton.setStyle("-fx-background-color: lightgreen; -fx-font-weight: bold;");
+                    joinButton.setOnAction(e -> {
+                        showJoinDialog(lobby);
+                    });
+
+                    HBox cellContent = new HBox(10, lobbyLabel, joinButton);
+                    cellContent.setPadding(new Insets(5));
+                    setGraphic(cellContent);
                 }
             }
         });
     }
+
+    private void showJoinDialog(LobbyView lobby) {
+        Stage dialog = new Stage();
+        dialog.setTitle("Scegli colore per lobby " + lobby.getId());
+        dialog.initModality(Modality.APPLICATION_MODAL);
+
+        VBox dialogVBox = new VBox(10);
+        dialogVBox.setPadding(new Insets(15));
+
+        Label instruction = new Label("Scegli un colore:");
+        ChoiceBox<PlayerColor> colorChoiceBox = new ChoiceBox<>();
+        colorChoiceBox.setItems(FXCollections.observableArrayList(PlayerColor.values()));
+
+        Button confirmButton = new Button("Confirm Joining");
+        confirmButton.setStyle("-fx-background-color: lightblue; -fx-font-weight: bold;");
+        confirmButton.setOnAction(ev -> {
+            PlayerColor selectedColor = colorChoiceBox.getValue();
+            if (selectedColor == null) {
+                errorLabel.setText("Seleziona un colore.");
+                return;
+            }
+
+            try {
+                clientController.joinLobby(clientController.getVirtualView(), lobby.getId(), controller.getNickname(), selectedColor);
+                dialog.close();  // Chiudi la finestra se tutto ok
+            } catch (RemoteException ex) {
+                errorLabel.setText("Errore durante il join: " + ex.getMessage());
+            }
+        });
+
+        dialogVBox.getChildren().addAll(instruction, colorChoiceBox, confirmButton);
+
+        Scene dialogScene = new Scene(dialogVBox, 300, 150);
+        dialog.setScene(dialogScene);
+        dialog.showAndWait();
+    }
+
+
 
 
     public void setLobbyListFromMap(Map<Integer, LobbyView> lobbyMap) {
@@ -122,7 +177,7 @@ public class LobbyController {
     private void onJoinLobby(MouseEvent event) {
         LobbyView selectedLobby = lobbyList.getSelectionModel().getSelectedItem();
         if (!lobbyList.isVisible()) {
-            lobbyList.setVisible(true);  // Necessario se hai messo managed="false"
+            lobbyList.setVisible(true);
             refreshLobbyList();          // Popola la lista appena la mostri
             errorLabel.setText("Seleziona una lobby dalla lista.");
             return;

@@ -18,9 +18,9 @@
     <!-- Main layout over the background -->
     <VBox spacing="30" alignment="CENTER" style="-fx-padding: 40;">
         <!-- Error label -->
-        <Label fx:id="errorLabel" textFill="red" />
+        <Label fx:id="errorLabel" textFill="red"  />
 
-        <ListView fx:id="lobbyList" prefHeight="200" prefWidth="300" visible="false" />
+        <ListView fx:id="lobbyList" prefHeight="200" prefWidth="300" visible="false"/>
 
 
         <!-- Big buttons -->
@@ -35,7 +35,7 @@
 
         <VBox spacing="10" alignment="CENTER" fx:id="createForm" visible="false">
             <Label text="Max Players:" />
-            <Spinner fx:id="maxPlayersSpinner" min="2" max="10" initialValue="4" />
+            <Spinner fx:id="maxPlayersSpinner" min="2" max="4" initialValue="2" />
 
             <Label text="Level:" />
             <ChoiceBox fx:id="levelChoiceBox">

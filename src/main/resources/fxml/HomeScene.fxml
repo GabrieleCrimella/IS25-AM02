@@ -22,7 +22,7 @@
     <!-- Contenuto sopra l'immagine -->
     <VBox alignment="CENTER" spacing="15" >
         <Label fx:id="errorLabel" text="" style="-fx-text-fill: yellow;" />
-        <Label text="galaxy trucker" style="-fx-font-size: 48px; -fx-text-fill: white; -fx-font-weight: bold;" />
+        <Label text="Welcome to Galaxy Trucker" style="-fx-font-size: 72px; -fx-text-fill: yellow; -fx-font-weight: bold;" />
         <TextField fx:id="nicknameField" promptText="Inserisci il nickname" maxWidth="300" />
         <Button text="login" onMouseClicked="#onLogin" fx:id="loginButton" maxWidth="150" />
     </VBox>
