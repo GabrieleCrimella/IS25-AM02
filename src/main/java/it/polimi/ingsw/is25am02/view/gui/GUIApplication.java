@@ -24,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -75,8 +76,12 @@ public class GUIApplication extends Application implements ConsoleClient {
         });
 
         stage.setTitle("Galaxy Trucker");
-        stage.setMinHeight(MIN_HEIGHT);
-        stage.setMinWidth(MIN_WIDTH);
+        stage.setFullScreen(true);  // a tutto schermo
+        stage.setResizable(false);  // non ridimensionabile
+        stage.setFullScreenExitHint(""); // rimuove il messaggio per uscire dal fullscreen
+        stage.setWidth(1920);
+        stage.setHeight(1080);
+        stage.initStyle(StageStyle.DECORATED);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/icon.png")));
 
         GUIController.setStage(stage);
@@ -94,6 +99,7 @@ public class GUIApplication extends Application implements ConsoleClient {
         stage.setScene(scene);
         GUIController.setScene(scene);
         HomeSceneController controller = loader.getController();
+
 
 
         stage.show();

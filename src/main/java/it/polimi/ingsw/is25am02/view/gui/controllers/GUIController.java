@@ -112,6 +112,8 @@ public class GUIController implements Runnable {
 
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle(title);
+            primaryStage.setFullScreen(true);
+            primaryStage.setResizable(false);
             primaryStage.show();
 
             controllers.put(fxmlName, controller);

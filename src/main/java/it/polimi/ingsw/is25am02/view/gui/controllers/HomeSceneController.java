@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,7 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 public class HomeSceneController {
-
+    @FXML
+    public Button closeButton;
     @FXML
     private TextField nicknameField;
 
@@ -22,7 +24,6 @@ public class HomeSceneController {
 
     // Richiamo il ClientController dal singleton di GUIController
     private ClientController clientController;
-
 
 
     @FXML
@@ -50,6 +51,11 @@ public class HomeSceneController {
         } catch (Exception e) {
             showError("Errore durante il login: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void handleClose(ActionEvent event) {
+        Platform.exit();
     }
 
 
