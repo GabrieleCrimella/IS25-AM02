@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8"
-           fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController"
-           fx:id="root"
-           focusTraversable="true"
-           stylesheets="@../style/style.css">
+<StackPane fx:id="root" focusTraversable="true" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController">
+
 
     <!-- Immagine di sfondo -->
-    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+    <ImageView fitHeight="1080" fitWidth="1920" preserveRatio="false">
         <Image url="@../image/background.jpg" />
     </ImageView>
 
     <!-- Contenuto sopra l'immagine -->
     <VBox alignment="CENTER" spacing="15" styleClass="main-container">
-        <Label fx:id="errorLabel" text="" styleClass="error-label" />
-        <Label text="Welcome to Galaxy Trucker" styleClass="title-label" />
-        <TextField fx:id="nicknameField" promptText="Inserisci il nickname" maxWidth="300" />
-        <Button text="login" onMouseClicked="#onLogin" fx:id="loginButton" maxWidth="150" styleClass="main-button" />
+        <Label fx:id="errorLabel" styleClass="error-label" text="" />
+        <Label styleClass="title-label" text="Welcome to Galaxy Trucker" />
+        <TextField fx:id="nicknameField" maxWidth="400" onAction="#onLogin" promptText="Inserisci il nickname" styleClass="input-large" />
+        <Button fx:id="loginButton" maxWidth="150" onAction="#onLogin" onMouseClicked="#onLogin" styleClass="main-button" text="login" />
     </VBox>
+
+    <Button fx:id="closeButton" onAction="#handleClose" text="x" StackPane.alignment="TOP_RIGHT">
+        <StackPane.margin>
+            <Insets right="10" top="10" />
+        </StackPane.margin>
+    </Button>
 
 </StackPane>

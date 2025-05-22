@@ -19,12 +19,12 @@ Currently, the development is in progress, with all core functionalities planned
 | Functionality  | Status           | 
 |----------------|------------------|
 | Basic rules    |✅|
-| Complete rules |🟧|
-| Socket connection |⬜|
-| RMI connection |⬜|
-| CLI            |⬜|
-| GUI            |⬜|
-| Multiple games |⬜|
+| Complete rules |✅|
+| Socket connection |🟧|
+| RMI connection |✅|
+| CLI            |✅|
+| GUI            |🟧|
+| Multiple games |✅|
 | Persistence    |⬜|
 | Resilience     |⬜|
 | Chat           |⬜|

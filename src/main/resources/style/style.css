@@ -19,3 +19,32 @@
     -fx-text-fill: yellow;
     -fx-font-weight: bold;
 }
+
+#closeButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 17px;
+}
+
+#closeButton:hover {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
+
+.input-large {
+    -fx-font-size: 20px;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-color: rgba(255, 255, 255, 0.9); /* bianco quasi pieno */
+    -fx-text-fill: #222222; /* grigio scuro, non nero pieno */
+    -fx-prompt-text-fill: #666666;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1.5px;
+}
+
+.input-large:focused {
+    -fx-border-color: #ffd700; /* giallo oro: tono coerente ma più soft */
+    -fx-background-color: white;
+}
