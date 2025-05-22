@@ -141,14 +141,19 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "cheat": //todo è solo per velocizzarci, non segnarlo sui comandi
-                    for (int i = 0; i < 100; i++) {
+                    for (int i = 0; i < 40; i++) {
                         controller.takeTile(nickname);
                         try {
-                            Thread.sleep(10);
+                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
                         controller.returnTile(nickname);
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     break;
 
