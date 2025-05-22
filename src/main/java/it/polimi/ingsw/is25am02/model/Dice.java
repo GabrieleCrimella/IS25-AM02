@@ -14,4 +14,8 @@ public class Dice {
         result = (int)(Math.random() * 11) + 2;
         return result;
     }
+
+    public void setManuallyResult(int res){
+        result = res;
+    }
 }

@@ -45,6 +45,8 @@ public class GameV {
         this.heapTilesV = new HeapTileV();
         this.deck = deck;
         this.buildTimeIsOver = false;
+        this.diceV = new DiceV();
+        diceV.setResult(0);
     }
 
     public void setBuildTimeIsOver(boolean buildTimeIsOver) {

@@ -614,7 +614,7 @@ public class Spaceship {
                                 ServerController.logger.log(Level.SEVERE, "error in method removeBattery", e);
                             }
                         }
-                        return isSpaceshipDivided();
+                        return false;
                     } else {
                         removeTile(nicknameP, targetTileX, targetTileY);
                         return isSpaceshipDivided();

@@ -150,9 +150,9 @@ public class Game implements Game_Interface {
         this.diceResult = globalBoard.getDice().pickRandomNumber();
     }
 
-    public void setDiceResultForTesting(int diceResult) {
+    public void setDiceResultManually(int diceResult) {
         this.diceResult = diceResult;
-
+        globalBoard.getDice().setManuallyResult(diceResult);
     }
 
     public void setBuildTimeIsOver() {

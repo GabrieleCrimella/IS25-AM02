@@ -107,6 +107,13 @@ public class GraphicPrinter {
 
     public void printCardComment() {
         System.out.println("Card Comment | Comment: " + game.getCurrentState().getCurrentCard().getComment());
+        if(game.getCurrentState().getCurrentCard().getCardType() == CardType.METEORITES_STORM ) { //todo mettere le altre carte
+            if(game.getDiceV().getResult() != 0) {
+                System.out.println("Dice result: " + game.getDiceV().getResult());
+            } else {
+                System.out.println("Dice result: --");
+            }
+        }
     }
 
     public void printDeck(int num){

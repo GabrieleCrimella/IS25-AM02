@@ -63,6 +63,10 @@ public class MeteoritesStorm extends Card {
             }
             else if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex == meteorites.size()-1){
                 game.nextPlayer();
+                game.setDiceResultManually(0);
+                for (Player p : game.getPlayers()) {
+                    p.onDiceUpdate(player.getNickname(), game.getGameboard().getDice());
+                }
             }
             else{
                 game.nextPlayer();

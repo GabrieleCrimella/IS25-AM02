@@ -470,15 +470,19 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     break;
 
                 case "damage":
-                    if (tokenizer.countTokens() < 2) {
+                    if (tokenizer.countTokens() == 1 || tokenizer.countTokens() > 2) {
                         reportError("error.reading.input.syntax", Map.of("syntax", "/damage <x> <y>"));
                         break;
                     }
-                    int damageX = Integer.parseInt(tokenizer.nextToken());
-                    int damageY = Integer.parseInt(tokenizer.nextToken());
-                    controller.calculateDamage(nickname, new Coordinate(damageX, damageY));
+                    if(tokenizer.countTokens() == 2) {
+                        int damageX = Integer.parseInt(tokenizer.nextToken());
+                        int damageY = Integer.parseInt(tokenizer.nextToken());
+                        controller.calculateDamage(nickname, new Coordinate(damageX, damageY));
+                        break;
+                    }
+                    controller.calculateDamage(nickname, new Coordinate(0,0));
                     break;
-/*
+
                 case "keepBlock":
                     if (tokenizer.countTokens() < 2) {
                         reportError("error.reading.input.syntax", Map.of("syntax", "/keepBlock <x> <y>"));
@@ -487,7 +491,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     int keepX = Integer.parseInt(tokenizer.nextToken());
                     int keepY = Integer.parseInt(tokenizer.nextToken());
                     controller.keepBlock(nickname, new Coordinate(keepX, keepY));
-                    break; */
+                    break;
 
                 default:
                     reportError("error.reading.notFound", Map.of("command", command));
