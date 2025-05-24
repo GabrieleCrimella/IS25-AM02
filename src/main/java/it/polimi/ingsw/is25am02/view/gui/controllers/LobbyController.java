@@ -39,6 +39,9 @@ public class LobbyController {
     private Button refreshButton;
 
     @FXML
+    private Label loadingLabel;
+
+    @FXML
     private VBox createForm;
 
     @FXML
@@ -94,7 +97,8 @@ public class LobbyController {
         createForm.setVisible(false);
         createButton.setVisible(false);
         lobbyList.setVisible(false);
-        errorLabel.setText("Loading...");
+        loadingLabel.setVisible(true);
+        loadingLabel.setText("Loading...");
     }
 
     public void setLobbies(List<LobbyView> lobbies) {
