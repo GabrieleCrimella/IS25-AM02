@@ -10,9 +10,28 @@
 .main-button {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: blue;
-    -fx-background-color: yellow;
+    -fx-text-fill: #1A237E; /* blu scuro */
+    -fx-background-color: #FFD700; /* oro */
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 3, 0, 2, 2);
 }
+
+.main-button:hover {
+    -fx-background-color: #FFC107; /* giallo ambra */
+    -fx-text-fill: white;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0, 2, 2);
+}
+
+.main-button:pressed {
+    -fx-background-color: #FFA000; /* giallo più scuro */
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 4, 0, 0, 1);
+}
+
 
 .title-label {
     -fx-font-size: 72px;
@@ -53,4 +72,13 @@
     -fx-font-size: 48px;
     -fx-text-fill: yellow;
     -fx-font-weight: bold;
+}
+
+.toast-notification {
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-text-fill: white;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 4, 0, 2, 2);
 }

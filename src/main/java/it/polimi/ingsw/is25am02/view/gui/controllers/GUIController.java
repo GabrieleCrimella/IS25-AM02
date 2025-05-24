@@ -47,7 +47,6 @@ public class GUIController implements Runnable {
         return instance;
     }
 
-
     public void setController(ClientController controller) {
 
         this.controller = controller;
