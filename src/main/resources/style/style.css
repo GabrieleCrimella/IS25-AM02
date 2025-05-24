@@ -48,3 +48,9 @@
     -fx-border-color: #ffd700; /* giallo oro: tono coerente ma più soft */
     -fx-background-color: white;
 }
+
+.loading-label {
+    -fx-font-size: 48px;
+    -fx-text-fill: yellow;
+    -fx-font-weight: bold;
+}
