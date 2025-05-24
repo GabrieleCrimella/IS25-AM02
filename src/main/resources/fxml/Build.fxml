@@ -25,7 +25,7 @@
                     <ImageView fx:id="backgroundImageView" fitHeight="966.0" fitWidth="1477.0" preserveRatio="true">
                         <Image url="@../image/cardboard/cardboard-1.jpg" />
                     </ImageView>
-                    <Pane id="cell_7_7" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
+                    <Pane fx:id="tileCentrale" id="cell_7_7" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
                     <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" /> <!-- id is row column -->
                     <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
                     <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0" />

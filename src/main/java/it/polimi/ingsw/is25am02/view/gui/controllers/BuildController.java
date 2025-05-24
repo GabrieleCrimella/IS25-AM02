@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -34,8 +35,11 @@ public class BuildController extends GeneralController {
     @FXML
     public Label posizioneNuovaTile;
     @FXML
+    public Pane tileCentrale;
+    @FXML
     private ImageView backgroundImageView;
     private RotationType rotation;
+    private ImageView currentTileImage;
 
     @FXML
     private Pane boardPane;
@@ -49,6 +53,8 @@ public class BuildController extends GeneralController {
 
         // Crea l'ImageView dinamicamente
         ImageView imageView = new ImageView();
+        currentTileImage = imageView;
+        imageView.setOnMouseClicked(e-> rotate());
         imageView.setFitWidth(149);
         imageView.setFitHeight(149);
         imageView.setLayoutX(10);
@@ -105,6 +111,43 @@ public class BuildController extends GeneralController {
 
         root.getChildren().add(temp);
         StackPane.setAlignment(temp, Pos.TOP_RIGHT);
+
+        root.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.setOnKeyPressed(event -> {
+                    if (event.getCode() == KeyCode.R) {
+                        rotate();
+                    }
+                });
+
+                // Facoltativo: forza il focus al root per ricevere eventi tastiera
+                Platform.runLater(() -> root.requestFocus());
+            }
+        });
+
+        aggiungiTileCentrale(color);
+    }
+
+    private void aggiungiTileCentrale(PlayerColor color) {
+// Mappa colore → path immagine
+        String imagePath = switch (color.toString().toLowerCase()) {
+            case "red" -> "/image/tiles/GT-new_tiles_16_for web52.jpg";
+            case "blue" -> "/image/tiles/GT-new_tiles_16_for web33.jpg";
+            case "green" -> "/image/tiles/GT-new_tiles_16_for web34.jpg";
+            case "yellow" -> "/image/tiles/GT-new_tiles_16_for web61.jpg";
+            default -> throw new IllegalArgumentException("Colore non supportato: " + color);
+        };
+
+        // Crea ImageView
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
+        imageView.setFitWidth(tileCentrale.getPrefWidth());
+        imageView.setFitHeight(tileCentrale.getPrefHeight());
+        imageView.setPreserveRatio(true);
+        imageView.setStyle("-fx-cursor: hand;");
+
+        // Rimuove contenuti precedenti e aggiunge l'immagine
+        tileCentrale.getChildren().clear();
+        tileCentrale.getChildren().add(imageView);
     }
 
     public Coordinate getCoordinatesFromId(Node node) {
@@ -192,5 +235,33 @@ public class BuildController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Failed to add tile", NotificationType.ERROR, 5000);
         }
+    }
+
+    @FXML
+    public void rotate() {
+        if(currentTileImage == null) {
+            showNotification("No tile to rotate", NotificationType.ERROR, 5000);
+            return;
+        }
+        if (rotation == RotationType.NORTH) {
+            rotation = RotationType.EAST;
+        } else if (rotation == RotationType.EAST) {
+            rotation = RotationType.SOUTH;
+        } else if (rotation == RotationType.SOUTH) {
+            rotation = RotationType.WEST;
+        } else {
+            rotation = RotationType.NORTH;
+        }
+        updateRotationDisplay();
+    }
+
+    private void updateRotationDisplay() {
+        double angle = switch (rotation) {
+            case NORTH -> 0;
+            case EAST -> 90;
+            case SOUTH -> 180;
+            case WEST -> 270;
+        };
+        currentTileImage.setRotate(angle);
     }
 }
