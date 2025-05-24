@@ -12,14 +12,17 @@
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController"
            stylesheets="@../style/style.css">
     <!-- Background image -->
-    <ImageView fitWidth="800" fitHeight="600" preserveRatio="false">
+    <ImageView fitHeight="1980" fitWidth="2000" preserveRatio="true">
         <Image url="@../image/background.jpg" />
     </ImageView>
+    <Label fx:id="loadingLabel" styleClass="loading-label" visible="false" />
 
     <!-- Main layout over the background -->
     <VBox spacing="30" alignment="CENTER" styleClass="main-container">
         <!-- Error label -->
         <Label fx:id="errorLabel" styleClass="error-label" />
+
+
 
         <ListView fx:id="lobbyList" prefHeight="200" prefWidth="300" visible="false"/>
 
