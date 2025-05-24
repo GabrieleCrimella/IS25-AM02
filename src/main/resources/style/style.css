@@ -7,6 +7,12 @@
     -fx-font-weight: bold;
 }
 
+.context-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
 .main-button {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
@@ -14,6 +20,21 @@
     -fx-background-color: #FFD700; /* oro */
     -fx-background-radius: 10px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 3, 0, 2, 2);
+}
+
+.circular-button {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A237E; /* stesso blu scuro */
+    -fx-background-color: #FFD700; /* stesso oro */
+    -fx-background-radius: 50%; /* completamente circolare */
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-cursor: hand;
+    -fx-alignment: center;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 3, 0, 2, 2);
 }
 
