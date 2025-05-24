@@ -10,6 +10,7 @@ import it.polimi.ingsw.is25am02.view.gui.controllers.BuildController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.GUIController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController;
 import it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -166,7 +167,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     @Override
     public void reportError(String keys, Map<String, String> params) {
         Platform.runLater(() -> {
-            GUIController.getInstance().showError(keys);
+            GUIController.getInstance().showError(keys, params);
         });
 
     }
@@ -193,11 +194,22 @@ public class GUIApplication extends Application implements ConsoleClient {
     }
 
     @Override
+    public void newTile(TileV newTile) {
+        System.out.println("newTile - ho ricevuto una nuova tile");
+        Platform.runLater(() -> {
+            GUIController.getInstance().<BuildController>switchScene("Build", "build spaceship", controller -> {
+                controller.newTile(newTile);
+            });
+        });
+
+    }
+
+    @Override
     public void setBuildView(int level, PlayerColor color) {
         System.out.println("setBuildView - ho ricevuto una richiesta di build");
 
         Platform.runLater(()->{
-            GUIController.getInstance().<BuildController>switchScene("build", "Build", controller -> {
+            GUIController.getInstance().<BuildController>switchScene("Build", "Build", controller -> {
                 controller.initialize(level, color);
             });
         });

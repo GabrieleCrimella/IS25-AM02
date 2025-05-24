@@ -41,7 +41,9 @@ public class ClientController implements VirtualServer {
 
     public void setGameV(GameV gameV) {
         this.gameV = gameV;
-        connection.getConsole().getPrinter().setGame(gameV);
+        if (connection.getConsole().getPrinter() != null)
+            connection.getConsole().getPrinter().setGame(gameV);
+        System.out.println("SON PASSATO DOVE DOVEVO PASSARE");
     }
 
     public void setMenuState(MenuState state) {

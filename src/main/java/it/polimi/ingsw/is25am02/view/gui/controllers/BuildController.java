@@ -1,6 +1,7 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -15,6 +16,8 @@ import java.rmi.RemoteException;
 
 public class BuildController {
     @FXML
+    public Pane postoInizialeTile;
+    @FXML
     private ImageView backgroundImageView;
 
     @FXML
@@ -25,6 +28,27 @@ public class BuildController {
 
     @FXML
     private Pane boardPane;
+
+    public void newTile(TileV newTile) {
+        // Pulisce eventuali elementi precedenti
+        postoInizialeTile.getChildren().clear();
+
+        // Crea l'ImageView dinamicamente
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(149);
+        imageView.setFitHeight(149);
+        imageView.setPreserveRatio(true);
+        imageView.setStyle("-fx-cursor: hand;");
+
+        // Imposta l'immagine (da una proprietà della TileV)
+        //System.out.println(newTile.getImagePath());
+        imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
+        //imageView.setImage(new Image(getClass().getResourceAsStream("/image/tiles/GT-new_tiles_16_for_web93.jpg")));
+
+        // Aggiungi al Pane
+        postoInizialeTile.getChildren().add(imageView);
+        setupDragAndDrop(imageView);
+    }
 
     public enum NotificationType {
         INFO, SUCCESS, ERROR
@@ -45,7 +69,6 @@ public class BuildController {
         }
 
         backgroundImageView.setImage(new Image(getClass().getResourceAsStream(imagePath)));
-        setupDragAndDrop();
     }
 
     public void showNotification(String message, NotificationType type, int durationMillis) {
@@ -77,9 +100,9 @@ public class BuildController {
     }
 
 
-    private void setupDragAndDrop() {
-        draggableTile.setOnDragDetected(event -> {
-            draggableTile.startFullDrag(); // per eventi mouse drag
+    private void setupDragAndDrop(ImageView imageView) {
+        imageView.setOnDragDetected(event -> {
+            imageView.startFullDrag(); // per eventi mouse drag
             event.consume();
         });
 
@@ -88,11 +111,11 @@ public class BuildController {
             if (node instanceof Pane slot) {
                 slot.setOnMouseDragReleased(event -> {
                     // Rimuovi da dove era prima
-                    ((Pane) draggableTile.getParent()).getChildren().remove(draggableTile);
+                    ((Pane) imageView.getParent()).getChildren().remove(imageView);
                     // Aggiungi dentro lo slot
-                    draggableTile.setLayoutX(0); // reset posizione relativa
-                    draggableTile.setLayoutY(0);
-                    slot.getChildren().add(draggableTile);
+                    imageView.setLayoutX(0); // reset posizione relativa
+                    imageView.setLayoutY(0);
+                    slot.getChildren().add(imageView);
                     event.consume();
                 });
             }

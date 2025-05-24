@@ -109,7 +109,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             }
         }
 
-        if (console.getNickname().equals(nickname)){
+        if (console.getNickname().equals(nickname)) {
             printOnConsole();
         }
     }
@@ -125,10 +125,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             }
         }
 
-        if (console.getNickname().equals(nickname)){
+        if (console.getNickname().equals(nickname)) {
             printOnConsole();
         }
     }
+
     //todo questo rimuove in automatica, sarebbe meglio che si prendesse la lista di alive, vedesse il tipo e quanti ce ne sono e lo settasse corretto.
     @Override
     public void showCrewRemoval(Coordinate coordinate, String nickname) {
@@ -174,7 +175,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 }
             }
         }
-        if (console.getNickname().equals(nickname)){
+        if (console.getNickname().equals(nickname)) {
             printOnConsole();
         }
     }
@@ -186,7 +187,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 playerv.setCredits(cosmicCredits);
             }
         }
-        if (console.getNickname().equals(nickname)){
+        if (console.getNickname().equals(nickname)) {
             printOnConsole();
         }
     }
@@ -275,6 +276,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void showCurrentTileUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox, String nickname) {
+        TileV temp = null;
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
@@ -284,10 +286,12 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 } //se non trovo la tile nell'heap tile la devo creare
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
                 playerv.setCurrentTile(Optional.of(tileV));
+                temp = tileV;
             }
         }
-        if (console.getNickname().equals(nickname)){
+        if (console.getNickname().equals(nickname)) {
             printOnConsole();
+            console.newTile(temp);
         }
     }
 
@@ -296,7 +300,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname) && playerv.getCurrentTile().isPresent()) {
                 playerv.setCurrentTile(Optional.empty());
-                if (console.getNickname().equals(nickname)){
+                if (console.getNickname().equals(nickname)) {
                     printOnConsole();
                 }
             }
@@ -310,16 +314,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             for (TileV tileV : gameV.getHeapTilesV().getListTileV()) {
                 if (tileV.getImagePath().equals(imagepath)) {
                     gameV.getHeapTilesV().removeFromHeapTile(tileV);
-                    if (playerv.getNickname().equals(nickname) ) {
+                    if (playerv.getNickname().equals(nickname)) {
                         tileV.setRotationType(rotationType);
-                        if(tType == TileType.BATTERY) tileV.setNumBattery(maxBattery);
+                        if (tType == TileType.BATTERY) tileV.setNumBattery(maxBattery);
                         playerv.setSpaceshipBoardTile(tileV, coordinate);
                     }
                 }
             } //se non trovo la tile nell'heap tile la devo creare
             if (playerv.getNickname().equals(nickname)) {
                 TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
-                if(tType == TileType.BATTERY) tileV.setNumBattery(maxBattery);
+                if (tType == TileType.BATTERY) tileV.setNumBattery(maxBattery);
                 playerv.setSpaceshipBoardTile(tileV, coordinate);
             }
 
@@ -365,7 +369,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         GameV game = new GameV(players, level, gameboardV, stateV, false, console, cardDeckV);
 
         setGameV(game);
-        console.getPrinter().setGame(gameV);
+        if (console.getPrinter() != null)
+            console.getPrinter().setGame(gameV);
         console.getController().setGameV(game);
         console.startCountdown();
         printOnConsole();
@@ -429,7 +434,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 }
             }
         }
-        if(console.getNickname().equals(nickname)){
+        if (console.getNickname().equals(nickname)) {
             printOnConsole();
         }
     }
@@ -442,8 +447,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 playerv.getBookedTiles().put(index, null);
             }
         }
-        if(console.getNickname().equals(nickname)){
-           printOnConsole();
+        if (console.getNickname().equals(nickname)) {
+            printOnConsole();
         }
     }
 
@@ -462,6 +467,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     private void printOnConsole() {
-        console.getPrinter().print();
+        if (console.getPrinter() != null)
+            console.getPrinter().print();
     }
 }

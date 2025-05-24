@@ -628,6 +628,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
     }
 
     @Override
+    public void newTile(TileV newTile) {
+
+    }
+
+    @Override
     public void setBuildView(int level, PlayerColor color) {
 
     }

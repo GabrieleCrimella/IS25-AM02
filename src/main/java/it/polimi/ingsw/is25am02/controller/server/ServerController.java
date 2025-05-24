@@ -261,6 +261,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                             Player p = new Player(new Spaceship(lobby.getLevel()), nickname, color, client, lobbyId);
                             lobby.addPlayer(p);
                             if (lobby.isFull()) {
+                                System.out.println("CI SON PASSATO QUI COL NOME DI "+nickname);
                                 startGame(lobby);
                                 lobbies.remove(lobbyId);
 

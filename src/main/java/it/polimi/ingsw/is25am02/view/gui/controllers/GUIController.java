@@ -83,8 +83,9 @@ public class GUIController implements Runnable {
         return lobbyController;
     }
 
-    public void showError(String keys) {
-        System.out.println(keys);
+    public void showError(String keys, Map<String, String> params) {
+        //todo questi poi diventeranno toast
+
     }
 
 
