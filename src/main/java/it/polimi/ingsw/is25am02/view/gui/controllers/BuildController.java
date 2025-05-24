@@ -1,10 +1,12 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -69,6 +71,30 @@ public class BuildController {
         }
 
         backgroundImageView.setImage(new Image(getClass().getResourceAsStream(imagePath)));
+    }
+
+    public Coordinate getCoordinatesFromId(Node node) {
+        if (node == null || node.getId() == null) {
+            return null;
+        }
+
+        String id = node.getId(); // es. "cell_3_5"
+        if (!id.startsWith("cell_")) {
+            return null;
+        }
+
+        String[] parts = id.split("_");
+        if (parts.length != 3) {
+            return null;
+        }
+
+        try {
+            int row = Integer.parseInt(parts[1]);
+            int col = Integer.parseInt(parts[2]);
+            return new Coordinate(row, col);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     public void showNotification(String message, NotificationType type, int durationMillis) {
