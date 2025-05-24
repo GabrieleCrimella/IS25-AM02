@@ -9,7 +9,7 @@
 
 
     <!-- Immagine di sfondo -->
-    <ImageView fitHeight="1080" fitWidth="1920" preserveRatio="false">
+    <ImageView preserveRatio="true">
         <Image url="@../image/background.jpg" />
     </ImageView>
 

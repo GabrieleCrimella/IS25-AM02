@@ -12,7 +12,7 @@
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController"
            stylesheets="@../style/style.css">
     <!-- Background image -->
-    <ImageView fitHeight="1980" fitWidth="2000" preserveRatio="true">
+    <ImageView preserveRatio="true">
         <Image url="@../image/background.jpg" />
     </ImageView>
     <Label fx:id="loadingLabel" styleClass="loading-label" visible="false" />
