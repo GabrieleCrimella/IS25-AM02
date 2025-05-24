@@ -5,14 +5,20 @@ import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
-public class HomeSceneController {
+public class HomeSceneController extends GeneralController{
     @FXML
     public Button closeButton;
+
+    @FXML
+    public StackPane root;
     @FXML
     private TextField nicknameField;
 
@@ -24,7 +30,6 @@ public class HomeSceneController {
 
     // Richiamo il ClientController dal singleton di GUIController
     private ClientController clientController;
-
 
     @FXML
     private void onLogin() {
@@ -54,8 +59,10 @@ public class HomeSceneController {
     }
 
     @FXML
-    private void handleClose(ActionEvent event) {
+    private void handleClose(ActionEvent event) throws Exception {
         Platform.exit();
+        GUIController.getInstance().getController().closeConnect();
+        System.exit(0);
     }
 
 
@@ -65,5 +72,12 @@ public class HomeSceneController {
                 errorLabel.setText(message);
             }
         });
+    }
+
+    public void initialize() {
+        VBox temp = newNotificazionContainer();
+
+        root.getChildren().add(temp);
+        StackPane.setAlignment(temp, Pos.TOP_RIGHT);
     }
 }

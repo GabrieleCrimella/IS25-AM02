@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.model.Lobby;
+import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,10 +19,12 @@ public class GUIController implements Runnable {
     private static GUIController instance;
     private Stage primaryStage;
     private Map<Integer, Lobby> lobbies;
-    private Map<String, Object> controllers = new HashMap<>();
+    private Map<String, GeneralController> controllers = new HashMap<>();
+    private String inUse;
     private static Scene scene;
     private static Stage stage;
     private LobbyController lobbyController;
+    private JsonMessageManager messManager;
 
     public ClientController getController() {
         return controller;
@@ -29,6 +32,11 @@ public class GUIController implements Runnable {
 
     private GUIController(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        try {
+            this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static synchronized GUIController getInstance() {
@@ -84,17 +92,16 @@ public class GUIController implements Runnable {
     }
 
     public void showError(String keys, Map<String, String> params) {
-        //todo questi poi diventeranno toast
-
+        controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.ERROR, 5000);
     }
 
 
-    public <T> T switchScene(String fxmlName, String title, Consumer<T> initializer) {
+    public <GeneralController> GeneralController switchScene(String fxmlName, String title, Consumer<GeneralController> initializer) {
         try {
             // Se il controller è già presente, non ricaricare la scena ma aggiorna solo i dati
             if (controllers.containsKey(fxmlName)) {
                 System.out.println("La scena '" + fxmlName + "' è già caricata. Riutilizzo il controller.");
-                T controller = (T) controllers.get(fxmlName);
+                GeneralController controller = (GeneralController) controllers.get(fxmlName);
                 if (initializer != null) {
                     initializer.accept(controller);
                 }
@@ -104,7 +111,7 @@ public class GUIController implements Runnable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlName + ".fxml"));
 
             Parent root = loader.load();
-            T controller = loader.getController();
+            GeneralController controller = loader.getController();
 
             if (initializer != null) {
                 initializer.accept(controller);
@@ -116,7 +123,8 @@ public class GUIController implements Runnable {
             primaryStage.setResizable(false);
             primaryStage.show();
 
-            controllers.put(fxmlName, controller);
+            controllers.put(fxmlName, (it.polimi.ingsw.is25am02.view.gui.controllers.GeneralController) controller);
+            inUse = fxmlName;
 
             return controller;
         } catch (IOException e) {

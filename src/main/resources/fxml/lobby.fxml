@@ -10,7 +10,7 @@
 <?import java.lang.String?>
 
 <StackPane prefHeight="1080" prefWidth="1920" xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController"
-           stylesheets="@../style/style.css">
+           stylesheets="@../style/style.css" fx:id="root">
     <!-- Background image -->
     <ImageView preserveRatio="true">
         <Image url="@../image/background.jpg" />

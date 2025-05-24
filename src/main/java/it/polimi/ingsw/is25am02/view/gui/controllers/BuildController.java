@@ -2,58 +2,67 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.rmi.RemoteException;
 
-public class BuildController {
+public class BuildController extends GeneralController {
     @FXML
     public Pane postoInizialeTile;
+
+    @FXML
+    public StackPane root;
+    @FXML
+    public Label posizioneAttuale;
+    @FXML
+    public Label posizioneNuovaTile;
     @FXML
     private ImageView backgroundImageView;
-
-    @FXML
-    private ImageView draggableTile;
-
-    @FXML
-    private VBox notificationContainer;
+    private RotationType rotation;
 
     @FXML
     private Pane boardPane;
 
+    private Coordinate coordinate;
+
     public void newTile(TileV newTile) {
         // Pulisce eventuali elementi precedenti
+        rotation = RotationType.NORTH;
         postoInizialeTile.getChildren().clear();
 
         // Crea l'ImageView dinamicamente
         ImageView imageView = new ImageView();
         imageView.setFitWidth(149);
         imageView.setFitHeight(149);
+        imageView.setLayoutX(10);
+        imageView.setLayoutY(10);
         imageView.setPreserveRatio(true);
         imageView.setStyle("-fx-cursor: hand;");
+        imageView.getStyleClass().add("draggableTile");
 
         // Imposta l'immagine (da una proprietà della TileV)
         //System.out.println(newTile.getImagePath());
         imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
         //imageView.setImage(new Image(getClass().getResourceAsStream("/image/tiles/GT-new_tiles_16_for_web93.jpg")));
-
-        // Aggiungi al Pane
         postoInizialeTile.getChildren().add(imageView);
         setupDragAndDrop(imageView);
-    }
-
-    public enum NotificationType {
-        INFO, SUCCESS, ERROR
     }
 
     @FXML
@@ -70,7 +79,32 @@ public class BuildController {
                 imagePath = "/image/background.jpg"; // fallback
         }
 
+        posizioneAttuale.setVisible(false);
+        posizioneNuovaTile.setVisible(false);
+
         backgroundImageView.setImage(new Image(getClass().getResourceAsStream(imagePath)));
+
+        Button closeButton = new Button("x");
+        closeButton.setOnAction(e -> {
+            Platform.exit();
+            try {
+                GUIController.getInstance().getController().closeConnect();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            System.exit(0);
+        });
+
+        StackPane.setAlignment(closeButton, Pos.TOP_RIGHT);
+        StackPane.setMargin(closeButton, new Insets(10, 10, 0, 0));
+        closeButton.getStyleClass().add("closeButton");
+
+        root.getChildren().add(closeButton); // dove rootPane è il contenitore della vista
+
+        VBox temp = newNotificazionContainer();
+
+        root.getChildren().add(temp);
+        StackPane.setAlignment(temp, Pos.TOP_RIGHT);
     }
 
     public Coordinate getCoordinatesFromId(Node node) {
@@ -97,34 +131,6 @@ public class BuildController {
         }
     }
 
-    public void showNotification(String message, NotificationType type, int durationMillis) {
-        Label notification = new Label(message);
-        notification.getStyleClass().add("toast-notification");
-
-        switch (type) {
-            case SUCCESS -> notification.getStyleClass().add("toast-success");
-            case ERROR -> notification.getStyleClass().add("toast-error");
-            case INFO -> notification.getStyleClass().add("toast-info");
-        }
-
-        notificationContainer.getChildren().add(notification);
-
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(200), notification);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
-        fadeIn.play();
-
-        PauseTransition delay = new PauseTransition(Duration.millis(durationMillis));
-        delay.setOnFinished(e -> {
-            FadeTransition fadeOut = new FadeTransition(Duration.millis(400), notification);
-            fadeOut.setFromValue(1);
-            fadeOut.setToValue(0);
-            fadeOut.setOnFinished(ev -> notificationContainer.getChildren().remove(notification));
-            fadeOut.play();
-        });
-        delay.play();
-    }
-
 
     private void setupDragAndDrop(ImageView imageView) {
         imageView.setOnDragDetected(event -> {
@@ -142,6 +148,11 @@ public class BuildController {
                     imageView.setLayoutX(0); // reset posizione relativa
                     imageView.setLayoutY(0);
                     slot.getChildren().add(imageView);
+                    coordinate = getCoordinatesFromId(node);
+                    posizioneAttuale.setVisible(true);
+                    posizioneNuovaTile.setVisible(true);
+                    posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
+
                     event.consume();
                 });
             }
@@ -162,5 +173,24 @@ public class BuildController {
         System.out.println("button take tile pressed");
     }
 
+    @FXML
+    public void onAddTile() {
+        if (coordinate == null) {
+            showNotification("Please select a tile position", NotificationType.ERROR, 5000);
+            return;
+        }
 
+        try {
+            GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
+            showNotification("Tile added at " + coordinate, NotificationType.SUCCESS, 5000);
+
+            // Reset the draggable tile
+            coordinate = null;
+            posizioneAttuale.setVisible(false);
+            posizioneNuovaTile.setVisible(false);
+            rotation = RotationType.NORTH;
+        } catch (RemoteException e) {
+            showNotification("Failed to add tile", NotificationType.ERROR, 5000);
+        }
+    }
 }

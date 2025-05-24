@@ -11,10 +11,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,9 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class LobbyController {
+public class LobbyController extends GeneralController{
     @FXML
     public Button createButton;
+
+    @FXML
+    public StackPane root;
+
     private PlayerV p;
 
     @FXML
@@ -62,7 +68,7 @@ public class LobbyController {
     private GUIController controller;
 
     public void initialize(ClientController clientController) {
-        controller=GUIController.getInstance();
+        controller = GUIController.getInstance();
         this.clientController = clientController;
         controller.setLobbyController(this);
         try {
@@ -89,9 +95,31 @@ public class LobbyController {
                 }
             }
         });
+
+        Button closeButton = new Button("x");
+        closeButton.setOnAction(e -> {
+            Platform.exit();
+            try {
+                GUIController.getInstance().getController().closeConnect();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            System.exit(0);
+        });
+
+        StackPane.setAlignment(closeButton, Pos.TOP_RIGHT);
+        StackPane.setMargin(closeButton, new Insets(10, 10, 0, 0));
+        closeButton.getStyleClass().add("closeButton");
+
+        root.getChildren().add(closeButton); // dove rootPane è il contenitore della vista
+
+        VBox temp = newNotificazionContainer();
+
+        root.getChildren().add(temp);
+        StackPane.setAlignment(temp, Pos.TOP_RIGHT);
     }
 
-    private void hideButtonShowLoading(){
+    private void hideButtonShowLoading() {
         joinButton.setVisible(false);
         refreshButton.setVisible(false);
         createForm.setVisible(false);
@@ -177,9 +205,6 @@ public class LobbyController {
         dialog.showAndWait();
     }
 
-
-
-
     public void setLobbyListFromMap(Map<Integer, LobbyView> lobbyMap) {
         Platform.runLater(() -> {
             System.out.println("Aggiornamento lista lobby in GUI...");
@@ -232,7 +257,7 @@ public class LobbyController {
         int level = levelChoiceBox.getValue();
         PlayerColor color = PlayerColor.valueOf(colorChoiceBox.getValue());
 
-        if ( color == null) {
+        if (color == null) {
             errorLabel.setText("Please select both level and color.");
             return;
         }

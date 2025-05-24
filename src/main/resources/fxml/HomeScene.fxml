@@ -21,7 +21,7 @@
         <Button fx:id="loginButton" maxWidth="150" onAction="#onLogin" onMouseClicked="#onLogin" styleClass="main-button" text="login" />
     </VBox>
 
-    <Button fx:id="closeButton" onAction="#handleClose" text="x" StackPane.alignment="TOP_RIGHT">
+    <Button fx:id="closeButton" onAction="#handleClose" text="x" StackPane.alignment="TOP_RIGHT" styleClass="closeButton">
         <StackPane.margin>
             <Insets right="10" top="10" />
         </StackPane.margin>

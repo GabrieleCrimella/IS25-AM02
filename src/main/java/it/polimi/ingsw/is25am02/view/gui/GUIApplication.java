@@ -100,7 +100,7 @@ public class GUIApplication extends Application implements ConsoleClient {
         stage.setScene(scene);
         GUIController.setScene(scene);
         HomeSceneController controller = loader.getController();
-
+        controller.initialize();
 
 
         stage.show();
