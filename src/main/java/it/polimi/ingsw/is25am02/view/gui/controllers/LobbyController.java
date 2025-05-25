@@ -169,19 +169,25 @@ public class LobbyController extends GeneralController{
     }
 
     private void showJoinDialog(LobbyView lobby) {
+        StackPane dimBackground = new StackPane();
+        dimBackground.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
+        dimBackground.setPrefSize(root.getWidth(), root.getHeight());
+
         VBox overlay = new VBox(10);
         overlay.setPadding(new Insets(20));
         overlay.setAlignment(Pos.CENTER);
-        overlay.setStyle("-fx-background-color: yellow; -fx-border-color: black; -fx-border-width: 2px;");
-        overlay.setMaxWidth(300);
-        overlay.setMaxHeight(200);
+        overlay.getStyleClass().add("dialog-container");
+        overlay.setMaxWidth(350);
+        overlay.setMaxHeight(250);
 
         Label instruction = new Label("Scegli un colore per la lobby " + lobby.getId() + ":");
+        instruction.setStyle("-fx-text-fill: #1A237E; -fx-font-weight: bold;");
+
         ChoiceBox<PlayerColor> colorChoiceBox = new ChoiceBox<>();
         colorChoiceBox.setItems(FXCollections.observableArrayList(PlayerColor.values()));
 
         Button confirmButton = new Button("Conferma Join");
-        confirmButton.setStyle("-fx-font-weight: bold;");
+        confirmButton.setStyle("-fx-background-color: #1A237E; -fx-text-fill: white; -fx-font-weight: bold;");
         confirmButton.setOnAction(ev -> {
             PlayerColor selectedColor = colorChoiceBox.getValue();
             if (selectedColor == null) {
@@ -192,20 +198,21 @@ public class LobbyController extends GeneralController{
             try {
                 clientController.joinLobby(clientController.getVirtualView(), lobby.getId(), controller.getNickname(), selectedColor);
                 hideButtonShowLoading();
-                root.getChildren().remove(overlay); // Rimuove il popup
+                root.getChildren().remove(dimBackground); // Rimuove overlay
             } catch (RemoteException ex) {
                 errorLabel.setText("Errore durante il join: " + ex.getMessage());
             }
         });
 
         Button cancelButton = new Button("Annulla");
-        cancelButton.setOnAction(ev -> root.getChildren().remove(overlay));
+        cancelButton.setOnAction(ev -> root.getChildren().remove(dimBackground));
 
         overlay.getChildren().addAll(instruction, colorChoiceBox, confirmButton, cancelButton);
 
-        // Aggiungi overlay al root StackPane (in sovrapposizione)
-        root.getChildren().add(overlay);
+        dimBackground.getChildren().add(overlay);
         StackPane.setAlignment(overlay, Pos.CENTER);
+
+        root.getChildren().add(dimBackground);
     }
 
 

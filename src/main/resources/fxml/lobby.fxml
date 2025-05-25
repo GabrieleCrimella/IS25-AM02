@@ -35,10 +35,10 @@
         </VBox>
 
         <VBox spacing="10" alignment="CENTER" fx:id="createForm" visible="false">
-            <Label text="Max Players:"  style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Label text="Max Players:"  styleClass="white-label"/>
             <Spinner fx:id="maxPlayersSpinner" min="2" max="4" initialValue="2" />
 
-            <Label text="Level:" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+            <Label text="Level:" styleClass="white-label" />
             <ChoiceBox fx:id="levelChoiceBox">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
@@ -48,7 +48,7 @@
                 </items>
             </ChoiceBox>
 
-            <Label text="Color:" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+            <Label text="Color:" styleClass="white-label" />
             <ChoiceBox fx:id="colorChoiceBox">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
