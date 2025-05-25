@@ -169,19 +169,19 @@ public class LobbyController extends GeneralController{
     }
 
     private void showJoinDialog(LobbyView lobby) {
-        Stage dialog = new Stage();
-        dialog.setTitle("Scegli colore per lobby " + lobby.getId());
-        dialog.initModality(Modality.APPLICATION_MODAL);
+        VBox overlay = new VBox(10);
+        overlay.setPadding(new Insets(20));
+        overlay.setAlignment(Pos.CENTER);
+        overlay.setStyle("-fx-background-color: yellow; -fx-border-color: black; -fx-border-width: 2px;");
+        overlay.setMaxWidth(300);
+        overlay.setMaxHeight(200);
 
-        VBox dialogVBox = new VBox(10);
-        dialogVBox.setPadding(new Insets(15));
-
-        Label instruction = new Label("Scegli un colore:");
+        Label instruction = new Label("Scegli un colore per la lobby " + lobby.getId() + ":");
         ChoiceBox<PlayerColor> colorChoiceBox = new ChoiceBox<>();
         colorChoiceBox.setItems(FXCollections.observableArrayList(PlayerColor.values()));
 
-        Button confirmButton = new Button("Confirm Joining");
-        confirmButton.setStyle("-fx-background-color: lightblue; -fx-font-weight: bold;");
+        Button confirmButton = new Button("Conferma Join");
+        confirmButton.setStyle("-fx-font-weight: bold;");
         confirmButton.setOnAction(ev -> {
             PlayerColor selectedColor = colorChoiceBox.getValue();
             if (selectedColor == null) {
@@ -191,19 +191,23 @@ public class LobbyController extends GeneralController{
 
             try {
                 clientController.joinLobby(clientController.getVirtualView(), lobby.getId(), controller.getNickname(), selectedColor);
-                dialog.close();  // Chiudi la finestra se tutto ok
                 hideButtonShowLoading();
+                root.getChildren().remove(overlay); // Rimuove il popup
             } catch (RemoteException ex) {
                 errorLabel.setText("Errore durante il join: " + ex.getMessage());
             }
         });
 
-        dialogVBox.getChildren().addAll(instruction, colorChoiceBox, confirmButton);
+        Button cancelButton = new Button("Annulla");
+        cancelButton.setOnAction(ev -> root.getChildren().remove(overlay));
 
-        Scene dialogScene = new Scene(dialogVBox, 300, 150);
-        dialog.setScene(dialogScene);
-        dialog.showAndWait();
+        overlay.getChildren().addAll(instruction, colorChoiceBox, confirmButton, cancelButton);
+
+        // Aggiungi overlay al root StackPane (in sovrapposizione)
+        root.getChildren().add(overlay);
+        StackPane.setAlignment(overlay, Pos.CENTER);
     }
+
 
     public void setLobbyListFromMap(Map<Integer, LobbyView> lobbyMap) {
         Platform.runLater(() -> {

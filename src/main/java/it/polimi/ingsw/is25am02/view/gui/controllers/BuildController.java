@@ -225,7 +225,7 @@ public class BuildController extends GeneralController {
 
         try {
             GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
-            showNotification("Tile added at " + coordinate, NotificationType.SUCCESS, 5000);
+            showNotification("Tile added at row " + coordinate.x()+" column "+coordinate.y(), NotificationType.SUCCESS, 5000);
 
             // Reset the draggable tile
             coordinate = null;

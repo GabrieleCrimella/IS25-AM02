@@ -29,10 +29,10 @@
     -fx-text-fill: #1A237E; /* stesso blu scuro */
     -fx-background-color: #FFD700; /* stesso oro */
     -fx-background-radius: 50%; /* completamente circolare */
-    -fx-min-width: 40px;
-    -fx-min-height: 40px;
-    -fx-max-width: 40px;
-    -fx-max-height: 40px;
+    -fx-min-width: 60px;
+    -fx-min-height: 60px;
+    -fx-max-width: 60px;
+    -fx-max-height: 60px;
     -fx-cursor: hand;
     -fx-alignment: center;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 3, 0, 2, 2);
