@@ -34,6 +34,10 @@ public class ClientController implements VirtualServer {
     private GameV gameV;
     //todo devo definire gameV una volta che so in che game sono
 
+    public GameV getGameV() {
+        return gameV;
+    }
+
     public ClientController(ConnectionClient connection) {
         this.connection = connection;
         this.menuState = MenuState.LOGIN;
