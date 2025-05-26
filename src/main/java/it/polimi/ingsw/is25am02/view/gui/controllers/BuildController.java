@@ -231,6 +231,11 @@ public class BuildController extends GeneralController {
 
     @FXML
     public void onViewHourglass() {
+        try {
+            GUIController.getInstance().getController().hourglass(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Impossible to show the hourglass", NotificationType.ERROR, 3000);
+        }
         long remainingTime = GUIController.getInstance().getController().getGameV().getHourglass().getTimeLeft();
 
         hourglassTimeLabel.setText("Tempo residuo: " + remainingTime);
@@ -418,7 +423,9 @@ public class BuildController extends GeneralController {
 
         try {
             GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
-            showNotification("Tile added at row " + coordinate.x()+" column "+coordinate.y(), NotificationType.SUCCESS, 5000);
+            if(!GUIController.getInstance().isErrorshown()) {
+                showNotification("Tile added at row " + coordinate.x() + " column " + coordinate.y(), NotificationType.SUCCESS, 5000);
+            }
 
             // Reset the draggable tile
             coordinate = null;

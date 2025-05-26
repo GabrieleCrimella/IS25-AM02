@@ -25,12 +25,22 @@ public class GUIController implements Runnable {
     private static Stage stage;
     private LobbyController lobbyController;
     private JsonMessageManager messManager;
+    public boolean errorshown ;
+
+    public boolean isErrorshown() {
+        return errorshown;
+    }
+
+    public void setErrorshown(boolean errorshown) {
+        this.errorshown = errorshown;
+    }
 
     public ClientController getController() {
         return controller;
     }
 
     private GUIController(Stage primaryStage) {
+        errorshown = false;
         this.primaryStage = primaryStage;
         try {
             this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
@@ -93,6 +103,8 @@ public class GUIController implements Runnable {
 
     public void showError(String keys, Map<String, String> params) {
         controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.ERROR, 5000);
+        errorshown = true;
+        System.out.println("errorshown " + errorshown);
     }
 
 
