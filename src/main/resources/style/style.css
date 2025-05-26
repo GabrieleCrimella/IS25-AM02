@@ -23,6 +23,85 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 3, 0, 2, 2);
 }
 
+.choice-box {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A237E; /* blu scuro */
+    -fx-background-color: #FFD700; /* oro */
+    -fx-background-radius: 10px;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 3, 0, 2, 2);
+    -fx-border-color: #1A237E;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+}
+
+/* L'etichetta del ChoiceBox */
+.choice-box > .label {
+    -fx-text-fill: #1A237E;
+}
+
+/* Menu a discesa */
+.choice-box .context-menu {
+    -fx-background-color: #FFF8DC; /* colore chiaro simile all'oro */
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 1, 1);
+}
+
+/* Singoli elementi nel menu */
+.choice-box .menu-item {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A237E;
+    -fx-background-color: transparent;
+    -fx-padding: 8 12 8 12;
+}
+
+.choice-box .menu-item:hover {
+    -fx-background-color: #FFD700;
+}
+
+.spinner {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-color: #FFD700; /* oro */
+    -fx-text-fill: #1A237E;         /* blu scuro */
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #1A237E;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 3, 0, 2, 2);
+}
+
+/* Campo di testo al centro dello spinner */
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1A237E;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* Bottoni su/giù */
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #FFF8DC; /* variante chiara dell'oro */
+    -fx-background-radius: 8px;
+    -fx-padding: 4;
+    -fx-cursor: hand;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #FFD700;
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+    -fx-background-color: #1A237E;
+}
+
 .dialog-container {
     -fx-background-color: #FFD700; /* oro */
     -fx-border-radius: 10px;
