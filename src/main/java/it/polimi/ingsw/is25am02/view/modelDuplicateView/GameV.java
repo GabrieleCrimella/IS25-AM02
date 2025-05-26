@@ -46,6 +46,7 @@ public class GameV {
         this.deck = deck;
         this.buildTimeIsOver = false;
         this.diceV = new DiceV();
+        this.hourglass = new HourglassV();
         diceV.setResult(0);
     }
 

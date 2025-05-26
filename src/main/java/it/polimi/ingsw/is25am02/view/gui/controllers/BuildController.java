@@ -49,7 +49,10 @@ public class BuildController extends GeneralController {
     private ImageView backgroundImageView;
     private RotationType rotation;
     private ImageView currentTileImage;
-
+    @FXML
+    private StackPane hourglassPopup;
+    @FXML
+    private Label hourglassTimeLabel;
     @FXML
     private Pane SpaceshipPane;
     @FXML
@@ -224,6 +227,31 @@ public class BuildController extends GeneralController {
     public void closeMiniDeckPopup() {
         miniDeckPopup.setVisible(false);
         miniDeckCardsContainer.getChildren().clear();
+    }
+
+    @FXML
+    public void onViewHourglass() {
+        long remainingTime = GUIController.getInstance().getController().getGameV().getHourglass().getTimeLeft();
+
+        hourglassTimeLabel.setText("Tempo residuo: " + remainingTime);
+        // Mostra il popup con sfondo sfocato
+        hourglassPopup.setVisible(true);
+    }
+
+    @FXML
+    public void closeHourglassPopup() {
+        hourglassPopup.setVisible(false);
+    }
+
+
+    @FXML
+    public void onFlipHourglass() {
+        try {
+            GUIController.getInstance().getController().flipHourglass(GUIController.getInstance().getNickname());
+            showNotification("Hourglass flipped!", NotificationType.SUCCESS, 2000);
+        } catch (RemoteException e) {
+            showNotification("Impossible to flip the hourglass", NotificationType.ERROR, 3000);
+        }
     }
 
     public void setOtherPlayers(List<String> otherPlayerNicknames) {
