@@ -60,11 +60,11 @@
                 </items>
             </ChoiceBox>
 
-            <Button text="Confirm Create" onMouseClicked="#onConfirmCreateLobby" styleClass="confirm-button" />
+            <Button text="Confirm Create" onMouseClicked="#onConfirmCreateLobby" styleClass="main-button" />
         </VBox>
 
         <!-- Small refresh button -->
         <Button fx:id="refreshButton" text="Refresh Lobbies" onMouseClicked="#onRefreshLobbies"
-                prefWidth="180" prefHeight="40" styleClass="refresh-button" />
+                prefWidth="300" prefHeight="40" styleClass="main-button" />
     </VBox>
 </StackPane>
