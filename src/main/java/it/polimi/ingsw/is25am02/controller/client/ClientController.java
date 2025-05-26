@@ -388,11 +388,6 @@ public class ClientController implements VirtualServer {
         return null;
     }
 
-    public void removeTiletoHT(TileV tile) throws RemoteException {
-        if (menuControl(MenuState.GAME)) {
-            gameV.getHeapTilesV().removeFromHeapTile(tile);
-        }
-    }
 
     private boolean menuControl(MenuState state) {
         if (menuState != state) {

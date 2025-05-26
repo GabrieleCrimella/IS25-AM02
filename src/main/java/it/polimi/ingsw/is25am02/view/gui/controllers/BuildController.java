@@ -4,6 +4,7 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.HeapTileV;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -26,6 +27,7 @@ import javafx.util.Duration;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Optional;
 
 public class BuildController extends GeneralController {
     @FXML
@@ -43,9 +45,29 @@ public class BuildController extends GeneralController {
     @FXML
     private GridPane heapGrid;
     @FXML
+    private VBox playerButtonsContainer;
+    @FXML
     private ImageView backgroundImageView;
     private RotationType rotation;
     private ImageView currentTileImage;
+
+    @FXML
+    private Pane SpaceshipPane;
+
+    @FXML private Button miniDeck1;
+    @FXML private Button miniDeck2;
+    @FXML private Button miniDeck3;
+
+    @FXML
+    private StackPane viewSpaceshipPopup;
+
+    @FXML
+    private ImageView popupBackgroundImage;
+
+    @FXML
+    private void closeSpacePopup() {
+        viewSpaceshipPopup.setVisible(false);
+    }
 
     @FXML
     private Pane boardPane;
@@ -77,6 +99,7 @@ public class BuildController extends GeneralController {
         setupDragAndDrop(imageView);
     }
 
+
     @FXML
     public void initialize(int level, PlayerColor color) {
         String imagePath;
@@ -90,11 +113,22 @@ public class BuildController extends GeneralController {
             default:
                 imagePath = "/image/background.jpg"; // fallback
         }
+        if(level ==2){
+            miniDeck1.setVisible(true);
+            miniDeck2.setVisible(true);
+            miniDeck3.setVisible(true);
+        } else {
+            miniDeck1.setVisible(false);
+            miniDeck2.setVisible(false);
+            miniDeck3.setVisible(false);
+        }
 
         posizioneAttuale.setVisible(false);
         posizioneNuovaTile.setVisible(false);
 
         backgroundImageView.setImage(new Image(getClass().getResourceAsStream(imagePath)));
+
+        popupBackgroundImage.setImage(new Image(getClass().getResourceAsStream(imagePath)));
 
         Button closeButton = new Button("x");
         closeButton.setOnAction(e -> {
@@ -132,7 +166,95 @@ public class BuildController extends GeneralController {
         });
 
         aggiungiTileCentrale(color);
+        List<String> playersNick = GUIController.getInstance().getController().getPlayers();
+        List<String> otherPlayers = playersNick.stream()
+                .filter(name -> !name.equals(GUIController.getInstance().getNickname()))
+                .toList();
+
+        setOtherPlayers(otherPlayers);
     }
+
+    private StackPane createTile(TileV tile) {
+        // Container della tile
+        StackPane tilePane = new StackPane();
+        tilePane.setPrefSize(149, 149); // stessa misura usata altrove
+        tilePane.setMinSize(149, 149);
+        tilePane.setMaxSize(149, 149);
+
+        // Crea e configura l'immagine della tile
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(149);
+        imageView.setFitHeight(149);
+        imageView.setPreserveRatio(true);
+        imageView.setImage(new Image(getClass().getResourceAsStream(tile.getImagePath())));
+
+        tilePane.getChildren().add(imageView);
+        return tilePane;
+    }
+
+
+    public void setOtherPlayers(List<String> otherPlayerNicknames) {
+        playerButtonsContainer.getChildren().clear();
+        for (Node node : SpaceshipPane.getChildren()) {
+            if (node instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
+                pane.getChildren().clear();
+            }
+        }
+
+        for (String nickname : otherPlayerNicknames) {
+            Button playerButton = new Button(nickname);
+            playerButton.setPrefWidth(150);
+            playerButton.setPrefHeight(51);
+            playerButton.getStyleClass().add("main-button");
+
+            // Puoi anche settare un'azione personalizzata qui
+            playerButton.setOnAction(e -> {
+                try {
+                    PlayerV playerToShow = GUIController.getInstance().getController().getPlayerVFromNickname(nickname);
+                    Optional<TileV>[][] spaceship = playerToShow.getSpaceshipBoard();
+                    for (int row = 0; row < spaceship.length; row++) {
+                        for (int col = 0; col < spaceship[row].length; col++) {
+                            Optional<TileV> tileOpt = spaceship[row][col];
+                            if (tileOpt.isPresent()) {
+                                TileV tile = tileOpt.get();
+                                StackPane tileNode = createTile(tile);
+
+                                for (Node node : SpaceshipPane.getChildren()) {
+                                    if (node instanceof Pane && node.getId() != null && node.getId().equals("cell_" + row + "_" + col)) {
+                                        ((Pane) node).getChildren().add(tileNode);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Mostra il popup
+                    viewSpaceshipPopup.setVisible(true);
+
+                } catch (RemoteException ex) {
+                    showNotification("Fail to get player from nickname", NotificationType.ERROR, 5000);
+                }
+
+            });
+
+            playerButtonsContainer.getChildren().add(playerButton);
+        }
+    }
+
+    @FXML
+    public void onTakeMiniDeck(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        String deckId = clickedButton.getText();  // "1", "2", "3"
+
+        try {
+            GUIController.getInstance().getController().takeMiniDeck(GUIController.getInstance().getNickname(), Integer.parseInt(deckId));
+            showNotification("Taken mini deck " + deckId, NotificationType.SUCCESS, 5000);
+        } catch (RemoteException e) {
+            showNotification("Failed to take mini deck " + deckId, NotificationType.ERROR, 5000);
+        }
+    }
+
 
     private void aggiungiTileCentrale(PlayerColor color) {
 // Mappa colore → path immagine
@@ -286,10 +408,11 @@ public class BuildController extends GeneralController {
                 heapTilePopup.setVisible(false); // Chiudi il popup
                 newTile(tile); // Mostra la tile in basso con comportamento interattivo
                 try {
-                    GUIController.getInstance().getController().removeTiletoHT(tile);
+                    GUIController.getInstance().getController().takeTile(GUIController.getInstance().getNickname(), tile.getImagePath());
                 } catch (RemoteException ex) {
-                    showNotification("Failed to remove tile from Heap Tile", NotificationType.ERROR, 5000);
+                    showNotification("Failed to remove from Heap Tile", NotificationType.ERROR, 5000);
                 }
+
             }); // no mano, no drag
 
             Pane tilePane = new Pane();
