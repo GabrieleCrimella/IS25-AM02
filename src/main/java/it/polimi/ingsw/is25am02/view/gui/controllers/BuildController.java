@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.HeapTileV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -17,17 +18,20 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class BuildController extends GeneralController {
     @FXML
     public Pane postoInizialeTile;
-
+    @FXML
+    private StackPane heapTilePopup;
     @FXML
     public StackPane root;
     @FXML
@@ -36,6 +40,8 @@ public class BuildController extends GeneralController {
     public Label posizioneNuovaTile;
     @FXML
     public Pane tileCentrale;
+    @FXML
+    private GridPane heapGrid;
     @FXML
     private ImageView backgroundImageView;
     private RotationType rotation;
@@ -235,6 +241,74 @@ public class BuildController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Failed to add tile", NotificationType.ERROR, 5000);
         }
+    }
+
+    @FXML
+    public void onReturnTile(){
+        try {
+            GUIController.getInstance().getController().returnTile(GUIController.getInstance().getNickname());
+            showNotification("Tile returned successfully", NotificationType.SUCCESS, 5000);
+            postoInizialeTile.getChildren().remove(currentTileImage);
+            currentTileImage = null;
+        } catch (RemoteException e) {
+            showNotification("Failed to return tile", NotificationType.ERROR, 5000);
+        }
+    }
+
+    @FXML
+    public void onHeapTile(){
+        heapTilePopup.setVisible(true);
+        try {
+            HeapTileV heapTileV = GUIController.getInstance().getController().getHeapTiles();
+            populateHeapGrid(heapTileV.getListTileV());
+            heapTilePopup.setVisible(true);
+        } catch (RemoteException e) {
+            showNotification("Failed to show Heap Tile", NotificationType.ERROR, 5000);
+        }
+    }
+
+    private void populateHeapGrid(List<TileV> tiles) {
+        heapGrid.getChildren().clear();
+
+        int cols = 4;
+        int row = 0;
+        int col = 0;
+
+        for (TileV tile : tiles) {
+            ImageView imageView = new ImageView();
+            imageView.setFitWidth(149);
+            imageView.setFitHeight(149);
+            imageView.setPreserveRatio(true);
+            imageView.setStyle("-fx-cursor: hand;");
+            imageView.setImage(new Image(getClass().getResourceAsStream(tile.getImagePath())));
+            imageView.setOnMouseClicked(e -> {
+                // Quando clicco su una tile nell'heap, la uso come nuova tile centrale
+                heapTilePopup.setVisible(false); // Chiudi il popup
+                newTile(tile); // Mostra la tile in basso con comportamento interattivo
+                try {
+                    GUIController.getInstance().getController().removeTiletoHT(tile);
+                } catch (RemoteException ex) {
+                    showNotification("Failed to remove tile from Heap Tile", NotificationType.ERROR, 5000);
+                }
+            }); // no mano, no drag
+
+            Pane tilePane = new Pane();
+            tilePane.setPrefSize(149, 149);
+            tilePane.getChildren().add(imageView);
+
+            heapGrid.add(tilePane, col, row);
+
+            col++;
+            if (col == cols) {
+                col = 0;
+                row++;
+            }
+        }
+    }
+
+    @FXML
+    public void closeHeapPopup(ActionEvent event) {
+        heapTilePopup.setVisible(false);
     }
 
     @FXML

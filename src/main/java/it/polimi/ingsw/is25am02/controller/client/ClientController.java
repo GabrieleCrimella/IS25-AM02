@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameV;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.HeapTileV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
@@ -377,6 +378,19 @@ public class ClientController implements VirtualServer {
     public void endGame(int lobbyId) throws RemoteException {
         if (menuControl(MenuState.GAME)) {
             connection.getServer().endGame(lobbyId);
+        }
+    }
+
+    public HeapTileV getHeapTiles() throws RemoteException {
+        if (menuControl(MenuState.GAME)) {
+            return gameV.getHeapTilesV();
+        }
+        return null;
+    }
+
+    public void removeTiletoHT(TileV tile) throws RemoteException {
+        if (menuControl(MenuState.GAME)) {
+            gameV.getHeapTilesV().removeFromHeapTile(tile);
         }
     }
 

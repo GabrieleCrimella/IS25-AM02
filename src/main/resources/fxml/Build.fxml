@@ -8,16 +8,18 @@
     <Pane prefHeight="1080" prefWidth="1920">
         <children>
          <Button layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Take tile" />
-            <Button layoutX="150.0" layoutY="400.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Heap Tile" />
+            <Button layoutX="150.0" layoutY="400.0" mnemonicParsing="false" onAction="#onHeapTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Heap Tile" />
             <Label layoutX="30.0" layoutY="460.0" styleClass="context-label" text="View other spaceships" />
             <Button layoutX="30.0" layoutY="500.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Player 1" />
             <Button layoutX="190.0" layoutY="500.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Player 2" />
             <Button layoutX="350.0" layoutY="500.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Player 3" />
-            <Label layoutX="30.0" layoutY="650.0" styleClass="context-label" text="See mini decks" />
-            <Button layoutX="50.0" layoutY="700.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="1" />
-            <Button layoutX="150.0" layoutY="700.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="2" />
-            <Button layoutX="250.0" layoutY="700.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="3" />
-            <Button layoutX="150.0" layoutY="900.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Finish" />
+            <Label layoutX="30.0" layoutY="600.0" styleClass="context-label" text="See mini decks" />
+            <Button layoutX="50.0" layoutY="650.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="1" />
+            <Button layoutX="150.0" layoutY="650.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="2" />
+            <Button layoutX="250.0" layoutY="650.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="3" />
+            <Button layoutX="30.0" layoutY="800.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="See hourglass" />
+            <Button layoutX="260.0" layoutY="800.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="Flip hourglass" />
+            <Button layoutX="180.0" layoutY="900.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Finish" />
 
             <Pane fx:id="boardPane" layoutX="520.0" layoutY="60.0">
                 <children>
@@ -52,7 +54,16 @@
          <Label fx:id="posizioneAttuale" layoutX="250.0" layoutY="150.0" styleClass="context-label" text="Posizione attuale:" />
          <Label fx:id="posizioneNuovaTile" layoutX="250.0" layoutY="185.0" styleClass="context-label" text="(0, 0)" />
          <Button fx:id="addTileButton" layoutX="250.0" layoutY="235.0" mnemonicParsing="false" onAction="#onAddTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Add tile" />
+            <Button layoutX="250.0" layoutY="300.0" mnemonicParsing="false" onAction="#onReturnTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Return tile" />
         </children>
     </Pane>
+
+    <StackPane fx:id="heapTilePopup" visible="false" style="-fx-background-color: rgba(0,0,0,0.6);">
+        <VBox alignment="TOP_CENTER" spacing="10" maxWidth="800" maxHeight="800" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Button text="✕" onAction="#closeHeapPopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" />
+            <Label text="HeapTile" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" />
+            <GridPane fx:id="heapGrid" hgap="10" vgap="10" alignment="CENTER" />
+        </VBox>
+    </StackPane>
 
 </StackPane>
