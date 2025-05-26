@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.HeapTileV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
@@ -13,16 +14,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.rmi.RemoteException;
@@ -53,13 +52,22 @@ public class BuildController extends GeneralController {
 
     @FXML
     private Pane SpaceshipPane;
+    @FXML
+    private Group livello2Group;
 
     @FXML private Button miniDeck1;
     @FXML private Button miniDeck2;
     @FXML private Button miniDeck3;
+    @FXML private Label miniDecklabel;
+
 
     @FXML
     private StackPane viewSpaceshipPopup;
+
+    @FXML private StackPane miniDeckPopup;
+
+    @FXML
+    private HBox miniDeckCardsContainer;
 
     @FXML
     private ImageView popupBackgroundImage;
@@ -99,6 +107,23 @@ public class BuildController extends GeneralController {
         setupDragAndDrop(imageView);
     }
 
+    public void newCard(CardV newCard) {
+        // Pulisce eventuali elementi precedenti
+
+        // Crea l'ImageView dinamicamente
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(300);
+        imageView.setFitHeight(500);
+        imageView.setLayoutX(10);
+        imageView.setLayoutY(10);
+        imageView.setPreserveRatio(true);
+
+        imageView.setImage(new Image(getClass().getResourceAsStream(newCard.getImagePath())));
+
+        miniDeckCardsContainer.getChildren().add(imageView);
+
+    }
+
 
     @FXML
     public void initialize(int level, PlayerColor color) {
@@ -117,10 +142,13 @@ public class BuildController extends GeneralController {
             miniDeck1.setVisible(true);
             miniDeck2.setVisible(true);
             miniDeck3.setVisible(true);
+            miniDecklabel.setVisible(true);
         } else {
+            livello2Group.setVisible(false);
             miniDeck1.setVisible(false);
             miniDeck2.setVisible(false);
             miniDeck3.setVisible(false);
+            miniDecklabel.setVisible(false);
         }
 
         posizioneAttuale.setVisible(false);
@@ -192,6 +220,11 @@ public class BuildController extends GeneralController {
         return tilePane;
     }
 
+    @FXML
+    public void closeMiniDeckPopup() {
+        miniDeckPopup.setVisible(false);
+        miniDeckCardsContainer.getChildren().clear();
+    }
 
     public void setOtherPlayers(List<String> otherPlayerNicknames) {
         playerButtonsContainer.getChildren().clear();
@@ -248,8 +281,12 @@ public class BuildController extends GeneralController {
         String deckId = clickedButton.getText();  // "1", "2", "3"
 
         try {
-            GUIController.getInstance().getController().takeMiniDeck(GUIController.getInstance().getNickname(), Integer.parseInt(deckId));
-            showNotification("Taken mini deck " + deckId, NotificationType.SUCCESS, 5000);
+            GUIController.getInstance().getController().takeMiniDeck(GUIController.getInstance().getNickname(), Integer.parseInt(deckId)-1);
+            List<CardV> minideckTaken = GUIController.getInstance().getController().getGameV().getDeck().getDeck().get(Integer.parseInt(deckId)-1);
+            for(CardV card: minideckTaken){
+                newCard(card);
+            }
+            miniDeckPopup.setVisible(true);
         } catch (RemoteException e) {
             showNotification("Failed to take mini deck " + deckId, NotificationType.ERROR, 5000);
         }
