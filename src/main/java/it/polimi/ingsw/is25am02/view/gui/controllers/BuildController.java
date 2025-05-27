@@ -602,7 +602,6 @@ public class BuildController extends GeneralController {
         viewOtherSpaceshipLabel.setText("Fase di check!");
         checkButton.setVisible(true);
 
-
     }
 
     public void onRemoveTile(Coordinate coordinate) {
@@ -625,6 +624,7 @@ public class BuildController extends GeneralController {
     }
 
     public void onCheckPressed() {
+        //todo capire se chiamare checkSpaceship oppure checkWrongSpaceship
         try {
             GUIController.getInstance().getController().checkSpaceship(GUIController.getInstance().getNickname());
         } catch (RemoteException e) {
@@ -648,6 +648,7 @@ public class BuildController extends GeneralController {
     public void onSpaceshipWrong() {
         viewOtherSpaceshipLabel.setText("Remove a tile...");
         for (ImageView tile : tiles.keySet()) {
+            tile.setOnMouseClicked(null);
             tile.setOnMouseClicked(event -> {
                 System.out.println("Hai cliccato su una tile!");
                 coordinate = getCoordinatesFromId(tiles.get(tile));
