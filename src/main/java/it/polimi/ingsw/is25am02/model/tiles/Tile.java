@@ -116,8 +116,11 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
     }
 
     public boolean compatible (int a, int b){
-        if (a == 0 || b == 0){
+        if (a == 0 && b == 0){
             return true;
+        }
+        if (a==0 && b!=0 || a!=0 && b==0){
+            return false;
         }
         if ( a == b){
             return true;
