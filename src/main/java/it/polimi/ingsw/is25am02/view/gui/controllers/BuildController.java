@@ -268,11 +268,7 @@ public class BuildController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Impossible to show the hourglass", NotificationType.ERROR, 3000);
         }
-        long remainingTime = GUIController.getInstance().getController().getGameV().getHourglass().getTimeLeft();
 
-        hourglassTimeLabel.setText("Tempo residuo: " + remainingTime);
-        // Mostra il popup con sfondo sfocato
-        hourglassPopup.setVisible(true);
     }
 
     @FXML
@@ -357,6 +353,12 @@ public class BuildController extends GeneralController {
         }
     }
 
+    public void seeHourglass(long timeleft){
+
+        hourglassTimeLabel.setText("Tempo residuo: " + timeleft);
+        // Mostra il popup con sfondo sfocato
+        hourglassPopup.setVisible(true);
+    }
 
     private void aggiungiTileCentrale(PlayerColor color) {
 // Mappa colore → path immagine
