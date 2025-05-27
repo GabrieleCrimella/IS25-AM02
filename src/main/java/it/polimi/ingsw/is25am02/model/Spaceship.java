@@ -483,7 +483,7 @@ public class Spaceship {
          * i motori siano orientati in modo standard verso SOUTH, nella loro posizione relativa standard,
          * quindi verso NORTH.
          */
-        for (Optional<Tile> t : spaceshipIterator) {
+        for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && (t.get().getType().equals(TileType.D_MOTOR) || t.get().getType().equals(TileType.MOTOR))) {
                 if (!t.get().getRotationType().equals(RotationType.NORTH)) {
                     //NORTH cioè il motore NON è nella sua posizione standard"
@@ -793,7 +793,7 @@ public class Spaceship {
 
         if (type == RotationType.NORTH) {
             for (int t = 0; t < 12; t++) {
-                if (getTile(num, t).isPresent()) {
+                if (getTile(t, num).isPresent()) {
                     targetTileX = num;
                     targetTileY = t;
                     return getTile(num, t);
@@ -801,7 +801,7 @@ public class Spaceship {
             }
         } else if (type == RotationType.SOUTH) {
             for (int t = 12; t > 0; t--) {
-                if (getTile(num, t).isPresent()) {
+                if (getTile(t, num).isPresent()) {
                     targetTileX = num;
                     targetTileY = t;
                     return getTile(num, t);
@@ -809,7 +809,7 @@ public class Spaceship {
             }
         } else if (type == RotationType.EAST) {
             for (int t = 12; t > 0; t--) {
-                if (getTile(t, num).isPresent()) {
+                if (getTile(num, t).isPresent()) {
                     targetTileX = t;
                     targetTileY = num;
                     return getTile(t, num);
@@ -817,7 +817,7 @@ public class Spaceship {
             }
         } else if (type == RotationType.WEST) {
             for (int t = 0; t < 12; t++) {
-                if (getTile(t, num).isPresent()) {
+                if (getTile(num, t).isPresent()) {
                     targetTileX = t;
                     targetTileY = num;
                     return getTile(t, num);
