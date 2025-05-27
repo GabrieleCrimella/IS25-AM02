@@ -108,6 +108,11 @@ public class BuildController extends GeneralController {
 
     @FXML
     private Pane boardPane;
+    @FXML private StackPane confirmBookedPopup;
+    @FXML private Button yesBookedButton;
+
+    private Pane currentDraggedTile;
+    private String bookedTargetId;
 
     private Coordinate coordinate;
 
@@ -151,6 +156,40 @@ public class BuildController extends GeneralController {
         imageView.setImage(new Image(getClass().getResourceAsStream(newCard.getImagePath())));
 
         miniDeckCardsContainer.getChildren().add(imageView);
+
+    }
+
+    private void showBookedConfirmation(Pane draggedTile, String bookedId) {
+        this.currentDraggedTile = draggedTile;
+        this.bookedTargetId = bookedId;
+        confirmBookedPopup.setVisible(true);
+    }
+
+    @FXML
+    private void onConfirmBookedYes() {
+        confirmBookedPopup.setVisible(false);
+        if (currentDraggedTile != null && bookedTargetId != null) {
+            // Call your actual method to add booked tile
+            try {
+                GUIController.getInstance().getController().bookTile(GUIController.getInstance().getNickname());
+            } catch (RemoteException e) {
+                showNotification("Impossible to book a tile", NotificationType.ERROR, 3000);
+            }
+        }
+
+    }
+
+    @FXML
+    private void onConfirmBookedNo() {
+        confirmBookedPopup.setVisible(false);
+        if (currentDraggedTile != null && currentTileImage != null) {
+            currentDraggedTile.getChildren().remove(currentTileImage);
+
+            currentTileImage.setLayoutX(10);
+            currentTileImage.setLayoutY(10);
+            postoInizialeTile.getChildren().add(currentTileImage);
+
+        }
 
     }
 
@@ -380,7 +419,6 @@ public class BuildController extends GeneralController {
         // Rimuove contenuti precedenti e aggiunge l'immagine
         tileCentrale.getChildren().clear();
         tileCentrale.getChildren().add(imageView);
-        tiles.put(imageView, tileCentrale);
     }
 
     public Coordinate getCoordinatesFromId(Node node) {
@@ -424,10 +462,18 @@ public class BuildController extends GeneralController {
                     imageView.setLayoutX(0); // reset posizione relativa
                     imageView.setLayoutY(0);
                     slot.getChildren().add(imageView);
-                    coordinate = getCoordinatesFromId(node);
-                    posizioneAttuale.setVisible(true);
-                    posizioneNuovaTile.setVisible(true);
-                    posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
+                    String id = node.getId();
+                    if ("booked_1".equals(id) || "booked_2".equals(id)) {
+                        coordinate = new Coordinate(-1, -1);
+                        showBookedConfirmation(slot, id);
+
+                    } else {
+                        coordinate = getCoordinatesFromId(node);
+                        posizioneAttuale.setVisible(true);
+                        posizioneNuovaTile.setVisible(true);
+                        posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
+                    }
+
 
                     event.consume();
                 });

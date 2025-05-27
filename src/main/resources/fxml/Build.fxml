@@ -49,6 +49,8 @@
                     <Pane id="cell_7_9" layoutX="945.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
                     <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
                     <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0" />
+                    <Pane id="booked_1" layoutX="970.0" layoutY="41.0" prefHeight="149.0" prefWidth="149.0" />
+                    <Pane id="booked_2" layoutX="1139.0" layoutY="41.0" prefHeight="149.0" prefWidth="149.0" />
                     <Group fx:id="livello2Group">
                         <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
                         <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
@@ -95,6 +97,16 @@
                 <!-- Le carte verranno aggiunte qui dinamicamente -->
             </HBox>
             <Button onAction="#closeMiniDeckPopup" styleClass="main-button" text="Chiudi" />
+        </VBox>
+    </StackPane>
+
+    <StackPane fx:id="confirmBookedPopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+        <VBox alignment="TOP_CENTER" maxHeight="600" maxWidth="800" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Label text="Are you sure you want to add a booked tile?" styleClass="context-label" />
+            <HBox alignment="CENTER" spacing="20">
+                <Button fx:id="yesBookedButton" text="Yes" onAction="#onConfirmBookedYes" styleClass="main-button"/>
+                <Button text="No" onAction="#onConfirmBookedNo" styleClass="main-button"/>
+            </HBox>
         </VBox>
     </StackPane>
 
