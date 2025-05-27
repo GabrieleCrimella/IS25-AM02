@@ -25,7 +25,7 @@ public class GUIController implements Runnable {
     private static Stage stage;
     private LobbyController lobbyController;
     private JsonMessageManager messManager;
-    public boolean errorshown ;
+    public boolean errorshown;
 
     public boolean isErrorshown() {
         return errorshown;
@@ -88,7 +88,6 @@ public class GUIController implements Runnable {
         return nickname;
     }
 
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -102,6 +101,12 @@ public class GUIController implements Runnable {
     }
 
     public void showError(String keys, Map<String, String> params) {
+        if (keys.equals("info.spaceship.wrong")) {
+            if (inUse.equals("Build")) {
+                BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                bldCtrl.onSpaceshipWrong();
+            }
+        }
         controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.ERROR, 5000);
         errorshown = true;
         System.out.println("errorshown " + errorshown);
@@ -154,5 +159,27 @@ public class GUIController implements Runnable {
     @Override
     public void run() {
 
+    }
+
+    public void showMessage(String keys, Map<String, String> params) {
+        if (keys.equals("build.addTiles")) {
+            if (inUse.equals("Build")) {
+                BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                bldCtrl.onAddTileSuccess();
+                return;
+            }
+        } else if (keys.equals("info.finished")) {
+            if (inUse.equals("Build")) {
+                BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                bldCtrl.onShipFinished();
+                return;
+            }
+        } else if (keys.equals("info.spaceship.right")) {
+            if (inUse.equals("Build")) {
+                BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                bldCtrl.onSpaceshipRight();
+            }
+            //controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
+        }
     }
 }

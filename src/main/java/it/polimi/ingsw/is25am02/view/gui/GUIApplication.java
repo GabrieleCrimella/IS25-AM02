@@ -174,8 +174,9 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void displayMessage(String keys, Map<String, String> params) {
-
-
+        Platform.runLater(() -> {
+            GUIController.getInstance().showMessage(keys, params);
+        });
     }
 
     @Override
@@ -228,6 +229,16 @@ public class GUIApplication extends Application implements ConsoleClient {
     @Override
     public void spaceshipBrokenUpdate(String details) {
 
+    }
+
+    @Override
+    public void removeTile(Coordinate coordinate) {
+        System.out.println("newTile - ho ricevuto una nuova tile");
+        Platform.runLater(() -> {
+            GUIController.getInstance().<BuildController>switchScene("Build", "build spaceship", controller -> {
+                controller.onRemoveTile(coordinate);
+            });
+        });
     }
 
 

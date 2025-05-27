@@ -25,12 +25,33 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class BuildController extends GeneralController {
+    Map<ImageView, Pane> tiles;
     @FXML
     public Pane postoInizialeTile;
+    @FXML
+    public Button returnTileButton;
+    @FXML
+    public Button addTileButton;
+    @FXML
+    public Button flipHourglassButton;
+    @FXML
+    public Button seeHourglassButton;
+    @FXML
+    public Button heapTileButton;
+    @FXML
+    public Button takeTileButton;
+    @FXML
+    public Button finishButton;
+    @FXML
+    public Label viewOtherSpaceshipLabel;
+    @FXML
+    public Button checkButton;
     @FXML
     private StackPane heapTilePopup;
     @FXML
@@ -58,16 +79,21 @@ public class BuildController extends GeneralController {
     @FXML
     private Group livello2Group;
 
-    @FXML private Button miniDeck1;
-    @FXML private Button miniDeck2;
-    @FXML private Button miniDeck3;
-    @FXML private Label miniDecklabel;
+    @FXML
+    private Button miniDeck1;
+    @FXML
+    private Button miniDeck2;
+    @FXML
+    private Button miniDeck3;
+    @FXML
+    private Label miniDecklabel;
 
 
     @FXML
     private StackPane viewSpaceshipPopup;
 
-    @FXML private StackPane miniDeckPopup;
+    @FXML
+    private StackPane miniDeckPopup;
 
     @FXML
     private HBox miniDeckCardsContainer;
@@ -93,7 +119,7 @@ public class BuildController extends GeneralController {
         // Crea l'ImageView dinamicamente
         ImageView imageView = new ImageView();
         currentTileImage = imageView;
-        imageView.setOnMouseClicked(e-> rotate());
+        imageView.setOnMouseClicked(e -> rotate());
         imageView.setFitWidth(149);
         imageView.setFitHeight(149);
         imageView.setLayoutX(10);
@@ -107,6 +133,7 @@ public class BuildController extends GeneralController {
         imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
         //imageView.setImage(new Image(getClass().getResourceAsStream("/image/tiles/GT-new_tiles_16_for_web93.jpg")));
         postoInizialeTile.getChildren().add(imageView);
+        tiles.put(imageView,postoInizialeTile);
         setupDragAndDrop(imageView);
     }
 
@@ -131,6 +158,10 @@ public class BuildController extends GeneralController {
     @FXML
     public void initialize(int level, PlayerColor color) {
         String imagePath;
+        tiles = new HashMap<>();
+        root.getStylesheets().add(
+                getClass().getResource("/style/style.css").toExternalForm()
+        );
         switch (level) {
             case 0:
                 imagePath = "/image/cardboard/cardboard-1.jpg";
@@ -141,7 +172,7 @@ public class BuildController extends GeneralController {
             default:
                 imagePath = "/image/background.jpg"; // fallback
         }
-        if(level ==2){
+        if (level == 2) {
             miniDeck1.setVisible(true);
             miniDeck2.setVisible(true);
             miniDeck3.setVisible(true);
@@ -203,6 +234,7 @@ public class BuildController extends GeneralController {
                 .toList();
 
         setOtherPlayers(otherPlayers);
+        checkButton.setVisible(false);
     }
 
     private StackPane createTile(TileV tile) {
@@ -314,9 +346,9 @@ public class BuildController extends GeneralController {
         String deckId = clickedButton.getText();  // "1", "2", "3"
 
         try {
-            GUIController.getInstance().getController().takeMiniDeck(GUIController.getInstance().getNickname(), Integer.parseInt(deckId)-1);
-            List<CardV> minideckTaken = GUIController.getInstance().getController().getGameV().getDeck().getDeck().get(Integer.parseInt(deckId)-1);
-            for(CardV card: minideckTaken){
+            GUIController.getInstance().getController().takeMiniDeck(GUIController.getInstance().getNickname(), Integer.parseInt(deckId) - 1);
+            List<CardV> minideckTaken = GUIController.getInstance().getController().getGameV().getDeck().getDeck().get(Integer.parseInt(deckId) - 1);
+            for (CardV card : minideckTaken) {
                 newCard(card);
             }
             miniDeckPopup.setVisible(true);
@@ -346,6 +378,7 @@ public class BuildController extends GeneralController {
         // Rimuove contenuti precedenti e aggiunge l'immagine
         tileCentrale.getChildren().clear();
         tileCentrale.getChildren().add(imageView);
+        tiles.put(imageView, tileCentrale);
     }
 
     public Coordinate getCoordinatesFromId(Node node) {
@@ -423,22 +456,17 @@ public class BuildController extends GeneralController {
 
         try {
             GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
-            if(!GUIController.getInstance().isErrorshown()) {
-                showNotification("Tile added at row " + coordinate.x() + " column " + coordinate.y(), NotificationType.SUCCESS, 5000);
+            if (!GUIController.getInstance().isErrorshown()) {
+                //attenzione, non va bene farlo qui perchè si ha un difetto di concorrenza.
+                //showNotification("Tile added at row " + coordinate.x() + " column " + coordinate.y(), NotificationType.SUCCESS, 5000);
             }
-
-            // Reset the draggable tile
-            coordinate = null;
-            posizioneAttuale.setVisible(false);
-            posizioneNuovaTile.setVisible(false);
-            rotation = RotationType.NORTH;
         } catch (RemoteException e) {
             showNotification("Failed to add tile", NotificationType.ERROR, 5000);
         }
     }
 
     @FXML
-    public void onReturnTile(){
+    public void onReturnTile() {
         try {
             GUIController.getInstance().getController().returnTile(GUIController.getInstance().getNickname());
             showNotification("Tile returned successfully", NotificationType.SUCCESS, 5000);
@@ -450,7 +478,7 @@ public class BuildController extends GeneralController {
     }
 
     @FXML
-    public void onHeapTile(){
+    public void onHeapTile() {
         heapTilePopup.setVisible(true);
         try {
             HeapTileV heapTileV = GUIController.getInstance().getController().getHeapTiles();
@@ -508,7 +536,7 @@ public class BuildController extends GeneralController {
 
     @FXML
     public void rotate() {
-        if(currentTileImage == null) {
+        if (currentTileImage == null) {
             showNotification("No tile to rotate", NotificationType.ERROR, 5000);
             return;
         }
@@ -532,5 +560,103 @@ public class BuildController extends GeneralController {
             case WEST -> 270;
         };
         currentTileImage.setRotate(angle);
+    }
+
+    public void onAddTileSuccess() {
+        // Reset the draggable tile
+        showNotification("tile added successfully", NotificationType.SUCCESS, 5000);
+        currentTileImage.getStyleClass().remove("draggableTile");
+        currentTileImage.setOnMouseClicked(null);
+        currentTileImage = null;
+        coordinate = null;
+        posizioneAttuale.setVisible(false);
+        posizioneNuovaTile.setVisible(false);
+        rotation = RotationType.NORTH;
+    }
+
+    public void onfinish() {
+        try {
+            GUIController.getInstance().getController().shipFinished(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Failed to finish spaceship", NotificationType.ERROR, 5000);
+        }
+    }
+
+    public void onShipFinished() {
+        currentTileImage = null;
+        postoInizialeTile.setVisible(false);
+        posizioneAttuale.setVisible(false);
+        posizioneNuovaTile.setVisible(false);
+        addTileButton.setVisible(false);
+        returnTileButton.setVisible(false);
+        flipHourglassButton.setVisible(false);
+        seeHourglassButton.setVisible(false);
+        miniDeck1.setVisible(false);
+        miniDeck2.setVisible(false);
+        miniDeck3.setVisible(false);
+        miniDecklabel.setVisible(false);
+        playerButtonsContainer.setVisible(false);
+        heapTileButton.setVisible(false);
+        takeTileButton.setVisible(false);
+        finishButton.setVisible(false);
+        viewOtherSpaceshipLabel.setText("Fase di check!");
+        checkButton.setVisible(true);
+
+
+    }
+
+    public void onRemoveTile(Coordinate coordinate) {
+        // Rimuove la tile dalla posizione specificata
+        for (Pane tile : tiles.values()) {
+            if (getCoordinatesFromId(tile).equals(coordinate)) {
+                tile.getChildren().clear(); // Rimuove il contenuto della tile
+                break;
+            }
+        }
+
+        // Mostra un messaggio di successo
+        showNotification("Tile removed successfully", NotificationType.SUCCESS, 5000);
+
+        // Resetta lo stato corrente
+        currentTileImage = null;
+        this.coordinate = null;
+        //posizioneAttuale.setVisible(false);
+        //posizioneNuovaTile.setVisible(false);
+    }
+
+    public void onCheckPressed() {
+        try {
+            GUIController.getInstance().getController().checkSpaceship(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Failed to check spaceship", NotificationType.ERROR, 5000);
+        }
+    }
+
+    public void onSpaceshipRight() {
+        // Mostra un messaggio di successo
+        showNotification("Spaceship is correct!", NotificationType.SUCCESS, 5000);
+
+        // Resetta lo stato corrente
+        currentTileImage = null;
+        this.coordinate = null;
+        viewOtherSpaceshipLabel.setText("OK! Waiting...");
+        for(ImageView tile : tiles.keySet()){
+            tile.setOnMouseClicked(null);
+        }
+    }
+
+    public void onSpaceshipWrong() {
+        viewOtherSpaceshipLabel.setText("Remove a tile...");
+        for (ImageView tile : tiles.keySet()) {
+            tile.setOnMouseClicked(event -> {
+                System.out.println("Hai cliccato su una tile!");
+                coordinate = getCoordinatesFromId(tiles.get(tile));
+                try {
+                    GUIController.getInstance().getController().removeTile(GUIController.getInstance().getNickname(), coordinate);
+                } catch (RemoteException e) {
+                    showNotification("Failed to remove tile", NotificationType.ERROR, 5000);
+                }
+            });
+        }
     }
 }

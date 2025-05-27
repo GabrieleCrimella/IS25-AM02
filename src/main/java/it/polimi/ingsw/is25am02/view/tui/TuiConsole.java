@@ -684,4 +684,9 @@ public class TuiConsole implements Runnable, ConsoleClient {
         } while (spaceshipNumber < 0 || spaceshipNumber >= i);
          */
     }
+
+    @Override
+    public void removeTile(Coordinate coordinate) {
+
+    }
 }

@@ -202,12 +202,12 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
                 try {
                     observers.get(nick).showTileAdditionUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nicknameP, pos);
                     observers.get(nick).showCurrentTileNullityUpdate(nicknameP);
-                } catch (RemoteException e) {
+                    observers.get(nicknameP).displayMessage("build.addTiles",null);
+                } catch (Exception e) {
                     ServerController.logger.log(Level.SEVERE, "error in method show tile addition", e);
                 }
             }
         }
-
         else throw new IllegalAddException("Invalid tile position or occupied");
     }
 

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.Group?>
 <StackPane fx:id="root" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.BuildController">
-    <Pane prefHeight="1080" prefWidth="1920">
+    <Pane prefHeight="1080" prefWidth="1920" styleClass="background">
         <children>
-         <Button layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Take tile" />
-            <Button layoutX="150.0" layoutY="400.0" mnemonicParsing="false" onAction="#onHeapTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Heap Tile" />
-            <Label layoutX="30.0" layoutY="460.0" styleClass="context-label" text="View other spaceships" />
-            <VBox fx:id="playerButtonsContainer" layoutX="30.0" layoutY="500.0" spacing="10.0"/>
-            <Label  fx:id="miniDecklabel"  layoutX="30.0" layoutY="600.0" styleClass="context-label" text="See mini decks" />
+         <Button fx:id="takeTileButton" layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Take tile" />
+            <Button fx:id="heapTileButton" layoutX="150.0" layoutY="400.0" mnemonicParsing="false" onAction="#onHeapTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Heap Tile" />
+            <Label fx:id="viewOtherSpaceshipLabel" layoutX="30.0" layoutY="460.0" styleClass="context-label" text="View other spaceships" />
+            <VBox fx:id="playerButtonsContainer" layoutX="30.0" layoutY="500.0" spacing="10.0" />
+            <Label fx:id="miniDecklabel" layoutX="30.0" layoutY="600.0" styleClass="context-label" text="See mini decks" />
 
-            <Button fx:id="miniDeck1" layoutX="50.0" layoutY="650.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="1" onAction="#onTakeMiniDeck"/>
-            <Button fx:id="miniDeck2" layoutX="150.0" layoutY="650.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="2" onAction="#onTakeMiniDeck"/>
-            <Button fx:id="miniDeck3" layoutX="250.0" layoutY="650.0" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="3" onAction="#onTakeMiniDeck"/>
+            <Button fx:id="miniDeck1" layoutX="50.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="1" />
+            <Button fx:id="miniDeck2" layoutX="150.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="2" />
+            <Button fx:id="miniDeck3" layoutX="250.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="3" />
 
-            <Button layoutX="30.0" layoutY="740.0" mnemonicParsing="false" onAction="#onViewHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="See hourglass" />
+            <Button fx:id="seeHourglassButton" layoutX="30.0" layoutY="740.0" mnemonicParsing="false" onAction="#onViewHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="See hourglass" />
 
 
-            <Button layoutX="260.0" layoutY="740.0" mnemonicParsing="false" onAction="#onFlipHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="Flip hourglass" />
-            <Button layoutX="180.0" layoutY="900.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Finish" />
+            <Button fx:id="flipHourglassButton" layoutX="260.0" layoutY="740.0" mnemonicParsing="false" onAction="#onFlipHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="Flip hourglass" />
+            <Button fx:id="finishButton" layoutX="180.0" layoutY="900.0" mnemonicParsing="false" onAction="#onfinish" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Finish" />
 
             <Pane fx:id="boardPane" layoutX="520.0" layoutY="60.0">
                 <children>
@@ -31,7 +31,7 @@
                     <ImageView fx:id="backgroundImageView" fitHeight="966.0" fitWidth="1477.0" preserveRatio="true">
                         <Image url="@../image/cardboard/cardboard-1b.jpg" />
                     </ImageView>
-                    <Pane fx:id="tileCentrale" id="cell_7_7" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
+                    <Pane id="cell_7_7" fx:id="tileCentrale" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
                     <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" /> <!-- id is row column -->
                     <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
                     <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0" />
@@ -69,36 +69,37 @@
          <Label fx:id="posizioneAttuale" layoutX="250.0" layoutY="150.0" styleClass="context-label" text="Posizione attuale:" />
          <Label fx:id="posizioneNuovaTile" layoutX="250.0" layoutY="185.0" styleClass="context-label" text="(0, 0)" />
          <Button fx:id="addTileButton" layoutX="250.0" layoutY="235.0" mnemonicParsing="false" onAction="#onAddTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Add tile" />
-            <Button layoutX="250.0" layoutY="300.0" mnemonicParsing="false" onAction="#onReturnTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Return tile" />
+            <Button fx:id="returnTileButton" layoutX="250.0" layoutY="300.0" mnemonicParsing="false" onAction="#onReturnTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Return tile" />
+         <Button fx:id="checkButton" layoutX="30.0" layoutY="500.0" mnemonicParsing="false" onAction="#onCheckPressed" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="check!" />
         </children>
     </Pane>
 
-    <StackPane fx:id="hourglassPopup" visible="false" style="-fx-background-color: rgba(0,0,0,0.6);" prefWidth="600" prefHeight="400">
-        <VBox alignment="TOP_CENTER" spacing="10" maxWidth="600" maxHeight="300" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
-            <Label fx:id="hourglassTimeLabel" text="Tempo residuo: --:--" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;"/>
-            <Button text="Close" onAction="#closeHourglassPopup" styleClass="main-button"/>
+    <StackPane fx:id="hourglassPopup" prefHeight="400" prefWidth="600" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+        <VBox alignment="TOP_CENTER" maxHeight="300" maxWidth="600" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Label fx:id="hourglassTimeLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" text="Tempo residuo: --:--" />
+            <Button onAction="#closeHourglassPopup" styleClass="main-button" text="Close" />
         </VBox>
     </StackPane>
 
-    <StackPane fx:id="heapTilePopup" visible="false" style="-fx-background-color: rgba(0,0,0,0.6);">
-        <VBox alignment="TOP_CENTER" spacing="10" maxWidth="800" maxHeight="800" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
-            <Button text="✕" onAction="#closeHeapPopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" />
-            <Label text="HeapTile" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" />
-            <GridPane fx:id="heapGrid" hgap="10" vgap="10" alignment="CENTER" />
+    <StackPane fx:id="heapTilePopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+        <VBox alignment="TOP_CENTER" maxHeight="800" maxWidth="800" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Button onAction="#closeHeapPopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" text="HeapTile" />
+            <GridPane fx:id="heapGrid" alignment="CENTER" hgap="10" vgap="10" />
         </VBox>
     </StackPane>
 
-    <StackPane fx:id="miniDeckPopup" visible="false" style="-fx-background-color: rgba(0, 0, 0, 0.6);">
-        <VBox alignment="TOP_CENTER" spacing="10" maxWidth="800" maxHeight="600" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
-            <HBox fx:id="miniDeckCardsContainer" spacing="10" alignment="CENTER">
+    <StackPane fx:id="miniDeckPopup" style="-fx-background-color: rgba(0, 0, 0, 0.6);" visible="false">
+        <VBox alignment="TOP_CENTER" maxHeight="600" maxWidth="800" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <HBox fx:id="miniDeckCardsContainer" alignment="CENTER" spacing="10">
                 <!-- Le carte verranno aggiunte qui dinamicamente -->
             </HBox>
-            <Button text="Chiudi" onAction="#closeMiniDeckPopup" styleClass="main-button"/>
+            <Button onAction="#closeMiniDeckPopup" styleClass="main-button" text="Chiudi" />
         </VBox>
     </StackPane>
 
-    <StackPane fx:id="viewSpaceshipPopup" visible="false" style="-fx-background-color: rgba(0,0,0,0.6);">
-        <VBox alignment="TOP_CENTER" spacing="10" maxWidth="1500" maxHeight="1000" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+    <StackPane fx:id="viewSpaceshipPopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+        <VBox alignment="TOP_CENTER" maxHeight="1000" maxWidth="1500" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
             <Pane fx:id="SpaceshipPane" layoutX="120.0" layoutY="60.0">
                 <children>
 
@@ -138,7 +139,7 @@
 
 
             </Pane>
-            <Button text="✕" onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" />
+            <Button onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
             <GridPane fx:id="spaceshipGrid" alignment="CENTER" />
         </VBox>
     </StackPane>

@@ -503,6 +503,7 @@ public class Game implements Game_Interface {
                         }
                     }
                 }
+                player.getObserver().displayMessage("build.addTile", null);
             }
         } catch (IllegalStateException e) {
             try {
@@ -522,6 +523,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addtile");
             }
+        } catch (Exception e) {
+            ServerController.logger.log(Level.SEVERE, "error in method addTile", e);
         }
     }
 
