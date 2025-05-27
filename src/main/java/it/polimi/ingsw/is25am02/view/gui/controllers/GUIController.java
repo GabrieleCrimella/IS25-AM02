@@ -180,6 +180,12 @@ public class GUIController implements Runnable {
                 bldCtrl.onSpaceshipRight();
             }
             //controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
+        } else if (keys.equals("hourglass.time")) {
+            int timeleft = Integer.parseInt(params.get("tim"));
+            getController().getGameV().getHourglass().setTimeLeft(timeleft);
+            BuildController bldCtrl = (BuildController) controllers.get(inUse);
+            bldCtrl.seeHourglass(timeleft);
+
         }
     }
 }
