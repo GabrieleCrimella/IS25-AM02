@@ -686,7 +686,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
     }
 
     @Override
-    public void removeTile(Coordinate coordinate) {
+    public void removedTile(Coordinate coordinate) {
 
     }
 }

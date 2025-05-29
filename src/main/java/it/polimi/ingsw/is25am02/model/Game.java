@@ -709,6 +709,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method removeTile");
             }
+        } catch (Exception e) {
+            reportErrorOnServer("connection problem in method removeTile");
         }
     }
 

@@ -232,15 +232,9 @@ public class GUIApplication extends Application implements ConsoleClient {
     }
 
     @Override
-    public void removeTile(Coordinate coordinate) {
-        System.out.println("newTile - ho ricevuto una nuova tile");
-        Platform.runLater(() -> {
-            GUIController.getInstance().<BuildController>switchScene("Build", "build spaceship", controller -> {
-                controller.onRemoveTile(coordinate);
-            });
-        });
+    public void removedTile(Coordinate coordinate) {
+        GUIController.getInstance().<BuildController>getController("Build").onRemoveTile(coordinate);
     }
-
 
     //todo si potrebbe aggiugnere anche il caricamento dei fonts
 }

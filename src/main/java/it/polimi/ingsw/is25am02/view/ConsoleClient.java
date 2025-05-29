@@ -25,5 +25,5 @@ public interface ConsoleClient {
     GraphicPrinter getPrinter();
     void startCountdown();
     void spaceshipBrokenUpdate(String details);
-    void removeTile(Coordinate coordinate);
+    void removedTile(Coordinate coordinate);
 }

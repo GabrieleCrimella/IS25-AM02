@@ -106,12 +106,13 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     }
                     playerv.getSpaceshipBoard()[coordinate.x()][coordinate.y()] = Optional.empty();
                 }
+                console.removedTile(coordinate);
             }
         }
 
         if (console.getNickname().equals(nickname)) {
             printOnConsole();
-            console.removeTile(coordinate);
+            console.removedTile(coordinate);
         }
     }
 

@@ -162,7 +162,7 @@ public class GUIController implements Runnable {
     }
 
     public void showMessage(String keys, Map<String, String> params) {
-        if (keys.equals("build.addTiles")) {
+        if (keys.equals("build.addTile")) {
             if (inUse.equals("Build")) {
                 BuildController bldCtrl = (BuildController) controllers.get(inUse);
                 bldCtrl.onAddTileSuccess();
@@ -185,7 +185,8 @@ public class GUIController implements Runnable {
             getController().getGameV().getHourglass().setTimeLeft(timeleft);
             BuildController bldCtrl = (BuildController) controllers.get(inUse);
             bldCtrl.seeHourglass(timeleft);
-
+        }else {
+            controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
     }
 }

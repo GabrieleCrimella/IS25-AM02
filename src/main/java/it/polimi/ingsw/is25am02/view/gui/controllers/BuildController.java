@@ -135,6 +135,7 @@ public class BuildController extends GeneralController {
 
         // Imposta l'immagine (da una proprietà della TileV)
         //System.out.println(newTile.getImagePath());
+        System.out.println("newTile - ho ricevuto una nuova tile: " + newTile.getImagePath());
         imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
         //imageView.setImage(new Image(getClass().getResourceAsStream("/image/tiles/GT-new_tiles_16_for_web93.jpg")));
         postoInizialeTile.getChildren().add(imageView);
