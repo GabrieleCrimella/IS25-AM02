@@ -237,7 +237,10 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     }
 
     public Optional<Tile> getTile(int x, int y) {
-        return spaceshipBoard[x][y];
+        if (x>=0 && x<=11 && y>=0 && y<=11) {
+            return spaceshipBoard[x][y];
+        }
+        return Optional.empty();
     }
 
     @Override

@@ -317,7 +317,9 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int addX = Integer.parseInt(tokenizer.nextToken());
                     int addY = Integer.parseInt(tokenizer.nextToken());
-                    controller.addTile(nickname, new Coordinate(addX, addY), controller.getPlayerVFromNickname(nickname).getCurrentTile().get().getRotationType());
+                    if (controller.getPlayerVFromNickname(nickname).getCurrentTile().isPresent()){
+                        controller.addTile(nickname, new Coordinate(addX, addY), controller.getPlayerVFromNickname(nickname).getCurrentTile().get().getRotationType());
+                    }
                     break;
 
                 case "rotate":

@@ -796,7 +796,7 @@ public class Spaceship {
                 if (getTile(t, num).isPresent()) {
                     targetTileX = num;
                     targetTileY = t;
-                    return getTile(num, t);
+                    return getTile(t,num);
                 }
             }
         } else if (type == RotationType.SOUTH) {
@@ -804,7 +804,7 @@ public class Spaceship {
                 if (getTile(t, num).isPresent()) {
                     targetTileX = num;
                     targetTileY = t;
-                    return getTile(num, t);
+                    return getTile(t, num);
                 }
             }
         } else if (type == RotationType.EAST) {
@@ -812,7 +812,7 @@ public class Spaceship {
                 if (getTile(num, t).isPresent()) {
                     targetTileX = t;
                     targetTileY = num;
-                    return getTile(t, num);
+                    return getTile(num, t);
                 }
             }
         } else if (type == RotationType.WEST) {
@@ -820,7 +820,7 @@ public class Spaceship {
                 if (getTile(num, t).isPresent()) {
                     targetTileX = t;
                     targetTileY = num;
-                    return getTile(t, num);
+                    return getTile(num, t);
                 }
             }
         }

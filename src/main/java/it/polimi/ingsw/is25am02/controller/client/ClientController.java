@@ -368,7 +368,7 @@ public class ClientController implements VirtualServer {
     }
 
     public void keepBlock(String nickname, Coordinate pos) throws RemoteException {
-        if (menuControl(MenuState.GAME) && gameV.stateControl(StateGameType.CORRECTION, StatePlayerType.WRONG_SHIP, StateCardType.FINISH, getPlayerVFromNickname(nickname)) && gameV.currentPlayerControl(getPlayerVFromNickname(nickname))) {
+        if (menuControl(MenuState.GAME) && gameV.stateControl(StateGameType.EFFECT_ON_PLAYER, StatePlayerType.IN_GAME, StateCardType.DECISION, getPlayerVFromNickname(nickname)) && gameV.currentPlayerControl(getPlayerVFromNickname(nickname))) {
             connection.getServer().keepBlock(nickname, pos);
         }
     }

@@ -215,6 +215,7 @@ public class CardDeck {
                         break;
                     case "METEORITES":
                         meteorites.clear();
+                        ArrayList<Pair<Integer, RotationType>> currentMeteorites = new ArrayList<>();
                         for (JsonNode node : levelNode.get("meteorites")) {
                             int smallOrBig = node.get(0).asInt();
                             RotationType rotation;
@@ -227,10 +228,10 @@ public class CardDeck {
                             } else if (node.get(1).asText().equals("west")) {
                                 rotation = RotationType.WEST;
                             } else throw new IllegalArgumentException("I cannot add a meteorites from JSON");
-                            meteorites.add(new Pair<>(smallOrBig, rotation));
+                            currentMeteorites.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new MeteoritesStorm(level, meteorites,imagepath,comment,testFlight));
+                        initialDeck.add(new MeteoritesStorm(level, currentMeteorites,imagepath,comment,testFlight));
                         break;
                     case "PLANETS":
                         daysLost = levelNode.get("daysLost").asInt();
