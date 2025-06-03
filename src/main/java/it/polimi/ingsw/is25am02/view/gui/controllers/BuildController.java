@@ -18,6 +18,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -78,6 +79,9 @@ public class BuildController extends GeneralController {
     private Pane SpaceshipPane;
     @FXML
     private Group livello2Group;
+    @FXML
+    private Group bookedGroup;
+
 
     @FXML
     private Button miniDeck1;
@@ -87,6 +91,8 @@ public class BuildController extends GeneralController {
     private Button miniDeck3;
     @FXML
     private Label miniDecklabel;
+    @FXML
+    private ScrollPane scrollHeapPane;
 
 
     @FXML
@@ -109,7 +115,6 @@ public class BuildController extends GeneralController {
     @FXML
     private Pane boardPane;
     @FXML private StackPane confirmBookedPopup;
-    @FXML private Button yesBookedButton;
 
     private Pane currentDraggedTile;
     private String bookedTargetId;
@@ -165,19 +170,83 @@ public class BuildController extends GeneralController {
         this.bookedTargetId = bookedId;
         confirmBookedPopup.setVisible(true);
     }
+    @FXML
+    private void onAddingBookedTile(){
+        confirmBookedPopup.setVisible(false);
+
+    }
+
+
 
     @FXML
     private void onConfirmBookedYes() {
         confirmBookedPopup.setVisible(false);
-        if (currentDraggedTile != null && bookedTargetId != null) {
-            // Call your actual method to add booked tile
+
+        if (currentDraggedTile != null) {
             try {
                 GUIController.getInstance().getController().bookTile(GUIController.getInstance().getNickname());
+                currentTileImage.setOnMouseClicked(null);
+                currentTileImage.setOnMousePressed(null);
+                currentTileImage.setOnMouseDragged(null);
+                currentTileImage.setOnDragDetected(null);
+                currentTileImage.setOnMouseReleased(null);
+                currentTileImage.setOnDragOver(null);
+                currentTileImage.setOnDragDropped(null);
+                setupDragAndDropBooked(currentTileImage);
+                try {
+                    int idbooked;
+                    if(bookedTargetId.equals("booked_1")){
+                        idbooked = 1;
+                    } else {
+                        idbooked = 2;
+                    }
+                    GUIController.getInstance().getController().addBookedTile(GUIController.getInstance().getNickname(),idbooked , coordinate, rotation);
+                } catch (RemoteException e) {
+                    showNotification("Impossible to add a booked tile", NotificationType.ERROR, 3000);
+                }
             } catch (RemoteException e) {
                 showNotification("Impossible to book a tile", NotificationType.ERROR, 3000);
             }
         }
 
+    }
+
+    private void setupDragAndDropBooked(ImageView imageView) {
+        imageView.setOnDragDetected(event -> {
+            imageView.startFullDrag();
+            event.consume();
+        });
+
+        // boardPane.getChildren() include anche il livello2Group
+        for (Node node : boardPane.getChildren()) {
+            if (node instanceof Pane slot) {
+                setupDropTargetBooked(slot, imageView);
+            } else if (node instanceof Group group) {
+                // Aggiungi listener anche ai figli del gruppo
+                for (Node subNode : group.getChildrenUnmodifiable()) {
+                    if (subNode instanceof Pane subSlot) {
+                        setupDropTargetBooked(subSlot, imageView);
+                    }
+                }
+            }
+        }
+    }
+
+    private void setupDropTargetBooked(Pane slot, ImageView imageView) {
+        slot.setOnMouseDragReleased(event -> {
+            ((Pane) imageView.getParent()).getChildren().remove(imageView);
+            imageView.setLayoutX(0);
+            imageView.setLayoutY(0);
+            slot.getChildren().add(imageView);
+
+                coordinate = getCoordinatesFromId(slot);
+                posizioneAttuale.setVisible(true);
+                posizioneNuovaTile.setVisible(true);
+                posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
+
+
+            event.consume();
+        });
     }
 
     @FXML
@@ -217,13 +286,24 @@ public class BuildController extends GeneralController {
             miniDeck2.setVisible(true);
             miniDeck3.setVisible(true);
             miniDecklabel.setVisible(true);
+            livello2Group.setVisible(true);
+            livello2Group.setManaged(true);
+            livello2Group.setDisable(false);
+            bookedGroup.setVisible(true);
+            bookedGroup.setManaged(true);
+            bookedGroup.setDisable(false);
         } else {
             livello2Group.setVisible(false);
+            bookedGroup.setVisible(false);
             miniDeck1.setVisible(false);
             miniDeck2.setVisible(false);
             miniDeck3.setVisible(false);
             miniDecklabel.setVisible(false);
         }
+
+        scrollHeapPane.setFitToWidth(true);
+        scrollHeapPane.setMaxHeight(900);
+        scrollHeapPane.setMaxWidth(1800);
 
         posizioneAttuale.setVisible(false);
         posizioneNuovaTile.setVisible(false);
@@ -449,37 +529,45 @@ public class BuildController extends GeneralController {
 
     private void setupDragAndDrop(ImageView imageView) {
         imageView.setOnDragDetected(event -> {
-            imageView.startFullDrag(); // per eventi mouse drag
+            imageView.startFullDrag();
             event.consume();
         });
 
-        // Rende ciascun "slot" sulla plancia reattivo al rilascio
-        for (javafx.scene.Node node : boardPane.getChildren()) {
+        // boardPane.getChildren() include anche il livello2Group
+        for (Node node : boardPane.getChildren()) {
             if (node instanceof Pane slot) {
-                slot.setOnMouseDragReleased(event -> {
-                    // Rimuovi da dove era prima
-                    ((Pane) imageView.getParent()).getChildren().remove(imageView);
-                    // Aggiungi dentro lo slot
-                    imageView.setLayoutX(0); // reset posizione relativa
-                    imageView.setLayoutY(0);
-                    slot.getChildren().add(imageView);
-                    String id = node.getId();
-                    if ("booked_1".equals(id) || "booked_2".equals(id)) {
-                        coordinate = new Coordinate(-1, -1);
-                        showBookedConfirmation(slot, id);
-
-                    } else {
-                        coordinate = getCoordinatesFromId(node);
-                        posizioneAttuale.setVisible(true);
-                        posizioneNuovaTile.setVisible(true);
-                        posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
+                setupDropTarget(slot, imageView);
+            } else if (node instanceof Group group) {
+                // Aggiungi listener anche ai figli del gruppo
+                for (Node subNode : group.getChildrenUnmodifiable()) {
+                    if (subNode instanceof Pane subSlot) {
+                        setupDropTarget(subSlot, imageView);
                     }
-
-
-                    event.consume();
-                });
+                }
             }
         }
+    }
+
+    private void setupDropTarget(Pane slot, ImageView imageView) {
+        slot.setOnMouseDragReleased(event -> {
+            ((Pane) imageView.getParent()).getChildren().remove(imageView);
+            imageView.setLayoutX(0);
+            imageView.setLayoutY(0);
+            slot.getChildren().add(imageView);
+
+            String id = slot.getId();
+            if ("booked_1".equals(id) || "booked_2".equals(id)) {
+                coordinate = new Coordinate(-1, -1);
+                showBookedConfirmation(slot, id);
+            } else {
+                coordinate = getCoordinatesFromId(slot);
+                posizioneAttuale.setVisible(true);
+                posizioneNuovaTile.setVisible(true);
+                posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
+            }
+
+            event.consume();
+        });
     }
 
     @FXML
@@ -541,7 +629,7 @@ public class BuildController extends GeneralController {
     private void populateHeapGrid(List<TileV> tiles) {
         heapGrid.getChildren().clear();
 
-        int cols = 4;
+        int cols = 11;
         int row = 0;
         int col = 0;
 
@@ -616,6 +704,12 @@ public class BuildController extends GeneralController {
         showNotification("tile added successfully", NotificationType.SUCCESS, 5000);
         currentTileImage.getStyleClass().remove("draggableTile");
         currentTileImage.setOnMouseClicked(null);
+        currentTileImage.setOnMousePressed(null);
+        currentTileImage.setOnMouseDragged(null);
+        currentTileImage.setOnDragDetected(null);
+        currentTileImage.setOnMouseReleased(null);
+        currentTileImage.setOnDragOver(null);
+        currentTileImage.setOnDragDropped(null);
         currentTileImage = null;
         coordinate = null;
         posizioneAttuale.setVisible(false);
@@ -689,6 +783,12 @@ public class BuildController extends GeneralController {
         currentTileImage = null;
         this.coordinate = null;
         viewOtherSpaceshipLabel.setText("OK! Waiting...");
+        checkButton.setVisible(false);
+        try {
+            GUIController.getInstance().getController().ready(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Failed to be ready", NotificationType.ERROR, 5000);
+        }
         for(ImageView tile : tiles.keySet()){
             tile.setOnMouseClicked(null);
         }

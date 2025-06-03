@@ -5,154 +5,196 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="root" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.BuildController">
+<StackPane fx:id="root" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/17.0.12"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.BuildController">
     <Pane prefHeight="1080" prefWidth="1920" styleClass="background">
         <children>
-         <Button fx:id="takeTileButton" layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#onTakeTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Take tile" />
-            <Button fx:id="heapTileButton" layoutX="150.0" layoutY="400.0" mnemonicParsing="false" onAction="#onHeapTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Heap Tile" />
-            <Label fx:id="viewOtherSpaceshipLabel" layoutX="30.0" layoutY="460.0" styleClass="context-label" text="View other spaceships" />
-            <VBox fx:id="playerButtonsContainer" layoutX="30.0" layoutY="500.0" spacing="10.0" />
-            <Label fx:id="miniDecklabel" layoutX="30.0" layoutY="600.0" styleClass="context-label" text="See mini decks" />
+            <Button fx:id="takeTileButton" layoutX="150.0" layoutY="60.0" mnemonicParsing="false" onAction="#onTakeTile"
+                    prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="Take tile"/>
+            <Button fx:id="heapTileButton" layoutX="150.0" layoutY="400.0" mnemonicParsing="false"
+                    onAction="#onHeapTile" prefHeight="51.0" prefWidth="200.0" styleClass="main-button"
+                    text="Heap Tile"/>
+            <Label fx:id="viewOtherSpaceshipLabel" layoutX="30.0" layoutY="460.0" styleClass="context-label"
+                   text="View other spaceships"/>
+            <VBox fx:id="playerButtonsContainer" layoutX="30.0" layoutY="500.0" spacing="10.0"/>
+            <Label fx:id="miniDecklabel" layoutX="30.0" layoutY="600.0" styleClass="context-label"
+                   text="See mini decks"/>
 
-            <Button fx:id="miniDeck1" layoutX="50.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="1" />
-            <Button fx:id="miniDeck2" layoutX="150.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="2" />
-            <Button fx:id="miniDeck3" layoutX="250.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0" prefWidth="40.0" styleClass="circular-button" text="3" />
+            <Button fx:id="miniDeck1" layoutX="50.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0"
+                    prefWidth="40.0" styleClass="circular-button" text="1"/>
+            <Button fx:id="miniDeck2" layoutX="150.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0"
+                    prefWidth="40.0" styleClass="circular-button" text="2"/>
+            <Button fx:id="miniDeck3" layoutX="250.0" layoutY="650.0" onAction="#onTakeMiniDeck" prefHeight="40.0"
+                    prefWidth="40.0" styleClass="circular-button" text="3"/>
 
-            <Button fx:id="seeHourglassButton" layoutX="30.0" layoutY="740.0" mnemonicParsing="false" onAction="#onViewHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="See hourglass" />
+            <Button fx:id="seeHourglassButton" layoutX="30.0" layoutY="740.0" mnemonicParsing="false"
+                    onAction="#onViewHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button"
+                    text="See hourglass"/>
 
 
-            <Button fx:id="flipHourglassButton" layoutX="260.0" layoutY="740.0" mnemonicParsing="false" onAction="#onFlipHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button" text="Flip hourglass" />
-            <Button fx:id="finishButton" layoutX="180.0" layoutY="900.0" mnemonicParsing="false" onAction="#onfinish" prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Finish" />
+            <Button fx:id="flipHourglassButton" layoutX="260.0" layoutY="740.0" mnemonicParsing="false"
+                    onAction="#onFlipHourglass" prefHeight="51.0" prefWidth="220.0" styleClass="main-button"
+                    text="Flip hourglass"/>
+            <Button fx:id="finishButton" layoutX="180.0" layoutY="900.0" mnemonicParsing="false" onAction="#onfinish"
+                    prefHeight="51.0" prefWidth="150.0" styleClass="main-button" text="Finish"/>
 
             <Pane fx:id="boardPane" layoutX="520.0" layoutY="60.0">
                 <children>
 
                     <!-- Immagine cardboard centrata, senza distorsione -->
                     <ImageView fx:id="backgroundImageView" fitHeight="966.0" fitWidth="1477.0" preserveRatio="true">
-                        <Image url="@../image/cardboard/cardboard-1b.jpg" />
+                        <Image url="@../image/cardboard/cardboard-1b.jpg"/>
                     </ImageView>
-                    <Pane id="cell_7_7" fx:id="tileCentrale" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" /> <!-- id is row column -->
-                    <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_5" layoutX="242.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_5" layoutX="241.0" layoutY="759.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_6" layoutX="415.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_6" layoutX="417.0" layoutY="583.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_7" layoutX="593.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_8" layoutX="769.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_8" layoutX="769.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_8" layoutX="769.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_8" layoutX="769.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_9" layoutX="945.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_9" layoutX="945.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_9" layoutX="945.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="booked_1" layoutX="970.0" layoutY="41.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="booked_2" layoutX="1139.0" layoutY="41.0" prefHeight="149.0" prefWidth="149.0" />
+                    <Pane id="cell_7_7" fx:id="tileCentrale" layoutX="594.0" layoutY="406.0" prefHeight="149.0"
+                          prefWidth="149.0"/>
+                    <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0"
+                          prefWidth="149.0"/> <!-- id is row column -->
+                    <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_5" layoutX="242.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_5" layoutX="241.0" layoutY="759.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_6" layoutX="415.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_6" layoutX="417.0" layoutY="583.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_7" layoutX="593.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_8" layoutX="769.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_8" layoutX="769.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_8" layoutX="769.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_8" layoutX="769.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_9" layoutX="945.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_9" layoutX="945.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_9" layoutX="945.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0"/>
                     <Group fx:id="livello2Group">
-                        <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_7_4" layoutX="69.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_8_4" layoutX="69.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_9_4" layoutX="69.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_9_10" layoutX="1119.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_8_10" layoutX="1119.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_7_10" layoutX="1119.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_6_9" layoutX="945.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                        <Pane id="cell_5_8" layoutX="769.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_7_4" layoutX="69.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_8_4" layoutX="69.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_9_4" layoutX="69.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_9_10" layoutX="1119.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_8_10" layoutX="1119.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_7_10" layoutX="1119.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_6_9" layoutX="945.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_5_8" layoutX="769.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0"/>
+                    </Group>
+                    <Group fx:id="bookedGroup">
+                        <Pane id="booked_1" layoutX="970.0" layoutY="41.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="booked_2" layoutX="1139.0" layoutY="41.0" prefHeight="149.0" prefWidth="149.0"/>
                     </Group>
                 </children>
 
 
             </Pane>
-         <Pane fx:id="postoInizialeTile" layoutX="50.0" layoutY="150.0" prefHeight="169.0" prefWidth="169.0" styleClass="initialPaneTile" />
-         <Label fx:id="posizioneAttuale" layoutX="250.0" layoutY="150.0" styleClass="context-label" text="Posizione attuale:" />
-         <Label fx:id="posizioneNuovaTile" layoutX="250.0" layoutY="185.0" styleClass="context-label" text="(0, 0)" />
-         <Button fx:id="addTileButton" layoutX="250.0" layoutY="235.0" mnemonicParsing="false" onAction="#onAddTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Add tile" />
-            <Button fx:id="returnTileButton" layoutX="250.0" layoutY="300.0" mnemonicParsing="false" onAction="#onReturnTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Return tile" />
-         <Button fx:id="checkButton" layoutX="30.0" layoutY="500.0" mnemonicParsing="false" onAction="#onCheckPressed" prefHeight="51.0" prefWidth="200.0" styleClass="main-button" text="check!" />
+            <Pane fx:id="postoInizialeTile" layoutX="50.0" layoutY="150.0" prefHeight="169.0" prefWidth="169.0"
+                  styleClass="initialPaneTile"/>
+            <Label fx:id="posizioneAttuale" layoutX="250.0" layoutY="150.0" styleClass="context-label"
+                   text="Posizione attuale:"/>
+            <Label fx:id="posizioneNuovaTile" layoutX="250.0" layoutY="185.0" styleClass="context-label" text="(0, 0)"/>
+            <Button fx:id="addTileButton" layoutX="250.0" layoutY="235.0" mnemonicParsing="false" onAction="#onAddTile"
+                    prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Add tile"/>
+            <Button fx:id="returnTileButton" layoutX="250.0" layoutY="300.0" mnemonicParsing="false"
+                    onAction="#onReturnTile" prefHeight="51.0" prefWidth="199.0" styleClass="main-button"
+                    text="Return tile"/>
+            <Button fx:id="checkButton" layoutX="30.0" layoutY="500.0" mnemonicParsing="false"
+                    onAction="#onCheckPressed" prefHeight="51.0" prefWidth="200.0" styleClass="main-button"
+                    text="check!"/>
         </children>
     </Pane>
 
-    <StackPane fx:id="hourglassPopup" prefHeight="400" prefWidth="600" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
-        <VBox alignment="TOP_CENTER" maxHeight="300" maxWidth="600" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
-            <Label fx:id="hourglassTimeLabel" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" text="Tempo residuo: --:--" />
-            <Button onAction="#closeHourglassPopup" styleClass="main-button" text="Close" />
+    <StackPane fx:id="hourglassPopup" prefHeight="400" prefWidth="600" style="-fx-background-color: rgba(0,0,0,0.6);"
+               visible="false">
+        <VBox alignment="TOP_CENTER" maxHeight="300" maxWidth="600" spacing="10"
+              style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Label fx:id="hourglassTimeLabel"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;"
+                   text="Tempo residuo: --:--"/>
+            <Button onAction="#closeHourglassPopup" styleClass="main-button" text="Close"/>
         </VBox>
     </StackPane>
 
     <StackPane fx:id="heapTilePopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
-        <VBox alignment="TOP_CENTER" maxHeight="800" maxWidth="800" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
-            <Button onAction="#closeHeapPopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
-            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" text="HeapTile" />
-            <GridPane fx:id="heapGrid" alignment="CENTER" hgap="10" vgap="10" />
+        <VBox fx:id="heapVBox" alignment="TOP_CENTER" maxHeight="900" maxWidth="1800" spacing="10"
+              style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Button onAction="#closeHeapPopup"
+                    style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;"
+                    text="✕"/>
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" text="HeapTile"/>
+            <ScrollPane fx:id="scrollHeapPane" fitToWidth="true" fitToHeight="false" maxHeight="900" maxWidth="1800"
+                        style="-fx-background-color: yellow;">
+                <GridPane fx:id="heapGrid" alignment="CENTER" hgap="10" vgap="10"/>
+            </ScrollPane>
         </VBox>
     </StackPane>
 
     <StackPane fx:id="miniDeckPopup" style="-fx-background-color: rgba(0, 0, 0, 0.6);" visible="false">
-        <VBox alignment="TOP_CENTER" maxHeight="600" maxWidth="800" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+        <VBox alignment="TOP_CENTER" maxHeight="600" maxWidth="800" spacing="10"
+              style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
             <HBox fx:id="miniDeckCardsContainer" alignment="CENTER" spacing="10">
                 <!-- Le carte verranno aggiunte qui dinamicamente -->
             </HBox>
-            <Button onAction="#closeMiniDeckPopup" styleClass="main-button" text="Chiudi" />
+            <Button onAction="#closeMiniDeckPopup" styleClass="main-button" text="Chiudi"/>
         </VBox>
     </StackPane>
 
     <StackPane fx:id="confirmBookedPopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
-        <VBox alignment="TOP_CENTER" maxHeight="600" maxWidth="800" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
-            <Label text="Are you sure you want to add a booked tile?" styleClass="context-label" />
+        <VBox alignment="TOP_CENTER" maxHeight="200" maxWidth="600" spacing="10"
+              style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Label text="Are you sure you want to add a booked tile?" styleClass="context-label"/>
             <HBox alignment="CENTER" spacing="20">
-                <Button fx:id="yesBookedButton" text="Yes" onAction="#onConfirmBookedYes" styleClass="main-button"/>
+                <Button text="Yes" onAction="#onConfirmBookedYes" styleClass="main-button"/>
                 <Button text="No" onAction="#onConfirmBookedNo" styleClass="main-button"/>
             </HBox>
         </VBox>
     </StackPane>
 
     <StackPane fx:id="viewSpaceshipPopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
-        <VBox alignment="TOP_CENTER" maxHeight="1000" maxWidth="1500" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+        <VBox alignment="TOP_CENTER" maxHeight="1000" maxWidth="1500" spacing="10"
+              style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
             <Pane fx:id="SpaceshipPane" layoutX="120.0" layoutY="60.0">
                 <children>
 
                     <!-- Immagine cardboard centrata, senza distorsione -->
                     <ImageView fx:id="popupBackgroundImage" fitHeight="966.0" fitWidth="1477.0" preserveRatio="true">
-                        <Image url="@../image/cardboard/cardboard-1b.jpg" />
+                        <Image url="@../image/cardboard/cardboard-1b.jpg"/>
                     </ImageView>
-                    <Pane id="cell_7_7" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" /> <!-- id is row column -->
-                    <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_5_8" layoutX="769.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_5" layoutX="242.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_5" layoutX="241.0" layoutY="759.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_6" layoutX="415.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_6" layoutX="417.0" layoutY="583.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_7" layoutX="593.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_8" layoutX="769.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_4" layoutX="69.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_4" layoutX="69.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_4" layoutX="69.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_8" layoutX="769.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_9" layoutX="945.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_8" layoutX="769.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_8" layoutX="769.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_9" layoutX="945.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_9_10" layoutX="1119.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_10" layoutX="1119.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_10" layoutX="1119.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_8_9" layoutX="945.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_7_9" layoutX="945.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
-                    <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0" />
+                    <Pane id="cell_7_7" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0"
+                          prefWidth="149.0"/> <!-- id is row column -->
+                    <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_5_8" layoutX="769.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_5" layoutX="242.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_5" layoutX="241.0" layoutY="759.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_6" layoutX="415.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_6" layoutX="417.0" layoutY="583.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_7" layoutX="593.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_8" layoutX="769.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_4" layoutX="69.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_4" layoutX="69.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_4" layoutX="69.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_8" layoutX="769.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_9" layoutX="945.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_8" layoutX="769.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_8" layoutX="769.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_9" layoutX="945.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_9_10" layoutX="1119.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_10" layoutX="1119.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_10" layoutX="1119.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_8_9" layoutX="945.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_7_9" layoutX="945.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
+                    <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0"/>
                 </children>
 
 
             </Pane>
-            <Button onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
-            <GridPane fx:id="spaceshipGrid" alignment="CENTER" />
+            <Button onAction="#closeSpacePopup"
+                    style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;"
+                    text="✕"/>
+            <GridPane fx:id="spaceshipGrid" alignment="CENTER"/>
         </VBox>
     </StackPane>
 
