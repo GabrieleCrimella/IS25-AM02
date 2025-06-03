@@ -217,6 +217,16 @@ public class GUIApplication extends Application implements ConsoleClient {
     }
 
     @Override
+    public void setGameView(int level, PlayerColor color) {
+        Platform.runLater(()->{
+            GUIController.getInstance().<BuildController>switchScene("InGame", "InGame", controller -> {
+                controller.initialize(level, color);
+            });
+        });
+
+    }
+
+    @Override
     public GraphicPrinter getPrinter() {
         return null;
     }
