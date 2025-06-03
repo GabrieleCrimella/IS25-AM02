@@ -22,6 +22,8 @@ public interface VirtualView extends Remote {
 
     void setBuildView(int level, PlayerColor color) throws RemoteException;
 
+    void setGameView(int level, PlayerColor color) throws RemoteException;
+
     void setMenuState(MenuState state) throws RemoteException;
 
     void setNickname(String nickname) throws RemoteException;

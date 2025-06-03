@@ -640,6 +640,11 @@ public class TuiConsole implements Runnable, ConsoleClient {
     }
 
     @Override
+    public void setGameView(int level, PlayerColor color) {
+
+    }
+
+    @Override
     public void reportError(String keys, Map<String, String> params) {
         System.err.println(messManager.getMessageWithParams(keys, params));
     }

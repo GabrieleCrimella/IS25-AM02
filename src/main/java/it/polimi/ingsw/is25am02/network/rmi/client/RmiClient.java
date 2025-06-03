@@ -95,6 +95,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
+    public void setGameView(int level, PlayerColor color) throws RemoteException {
+        console.setGameView(level, color);
+    }
+
+    @Override
     public void showTileRemoval(Coordinate coordinate, String nickname) { //tolgo dal player p la tile in posizione coordinate
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
