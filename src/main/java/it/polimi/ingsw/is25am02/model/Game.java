@@ -833,6 +833,9 @@ public class Game implements Game_Interface {
             if (readyPlayer == players.size()) {
                 currentState.setCurrentPlayer(globalBoard.getRanking().getFirst());
                 getCurrentState().setPhase(StateGameType.TAKE_CARD);
+                for(Player p: players){
+                    p.getObserver().setGameView(level,p.getColor());
+                }
             } else {
                 player.getObserver().displayMessage("info.ready", null);
             }

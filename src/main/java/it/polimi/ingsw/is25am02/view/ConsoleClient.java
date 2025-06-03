@@ -22,6 +22,7 @@ public interface ConsoleClient {
     void setLobbiesView(Map<Integer, LobbyView> lobbies);
     void newTile(TileV newTile);
     void setBuildView(int level, PlayerColor color);
+    void setGameView(int level, PlayerColor color);
     GraphicPrinter getPrinter();
     void startCountdown();
     void spaceshipBrokenUpdate(String details);
