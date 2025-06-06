@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -46,6 +47,8 @@ public class InGameController extends GeneralController{
     @FXML private Label batteriesValue;
     @FXML private Label boxesValue;
     @FXML private ImageView MySpaceshipImage;
+    @FXML private ImageView backgroundImage;
+    @FXML private Pane MySpaceship;
 
 
     @FXML
@@ -61,7 +64,7 @@ public class InGameController extends GeneralController{
                 imagePathMySpaceship = "/image/cardboard/cardboard-1.jpg";
                 break;
             case 2:
-                imagePath = "/image/cardboard/cardboard-5.jpg";
+                imagePath = "/image/cardboard/cardboard-5.png";
                 imagePathMySpaceship = "/image/cardboard/cardboard-1b.jpg";
                 break;
             default:
@@ -86,7 +89,7 @@ public class InGameController extends GeneralController{
         }
 
         backgroundImageView.setImage(new Image(getClass().getResourceAsStream(imagePath)));
-        popupBackgroundImage.setImage(new Image(getClass().getResourceAsStream(imagePath)));
+        popupBackgroundImage.setImage(new Image(getClass().getResourceAsStream(imagePathMySpaceship)));
         MySpaceshipImage.setImage(new Image(getClass().getResourceAsStream(imagePathMySpaceship)));
 
         Button closeButton = new Button("x");
@@ -118,6 +121,8 @@ public class InGameController extends GeneralController{
                 .toList();
 
         setOtherPlayers(otherPlayers);
+        backgroundImage.setEffect(new GaussianBlur(30));
+        setMySpaceship();
     }
 
     public void updateStats(int credits, int lostTiles, int alive, int batteries, int boxes) {
@@ -152,7 +157,7 @@ public class InGameController extends GeneralController{
                             Optional<TileV> tileOpt = spaceship[row][col];
                             if (tileOpt.isPresent()) {
                                 TileV tile = tileOpt.get();
-                                StackPane tileNode = createTile(tile);
+                                StackPane tileNode = createTile(tile,true);
 
                                 for (Node node : SpaceshipPane.getChildren()) {
                                     if (node instanceof Pane && node.getId() != null && node.getId().equals("cell_" + row + "_" + col)) {
@@ -182,22 +187,66 @@ public class InGameController extends GeneralController{
         viewSpaceshipPopup.setVisible(false);
     }
 
-    private StackPane createTile(TileV tile) {
+    private StackPane createTile(TileV tile,boolean isOtherPlayer) {
         // Container della tile
         StackPane tilePane = new StackPane();
+        ImageView imageView = new ImageView();
+        if(isOtherPlayer){
+
         tilePane.setPrefSize(149, 149); // stessa misura usata altrove
         tilePane.setMinSize(149, 149);
         tilePane.setMaxSize(149, 149);
+            imageView.setFitWidth(149);
+            imageView.setFitHeight(149);
+        }
+        else{
+            tilePane.setPrefSize(88, 88); // stessa misura usata altrove
+            tilePane.setMinSize(88, 88);
+            tilePane.setMaxSize(88, 88);
+            imageView.setFitWidth(88);
+            imageView.setFitHeight(88);
+        }
 
-        // Crea e configura l'immagine della tile
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(149);
-        imageView.setFitHeight(149);
         imageView.setPreserveRatio(true);
         imageView.setImage(new Image(getClass().getResourceAsStream(tile.getImagePath())));
 
         tilePane.getChildren().add(imageView);
         return tilePane;
+    }
+
+    public void setMySpaceship(){
+        for (Node node : MySpaceship.getChildren()) {
+            if (node instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
+                pane.getChildren().clear();
+            }
+        }
+        try {
+            PlayerV myPlayer = GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname());
+            Optional<TileV>[][] spaceship = myPlayer.getSpaceshipBoard();
+
+            for (int row = 0; row < spaceship.length; row++) {
+                for (int col = 0; col < spaceship[row].length; col++) {
+                    Optional<TileV> tileOpt = spaceship[row][col];
+                    if (tileOpt.isPresent()) {
+                        TileV tile = tileOpt.get();
+                        StackPane tileNode = createTile(tile,false);
+
+                        for (Node node : MySpaceship.getChildren()) {
+                            if (node instanceof Pane && node.getId() != null && node.getId().equals("cell_" + row + "_" + col)) {
+                                ((Pane) node).getChildren().add(tileNode);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        } catch (RemoteException e) {
+            showNotification("Errore durante il caricamento della tua navicella", NotificationType.ERROR, 5000);
+        }
+
+
     }
 
 
