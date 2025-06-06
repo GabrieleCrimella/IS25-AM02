@@ -106,7 +106,7 @@ public class GUIController implements Runnable {
         try {
             // Se il controller è già presente, non ricaricare la scena ma aggiorna solo i dati
             if (controllers.containsKey(fxmlName)) {
-                System.out.println("La scena '" + fxmlName + "' è già caricata. Riutilizzo il controller.");
+                //System.out.println("La scena '" + fxmlName + "' è già caricata. Riutilizzo il controller.");
                 GeneralController controller = (GeneralController) controllers.get(fxmlName);
                 if (initializer != null) {
                     initializer.accept(controller);
