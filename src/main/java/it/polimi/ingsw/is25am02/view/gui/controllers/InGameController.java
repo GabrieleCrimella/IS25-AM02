@@ -209,6 +209,20 @@ public class InGameController extends GeneralController{
 
         imageView.setPreserveRatio(true);
         imageView.setImage(new Image(getClass().getResourceAsStream(tile.getImagePath())));
+        switch (tile.getRotationType()) {
+            case NORTH:
+                imageView.setRotate(0);
+                break;
+            case SOUTH:
+                imageView.setRotate(180);
+                break;
+            case EAST:
+                imageView.setRotate(90);
+                break;
+            case WEST:
+                imageView.setRotate(270);
+                break;
+        }
 
         tilePane.getChildren().add(imageView);
         return tilePane;
