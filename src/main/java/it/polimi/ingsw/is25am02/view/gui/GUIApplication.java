@@ -6,10 +6,7 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
-import it.polimi.ingsw.is25am02.view.gui.controllers.BuildController;
-import it.polimi.ingsw.is25am02.view.gui.controllers.GUIController;
-import it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController;
-import it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController;
+import it.polimi.ingsw.is25am02.view.gui.controllers.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import javafx.application.Application;
@@ -219,7 +216,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     @Override
     public void setGameView(int level, PlayerColor color) {
         Platform.runLater(()->{
-            GUIController.getInstance().<BuildController>switchScene("InGame", "InGame", controller -> {
+            GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
                 controller.initialize(level, color);
             });
         });
