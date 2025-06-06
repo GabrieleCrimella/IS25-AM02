@@ -168,7 +168,14 @@ public class GUIController implements Runnable {
                 bldCtrl.onAddTileSuccess();
                 return;
             }
-        } else if (keys.equals("info.finished")) {
+        }else if(keys.equals("info.gameState")){
+            if(params.containsKey("state") && params.get("state").equals("INITIALIZATION_SPACESHIP")){
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.setInitializationSpaceship();
+                }
+            }
+        }else if (keys.equals("info.finished")) {
             if (inUse.equals("Build")) {
                 BuildController bldCtrl = (BuildController) controllers.get(inUse);
                 bldCtrl.onShipFinished();

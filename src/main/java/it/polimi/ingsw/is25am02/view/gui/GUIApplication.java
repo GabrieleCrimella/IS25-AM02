@@ -215,6 +215,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void setGameView(int level, PlayerColor color) {
+        System.out.println("setGameView - ho ricevuto una richiesta di game, sono "+getNickname());
         Platform.runLater(()->{
             GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
                 controller.initialize(level, color);

@@ -7,8 +7,6 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.HeapTileV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.util.Duration;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -32,7 +29,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BuildController extends GeneralController {
-    Map<ImageView, Pane> tiles;
+    @FXML
+    public Button readyButton;
+    private boolean wrongSpaceship;
+    private Map<ImageView, Pane> tiles;
     @FXML
     public Pane postoInizialeTile;
     @FXML
@@ -146,6 +146,9 @@ public class BuildController extends GeneralController {
         postoInizialeTile.getChildren().add(imageView);
         tiles.put(imageView,postoInizialeTile);
         setupDragAndDrop(imageView);
+        takeTileButton.setVisible(false);
+        addTileButton.setVisible(true);
+        returnTileButton.setVisible(true);
     }
 
     public void newCard(CardV newCard) {
@@ -266,6 +269,7 @@ public class BuildController extends GeneralController {
 
     @FXML
     public void initialize(int level, PlayerColor color) {
+        wrongSpaceship = false;
         String imagePath;
         tiles = new HashMap<>();
         root.getStylesheets().add(
@@ -355,6 +359,9 @@ public class BuildController extends GeneralController {
 
         setOtherPlayers(otherPlayers);
         checkButton.setVisible(false);
+        readyButton.setVisible(false);
+        addTileButton.setVisible(false);
+        returnTileButton.setVisible(false);
     }
 
     private StackPane createTile(TileV tile) {
@@ -609,6 +616,9 @@ public class BuildController extends GeneralController {
             showNotification("Tile returned successfully", NotificationType.SUCCESS, 5000);
             postoInizialeTile.getChildren().remove(currentTileImage);
             currentTileImage = null;
+            takeTileButton.setVisible(true);
+            addTileButton.setVisible(false);
+            returnTileButton.setVisible(false);
         } catch (RemoteException e) {
             showNotification("Failed to return tile", NotificationType.ERROR, 5000);
         }
@@ -715,6 +725,9 @@ public class BuildController extends GeneralController {
         posizioneAttuale.setVisible(false);
         posizioneNuovaTile.setVisible(false);
         rotation = RotationType.NORTH;
+        takeTileButton.setVisible(true);
+        addTileButton.setVisible(false);
+        returnTileButton.setVisible(false);
     }
 
     public void onfinish() {
@@ -767,11 +780,18 @@ public class BuildController extends GeneralController {
     }
 
     public void onCheckPressed() {
-        //todo capire se chiamare checkSpaceship oppure checkWrongSpaceship
-        try {
-            GUIController.getInstance().getController().checkSpaceship(GUIController.getInstance().getNickname());
-        } catch (RemoteException e) {
-            showNotification("Failed to check spaceship", NotificationType.ERROR, 5000);
+        if(!wrongSpaceship){
+            try {
+                GUIController.getInstance().getController().checkSpaceship(GUIController.getInstance().getNickname());
+            } catch (RemoteException e) {
+                showNotification("Failed to check spaceship", NotificationType.ERROR, 5000);
+            }
+        }else{
+            try {
+                GUIController.getInstance().getController().checkWrongSpaceship(GUIController.getInstance().getNickname());
+            } catch (RemoteException e) {
+                showNotification("Failed to check wrong spaceship", NotificationType.ERROR, 5000);
+            }
         }
     }
 
@@ -784,17 +804,20 @@ public class BuildController extends GeneralController {
         this.coordinate = null;
         viewOtherSpaceshipLabel.setText("OK! Waiting...");
         checkButton.setVisible(false);
+        /*
         try {
             GUIController.getInstance().getController().ready(GUIController.getInstance().getNickname());
         } catch (RemoteException e) {
             showNotification("Failed to be ready", NotificationType.ERROR, 5000);
         }
+         */
         for(ImageView tile : tiles.keySet()){
             tile.setOnMouseClicked(null);
         }
     }
 
     public void onSpaceshipWrong() {
+        wrongSpaceship=true;
         viewOtherSpaceshipLabel.setText("Remove a tile...");
         for (ImageView tile : tiles.keySet()) {
             tile.setOnMouseClicked(null);
@@ -807,6 +830,20 @@ public class BuildController extends GeneralController {
                     showNotification("Failed to remove tile", NotificationType.ERROR, 5000);
                 }
             });
+        }
+    }
+
+    public void setInitializationSpaceship() {
+        viewOtherSpaceshipLabel.setText("Initialize your spaceship!");
+        readyButton.setVisible(true);
+    }
+
+    public void onReadyPressed() {
+        try{
+            GUIController.getInstance().getController().ready(GUIController.getInstance().getNickname());
+            readyButton.setVisible(false);
+        } catch (RemoteException e) {
+            showNotification("Failed to be ready", NotificationType.ERROR, 5000);
         }
     }
 }

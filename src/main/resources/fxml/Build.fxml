@@ -99,6 +99,9 @@
             <Button fx:id="checkButton" layoutX="30.0" layoutY="500.0" mnemonicParsing="false"
                     onAction="#onCheckPressed" prefHeight="51.0" prefWidth="200.0" styleClass="main-button"
                     text="check!"/>
+            <Button fx:id="readyButton" layoutX="30.0" layoutY="500.0" mnemonicParsing="false"
+                    onAction="#onReadyPressed" prefHeight="51.0" prefWidth="200.0" styleClass="main-button"
+                    text="ready!"/>
         </children>
     </Pane>
 
@@ -120,7 +123,7 @@
                     style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;"
                     text="✕"/>
             <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1A237E;" text="HeapTile"/>
-            <ScrollPane fx:id="scrollHeapPane" fitToWidth="true" fitToHeight="false" maxHeight="900" maxWidth="1800"
+            <ScrollPane fx:id="scrollHeapPane" fitToHeight="false" fitToWidth="true" maxHeight="900" maxWidth="1800"
                         style="-fx-background-color: yellow;">
                 <GridPane fx:id="heapGrid" alignment="CENTER" hgap="10" vgap="10"/>
             </ScrollPane>
@@ -140,10 +143,10 @@
     <StackPane fx:id="confirmBookedPopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
         <VBox alignment="TOP_CENTER" maxHeight="200" maxWidth="600" spacing="10"
               style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
-            <Label text="Are you sure you want to add a booked tile?" styleClass="context-label"/>
+            <Label styleClass="context-label" text="Are you sure you want to add a booked tile?"/>
             <HBox alignment="CENTER" spacing="20">
-                <Button text="Yes" onAction="#onConfirmBookedYes" styleClass="main-button"/>
-                <Button text="No" onAction="#onConfirmBookedNo" styleClass="main-button"/>
+                <Button onAction="#onConfirmBookedYes" styleClass="main-button" text="Yes"/>
+                <Button onAction="#onConfirmBookedNo" styleClass="main-button" text="No"/>
             </HBox>
         </VBox>
     </StackPane>

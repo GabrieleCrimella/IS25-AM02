@@ -66,7 +66,7 @@ public class Game implements Game_Interface {
             heapTile.setObservers(observers);
             currentState.setObservers(observers);
         }
-        for (Card card: deck.getInitialDeck()){
+        for (Card card : deck.getInitialDeck()) {
             card.setObservers(observers);
         }
     }
@@ -193,9 +193,8 @@ public class Game implements Game_Interface {
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
             getCurrentCard().setStateCard(StateCardType.FINISH);
             getCurrentState().setPhase(StateGameType.TAKE_CARD);
-        }
-        else if (getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index+1)).getStatePlayer() == IN_GAME ) {
-            currentState.setCurrentPlayer(getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index +1)));
+        } else if (getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index + 1)).getStatePlayer() == IN_GAME) {
+            currentState.setCurrentPlayer(getPlayerFromNickname(getCurrentCard().getCurrentOrder().get(index + 1)));
         }
     }
 
@@ -268,7 +267,8 @@ public class Game implements Game_Interface {
                 player.getObserver().displayMessage("hourglass.time", Map.of("tim", String.valueOf(hourglass.getTimeLeft())));
             } catch (Exception e) {
                 ServerController.logger.log(Level.SEVERE, "error in method hourglass", e);
-            };
+            }
+            ;
         } catch (LevelException e) {
             try {
                 player.getObserver().reportError("error.level", null);
@@ -295,9 +295,9 @@ public class Game implements Game_Interface {
 
             player.setNumDeck(index);
             deck.giveDeck(index);
-            for (String nick: observers.keySet()){
+            for (String nick : observers.keySet()) {
                 try {
-                    observers.get(nick).showMinideckUpdate(nick,index);
+                    observers.get(nick).showMinideckUpdate(nick, index);
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
                 }
@@ -342,9 +342,9 @@ public class Game implements Game_Interface {
             deck.returnDeck(player.getNumDeck());
             player.setNumDeck(-1);
 
-            for (String nick: observers.keySet()){
+            for (String nick : observers.keySet()) {
                 try {
-                    observers.get(nick).showMinideckUpdate(nick,-1);
+                    observers.get(nick).showMinideckUpdate(nick, -1);
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in method return mini deck update", e);
                 }
@@ -619,10 +619,10 @@ public class Game implements Game_Interface {
 
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
                 player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
-                if(player.getSpaceship().getNumOfWastedTiles() > 0){
+                if (player.getSpaceship().getNumOfWastedTiles() > 0) {
                     for (String nick : observers.keySet()) {
                         try {
-                            observers.get(nick).showCreditUpdate(player.getNickname(), (-1)*player.getSpaceship().getNumOfWastedTiles());
+                            observers.get(nick).showCreditUpdate(player.getNickname(), (-1) * player.getSpaceship().getNumOfWastedTiles());
                         } catch (Exception e) {
                             ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
                         }
@@ -632,7 +632,7 @@ public class Game implements Game_Interface {
 
             if (alreadyFinished == players.size()) {
                 this.currentState.setPhase(StateGameType.CHECK);
-                if (level !=0) {
+                if (level != 0) {
                     deck.createFinalDeck(); //mischio i mazzetti e creo il deck finale
                 }
             } else {
@@ -676,8 +676,11 @@ public class Game implements Game_Interface {
                         alreadyChecked--;
                     }
                 }
-                if(alreadyChecked == players.size()){
+                if (alreadyChecked == players.size()) {
                     this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+                    for(Player p : players) {
+                        p.getObserver().displayMessage("info.gameState", Map.of("state", "INITIALIZATION_SPACESHIP"));
+                    }
                 } else {
                     this.currentState.setPhase(StateGameType.CORRECTION);
                 }
@@ -807,6 +810,8 @@ public class Game implements Game_Interface {
     @Override
     public void ready(Player player) {
         try {
+            ServerController.logger.log(Level.INFO, player.getNickname() + ":\n" + player.getStatePlayer() + " - " + StatePlayerType.CORRECT_SHIP + "\n" + getCurrentCard().getStateCard() + " - " + StateCardType.FINISH + "\n" + getCurrentState().getPhase() + " - " + StateGameType.INITIALIZATION_SPACESHIP);
+
             stateControl(StateGameType.INITIALIZATION_SPACESHIP, StatePlayerType.CORRECT_SHIP, StateCardType.FINISH, player);
 
             player.setStatePlayer(IN_GAME);
@@ -833,9 +838,11 @@ public class Game implements Game_Interface {
             if (readyPlayer == players.size()) {
                 currentState.setCurrentPlayer(globalBoard.getRanking().getFirst());
                 getCurrentState().setPhase(StateGameType.TAKE_CARD);
-                for(Player p: players){
-                    p.getObserver().setGameView(level,p.getColor());
+                for (Player p : players) {
+                    p.getObserver().setGameView(level, p.getColor());
+
                 }
+                ServerController.logger.log(Level.INFO, "All players are ready, starting the game.");
             } else {
                 player.getObserver().displayMessage("info.ready", null);
             }
@@ -894,7 +901,7 @@ public class Game implements Game_Interface {
                 this.getCurrentState().setPhase(StateGameType.RESULT);
             } else {
                 LinkedList<String> order = new LinkedList<>();
-                for (Player pOrder : getGameboard().getRanking()){
+                for (Player pOrder : getGameboard().getRanking()) {
                     order.add(pOrder.getNickname());
                 }
                 getCurrentState().getCurrentCard().setCurrentOrder(order);
@@ -904,7 +911,7 @@ public class Game implements Game_Interface {
             for (Player p : players) {
                 p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
             }
-            if(getCurrentCard().getCardType().equals(CardType.STARDUST) || getCurrentCard().getCardType().equals(CardType.EPIDEMY) ){
+            if (getCurrentCard().getCardType().equals(CardType.STARDUST) || getCurrentCard().getCardType().equals(CardType.EPIDEMY)) {
                 getCurrentCard().effect(this);
             }
         } catch (IllegalStateException e) {
@@ -1023,25 +1030,25 @@ public class Game implements Game_Interface {
 
             if (start.x() == -1 && start.y() == -1) { //Start equals Planet
                 getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
-                for (String nick: observers.keySet()) {
+                for (String nick : observers.keySet()) {
                     try {
-                        observers.get(nick).showBoxUpdate(end,player.getNickname(),player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
+                        observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
                     }
                 }
             } else if (end.x() == -1 && end.y() == -1) { //End equals Planet
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), getCurrentCard().getBoxesWon(), boxType, on);
-                for (String nick: observers.keySet()) {
+                for (String nick : observers.keySet()) {
                     try {
-                        observers.get(nick).showBoxUpdate(start,player.getNickname(),player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
+                        observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
                     }
                 }
             } else { //Start and End are types of storage
                 getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
-                if(on) {
+                if (on) {
                     for (String nick : observers.keySet()) {
                         try {
                             observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
@@ -1380,7 +1387,7 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             //player.getSpaceship().keepBlock(player.getNickname(), pos);
-            getCurrentCard().keepBlocks(this,player,pos);
+            getCurrentCard().keepBlocks(this, player, pos);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1552,7 +1559,7 @@ public class Game implements Game_Interface {
     }
 
     private void choicesControl(Player player, List<Coordinate> c1, List<Coordinate> c2, TileType t1) throws TileException {
-        if(c1.size() == 0 && c2.size() == 0){
+        if (c1.size() == 0 && c2.size() == 0) {
             return;
         }
 
@@ -1576,7 +1583,7 @@ public class Game implements Game_Interface {
     }
 
     private void moveControl(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean choice) throws IllegalAddException, TileException {
-        if(!choice) {
+        if (!choice) {
             return;
         }
 
