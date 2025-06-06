@@ -97,10 +97,9 @@
 
             </children>
 
-
         </Pane>
 
-        
+
         <Pane id="MySpaceship" layoutX="530.0" layoutY="466.0" prefHeight="491.0" prefWidth="680.0">
             <ImageView fx:id="MySpaceshipImage" fitHeight="491.0" fitWidth="680.0" preserveRatio="true">
                 <Image url="@../image/cardboard/cardboard-1.jpg" />
