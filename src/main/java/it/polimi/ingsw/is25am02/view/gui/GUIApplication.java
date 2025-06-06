@@ -178,7 +178,6 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
-        System.out.println("setLobbiesView - ho ricevuto una lista di lobbies");
         this.lobbies = lobbies;
 
         // Richiama il controller della GUI
@@ -241,7 +240,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void removedTile(Coordinate coordinate) {
-        GUIController.getInstance().<BuildController>getController("Build").onRemoveTile(coordinate);
+        GUIController.getInstance().onRemoveTile(coordinate);
     }
 
     //todo si potrebbe aggiugnere anche il caricamento dei fonts

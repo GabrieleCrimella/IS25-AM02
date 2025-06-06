@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.model.Lobby;
+import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,22 +26,12 @@ public class GUIController implements Runnable {
     private static Stage stage;
     private LobbyController lobbyController;
     private JsonMessageManager messManager;
-    public boolean errorshown;
-
-    public boolean isErrorshown() {
-        return errorshown;
-    }
-
-    public void setErrorshown(boolean errorshown) {
-        this.errorshown = errorshown;
-    }
 
     public ClientController getController() {
         return controller;
     }
 
     private GUIController(Stage primaryStage) {
-        errorshown = false;
         this.primaryStage = primaryStage;
         try {
             this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
@@ -108,8 +99,6 @@ public class GUIController implements Runnable {
             }
         }
         controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.ERROR, 5000);
-        errorshown = true;
-        System.out.println("errorshown " + errorshown);
     }
 
 
@@ -168,6 +157,12 @@ public class GUIController implements Runnable {
                 bldCtrl.onAddTileSuccess();
                 return;
             }
+        }else if (keys.equals("build.returnTile")){
+            if(inUse.equals("Build")){
+                BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                bldCtrl.onReturnTileSuccess();
+                return;
+            }
         }else if(keys.equals("info.gameState")){
             if(params.containsKey("state") && params.get("state").equals("INITIALIZATION_SPACESHIP")){
                 if (inUse.equals("Build")) {
@@ -194,6 +189,13 @@ public class GUIController implements Runnable {
             bldCtrl.seeHourglass(timeleft);
         }else {
             controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
+        }
+    }
+
+    public void onRemoveTile(Coordinate coordinate) {
+        if(inUse.equals("Build")) {
+            BuildController bldCtrl = (BuildController) controllers.get(inUse);
+            bldCtrl.onRemoveTile(coordinate);
         }
     }
 }

@@ -114,9 +114,10 @@ public class BuildController extends GeneralController {
 
     @FXML
     private Pane boardPane;
-    @FXML private StackPane confirmBookedPopup;
+    @FXML
+    private StackPane confirmBookedPopup;
 
-    private Pane currentDraggedTile;
+    private Pane currentDraggedTilePane;
     private String bookedTargetId;
 
     private Coordinate coordinate;
@@ -139,12 +140,12 @@ public class BuildController extends GeneralController {
         imageView.getStyleClass().add("draggableTile");
 
         // Imposta l'immagine (da una proprietà della TileV)
-        //System.out.println(newTile.getImagePath());
-        System.out.println("newTile - ho ricevuto una nuova tile: " + newTile.getImagePath());
         imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
         //imageView.setImage(new Image(getClass().getResourceAsStream("/image/tiles/GT-new_tiles_16_for_web93.jpg")));
         postoInizialeTile.getChildren().add(imageView);
-        tiles.put(imageView,postoInizialeTile);
+
+        //la seguente operazione forse la farei solo a seguito di una add!!!
+        //tiles.put(imageView, postoInizialeTile);
         setupDragAndDrop(imageView);
         takeTileButton.setVisible(false);
         addTileButton.setVisible(true);
@@ -169,23 +170,16 @@ public class BuildController extends GeneralController {
     }
 
     private void showBookedConfirmation(Pane draggedTile, String bookedId) {
-        this.currentDraggedTile = draggedTile;
+        this.currentDraggedTilePane = draggedTile;
         this.bookedTargetId = bookedId;
         confirmBookedPopup.setVisible(true);
     }
-    @FXML
-    private void onAddingBookedTile(){
-        confirmBookedPopup.setVisible(false);
-
-    }
-
-
 
     @FXML
     private void onConfirmBookedYes() {
         confirmBookedPopup.setVisible(false);
 
-        if (currentDraggedTile != null) {
+        if (currentDraggedTilePane != null) {
             try {
                 GUIController.getInstance().getController().bookTile(GUIController.getInstance().getNickname());
                 currentTileImage.setOnMouseClicked(null);
@@ -198,12 +192,12 @@ public class BuildController extends GeneralController {
                 setupDragAndDropBooked(currentTileImage);
                 try {
                     int idbooked;
-                    if(bookedTargetId.equals("booked_1")){
+                    if (bookedTargetId.equals("booked_1")) {
                         idbooked = 1;
                     } else {
                         idbooked = 2;
                     }
-                    GUIController.getInstance().getController().addBookedTile(GUIController.getInstance().getNickname(),idbooked , coordinate, rotation);
+                    GUIController.getInstance().getController().addBookedTile(GUIController.getInstance().getNickname(), idbooked, coordinate, rotation);
                 } catch (RemoteException e) {
                     showNotification("Impossible to add a booked tile", NotificationType.ERROR, 3000);
                 }
@@ -242,11 +236,10 @@ public class BuildController extends GeneralController {
             imageView.setLayoutY(0);
             slot.getChildren().add(imageView);
 
-                coordinate = getCoordinatesFromId(slot);
-                posizioneAttuale.setVisible(true);
-                posizioneNuovaTile.setVisible(true);
-                posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
-
+            coordinate = getCoordinatesFromId(slot);
+            posizioneAttuale.setVisible(true);
+            posizioneNuovaTile.setVisible(true);
+            posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
 
             event.consume();
         });
@@ -255,15 +248,13 @@ public class BuildController extends GeneralController {
     @FXML
     private void onConfirmBookedNo() {
         confirmBookedPopup.setVisible(false);
-        if (currentDraggedTile != null && currentTileImage != null) {
-            currentDraggedTile.getChildren().remove(currentTileImage);
+        if (currentDraggedTilePane != null && currentTileImage != null) {
+            currentDraggedTilePane.getChildren().remove(currentTileImage);
 
             currentTileImage.setLayoutX(10);
             currentTileImage.setLayoutY(10);
             postoInizialeTile.getChildren().add(currentTileImage);
-
         }
-
     }
 
 
@@ -495,7 +486,7 @@ public class BuildController extends GeneralController {
         }
     }
 
-    public void seeHourglass(long timeleft){
+    public void seeHourglass(long timeleft) {
 
         hourglassTimeLabel.setText("Tempo residuo: " + timeleft);
         // Mostra il popup con sfondo sfocato
@@ -601,9 +592,6 @@ public class BuildController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Failed to take tile", NotificationType.ERROR, 500);
         }
-
-        //showNotification("Take Tile", NotificationType.INFO, 500);
-        System.out.println("button take tile pressed");
     }
 
     @FXML
@@ -615,10 +603,6 @@ public class BuildController extends GeneralController {
 
         try {
             GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
-            if (!GUIController.getInstance().isErrorshown()) {
-                //attenzione, non va bene farlo qui perchè si ha un difetto di concorrenza.
-                //showNotification("Tile added at row " + coordinate.x() + " column " + coordinate.y(), NotificationType.SUCCESS, 5000);
-            }
         } catch (RemoteException e) {
             showNotification("Failed to add tile", NotificationType.ERROR, 5000);
         }
@@ -628,12 +612,6 @@ public class BuildController extends GeneralController {
     public void onReturnTile() {
         try {
             GUIController.getInstance().getController().returnTile(GUIController.getInstance().getNickname());
-            showNotification("Tile returned successfully", NotificationType.SUCCESS, 5000);
-            postoInizialeTile.getChildren().remove(currentTileImage);
-            currentTileImage = null;
-            takeTileButton.setVisible(true);
-            addTileButton.setVisible(false);
-            returnTileButton.setVisible(false);
         } catch (RemoteException e) {
             showNotification("Failed to return tile", NotificationType.ERROR, 5000);
         }
@@ -735,6 +713,8 @@ public class BuildController extends GeneralController {
         currentTileImage.setOnMouseReleased(null);
         currentTileImage.setOnDragOver(null);
         currentTileImage.setOnDragDropped(null);
+
+        tiles.put(currentTileImage, getPaneFromImageView(currentTileImage));
         currentTileImage = null;
         coordinate = null;
         posizioneAttuale.setVisible(false);
@@ -743,6 +723,17 @@ public class BuildController extends GeneralController {
         takeTileButton.setVisible(true);
         addTileButton.setVisible(false);
         returnTileButton.setVisible(false);
+    }
+
+    private Pane getPaneFromImageView(ImageView currentTileImage) {
+        Node current = currentTileImage;
+        while (current != null) {
+            if (current instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
+                return pane;
+            }
+            current = current.getParent();
+        }
+        return null;
     }
 
     public void onfinish() {
@@ -776,13 +767,16 @@ public class BuildController extends GeneralController {
     }
 
     public void onRemoveTile(Coordinate coordinate) {
+        System.out.println("la sto rimuovendo la tile dalla posizione: " + coordinate);
         // Rimuove la tile dalla posizione specificata
         for (Pane tile : tiles.values()) {
             if (getCoordinatesFromId(tile).equals(coordinate)) {
-                tile.getChildren().clear(); // Rimuove il contenuto della tile
+                Platform.runLater(() -> tile.getChildren().clear());
                 break;
             }
         }
+
+        //todo perchè non mi esegue il codice successivo???
 
         // Mostra un messaggio di successo
         showNotification("Tile removed successfully", NotificationType.SUCCESS, 5000);
@@ -795,13 +789,13 @@ public class BuildController extends GeneralController {
     }
 
     public void onCheckPressed() {
-        if(!wrongSpaceship){
+        if (!wrongSpaceship) {
             try {
                 GUIController.getInstance().getController().checkSpaceship(GUIController.getInstance().getNickname());
             } catch (RemoteException e) {
                 showNotification("Failed to check spaceship", NotificationType.ERROR, 5000);
             }
-        }else{
+        } else {
             try {
                 GUIController.getInstance().getController().checkWrongSpaceship(GUIController.getInstance().getNickname());
             } catch (RemoteException e) {
@@ -826,22 +820,25 @@ public class BuildController extends GeneralController {
             showNotification("Failed to be ready", NotificationType.ERROR, 5000);
         }
          */
-        for(ImageView tile : tiles.keySet()){
+        for (ImageView tile : tiles.keySet()) {
             tile.setOnMouseClicked(null);
         }
     }
 
     public void onSpaceshipWrong() {
-        wrongSpaceship=true;
+        wrongSpaceship = true;
         viewOtherSpaceshipLabel.setText("Remove a tile...");
         for (ImageView tile : tiles.keySet()) {
+
             tile.setOnMouseClicked(null);
-            tile.setOnMouseClicked(event -> {
-                System.out.println("Hai cliccato su una tile!");
-                coordinate = getCoordinatesFromId(tiles.get(tile));
+
+            final ImageView currentTile = tile; //se non final, la lambda non la vede!
+
+            tile.setOnMouseClicked(e -> {
+                coordinate = getCoordinatesFromId(tiles.get(currentTile));
                 try {
                     GUIController.getInstance().getController().removeTile(GUIController.getInstance().getNickname(), coordinate);
-                } catch (RemoteException e) {
+                } catch (RemoteException ex) {
                     showNotification("Failed to remove tile", NotificationType.ERROR, 5000);
                 }
             });
@@ -854,11 +851,20 @@ public class BuildController extends GeneralController {
     }
 
     public void onReadyPressed() {
-        try{
+        try {
             GUIController.getInstance().getController().ready(GUIController.getInstance().getNickname());
             readyButton.setVisible(false);
         } catch (RemoteException e) {
             showNotification("Failed to be ready", NotificationType.ERROR, 5000);
         }
+    }
+
+    public void onReturnTileSuccess() {
+        showNotification("Tile returned successfully", NotificationType.SUCCESS, 5000);
+        postoInizialeTile.getChildren().remove(currentTileImage);
+        currentTileImage = null;
+        takeTileButton.setVisible(true);
+        addTileButton.setVisible(false);
+        returnTileButton.setVisible(false);
     }
 }
