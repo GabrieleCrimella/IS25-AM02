@@ -6,7 +6,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="root" focusTraversable="true" prefHeight="1080" prefWidth="1920" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.HomeSceneController">
+<StackPane fx:id="root" focusTraversable="true" prefHeight="1080" prefWidth="1920" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.InGameController">
     <Pane prefHeight="1080" prefWidth="1920" styleClass="background">
 
         <ImageView preserveRatio="true">
@@ -100,12 +100,7 @@
 
         </Pane>
 
-
-        <Button fx:id="closeButton" onAction="#handleClose" styleClass="closeButton" text="x" StackPane.alignment="TOP_RIGHT">
-            <StackPane.margin>
-                <Insets right="10" top="10" />
-            </StackPane.margin>
-        </Button>
+        
         <Pane id="MySpaceship" layoutX="530.0" layoutY="466.0" prefHeight="491.0" prefWidth="680.0">
             <ImageView fx:id="MySpaceshipImage" fitHeight="491.0" fitWidth="680.0" preserveRatio="true">
                 <Image url="@../image/cardboard/cardboard-1.jpg" />

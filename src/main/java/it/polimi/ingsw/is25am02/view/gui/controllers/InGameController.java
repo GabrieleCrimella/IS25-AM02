@@ -177,6 +177,11 @@ public class InGameController extends GeneralController{
         }
     }
 
+    @FXML
+    private void closeSpacePopup() {
+        viewSpaceshipPopup.setVisible(false);
+    }
+
     private StackPane createTile(TileV tile) {
         // Container della tile
         StackPane tilePane = new StackPane();
