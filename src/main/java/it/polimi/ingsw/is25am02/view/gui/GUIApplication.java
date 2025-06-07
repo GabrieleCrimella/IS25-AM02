@@ -178,7 +178,6 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
-        System.out.println("setLobbiesView - ho ricevuto una lista di lobbies");
         this.lobbies = lobbies;
 
         // Richiama il controller della GUI
@@ -193,7 +192,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void newTile(TileV newTile) {
-        System.out.println("newTile - ho ricevuto una nuova tile");
+        //System.out.println("newTile - ho ricevuto una nuova tile");
         Platform.runLater(() -> {
             GUIController.getInstance().<BuildController>switchScene("Build", "build spaceship", controller -> {
                 controller.newTile(newTile);
@@ -204,7 +203,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void setBuildView(int level, PlayerColor color) {
-        System.out.println("setBuildView - ho ricevuto una richiesta di build");
+        //System.out.println("setBuildView - ho ricevuto una richiesta di build");
 
         Platform.runLater(()->{
             GUIController.getInstance().<BuildController>switchScene("Build", "Build", controller -> {
@@ -215,7 +214,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void setGameView(int level, PlayerColor color) {
-        System.out.println("setGameView - ho ricevuto una richiesta di game, sono "+getNickname());
+        //System.out.println("setGameView - ho ricevuto una richiesta di game, sono "+getNickname());
         Platform.runLater(()->{
             GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
                 controller.initialize(level, color);
@@ -241,7 +240,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void removedTile(Coordinate coordinate) {
-        GUIController.getInstance().<BuildController>getController("Build").onRemoveTile(coordinate);
+        GUIController.getInstance().onRemoveTile(coordinate);
     }
 
     //todo si potrebbe aggiugnere anche il caricamento dei fonts

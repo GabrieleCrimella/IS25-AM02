@@ -464,6 +464,7 @@ public class Game implements Game_Interface {
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile(player.getNickname());
+            player.getObserver().displayMessage("build.returnTile",null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -476,6 +477,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnTile");
             }
+        } catch (Exception e) {
+            reportErrorOnServer("connection problem in method returnTile");
         }
     }
 
@@ -810,7 +813,7 @@ public class Game implements Game_Interface {
     @Override
     public void ready(Player player) {
         try {
-            ServerController.logger.log(Level.INFO, player.getNickname() + ":\n" + player.getStatePlayer() + " - " + StatePlayerType.CORRECT_SHIP + "\n" + getCurrentCard().getStateCard() + " - " + StateCardType.FINISH + "\n" + getCurrentState().getPhase() + " - " + StateGameType.INITIALIZATION_SPACESHIP);
+            //ServerController.logger.log(Level.INFO, player.getNickname() + ":\n" + player.getStatePlayer() + " - " + StatePlayerType.CORRECT_SHIP + "\n" + getCurrentCard().getStateCard() + " - " + StateCardType.FINISH + "\n" + getCurrentState().getPhase() + " - " + StateGameType.INITIALIZATION_SPACESHIP);
 
             stateControl(StateGameType.INITIALIZATION_SPACESHIP, StatePlayerType.CORRECT_SHIP, StateCardType.FINISH, player);
 

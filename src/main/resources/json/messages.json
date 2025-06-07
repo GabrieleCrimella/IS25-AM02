@@ -84,7 +84,8 @@
     "state": "> LobbyId {num} {state}"
   },
   "build": {
-    "addTile": "Tile added to your ship"
+    "addTile": "Tile added to your ship",
+    "returnTile": "Tile returned to the heap"
   },
   "hourglass": {
     "time": "Time left: {tim}"
