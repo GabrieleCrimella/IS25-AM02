@@ -666,19 +666,20 @@ public class Game implements Game_Interface {
             if (player.getSpaceship().checkSpaceship()) {
                 player.setStatePlayer(StatePlayerType.CORRECT_SHIP);
                 player.getObserver().displayMessage("info.spaceship.right", null);
+                alreadyChecked++;
             } else {
                 player.setStatePlayer(StatePlayerType.WRONG_SHIP);
                 currentState.setPhase(StateGameType.CORRECTION);
                 player.getObserver().reportError("info.spaceship.wrong", null);
             }
-            alreadyChecked++;
+            //alreadyChecked++;
 
             if (alreadyChecked == players.size()) {
-                for (Player p : players) {
+                /*for (Player p : players) {
                     if (p.getStatePlayer().equals(StatePlayerType.WRONG_SHIP)) {
                         alreadyChecked--;
                     }
-                }
+                }*/
                 if (alreadyChecked == players.size()) {
                     this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
                     for(Player p : players) {
@@ -727,6 +728,7 @@ public class Game implements Game_Interface {
 
             if (player.getSpaceship().checkSpaceship()) {
                 player.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+                this.currentState.setPhase(StateGameType.CHECK);
                 alreadyChecked++;
             }
 
@@ -1306,7 +1308,8 @@ public class Game implements Game_Interface {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.ROLL, player);
             currentPlayerControl(player);
 
-            setDiceResult();
+            //setDiceResult();
+            setDiceResultManually(8);
             getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
 
             for (Player p : players) {
