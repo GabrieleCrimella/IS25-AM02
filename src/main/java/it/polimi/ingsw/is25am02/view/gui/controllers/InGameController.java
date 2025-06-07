@@ -1,14 +1,17 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
@@ -22,6 +25,7 @@ import javafx.scene.layout.VBox;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class InGameController extends GeneralController{
@@ -49,23 +53,63 @@ public class InGameController extends GeneralController{
     @FXML private ImageView MySpaceshipImage;
     @FXML private ImageView backgroundImage;
     @FXML private Pane MySpaceship;
+    @FXML private Pane cardPane;
+    @FXML private ImageView playerPiece;
 
+    private Map<Integer, Pane> GameboardCells = new HashMap<>();
 
     @FXML
     public void initialize(int level, PlayerColor color) {
         String imagePath;
+        Parent oldParent;
         String imagePathMySpaceship;
         root.getStylesheets().add(
                 getClass().getResource("/style/style.css").toExternalForm()
         );
+        switch (color){
+            case BLUE:
+                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/bluePiece.png")));
+                break;
+            case GREEN:
+                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/greenPiece.png")));
+                break;
+            case RED:
+                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/redPiece.png")));
+                break;
+            case YELLOW:
+                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/yellowPiece.png")));
+                break;
+        }
         switch (level) {
             case 0:
                 imagePath = "/image/cardboard/cardboard-3.png";
                 imagePathMySpaceship = "/image/cardboard/cardboard-1.jpg";
+                for (Node node : level1Gameboard.getChildren()) {
+                    if (node instanceof Pane && node.getId() != null) {
+                        int id = Integer.parseInt(node.getId());
+                        GameboardCells.put(id, (Pane) node);
+                    }
+                }
+                oldParent = playerPiece.getParent();
+                if (oldParent instanceof Pane) {
+                    ((Pane) oldParent).getChildren().remove(playerPiece);
+                }
+                level1Gameboard.getChildren().add(playerPiece);
                 break;
             case 2:
                 imagePath = "/image/cardboard/cardboard-5.png";
                 imagePathMySpaceship = "/image/cardboard/cardboard-1b.jpg";
+                for (Node node : level2Gameboard.getChildren()) {
+                    if (node instanceof Pane && node.getId() != null) {
+                        int id = Integer.parseInt(node.getId());
+                        GameboardCells.put(id, (Pane) node);
+                    }
+                }
+                oldParent = playerPiece.getParent();
+                if (oldParent instanceof Pane) {
+                    ((Pane) oldParent).getChildren().remove(playerPiece);
+                }
+                level2Gameboard.getChildren().add(playerPiece);
                 break;
             default:
                 imagePath = "/image/background.jpg";
@@ -257,10 +301,46 @@ public class InGameController extends GeneralController{
 
 
         } catch (RemoteException e) {
-            showNotification("Errore durante il caricamento della tua navicella", NotificationType.ERROR, 5000);
+            showNotification("Error loading your spaceship", NotificationType.ERROR, 5000);
         }
 
 
+    }
+
+    public void newCard(CardV newCard) {
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(300);
+        imageView.setFitHeight(500);
+        imageView.setLayoutX(10);
+        imageView.setLayoutY(10);
+        imageView.setPreserveRatio(true);
+
+        imageView.setImage(new Image(getClass().getResourceAsStream(newCard.getImagePath())));
+        System.out.println("newCard - ho ricevuto una nuova card: " + newCard.getImagePath());
+        cardPane.getChildren().clear();
+        cardPane.getChildren().add(imageView);
+    }
+
+    @FXML
+    public void onNextCard(){
+        try {
+            GUIController.getInstance().getController().playNextCard(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Error taking next card", NotificationType.ERROR, 5000);
+        }
+    }
+
+    public void movePlayerToPosition(int cellId){
+        Pane targetPane = GameboardCells.get(cellId);
+        if(targetPane!=null){
+            Bounds boundsInParent = targetPane.getBoundsInParent();
+            double centerX = boundsInParent.getMinX() + (targetPane.getPrefWidth() - playerPiece.getFitWidth()) / 2;
+            double centerY = boundsInParent.getMinY() + (targetPane.getPrefHeight() - playerPiece.getFitHeight()) / 2;
+
+            playerPiece.setLayoutX(centerX);
+            playerPiece.setLayoutY(centerY);
+
+        }
     }
 
 

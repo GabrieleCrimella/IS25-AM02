@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.gui.controllers.*;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import javafx.application.Application;
@@ -199,6 +200,26 @@ public class GUIApplication extends Application implements ConsoleClient {
             });
         });
 
+    }
+
+    @Override
+    public void newCard(CardV card) {
+        System.out.println("newTile - ho ricevuto una nuova tile");
+        Platform.runLater(() -> {
+            GUIController.getInstance().<InGameController>switchScene("InGame", "in game", controller -> {
+                controller.newCard(card);
+            });
+        });
+
+    }
+
+    @Override
+    public void moveOnGameboard( int pos) {
+        Platform.runLater(() -> {
+            GUIController.getInstance().<InGameController>switchScene("InGame", "in game", controller -> {
+                controller.movePlayerToPosition(pos);
+            });
+        });
     }
 
     @Override

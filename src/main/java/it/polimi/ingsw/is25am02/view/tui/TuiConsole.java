@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
@@ -631,6 +632,16 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
     @Override
     public void newTile(TileV newTile) {
+
+    }
+
+    @Override
+    public void newCard(CardV card) {
+
+    }
+
+    @Override
+    public void moveOnGameboard( int pos) {
 
     }
 
