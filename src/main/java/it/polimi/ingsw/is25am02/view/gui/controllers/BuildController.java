@@ -140,8 +140,8 @@ public class BuildController extends GeneralController {
         imageView.getStyleClass().add("draggableTile");
 
         // Imposta l'immagine (da una proprietà della TileV)
+        System.out.println("newTile - ho ricevuto una nuova tile: " + newTile.getImagePath());
         imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
-        //imageView.setImage(new Image(getClass().getResourceAsStream("/image/tiles/GT-new_tiles_16_for_web93.jpg")));
         postoInizialeTile.getChildren().add(imageView);
 
         //la seguente operazione forse la farei solo a seguito di una add!!!
@@ -358,7 +358,7 @@ public class BuildController extends GeneralController {
     private StackPane createTile(TileV tile) {
         // Container della tile
         StackPane tilePane = new StackPane();
-        tilePane.setPrefSize(149, 149); // stessa misura usata altrove
+        tilePane.setPrefSize(149, 149);
         tilePane.setMinSize(149, 149);
         tilePane.setMaxSize(149, 149);
 

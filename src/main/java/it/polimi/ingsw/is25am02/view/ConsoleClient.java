@@ -6,6 +6,7 @@ import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 
@@ -21,6 +22,8 @@ public interface ConsoleClient {
     void displayMessage(String keys, Map<String, String> params);
     void setLobbiesView(Map<Integer, LobbyView> lobbies);
     void newTile(TileV newTile);
+    void newCard(CardV card);
+    void moveOnGameboard(int pos);
     void setBuildView(int level, PlayerColor color);
     void setGameView(int level, PlayerColor color);
     GraphicPrinter getPrinter();
