@@ -5,100 +5,113 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="root" focusTraversable="true" prefHeight="1080" prefWidth="1920" stylesheets="@../style/style.css"
-           xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.InGameController">
+<StackPane fx:id="root" focusTraversable="true" prefHeight="1080" prefWidth="1920" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.InGameController">
 
     <Pane prefHeight="1080" prefWidth="1920" styleClass="background">
         <ImageView fx:id="backgroundImage" fitHeight="1080" fitWidth="1920" preserveRatio="false">
             <image>
-                <Image url="@../image/background.jpg"/>
+                <Image url="@../image/background.jpg" />
             </image>
         </ImageView>
 
-        <Label layoutX="70.0" layoutY="100.0" styleClass="white-context-label" text="View other spaceships"/>
-        <VBox fx:id="playerButtonsContainer" layoutX="70.0" layoutY="140.0" spacing="10.0"/>
+        <Label layoutX="70.0" layoutY="100.0" styleClass="white-context-label" text="View other spaceships" />
+        <VBox fx:id="playerButtonsContainer" layoutX="70.0" layoutY="140.0" spacing="10.0" />
 
-        <Label layoutX="1400.0" layoutY="100.0" styleClass="white-context-label" text="Dice"/>
-        <Label layoutX="1400.0" layoutY="600.0" styleClass="white-context-label" text="My score"/>
+        <Label layoutX="1400.0" layoutY="100.0" styleClass="white-context-label" text="Dice" />
+        <Label layoutX="1421.0" layoutY="642.0" styleClass="white-context-label" text="My score" />
 
-        <VBox layoutX="1300.0" layoutY="700.0" spacing="10" styleClass="info-box">
-            <HBox>
-                <Label styleClass="info-label" text="Credits:"/>
-                <Label fx:id="creditsValue" styleClass="info-value" text="0"/>
+        <VBox layoutX="1298.0" layoutY="700.0" prefHeight="300" prefWidth="347.0" spacing="10" styleClass="info-box">
+            <HBox VBox.vgrow="ALWAYS">
+                <Label styleClass="info-label" text="Credits:" />
+                <Label fx:id="creditsValue" styleClass="info-value" text="0" />
             </HBox>
-            <HBox>
-                <Label styleClass="info-label" text="Lost tiles:"/>
-                <Label fx:id="lostTilesValue" styleClass="info-value" text="0"/>
+            <HBox VBox.vgrow="ALWAYS">
+                <Label styleClass="info-label" text="Lost tiles:" />
+                <Label fx:id="lostTilesValue" styleClass="info-value" text="0" />
             </HBox>
-            <HBox>
-                <Label styleClass="info-label" text="Number of alive:"/>
-                <Label fx:id="aliveValue" styleClass="info-value" text="0"/>
+            <HBox VBox.vgrow="ALWAYS">
+                <Label styleClass="info-label" text="Number of alive:" />
+                <Label fx:id="aliveValue" styleClass="info-value" text="0" />
             </HBox>
-            <HBox>
-                <Label styleClass="info-label" text="Number of batteries:"/>
-                <Label fx:id="batteriesValue" styleClass="info-value" text="0"/>
+            <HBox VBox.vgrow="ALWAYS">
+                <Label styleClass="info-label" text="Number of batteries:" />
+                <Label fx:id="batteriesValue" styleClass="info-value" text="0" />
             </HBox>
-            <HBox>
-                <Label styleClass="info-label" text="Boxes:"/>
-                <Label fx:id="boxesValue" styleClass="info-value" text="0"/>
+            <HBox VBox.vgrow="ALWAYS">
+                <Label styleClass="info-label" text="Boxes:" />
+                <Label fx:id="boxesValue" styleClass="info-value" text="0" />
             </HBox>
         </VBox>
 
         <Pane layoutX="520.0" layoutY="60.0">
             <children>
                 <ImageView fx:id="backgroundImageView" fitHeight="550.0" fitWidth="700.0" preserveRatio="true">
-                    <Image url="@../image/cardboard/cardboard-3.png"/>
+                    <Image url="@../image/cardboard/cardboard-3.png" />
                 </ImageView>
-                <ImageView fx:id="playerPiece" fitHeight="30.0" fitWidth="30.0" layoutX="172.0" layoutY="69.0">
+                <ImageView fx:id="playerBluePiece" fitHeight="30.0" fitWidth="30.0" layoutX="172.0" layoutY="69.0" visible="false">
+                    <image>
+                        <Image url="@../image/pieces/bluePiece.png" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="playerGreenPiece" fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="52.0" visible="false">
+                    <image>
+                        <Image url="@../image/pieces/greenPiece.png" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="playerRedPiece" fitHeight="30.0" fitWidth="30.0" layoutX="301.0" layoutY="44.0" visible="false">
                     <image>
                         <Image url="@../image/pieces/redPiece.png" />
                     </image>
                 </ImageView>
+                <ImageView fx:id="playerYellowPiece" fitHeight="30.0" fitWidth="30.0" layoutX="368.0" layoutY="35.0" visible="false">
+                    <image>
+                        <Image url="@../image/pieces/yellowPiece.png" />
+                    </image>
+                </ImageView>
                 <Group fx:id="level1Gameboard" visible="false">
-                    <Pane id="1" layoutX="172.0" layoutY="69.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="2" layoutX="235.0" layoutY="52.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="3" layoutX="301.0" layoutY="44.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="4" layoutX="368.0" layoutY="35.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="5" layoutX="435.0" layoutY="52.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="6" layoutX="498.0" layoutY="69.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="7" layoutX="558.0" layoutY="104.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="8" layoutX="589.0" layoutY="184.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="9" layoutX="549.0" layoutY="247.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="10" layoutX="498.0" layoutY="282.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="11" layoutX="427.0" layoutY="306.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="12" layoutX="368.0" layoutY="317.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="13" layoutX="292.0" layoutY="306.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="14" layoutX="226.0" layoutY="306.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="15" layoutX="172.0" layoutY="282.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="16" layoutX="109.0" layoutY="247.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="17" layoutX="71.0" layoutY="167.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="18" layoutX="109.0" layoutY="104.0" prefHeight="35.0" prefWidth="31.0"/>
+                    <Pane id="1" layoutX="172.0" layoutY="69.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="2" layoutX="235.0" layoutY="52.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="3" layoutX="301.0" layoutY="44.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="4" layoutX="368.0" layoutY="35.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="5" layoutX="435.0" layoutY="52.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="6" layoutX="498.0" layoutY="69.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="7" layoutX="558.0" layoutY="104.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="8" layoutX="589.0" layoutY="184.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="9" layoutX="549.0" layoutY="247.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="10" layoutX="498.0" layoutY="282.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="11" layoutX="427.0" layoutY="306.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="12" layoutX="368.0" layoutY="317.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="13" layoutX="292.0" layoutY="306.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="14" layoutX="226.0" layoutY="306.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="15" layoutX="172.0" layoutY="282.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="16" layoutX="109.0" layoutY="247.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="17" layoutX="71.0" layoutY="167.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="18" layoutX="109.0" layoutY="104.0" prefHeight="35.0" prefWidth="31.0" />
                 </Group>
                 <Group fx:id="level2Gameboard" visible="false">
-                    <Pane id="1" layoutX="153.0" layoutY="84.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="2" layoutX="205.0" layoutY="61.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="3" layoutX="258.0" layoutY="53.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="4" layoutX="309.0" layoutY="44.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="5" layoutX="362.0" layoutY="44.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="6" layoutX="415.0" layoutY="53.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="7" layoutX="467.0" layoutY="71.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="8" layoutX="513.0" layoutY="89.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="9" layoutX="562.0" layoutY="116.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="10" layoutX="593.0" layoutY="168.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="11" layoutX="593.0" layoutY="230.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="12" layoutX="553.0" layoutY="272.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="13" layoutX="506.0" layoutY="307.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="14" layoutX="452.0" layoutY="325.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="15" layoutX="407.0" layoutY="333.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="16" layoutX="350.0" layoutY="343.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="17" layoutX="301.0" layoutY="343.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="18" layoutX="243.0" layoutY="333.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="19" layoutX="196.0" layoutY="325.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="20" layoutX="147.0" layoutY="298.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="21" layoutX="102.0" layoutY="265.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="22" layoutX="71.0" layoutY="213.0" prefHeight="35.0" prefWidth="31.0"/>
-                    <Pane id="23" layoutX="77.0" layoutY="158.0" prefHeight="35.0" prefWidth="31.0"/>
+                    <Pane id="1" layoutX="153.0" layoutY="84.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="2" layoutX="205.0" layoutY="61.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="3" layoutX="258.0" layoutY="53.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="4" layoutX="309.0" layoutY="44.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="5" layoutX="362.0" layoutY="44.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="6" layoutX="415.0" layoutY="53.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="7" layoutX="467.0" layoutY="71.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="8" layoutX="513.0" layoutY="89.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="9" layoutX="562.0" layoutY="116.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="10" layoutX="593.0" layoutY="168.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="11" layoutX="593.0" layoutY="230.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="12" layoutX="553.0" layoutY="272.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="13" layoutX="506.0" layoutY="307.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="14" layoutX="452.0" layoutY="325.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="15" layoutX="407.0" layoutY="333.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="16" layoutX="350.0" layoutY="343.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="17" layoutX="301.0" layoutY="343.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="18" layoutX="243.0" layoutY="333.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="19" layoutX="196.0" layoutY="325.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="20" layoutX="147.0" layoutY="298.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="21" layoutX="102.0" layoutY="265.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="22" layoutX="71.0" layoutY="213.0" prefHeight="35.0" prefWidth="31.0" />
+                    <Pane id="23" layoutX="77.0" layoutY="158.0" prefHeight="35.0" prefWidth="31.0" />
                     <Pane id="24" layoutX="108.0" layoutY="116.0" prefHeight="35.0" prefWidth="31.0">
                     </Pane>
                 </Group>
@@ -112,93 +125,87 @@
         <Pane fx:id="MySpaceship" layoutX="530.0" layoutY="520.0" prefHeight="491.0" prefWidth="680.0">
             <children>
                 <ImageView fx:id="MySpaceshipImage" fitHeight="491.0" fitWidth="680.0" preserveRatio="true">
-                    <Image url="@../image/cardboard/cardboard-1b.jpg"/>
+                    <Image url="@../image/cardboard/cardboard-1b.jpg" />
                 </ImageView>
 
-                <Pane id="cell_7_7" layoutX="295.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_5_7" layoutX="296.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_5_6" layoutX="207.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_5_8" layoutX="383.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_7_6" layoutX="207.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_7_5" layoutX="119.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_8_5" layoutX="113.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_9_5" layoutX="119.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_9_6" layoutX="207.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_8_6" layoutX="207.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_8_7" layoutX="295.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_7_8" layoutX="383.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_7_4" layoutX="25.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_8_4" layoutX="25.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_9_4" layoutX="25.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_6_8" layoutX="383.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_6_9" layoutX="477.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_8_8" layoutX="383.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_9_8" layoutX="383.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_9_9" layoutX="477.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_9_10" layoutX="565.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_8_10" layoutX="565.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_7_10" layoutX="565.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_8_9" layoutX="477.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_7_9" layoutX="477.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_6_6" layoutX="207.0" layoutY="114.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_6_5" layoutX="119.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0"/>
-                <Pane id="cell_6_7" layoutX="295.0" layoutY="114.0" prefHeight="88.0" prefWidth="88.0"/>
+                <Pane id="cell_7_7" layoutX="295.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_5_7" layoutX="296.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_5_6" layoutX="207.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_5_8" layoutX="383.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_7_6" layoutX="207.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_7_5" layoutX="119.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_8_5" layoutX="113.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_9_5" layoutX="119.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_9_6" layoutX="207.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_8_6" layoutX="207.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_8_7" layoutX="295.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_7_8" layoutX="383.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_7_4" layoutX="25.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_8_4" layoutX="25.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_9_4" layoutX="25.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_6_8" layoutX="383.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_6_9" layoutX="477.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_8_8" layoutX="383.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_9_8" layoutX="383.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_9_9" layoutX="477.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_9_10" layoutX="565.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_8_10" layoutX="565.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_7_10" layoutX="565.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_8_9" layoutX="477.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_7_9" layoutX="477.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_6_6" layoutX="207.0" layoutY="114.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_6_5" layoutX="119.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_6_7" layoutX="295.0" layoutY="114.0" prefHeight="88.0" prefWidth="88.0" />
             </children>
         </Pane>
 
 
         <StackPane fx:id="viewSpaceshipPopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
-            <VBox alignment="TOP_CENTER" maxHeight="1000" maxWidth="1500" spacing="10"
-                  style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <VBox alignment="TOP_CENTER" maxHeight="1000" maxWidth="1500" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
                 <Pane fx:id="SpaceshipPane" layoutX="120.0" layoutY="60.0">
                     <children>
 
                         <!-- Immagine cardboard centrata, senza distorsione -->
-                        <ImageView fx:id="popupBackgroundImage" fitHeight="966.0" fitWidth="1477.0"
-                                   preserveRatio="true">
-                            <Image url="@../image/cardboard/cardboard-1b.jpg"/>
+                        <ImageView fx:id="popupBackgroundImage" fitHeight="966.0" fitWidth="1477.0" preserveRatio="true">
+                            <Image url="@../image/cardboard/cardboard-1b.jpg" />
                         </ImageView>
-                        <Pane id="cell_7_7" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0"
-                              prefWidth="149.0"/> <!-- id is row column -->
-                        <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_5_8" layoutX="769.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_8_5" layoutX="242.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_9_5" layoutX="241.0" layoutY="759.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_9_6" layoutX="415.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_8_6" layoutX="417.0" layoutY="583.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_8_7" layoutX="593.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_7_8" layoutX="769.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_7_4" layoutX="69.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_8_4" layoutX="69.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_9_4" layoutX="69.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_6_8" layoutX="769.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_6_9" layoutX="945.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_8_8" layoutX="769.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_9_8" layoutX="769.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_9_9" layoutX="945.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_9_10" layoutX="1119.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_8_10" layoutX="1119.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_7_10" layoutX="1119.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_8_9" layoutX="945.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_7_9" layoutX="945.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0"/>
-                        <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0"/>
+                        <Pane id="cell_7_7" layoutX="594.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_5_7" layoutX="592.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" /> <!-- id is row column -->
+                        <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_5_8" layoutX="769.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_7_6" layoutX="417.0" layoutY="406.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_7_5" layoutX="242.0" layoutY="407.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_8_5" layoutX="242.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_9_5" layoutX="241.0" layoutY="759.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_9_6" layoutX="415.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_8_6" layoutX="417.0" layoutY="583.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_8_7" layoutX="593.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_7_8" layoutX="769.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_7_4" layoutX="69.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_8_4" layoutX="69.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_9_4" layoutX="69.0" layoutY="758.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_6_8" layoutX="769.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_6_9" layoutX="945.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_8_8" layoutX="769.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_9_8" layoutX="769.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_9_9" layoutX="945.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_9_10" layoutX="1119.0" layoutY="760.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_8_10" layoutX="1119.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_7_10" layoutX="1119.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_8_9" layoutX="945.0" layoutY="584.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_7_9" layoutX="945.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0" />
                     </children>
 
 
                 </Pane>
-                <Button onAction="#closeSpacePopup"
-                        style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;"
-                        text="✕"/>
+                <Button onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
             </VBox>
         </StackPane>
-        <Button layoutX="50.0" layoutY="450.0" onAction="#onNextCard" prefHeight="40.0"
-                prefWidth="150.0" styleClass="main-button" text="Next Card"/>
-        <Pane fx:id="cardPane" layoutX="118.0" layoutY="556.0" prefHeight="419.0" prefWidth="324.0"/>
+        <Button layoutX="50.0" layoutY="450.0" onAction="#onNextCard" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Next Card" />
+        <Pane fx:id="cardPane" layoutX="118.0" layoutY="556.0" prefHeight="419.0" prefWidth="324.0" />
     </Pane>
 
 

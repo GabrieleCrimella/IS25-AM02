@@ -843,6 +843,7 @@ public class Game implements Game_Interface {
                 getCurrentState().setPhase(StateGameType.TAKE_CARD);
                 for (Player p : players) {
                     p.getObserver().setGameView(level, p.getColor());
+                    observers.get(p.getNickname()).showPositionUpdate(p.getNickname(), globalBoard.getPositions().get(p));
 
                 }
                 ServerController.logger.log(Level.INFO, "All players are ready, starting the game.");

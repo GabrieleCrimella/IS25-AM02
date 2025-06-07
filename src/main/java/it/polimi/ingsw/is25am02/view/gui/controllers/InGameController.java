@@ -54,9 +54,13 @@ public class InGameController extends GeneralController{
     @FXML private ImageView backgroundImage;
     @FXML private Pane MySpaceship;
     @FXML private Pane cardPane;
-    @FXML private ImageView playerPiece;
+    @FXML private ImageView playerBluePiece;
+    @FXML private ImageView playerGreenPiece;
+    @FXML private ImageView playerRedPiece;
+    @FXML private ImageView playerYellowPiece;
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
+    private Map<String, PlayerColor> playerColors = new HashMap<>();
 
     @FXML
     public void initialize(int level, PlayerColor color) {
@@ -66,20 +70,10 @@ public class InGameController extends GeneralController{
         root.getStylesheets().add(
                 getClass().getResource("/style/style.css").toExternalForm()
         );
-        switch (color){
-            case BLUE:
-                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/bluePiece.png")));
-                break;
-            case GREEN:
-                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/greenPiece.png")));
-                break;
-            case RED:
-                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/redPiece.png")));
-                break;
-            case YELLOW:
-                playerPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/yellowPiece.png")));
-                break;
-        }
+        playerYellowPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/yellowPiece.png")));
+        playerRedPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/redPiece.png")));
+        playerGreenPiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/greenPiece.png")));
+        playerBluePiece.setImage(new Image(getClass().getResourceAsStream("/image/pieces/bluePiece.png")));
         switch (level) {
             case 0:
                 imagePath = "/image/cardboard/cardboard-3.png";
@@ -90,11 +84,6 @@ public class InGameController extends GeneralController{
                         GameboardCells.put(id, (Pane) node);
                     }
                 }
-                oldParent = playerPiece.getParent();
-                if (oldParent instanceof Pane) {
-                    ((Pane) oldParent).getChildren().remove(playerPiece);
-                }
-                level1Gameboard.getChildren().add(playerPiece);
                 break;
             case 2:
                 imagePath = "/image/cardboard/cardboard-5.png";
@@ -105,11 +94,6 @@ public class InGameController extends GeneralController{
                         GameboardCells.put(id, (Pane) node);
                     }
                 }
-                oldParent = playerPiece.getParent();
-                if (oldParent instanceof Pane) {
-                    ((Pane) oldParent).getChildren().remove(playerPiece);
-                }
-                level2Gameboard.getChildren().add(playerPiece);
                 break;
             default:
                 imagePath = "/image/background.jpg";
@@ -224,6 +208,9 @@ public class InGameController extends GeneralController{
 
             playerButtonsContainer.getChildren().add(playerButton);
         }
+        for(PlayerV p: GUIController.getInstance().getController().getGameV().getPlayers()){
+            playerColors.put(p.getNickname(), p.getColor());
+        }
     }
 
     @FXML
@@ -331,16 +318,58 @@ public class InGameController extends GeneralController{
     }
 
     public void movePlayerToPosition(int cellId){
-        Pane targetPane = GameboardCells.get(cellId);
-        if(targetPane!=null){
-            Bounds boundsInParent = targetPane.getBoundsInParent();
-            double centerX = boundsInParent.getMinX() + (targetPane.getPrefWidth() - playerPiece.getFitWidth()) / 2;
-            double centerY = boundsInParent.getMinY() + (targetPane.getPrefHeight() - playerPiece.getFitHeight()) / 2;
 
-            playerPiece.setLayoutX(centerX);
-            playerPiece.setLayoutY(centerY);
-
+        Map<PlayerColor, ImageView> pieceMap = Map.of(
+                PlayerColor.BLUE, playerBluePiece,
+                PlayerColor.GREEN, playerGreenPiece,
+                PlayerColor.RED, playerRedPiece,
+                PlayerColor.YELLOW, playerYellowPiece
+        );
+        PlayerColor mycolor = null;
+        try {
+            mycolor = GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getColor();
+        } catch (RemoteException e) {
+            showNotification("Error taking player color", NotificationType.ERROR, 5000);
         }
+        ImageView myPiece = pieceMap.get(mycolor);
+        Pane targetPane = GameboardCells.get(cellId+1);
+
+        if (targetPane != null && myPiece != null) {
+            Bounds bounds = targetPane.getBoundsInParent();
+            double centerX = bounds.getMinX() + (targetPane.getPrefWidth() - myPiece.getFitWidth()) / 2;
+            double centerY = bounds.getMinY() + (targetPane.getPrefHeight() - myPiece.getFitHeight()) / 2;
+
+            myPiece.setVisible(true);
+            myPiece.setLayoutX(centerX);
+            myPiece.setLayoutY(centerY);
+        }
+
+        for (PlayerV player : GUIController.getInstance().getController().getGameV().getPlayers()) {
+            if (!player.getNickname().equals(GUIController.getInstance().getNickname())) {
+                PlayerColor color = player.getColor();
+                ImageView piece = pieceMap.get(color);
+                pieceMap.get(color).setVisible(true);
+
+                Integer cellIdOther = GUIController.getInstance()
+                        .getController()
+                        .getGameV()
+                        .getGlobalBoard()
+                        .getPositions()
+                        .get(player);
+
+                Pane targetPaneOther = GameboardCells.get(cellIdOther+1);
+
+                if (targetPaneOther != null && piece != null) {
+                    Bounds bounds = targetPaneOther.getBoundsInParent();
+                    double centerX = bounds.getMinX() + (targetPaneOther.getPrefWidth() - piece.getFitWidth()) / 2;
+                    double centerY = bounds.getMinY() + (targetPaneOther.getPrefHeight() - piece.getFitHeight()) / 2;
+
+                    piece.setLayoutX(centerX);
+                    piece.setLayoutY(centerY);
+                }
+            }
+        }
+
     }
 
 
