@@ -50,78 +50,6 @@ public class Spaceship {
         this.listener = listener;
     }
 
-    //per il testing
-    public void viewSpaceship() {
-        System.out.println("Booked Tiles:");
-        for (int i = 1; i < 3; i++) {
-            if (bookedTiles.get(i) == null) {
-                System.out.print("|    |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.BATTERY)) {
-                System.out.print("| B  |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.BROWN_CABIN)) {
-                System.out.print("| BC |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.CABIN)) {
-                System.out.print("| CB |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.CANNON)) {
-                System.out.print("| CN |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.D_CANNON)) {
-                System.out.print("|DCN |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.D_MOTOR)) {
-                System.out.print("| DM |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.MOTOR)) {
-                System.out.print("| M  |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.PURPLE_CABIN)) {
-                System.out.print("| PC |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.SHIELD)) {
-                System.out.print("| SH |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.SPECIAL_STORAGE)) {
-                System.out.print("| SS |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.STORAGE)) {
-                System.out.print("| S  |");
-            } else if (bookedTiles.get(i).getType().equals(TileType.STRUCTURAL)) {
-                System.out.print("| ST |");
-            } else {
-                System.out.print("| Z |");
-            }
-        }
-        System.out.println();
-        System.out.println("Spaceship View:");
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 12; j++) {
-                if (getTile(i, j).isEmpty()) {
-                    System.out.print("|    |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.BATTERY)) {
-                    System.out.print("| B  |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.BROWN_CABIN)) {
-                    System.out.print("| BC |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.CABIN)) {
-                    System.out.print("| CB |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.CANNON)) {
-                    System.out.print("| CN |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.D_CANNON)) {
-                    System.out.print("|DCN |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.D_MOTOR)) {
-                    System.out.print("| DM |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.MOTOR)) {
-                    System.out.print("| M  |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.PURPLE_CABIN)) {
-                    System.out.print("| PC |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.SHIELD)) {
-                    System.out.print("| SH |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.SPECIAL_STORAGE)) {
-                    System.out.print("| SS |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.STORAGE)) {
-                    System.out.print("| S  |");
-                } else if (getTile(i, j).isPresent() && getTile(i, j).get().getType().equals(TileType.STRUCTURAL)) {
-                    System.out.print("| ST |");
-                } else {
-                    System.out.print("| Z |");
-                }
-            }
-            System.out.println();
-        }
-    }
-
     public HashMap<Integer, Tile> getBookedTiles() {
         return bookedTiles;
     }
@@ -193,16 +121,16 @@ public class Spaceship {
             List<Tile> down = new ArrayList<>();
             List<Tile> left = new ArrayList<>();
 
-            if (spaceshipIterator.getUpTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getUpTile(toRemove).get(), RotationType.NORTH)) {
+            if (spaceshipIterator.getUpTile(toRemove).isPresent() && toRemove.checkConnectorsforAttachedTiles(spaceshipIterator.getUpTile(toRemove).get(), RotationType.NORTH)) {
                 up = startVisit(toRemove, RotationType.NORTH);
             }
-            if (spaceshipIterator.getRightTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getRightTile(toRemove).get(), RotationType.EAST)) {
+            if (spaceshipIterator.getRightTile(toRemove).isPresent() && toRemove.checkConnectorsforAttachedTiles(spaceshipIterator.getRightTile(toRemove).get(), RotationType.EAST)) {
                 right = startVisit(toRemove, RotationType.EAST);
             }
-            if (spaceshipIterator.getDownTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getDownTile(toRemove).get(), RotationType.SOUTH)) {
+            if (spaceshipIterator.getDownTile(toRemove).isPresent() && toRemove.checkConnectorsforAttachedTiles(spaceshipIterator.getDownTile(toRemove).get(), RotationType.SOUTH)) {
                 down = startVisit(toRemove, RotationType.SOUTH);
             }
-            if (spaceshipIterator.getLeftTile(toRemove).isPresent() && toRemove.checkConnectors(spaceshipIterator.getLeftTile(toRemove).get(), RotationType.WEST)) {
+            if (spaceshipIterator.getLeftTile(toRemove).isPresent() && toRemove.checkConnectorsforAttachedTiles(spaceshipIterator.getLeftTile(toRemove).get(), RotationType.WEST)) {
                 left = startVisit(toRemove, RotationType.WEST);
             }
 
@@ -235,7 +163,7 @@ public class Spaceship {
                 }
                 booleanBlocks.add(booleanBlock);
             }
-            if (booleanBlocks.isEmpty()) {
+            if (booleanBlocks.isEmpty() || booleanBlocks.size() == 1) {
                 branches = null;
             } else {
                 branches = booleanBlocks;
@@ -514,12 +442,18 @@ public class Spaceship {
         List<Tile> toVisit = new ArrayList<>();
 
         toVisit.add(current);
+        if (spaceshipIterator.getConnectedNearTiles(current).size()==0){
+            return false;
+        }
         toVisit.addAll(spaceshipIterator.getConnectedNearTiles(current));
         while (!toVisit.isEmpty()) {
             visited.add(current);
             toVisit.remove(current);
             if (!toVisit.isEmpty()) {
                 current = toVisit.getFirst();
+                if (spaceshipIterator.getConnectedNearTiles(current).size()==0){
+                    return false;
+                }
                 List<Tile> newTiles = spaceshipIterator.getConnectedNearTiles(current);
                 newTiles.forEach(t -> {
                     if (!visited.contains(t) && !toVisit.contains(t)) {
@@ -536,54 +470,54 @@ public class Spaceship {
         t.removeBattery();
         listener.onRemoveBatteryUpdate(t.getNumBattery(), new Coordinate(spaceshipIterator.getX(t), spaceshipIterator.getY(t)));
     }
-
+    //dovrebbe essere girato giusto
     //il metodo controlla se è esposto un certo lato nella riga/colonna num
     public boolean isExposed(RotationType rotationType, int num) {
         if (rotationType == RotationType.NORTH) {
-            for (int t = 0; t < 11; t++) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
-                    targetTileX = num;
-                    targetTileY = t;
+            for (int t = 0; t < 12; t++) {
+                if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                    targetTileX = t;
+                    targetTileY = num;
                     return false;
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) != ConnectorType.NONE) {
-                    targetTileX = num;
-                    targetTileY = t;
+                } else if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.NORTH) != ConnectorType.NONE) {
+                    targetTileX = t;
+                    targetTileY = num;
                     return true;
                 }
             }
         } else if (rotationType == RotationType.SOUTH) {
-            for (int t = 11; t > 0; t--) {
-                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.SOUTH) != ConnectorType.NONE) {
-                    targetTileX = num;
-                    targetTileY = t;
+            for (int t = 12; t > 0; t--) {
+                if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.SOUTH) != ConnectorType.NONE) {
+                    targetTileX = t;
+                    targetTileY = num;
                     return true;
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
-                    targetTileX = num;
-                    targetTileY = t;
+                } else if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                    targetTileX = t;
+                    targetTileY = num;
                     return false;
                 }
             }
         } else if (rotationType == RotationType.EAST) {
-            for (int t = 11; t > 0; t--) {
-                if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.EAST) != ConnectorType.NONE) {
-                    targetTileX = t;
-                    targetTileY = num;
+            for (int t = 12; t > 0; t--) {
+                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.EAST) != ConnectorType.NONE) {
+                    targetTileX = num;
+                    targetTileY = t;
                     return true;
                 } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
-                    targetTileX = t;
-                    targetTileY = num;
+                    targetTileX = num;
+                    targetTileY = t;
                     return false;
                 }
             }
         } else if (rotationType == RotationType.WEST) {
-            for (int t = 0; t < 11; t++) {
-                if (getTile(t, num).isPresent() && getTile(t, num).get().connectorOnSide(RotationType.WEST) != ConnectorType.NONE) {
-                    targetTileX = t;
-                    targetTileY = num;
+            for (int t = 0; t < 12; t++) {
+                if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.WEST) != ConnectorType.NONE) {
+                    targetTileX = num;
+                    targetTileY = t;
                     return true;
                 } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
-                    targetTileX = t;
-                    targetTileY = num;
+                    targetTileX = num;
+                    targetTileY = t;
                     return false;
                 }
             }
@@ -679,7 +613,10 @@ public class Spaceship {
     }
 
     private boolean isSpaceshipDivided() {
-        return !branches.isEmpty();
+        if (branches==null || branches.isEmpty() || branches.size()==1){
+            return false;
+        }
+        return true;
     }
 
     public int calculateNumAlive() {
@@ -724,22 +661,22 @@ public class Spaceship {
 
         for (Optional<Tile> t : spaceshipIterator.reference()) {
             if (t.isPresent() && t.get().getType().equals(TileType.CABIN) && !t.get().getCrew().isEmpty()) {
-                if (spaceshipIterator.getUpTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getUpTile(t.get()).get(), RotationType.NORTH)
+                if (spaceshipIterator.getUpTile(t.get()).isPresent() && t.get().checkConnectorsforAttachedTiles(spaceshipIterator.getUpTile(t.get()).get(), RotationType.NORTH)
                         && spaceshipIterator.getUpTile(t.get()).get().getType().equals(TileType.CABIN) &&
                         !spaceshipIterator.getUpTile(t.get()).get().getCrew().isEmpty()) {
                     cabinAffected.add(t.get());
                 }
-                if (spaceshipIterator.getRightTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getRightTile(t.get()).get(), RotationType.EAST)
+                if (spaceshipIterator.getRightTile(t.get()).isPresent() && t.get().checkConnectorsforAttachedTiles(spaceshipIterator.getRightTile(t.get()).get(), RotationType.EAST)
                         && spaceshipIterator.getRightTile(t.get()).get().getType().equals(TileType.CABIN) &&
                         !spaceshipIterator.getRightTile(t.get()).get().getCrew().isEmpty()) {
                     cabinAffected.add(t.get());
                 }
-                if (spaceshipIterator.getDownTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getDownTile(t.get()).get(), RotationType.SOUTH)
+                if (spaceshipIterator.getDownTile(t.get()).isPresent() && t.get().checkConnectorsforAttachedTiles(spaceshipIterator.getDownTile(t.get()).get(), RotationType.SOUTH)
                         && spaceshipIterator.getDownTile(t.get()).get().getType().equals(TileType.CABIN) &&
                         !spaceshipIterator.getDownTile(t.get()).get().getCrew().isEmpty()) {
                     cabinAffected.add(t.get());
                 }
-                if (spaceshipIterator.getLeftTile(t.get()).isPresent() && t.get().checkConnectors(spaceshipIterator.getLeftTile(t.get()).get(), RotationType.WEST)
+                if (spaceshipIterator.getLeftTile(t.get()).isPresent() && t.get().checkConnectorsforAttachedTiles(spaceshipIterator.getLeftTile(t.get()).get(), RotationType.WEST)
                         && spaceshipIterator.getLeftTile(t.get()).get().getType().equals(TileType.CABIN) &&
                         !spaceshipIterator.getLeftTile(t.get()).get().getCrew().isEmpty()) {
                     cabinAffected.add(t.get());
@@ -794,32 +731,32 @@ public class Spaceship {
         if (type == RotationType.NORTH) {
             for (int t = 0; t < 12; t++) {
                 if (getTile(t, num).isPresent()) {
-                    targetTileX = num;
-                    targetTileY = t;
+                    targetTileX = t;
+                    targetTileY = num;
                     return getTile(t,num);
                 }
             }
         } else if (type == RotationType.SOUTH) {
             for (int t = 12; t > 0; t--) {
                 if (getTile(t, num).isPresent()) {
-                    targetTileX = num;
-                    targetTileY = t;
+                    targetTileX = t;
+                    targetTileY = num;
                     return getTile(t, num);
                 }
             }
         } else if (type == RotationType.EAST) {
             for (int t = 12; t > 0; t--) {
                 if (getTile(num, t).isPresent()) {
-                    targetTileX = t;
-                    targetTileY = num;
+                    targetTileX = num;
+                    targetTileY = t;
                     return getTile(num, t);
                 }
             }
         } else if (type == RotationType.WEST) {
             for (int t = 0; t < 12; t++) {
                 if (getTile(num, t).isPresent()) {
-                    targetTileX = t;
-                    targetTileY = num;
+                    targetTileX = num;
+                    targetTileY = t;
                     return getTile(num, t);
                 }
             }
@@ -831,40 +768,40 @@ public class Spaceship {
     private Optional<Tile> CoveredByWhatCannon(RotationType type, int num) {
         if (type == RotationType.NORTH) {
             for (int t = 0; t < 11; t++) {
-                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
-                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
-                    return getTile(num, t);
-                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
-                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
+                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                        || getTile(t, num).get().getType().equals(TileType.D_CANNON))) {
+                    return getTile(t, num);
+                } else if (getTile(t, num).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
+                        && !getTile(t, num).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
             }
         } else if (type == RotationType.SOUTH) {
             for (int t = 11; t > 0; t--) {
-                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
-                        || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
-                    return getTile(num, t);
-                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
-                        && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
+                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                        || getTile(t, num).get().getType().equals(TileType.D_CANNON))) {
+                    return getTile(t, num);
+                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
+                        && !getTile(t, num).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
             }
         } else if (type == RotationType.EAST) {
             for (int t = 11; t > 0; t--) {
-                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
                         || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
-                    return getTile(t, num);
-                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
+                    return getTile(num, t);
+                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
                         && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
             }
         } else if (type == RotationType.WEST) {
             for (int t = 0; t < 11; t++) {
-                if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
+                if (getTile(num, t).isPresent() && (getTile(num, t).get().getType().equals(TileType.CANNON)
                         || getTile(num, t).get().getType().equals(TileType.D_CANNON))) {
-                    return getTile(t, num);
-                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
+                    return getTile(num, t);
+                } else if (getTile(num, t).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
                         && !getTile(num, t).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }

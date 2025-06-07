@@ -135,6 +135,56 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
             return false;
     }
 
+
+    //if the two tiles are in the null null situation it return false. this has to be used for the check spaceship so
+    //that it doesn't add to the visited list the tiles that aren't actually connected
+    public boolean checkConnectorsforAttachedTiles (Tile t, RotationType sideToCheck){
+        int[] thisTile = new int[4];
+        int[] otherTile = new int[4];
+        /*I'm taking for granted that the side I'm checking is in comparison to the this tile.
+        So if sideToCheck is North, I'm checking the upper part of this tile and the bottom part of tile t.
+         */
+
+        /*Here I created two arrays where in each position I get the type of connector.
+        The arrays are already shifted so that rotation is taken into account and
+        they are rappresented as [North, East, South, West] as if rotation was 0.
+        */
+        for (int i = 0; i < 4; i++) {
+            int positionThis= (i+this.rotationType.getNum())%4;
+            thisTile[positionThis] = connectors[i].getNum();
+            int positionOther= (i+t.rotationType.getNum())%4;
+            otherTile[positionOther] = t.getConnectors()[i].getNum();
+        }
+
+        return switch (sideToCheck) {
+            case NORTH -> compatibleforAttachedTiles(thisTile[0], otherTile[2]);
+            case EAST -> compatibleforAttachedTiles(thisTile[1], otherTile[3]);
+            case SOUTH -> compatibleforAttachedTiles(thisTile[2], otherTile[0]);
+            case WEST -> compatibleforAttachedTiles(thisTile[3], otherTile[1]);
+        };
+
+    }
+
+    public boolean compatibleforAttachedTiles (int a, int b){
+        if (a == 0 && b == 0){
+            return false;
+        }
+        if (a==0 && b!=0 || a!=0 && b==0){
+            return false;
+        }
+        if ( a == b){
+            return true;
+        }
+        if (a == 3 && (b == 1 || b == 2)){
+            return true;
+        }
+        if (b == 3 && (a == 1 || a == 2)){
+            return true;
+        }
+        else
+            return false;
+    }
+
     public int getNumMaxBattery() {
         return 0;
     }

@@ -166,7 +166,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     public void removeOneTile(int x, int y) {
         if (spaceshipMask[x][y]){
             spaceshipBoard[x][y] = Optional.empty();
-            listener.onRemoveTileUpdate(new Coordinate(x,y));
+            //listener.onRemoveTileUpdate(new Coordinate(x,y));
         }
 
         else throw new IllegalArgumentException("Invalid tile position");
@@ -179,20 +179,23 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
         return temp;
     }
 
+    //only returns those that are next to eachother and properly attached
     public List<Tile> getConnectedNearTiles(Tile t) {
         List<Tile> connectedNear = new LinkedList<>();
 
-        if (getUpTile(t).isPresent() && t.checkConnectors(getUpTile(t).get(), RotationType.NORTH))
+        if (getUpTile(t).isPresent() && t.checkConnectorsforAttachedTiles(getUpTile(t).get(), RotationType.NORTH))
             connectedNear.add(getUpTile(t).get());
-        if (getRightTile(t).isPresent() && t.checkConnectors(getRightTile(t).get(), RotationType.EAST))
+        if (getRightTile(t).isPresent() && t.checkConnectorsforAttachedTiles(getRightTile(t).get(), RotationType.EAST))
             connectedNear.add(getRightTile(t).get());
-        if (getDownTile(t).isPresent() && t.checkConnectors(getDownTile(t).get(), RotationType.SOUTH))
+        if (getDownTile(t).isPresent() && t.checkConnectorsforAttachedTiles(getDownTile(t).get(), RotationType.SOUTH))
             connectedNear.add(getDownTile(t).get());
-        if (getLeftTile(t).isPresent() && t.checkConnectors(getLeftTile(t).get(), RotationType.WEST))
+        if (getLeftTile(t).isPresent() && t.checkConnectorsforAttachedTiles(getLeftTile(t).get(), RotationType.WEST))
             connectedNear.add(getLeftTile(t).get());
 
         return connectedNear;
     }
+
+
 
     public void addTile(String nicknameP, Tile tile, int x, int y) throws IllegalAddException {
         if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty() && checkAddition(tile,x,y)){
