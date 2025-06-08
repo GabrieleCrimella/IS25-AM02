@@ -4,7 +4,9 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 public class PlayerV {
@@ -19,6 +21,13 @@ public class PlayerV {
     private int numDeck;
     private int credits;
     private boolean isShipBroken;
+    private int numBAliens;
+    private int numPAliens;
+    private int numHumans;
+    private int numFinalRedBoxes;
+    private int numFinalBlueBoxes;
+    private int numFinalGreenBoxes;
+    private int numFinalYellowBoxes;
 
     public void setCurrentTile(Optional<TileV> currentTile) {
         this.currentTile = currentTile;
@@ -131,6 +140,102 @@ public class PlayerV {
         bookedTiles.put(position, tileV);
 
     }
+
+    public int getNumFinalRedBoxes() {
+        return numFinalRedBoxes;
+    }
+
+    public int getNumFinalBlueBoxes() {
+        return numFinalBlueBoxes;
+    }
+
+    public int getNumFinalGreenBoxes() {
+        return numFinalGreenBoxes;
+    }
+
+    public int getNumFinalYellowBoxes() {
+        return numFinalYellowBoxes;
+    }
+
+    public void calculateBoxes(){
+        for(int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (spaceshipBoard[i][j].isPresent()) {
+                    TileV tile = spaceshipBoard[i][j].get();
+                    numFinalBlueBoxes += tile.getNumBlueBox();
+                    numFinalRedBoxes += tile.getNumRedBox();
+                    numFinalGreenBoxes += tile.getNumGreenBox();
+                    numFinalYellowBoxes += tile.getNumYellowBox();
+                }
+            }
+        }
+    }
+
+    public int getNumBatteries(){
+        int num =0;
+        for(int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (spaceshipBoard[i][j].isPresent()) {
+                    TileV tile = spaceshipBoard[i][j].get();
+                    num += tile.getNumBattery();
+                }
+            }
+        }
+        return num;
+    }
+
+    public List<AliveType> getAlive(){
+        ArrayList<AliveType> aliveList = new ArrayList<>();
+        for(int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (spaceshipBoard[i][j].isPresent()) {
+                    TileV tile = spaceshipBoard[i][j].get();
+                    if (tile.getNumRedBox() == 1) {
+                        aliveList.add(AliveType.HUMAN);
+                    } else if (tile.getNumHumans() == 2) {
+                        aliveList.add(AliveType.HUMAN);
+                        aliveList.add(AliveType.HUMAN);
+                    } else if (tile.getNumPAliens() == 1) {
+                        aliveList.add(AliveType.PURPLE_ALIEN);
+                    } else if (tile.getNumBAliens() == 1) {
+                        aliveList.add(AliveType.BROWN_ALIEN);
+                    }
+                }
+            }
+        }
+        return aliveList;
+    }
+
+    public int calculateNumBAliens() {
+        numBAliens = 0;
+        for (AliveType a : getAlive()) {
+            if (a.equals(AliveType.BROWN_ALIEN)) {
+                numBAliens++;
+            }
+        }
+        return numBAliens;
+    }
+
+    public int calculateNumPAliens() {
+        numPAliens = 0;
+        for (AliveType a : getAlive()) {
+            if (a.equals(AliveType.PURPLE_ALIEN)) {
+                numPAliens++;
+            }
+        }
+        return numPAliens;
+    }
+
+    public int calculateNumHumans() {
+        numHumans = 0;
+        for (AliveType a : getAlive()) {
+            if (a.equals(AliveType.HUMAN)) {
+                numHumans++;
+            }
+        }
+        return numHumans;
+    }
+
 
 
 }

@@ -47,9 +47,14 @@ public class InGameController extends GeneralController{
     private StackPane viewSpaceshipPopup;
     @FXML private Label creditsValue;
     @FXML private Label lostTilesValue;
-    @FXML private Label aliveValue;
     @FXML private Label batteriesValue;
-    @FXML private Label boxesValue;
+    @FXML private Label RedValue;
+    @FXML private Label GreenValue;
+    @FXML private Label BlueValue;
+    @FXML private Label YellowValue;
+    @FXML private Label humansValue;
+    @FXML private Label brownAliensValue;
+    @FXML private Label purpleAliensValue;
     @FXML private ImageView MySpaceshipImage;
     @FXML private ImageView backgroundImage;
     @FXML private Pane MySpaceship;
@@ -65,7 +70,6 @@ public class InGameController extends GeneralController{
     @FXML
     public void initialize(int level, PlayerColor color) {
         String imagePath;
-        Parent oldParent;
         String imagePathMySpaceship;
         root.getStylesheets().add(
                 getClass().getResource("/style/style.css").toExternalForm()
@@ -151,14 +155,39 @@ public class InGameController extends GeneralController{
         setOtherPlayers(otherPlayers);
         backgroundImage.setEffect(new GaussianBlur(30));
         setMySpaceship();
+        updateStats();
+        updateAliveCounts();
+        try {
+            movePlayerToPosition(GUIController.getInstance().getController().getGameV().getGlobalBoard().getPositions().get(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname())));
+        } catch (RemoteException e) {
+            showNotification("Fail to update initial positions", NotificationType.ERROR, 5000);
+        }
     }
 
-    public void updateStats(int credits, int lostTiles, int alive, int batteries, int boxes) {
-        creditsValue.setText(String.valueOf(credits));
-        lostTilesValue.setText(String.valueOf(lostTiles));
-        aliveValue.setText(String.valueOf(alive));
-        batteriesValue.setText(String.valueOf(batteries));
-        boxesValue.setText(String.valueOf(boxes));
+    public void updateAliveCounts() {
+        try {
+            humansValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumHumans()));
+            brownAliensValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumBAliens()));
+            purpleAliensValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumPAliens()));
+        } catch (RemoteException e) {
+            showNotification("Fail to update alive counts", NotificationType.ERROR, 5000);
+
+        }
+
+    }
+
+    public void updateStats() {
+        try {
+            creditsValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getCredits()));
+            lostTilesValue.setText(String.valueOf(0));
+            batteriesValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumBatteries()));
+            RedValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalRedBoxes()));
+            GreenValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalGreenBoxes()));
+            BlueValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalBlueBoxes()));
+            YellowValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalYellowBoxes()));
+        } catch (RemoteException e) {
+            showNotification("Fail to update stats", NotificationType.ERROR, 5000);
+        }
     }
 
     public void setOtherPlayers(List<String> otherPlayerNicknames) {
@@ -231,11 +260,11 @@ public class InGameController extends GeneralController{
             imageView.setFitHeight(149);
         }
         else{
-            tilePane.setPrefSize(88, 88); // stessa misura usata altrove
-            tilePane.setMinSize(88, 88);
-            tilePane.setMaxSize(88, 88);
-            imageView.setFitWidth(88);
-            imageView.setFitHeight(88);
+            tilePane.setPrefSize(72, 72); // stessa misura usata altrove
+            tilePane.setMinSize(72, 72);
+            tilePane.setMaxSize(72, 72);
+            imageView.setFitWidth(72);
+            imageView.setFitHeight(72);
         }
 
         imageView.setPreserveRatio(true);

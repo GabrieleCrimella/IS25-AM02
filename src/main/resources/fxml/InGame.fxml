@@ -20,7 +20,7 @@
         <Label layoutX="1400.0" layoutY="100.0" styleClass="white-context-label" text="Dice" />
         <Label layoutX="1421.0" layoutY="642.0" styleClass="white-context-label" text="My score" />
 
-        <VBox layoutX="1298.0" layoutY="700.0" prefHeight="300" prefWidth="347.0" spacing="10" styleClass="info-box">
+        <VBox layoutX="1298.0" layoutY="700.0" prefHeight="300" prefWidth="600.0" spacing="10" styleClass="info-box">
             <HBox VBox.vgrow="ALWAYS">
                 <Label styleClass="info-label" text="Credits:" />
                 <Label fx:id="creditsValue" styleClass="info-value" text="0" />
@@ -30,16 +30,27 @@
                 <Label fx:id="lostTilesValue" styleClass="info-value" text="0" />
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
-                <Label styleClass="info-label" text="Number of alive:" />
-                <Label fx:id="aliveValue" styleClass="info-value" text="0" />
+                <Label styleClass="info-label" text="Number of alive  " />
+                <Label styleClass="info-label" text=" Human: " />
+                <Label fx:id="humansValue" styleClass="info-value" text="0" />
+                <Label styleClass="info-label" text=" Brown alien: " />
+                <Label fx:id="brownAliensValue" styleClass="info-value" text="0" />
+                <Label styleClass="info-label" text=" Purple alien: " />
+                <Label fx:id="purpleAliensValue" styleClass="info-value" text="0" />
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
                 <Label styleClass="info-label" text="Number of batteries:" />
                 <Label fx:id="batteriesValue" styleClass="info-value" text="0" />
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
-                <Label styleClass="info-label" text="Boxes:" />
-                <Label fx:id="boxesValue" styleClass="info-value" text="0" />
+                <Label styleClass="info-label" text=" Red boxes: " />
+                <Label fx:id="RedValue" styleClass="info-value" text="0" />
+                <Label styleClass="info-label" text=" Yellow boxes: " />
+                <Label fx:id="YellowValue" styleClass="info-value" text="0" />
+                <Label styleClass="info-label" text=" Green boxes: " />
+                <Label fx:id="GreenValue" styleClass="info-value" text="0" />
+                <Label styleClass="info-label" text=" Blue boxes: " />
+                <Label fx:id="BlueValue" styleClass="info-value" text="0" />
             </HBox>
         </VBox>
 
@@ -128,34 +139,34 @@
                     <Image url="@../image/cardboard/cardboard-1b.jpg" />
                 </ImageView>
 
-                <Pane id="cell_7_7" layoutX="295.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_5_7" layoutX="296.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_5_6" layoutX="207.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_5_8" layoutX="383.0" layoutY="20.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_7_6" layoutX="207.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_7_5" layoutX="119.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_8_5" layoutX="113.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_9_5" layoutX="119.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_9_6" layoutX="207.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_8_6" layoutX="207.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_8_7" layoutX="295.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_7_8" layoutX="383.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_7_4" layoutX="25.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_8_4" layoutX="25.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_9_4" layoutX="25.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_6_8" layoutX="383.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_6_9" layoutX="477.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_8_8" layoutX="383.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_9_8" layoutX="383.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_9_9" layoutX="477.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_9_10" layoutX="565.0" layoutY="378.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_8_10" layoutX="565.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_7_10" layoutX="565.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_8_9" layoutX="477.0" layoutY="290.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_7_9" layoutX="477.0" layoutY="202.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_6_6" layoutX="207.0" layoutY="114.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_6_5" layoutX="119.0" layoutY="108.0" prefHeight="88.0" prefWidth="88.0" />
-                <Pane id="cell_6_7" layoutX="295.0" layoutY="114.0" prefHeight="88.0" prefWidth="88.0" />
+                <Pane id="cell_7_7" layoutX="303.0" layoutY="209.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_5_7" layoutX="303.0" layoutY="29.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_5_6" layoutX="212.0" layoutY="29.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_5_8" layoutX="392.0" layoutY="29.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_7_6" layoutX="213.0" layoutY="209.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_7_5" layoutX="125.0" layoutY="209.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_8_5" layoutX="123.0" layoutY="300.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_9_5" layoutX="125.0" layoutY="389.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_9_6" layoutX="214.0" layoutY="386.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_8_6" layoutX="214.0" layoutY="299.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_8_7" layoutX="303.0" layoutY="300.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_7_8" layoutX="404.0" layoutY="210.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_7_4" layoutX="35.0" layoutY="208.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_8_4" layoutX="35.0" layoutY="299.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_9_4" layoutX="35.0" layoutY="387.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_6_8" layoutX="394.0" layoutY="120.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_6_9" layoutX="483.0" layoutY="121.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_8_8" layoutX="394.0" layoutY="299.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_9_8" layoutX="392.0" layoutY="389.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_9_9" layoutX="483.0" layoutY="389.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_9_10" layoutX="571.0" layoutY="389.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_8_10" layoutX="571.0" layoutY="299.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_7_10" layoutX="571.0" layoutY="210.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_8_9" layoutX="483.0" layoutY="299.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_7_9" layoutX="483.0" layoutY="210.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_6_6" layoutX="213.0" layoutY="121.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_6_5" layoutX="124.0" layoutY="119.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_6_7" layoutX="304.0" layoutY="120.0" prefHeight="72.0" prefWidth="72.0" />
             </children>
         </Pane>
 
