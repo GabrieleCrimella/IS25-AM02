@@ -442,7 +442,7 @@ public class Spaceship {
         List<Tile> toVisit = new ArrayList<>();
 
         toVisit.add(current);
-        if (spaceshipIterator.getConnectedNearTiles(current).size()==0){
+        if ((spaceshipIterator.getX(current)!=7||spaceshipIterator.getY(current)!=7)&&spaceshipIterator.getConnectedNearTiles(current).size()==0){
             return false;
         }
         toVisit.addAll(spaceshipIterator.getConnectedNearTiles(current));
@@ -451,7 +451,7 @@ public class Spaceship {
             toVisit.remove(current);
             if (!toVisit.isEmpty()) {
                 current = toVisit.getFirst();
-                if (spaceshipIterator.getConnectedNearTiles(current).size()==0){
+                if ((spaceshipIterator.getX(current)!=7||spaceshipIterator.getY(current)!=7) && spaceshipIterator.getConnectedNearTiles(current).size()==0){
                     return false;
                 }
                 List<Tile> newTiles = spaceshipIterator.getConnectedNearTiles(current);
