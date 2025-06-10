@@ -225,9 +225,7 @@ public class LobbyController extends GeneralController{
 
     public void setLobbyListFromMap(Map<Integer, LobbyView> lobbyMap) {
         Platform.runLater(() -> {
-            System.out.println("Aggiornamento lista lobby in GUI...");
             setLobbies(new ArrayList<>(lobbyMap.values()));
-            //lobbyList.getItems().setAll(lobbyMap.values());
             errorLabel.setText("");
         });
     }

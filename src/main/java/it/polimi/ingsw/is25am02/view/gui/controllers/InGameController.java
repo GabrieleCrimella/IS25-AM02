@@ -1,10 +1,15 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
+import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
+import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -13,20 +18,19 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class InGameController extends GeneralController{
     @FXML
@@ -64,8 +68,10 @@ public class InGameController extends GeneralController{
     @FXML private ImageView playerRedPiece;
     @FXML private ImageView playerYellowPiece;
 
+
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
+    private Map<Coordinate,BoxType> myBoxes = new HashMap<>();
 
     @FXML
     public void initialize(int level, PlayerColor color) {
@@ -156,24 +162,11 @@ public class InGameController extends GeneralController{
         backgroundImage.setEffect(new GaussianBlur(30));
         setMySpaceship();
         updateStats();
-        updateAliveCounts();
         try {
             movePlayerToPosition(GUIController.getInstance().getController().getGameV().getGlobalBoard().getPositions().get(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname())));
         } catch (RemoteException e) {
             showNotification("Fail to update initial positions", NotificationType.ERROR, 5000);
         }
-    }
-
-    public void updateAliveCounts() {
-        try {
-            humansValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumHumans()));
-            brownAliensValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumBAliens()));
-            purpleAliensValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumPAliens()));
-        } catch (RemoteException e) {
-            showNotification("Fail to update alive counts", NotificationType.ERROR, 5000);
-
-        }
-
     }
 
     public void updateStats() {
@@ -185,6 +178,9 @@ public class InGameController extends GeneralController{
             GreenValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalGreenBoxes()));
             BlueValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalBlueBoxes()));
             YellowValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalYellowBoxes()));
+            humansValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumHumans()));
+            brownAliensValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumBAliens()));
+            purpleAliensValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).calculateNumPAliens()));
         } catch (RemoteException e) {
             showNotification("Fail to update stats", NotificationType.ERROR, 5000);
         }
@@ -288,10 +284,149 @@ public class InGameController extends GeneralController{
         return tilePane;
     }
 
+    public void clickedOnTile(Coordinate coordinate) {
+        Optional<TileV>[][] spaceshipBoard = null;
+        try {
+            spaceshipBoard = GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getSpaceshipBoard();
+        } catch (RemoteException e) {
+            showNotification("Error loading your spaceship", NotificationType.ERROR, 5000);
+        }
+        if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE)||
+                spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE))) {
+
+            showBoxManagementPopup(coordinate);
+
+
+        }
+    }
+
+    private void showBoxManagementPopup(Coordinate coordinate) {
+        Optional<TileV>[][] spaceshipBoard;
+        try {
+            spaceshipBoard = GUIController.getInstance().getController()
+                    .getPlayerVFromNickname(GUIController.getInstance().getNickname())
+                    .getSpaceshipBoard();
+        } catch (RemoteException e) {
+            showNotification("Errore nel caricamento della nave", NotificationType.ERROR, 5000);
+            return;
+        }
+
+        Optional<TileV> tileOpt = spaceshipBoard[coordinate.x()][coordinate.y()];
+
+        TileV tile = tileOpt.get();
+
+        // Sfondo scuro
+        StackPane dimBackground = new StackPane();
+        dimBackground.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
+        dimBackground.setPrefSize(root.getWidth(), root.getHeight());
+
+        VBox overlay = new VBox(10);
+        overlay.setAlignment(Pos.CENTER);
+        overlay.setPadding(new Insets(20));
+        overlay.setStyle("-fx-background-color: yellow; -fx-background-radius: 15;");
+        overlay.setMaxWidth(600);
+
+        Label title = new Label("Box Management");
+        title.getStyleClass().add("white-context-label");
+
+
+        HBox redRow = createBoxRow(BoxType.RED, tile.getNumRedBox(), coordinate);
+        HBox yellowRow = createBoxRow(BoxType.YELLOW, tile.getNumYellowBox(), coordinate);
+        HBox greenRow = createBoxRow(BoxType.GREEN, tile.getNumGreenBox(), coordinate);
+        HBox blueRow = createBoxRow(BoxType.BLUE, tile.getNumBlueBox(), coordinate);
+
+        Button finishButton = new Button("Finish");
+        finishButton.getStyleClass().add("main-button"); // Assicurati che il tuo CSS definisca .main-button
+        finishButton.setOnAction(ev -> {
+            root.getChildren().remove(dimBackground);
+
+            for (Map.Entry<Coordinate, BoxType> entry : myBoxes.entrySet()) {
+                Coordinate coord = entry.getKey();
+                BoxType type = entry.getValue();
+                try {
+                    GUIController.getInstance().getController().removeBox(GUIController.getInstance().getNickname(),coord, type);  // Assicurati che il metodo esista e sia accessibile
+                } catch (RemoteException e) {
+                    showNotification("Error removing boxes", NotificationType.ERROR, 5000);
+                }
+            }
+            myBoxes.clear();
+        });
+
+
+        overlay.getChildren().addAll(title, redRow, yellowRow, greenRow, blueRow, finishButton);
+
+        dimBackground.getChildren().add(overlay);
+        StackPane.setAlignment(overlay, Pos.CENTER);
+
+        root.getChildren().add(dimBackground);
+    }
+
+    private HBox createBoxRow(BoxType box, int initialValue, Coordinate coordinate) {
+        HBox row = new HBox(10);
+        row.setAlignment(Pos.CENTER);
+
+        Label label = new Label(String.valueOf(box.name() + " boxes: " + initialValue));
+        label.getStyleClass().add("info-value");
+
+        Button plus = new Button("+");
+        Button minus = new Button("-");
+
+        plus.getStyleClass().add("main-button");
+        minus.getStyleClass().add("main-button");
+
+        plus.setOnAction(ev -> {
+            if(myBoxes.isEmpty()){//se aggiungo un box e non ho tolto nessun box da nessuna parte, vuol dire che sto prendendo quelli della carta
+                try {
+                    GUIController.getInstance().getController().moveBox(
+                            GUIController.getInstance().getNickname(), new Coordinate(-1,-1),
+                            coordinate, box, true);
+                } catch (RemoteException e) {
+                    showNotification("Error with move box", NotificationType.ERROR, 3000);
+                }
+            } else{//altrimenti sto prendendo quelli dalla mappa che ho creato prima
+                try {
+                    GUIController.getInstance().getController().moveBox(
+                            GUIController.getInstance().getNickname(), getFirstCoordinateOfType(box),
+                            coordinate, box, true);
+                } catch (RemoteException e) {
+                    showNotification("Error with move box", NotificationType.ERROR, 3000);
+                }
+
+            }
+        });
+
+        minus.setOnAction(ev -> {//se rimuovo box, allora li aggiungo alla mappa myboxes nel caso l'utente volesse poi riaggiungerli
+            myBoxes.put(coordinate, box);
+        });
+
+        row.getChildren().addAll(label, plus, minus);
+        return row;
+    }
+
+    public Coordinate getFirstCoordinateOfType(BoxType type) {
+        for (Map.Entry<Coordinate, BoxType> entry : myBoxes.entrySet()) {
+            if (entry.getValue() == type) {
+                return entry.getKey();
+            }
+        }
+        return null; // Nessuna coordinata trovata per quel tipo
+    }
+
+
+
     public void setMySpaceship(){
         for (Node node : MySpaceship.getChildren()) {
             if (node instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
                 pane.getChildren().clear();
+
+                pane.setOnMouseClicked(event -> {
+                    String paneId = pane.getId();
+                    String[] parts = paneId.split("_");
+                    int row = Integer.parseInt(parts[1]);
+                    int col = Integer.parseInt(parts[2]);
+
+                    clickedOnTile(new Coordinate(row,col)); // chiamata al tuo metodo
+                });
             }
         }
         try {
@@ -332,7 +467,6 @@ public class InGameController extends GeneralController{
         imageView.setPreserveRatio(true);
 
         imageView.setImage(new Image(getClass().getResourceAsStream(newCard.getImagePath())));
-        System.out.println("newCard - ho ricevuto una nuova card: " + newCard.getImagePath());
         cardPane.getChildren().clear();
         cardPane.getChildren().add(imageView);
     }
@@ -401,6 +535,15 @@ public class InGameController extends GeneralController{
 
     }
 
+    @FXML
+    public void onChoiceBox(){
+        try {
+            GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(),true);
+        } catch (RemoteException e) {
+            showNotification("Error during choice box", NotificationType.ERROR, 5000);
+        }
+
+    }
 
 
 }

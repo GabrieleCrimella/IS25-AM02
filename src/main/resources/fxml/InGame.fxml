@@ -150,7 +150,7 @@
                 <Pane id="cell_9_6" layoutX="214.0" layoutY="386.0" prefHeight="72.0" prefWidth="72.0" />
                 <Pane id="cell_8_6" layoutX="214.0" layoutY="299.0" prefHeight="72.0" prefWidth="72.0" />
                 <Pane id="cell_8_7" layoutX="303.0" layoutY="300.0" prefHeight="72.0" prefWidth="72.0" />
-                <Pane id="cell_7_8" layoutX="404.0" layoutY="210.0" prefHeight="72.0" prefWidth="72.0" />
+                <Pane id="cell_7_8" layoutX="392.0" layoutY="210.0" prefHeight="72.0" prefWidth="72.0" />
                 <Pane id="cell_7_4" layoutX="35.0" layoutY="208.0" prefHeight="72.0" prefWidth="72.0" />
                 <Pane id="cell_8_4" layoutX="35.0" layoutY="299.0" prefHeight="72.0" prefWidth="72.0" />
                 <Pane id="cell_9_4" layoutX="35.0" layoutY="387.0" prefHeight="72.0" prefWidth="72.0" />
@@ -215,8 +215,10 @@
                 <Button onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
             </VBox>
         </StackPane>
-        <Button layoutX="50.0" layoutY="450.0" onAction="#onNextCard" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Next Card" />
-        <Pane fx:id="cardPane" layoutX="118.0" layoutY="556.0" prefHeight="419.0" prefWidth="324.0" />
+
+        <Button layoutX="50.0" layoutY="1000.0" onAction="#onNextCard" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Next Card" />
+        <Pane fx:id="cardPane" layoutX="118.0" layoutY="500.0" prefHeight="419.0" prefWidth="324.0" />
+        <Button layoutX="50.0" layoutY="270.0" onAction="#onChoiceBox" prefHeight="40.0" prefWidth="200.0" styleClass="main-button" text="Choice boxes" />
     </Pane>
 
 
