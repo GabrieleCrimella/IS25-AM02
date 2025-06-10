@@ -11,9 +11,10 @@
 
 <StackPane prefHeight="1080" prefWidth="1920" xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.LobbyController"
            stylesheets="@../style/style.css" fx:id="root">
-    <!-- Background image -->
-    <ImageView preserveRatio="true">
-        <Image url="@../image/background.jpg" />
+    <ImageView fx:id="backgroundImage" fitHeight="1080" fitWidth="1920" preserveRatio="false">
+        <image>
+            <Image url="@../image/background.jpg" />
+        </image>
     </ImageView>
     <Label fx:id="loadingLabel" styleClass="loading-label" visible="false" />
 

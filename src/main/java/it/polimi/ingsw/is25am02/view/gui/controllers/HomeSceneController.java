@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -27,6 +29,9 @@ public class HomeSceneController extends GeneralController{
 
     @FXML
     private Label errorLabel;
+
+    @FXML private ImageView backgroundImage;
+
 
     // Richiamo il ClientController dal singleton di GUIController
     private ClientController clientController;
@@ -76,7 +81,7 @@ public class HomeSceneController extends GeneralController{
 
     public void initialize() {
         VBox temp = newNotificazionContainer();
-
+        backgroundImage.setEffect(new GaussianBlur(30));
         root.getChildren().add(temp);
         StackPane.setAlignment(temp, Pos.TOP_RIGHT);
     }

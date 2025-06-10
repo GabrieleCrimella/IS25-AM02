@@ -14,6 +14,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -37,6 +39,9 @@ public class LobbyController extends GeneralController{
 
     @FXML
     private ListView<LobbyView> lobbyList;
+
+    @FXML private ImageView backgroundImage;
+
 
     @FXML
     private Button joinButton;
@@ -117,6 +122,8 @@ public class LobbyController extends GeneralController{
 
         root.getChildren().add(temp);
         StackPane.setAlignment(temp, Pos.TOP_RIGHT);
+        backgroundImage.setEffect(new GaussianBlur(30));
+
     }
 
     private void hideButtonShowLoading() {
