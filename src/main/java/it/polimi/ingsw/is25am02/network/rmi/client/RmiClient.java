@@ -134,6 +134,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
         if (console.getNickname().equals(nickname)) {
             printOnConsole();
+            console.updateStats();
         }
     }
 
@@ -152,6 +153,9 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                     }
                 }
             }
+        }
+        if (console.getNickname().equals(nickname)) {
+            console.updateStats();
         }
     }
 
@@ -184,6 +188,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
         if (console.getNickname().equals(nickname)) {
             printOnConsole();
+            console.updateStats();
         }
     }
 
@@ -196,6 +201,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
         if (console.getNickname().equals(nickname)) {
             printOnConsole();
+            console.updateStats();
         }
     }
 
@@ -213,7 +219,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
                 if(gameV.getCurrentState().getPhase().equals(StateGameType.TAKE_CARD)||
                         gameV.getCurrentState().getPhase().equals(StateGameType.EFFECT_ON_PLAYER)) {
                     console.moveOnGameboard(position);
-                    System.out.println("position update per " + nickname + " a " + position);
                 }
             }
         }

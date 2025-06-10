@@ -193,7 +193,6 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void newTile(TileV newTile) {
-        //System.out.println("newTile - ho ricevuto una nuova tile");
         Platform.runLater(() -> {
             GUIController.getInstance().<BuildController>switchScene("Build", "build spaceship", controller -> {
                 controller.newTile(newTile);
@@ -204,7 +203,6 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void newCard(CardV card) {
-        System.out.println("newTile - ho ricevuto una nuova tile");
         Platform.runLater(() -> {
             GUIController.getInstance().<InGameController>switchScene("InGame", "in game", controller -> {
                 controller.newCard(card);
@@ -235,13 +233,21 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void setGameView(int level, PlayerColor color) {
-        //System.out.println("setGameView - ho ricevuto una richiesta di game, sono "+getNickname());
         Platform.runLater(()->{
             GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
                 controller.initialize(level, color);
             });
         });
 
+    }
+
+    @Override
+    public void updateStats() {
+        Platform.runLater(()->{
+            GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
+                controller.updateStats();
+            });
+        });
     }
 
     @Override
