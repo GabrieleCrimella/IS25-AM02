@@ -142,18 +142,22 @@ public class PlayerV {
     }
 
     public int getNumFinalRedBoxes() {
+        calculateBoxes();
         return numFinalRedBoxes;
     }
 
     public int getNumFinalBlueBoxes() {
+        calculateBoxes();
         return numFinalBlueBoxes;
     }
 
     public int getNumFinalGreenBoxes() {
+        calculateBoxes();
         return numFinalGreenBoxes;
     }
 
     public int getNumFinalYellowBoxes() {
+        calculateBoxes();
         return numFinalYellowBoxes;
     }
 

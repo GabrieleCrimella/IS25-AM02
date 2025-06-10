@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
+import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
@@ -545,5 +546,14 @@ public class InGameController extends GeneralController{
 
     }
 
-
+    @FXML
+    public void onNextPlayer(){
+        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)){
+            try {
+                GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(),false);
+            } catch (RemoteException e) {
+                showNotification("Error during choice box", NotificationType.ERROR, 5000);
+            }
+        }
+    }
 }

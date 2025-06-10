@@ -219,6 +219,7 @@
         <Button layoutX="50.0" layoutY="1000.0" onAction="#onNextCard" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Next Card" />
         <Pane fx:id="cardPane" layoutX="118.0" layoutY="500.0" prefHeight="419.0" prefWidth="324.0" />
         <Button layoutX="50.0" layoutY="270.0" onAction="#onChoiceBox" prefHeight="40.0" prefWidth="200.0" styleClass="main-button" text="Choice boxes" />
+        <Button layoutX="270.0" layoutY="270.0" onAction="#onNextPlayer" prefHeight="40.0" prefWidth="200.0" styleClass="main-button" text="Next Player" />
     </Pane>
 
 
