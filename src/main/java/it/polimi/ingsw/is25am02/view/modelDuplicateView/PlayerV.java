@@ -162,6 +162,10 @@ public class PlayerV {
     }
 
     public void calculateBoxes(){
+        numFinalBlueBoxes = 0;
+        numFinalRedBoxes = 0;
+        numFinalGreenBoxes = 0;
+        numFinalYellowBoxes = 0;
         for(int i = 0; i < 12; i++) {
             for (int j = 0; j < 12; j++) {
                 if (spaceshipBoard[i][j].isPresent()) {

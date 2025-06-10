@@ -73,6 +73,7 @@ public class InGameController extends GeneralController{
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
     private Map<Coordinate,BoxType> myBoxes = new HashMap<>();
+    private Coordinate boxCoordinate;
 
     @FXML
     public void initialize(int level, PlayerColor color) {
@@ -294,7 +295,7 @@ public class InGameController extends GeneralController{
         }
         if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE)||
                 spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE))) {
-
+            boxCoordinate = coordinate;
             showBoxManagementPopup(coordinate);
 
 
@@ -326,6 +327,7 @@ public class InGameController extends GeneralController{
         overlay.setPadding(new Insets(20));
         overlay.setStyle("-fx-background-color: yellow; -fx-background-radius: 15;");
         overlay.setMaxWidth(600);
+        overlay.setMaxHeight(800);
 
         Label title = new Label("Box Management");
         title.getStyleClass().add("white-context-label");
@@ -550,7 +552,7 @@ public class InGameController extends GeneralController{
     public void onNextPlayer(){
         if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)){
             try {
-                GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(),false);
+                GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1,-1), boxCoordinate, BoxType.GREEN,false);
             } catch (RemoteException e) {
                 showNotification("Error during choice box", NotificationType.ERROR, 5000);
             }
