@@ -73,7 +73,13 @@ public class InGameController extends GeneralController{
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
     private Map<Coordinate,BoxType> myBoxes = new HashMap<>();
+    private  List<Coordinate> batteries = new ArrayList<>();
+    private List<Coordinate> doublecannons = new ArrayList<>();
     private Coordinate boxCoordinate;
+    private int doubleCannonCount = 0;
+    private int batteryCount = 0;
+    @FXML private Label doubleCannonLabel;
+    @FXML private Label batteryLabel;
 
     @FXML
     public void initialize(int level, PlayerColor color) {
@@ -299,6 +305,16 @@ public class InGameController extends GeneralController{
             showBoxManagementPopup(coordinate);
 
 
+        } else if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_CANNON))) {
+            doubleCannonCount++;
+            doubleCannonLabel.setText("Number of double cannon activated: " + doubleCannonCount);
+            doubleCannonLabel.setVisible(true);
+            doublecannons.add(coordinate);
+        } else if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
+            batteryCount++;
+            batteryLabel.setText("Number of batteries used " + batteryCount);
+            batteryLabel.setVisible(true);
+            batteries.add(coordinate);
         }
     }
 
@@ -548,6 +564,7 @@ public class InGameController extends GeneralController{
 
     }
 
+
     @FXML
     public void onNextPlayer(){
         if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)){
@@ -556,6 +573,15 @@ public class InGameController extends GeneralController{
             } catch (RemoteException e) {
                 showNotification("Error during choice box", NotificationType.ERROR, 5000);
             }
+        }
+    }
+
+    @FXML
+    public void onFinishChoiceCannon(){//prendo la lista di batterie e la lista di cannoni e le mando al server
+        try {
+            GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), doublecannons, batteries);
+        } catch (RemoteException e) {
+            showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
     }
 }

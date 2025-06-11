@@ -19,6 +19,8 @@
 
         <Label layoutX="1400.0" layoutY="100.0" styleClass="white-context-label" text="Dice" />
         <Label layoutX="1421.0" layoutY="642.0" styleClass="white-context-label" text="My score" />
+        <Label fx:id="doubleCannonLabel" layoutX="50.0" layoutY="400.0" styleClass="white-context-label" text="Double cannon activated: " visible="false"/>
+        <Label fx:id="batteryLabel" layoutX="50.0" layoutY="450.0" styleClass="white-context-label" text="Batteries selected: " visible="false"/>
 
         <VBox layoutX="1298.0" layoutY="700.0" prefHeight="300" prefWidth="600.0" spacing="10" styleClass="info-box">
             <HBox VBox.vgrow="ALWAYS">
@@ -219,6 +221,7 @@
         <Button layoutX="50.0" layoutY="1000.0" onAction="#onNextCard" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Next Card" />
         <Pane fx:id="cardPane" layoutX="118.0" layoutY="500.0" prefHeight="419.0" prefWidth="324.0" />
         <Button layoutX="50.0" layoutY="270.0" onAction="#onChoiceBox" prefHeight="40.0" prefWidth="200.0" styleClass="main-button" text="Choice boxes" />
+        <Button layoutX="50.0" layoutY="340.0" onAction="#onFinishChoiceCannon" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice cannon" />
         <Button layoutX="270.0" layoutY="270.0" onAction="#onNextPlayer" prefHeight="40.0" prefWidth="200.0" styleClass="main-button" text="Next Player" />
     </Pane>
 
