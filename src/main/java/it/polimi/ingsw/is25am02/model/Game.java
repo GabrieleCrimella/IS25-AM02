@@ -40,8 +40,8 @@ public class Game implements Game_Interface {
 
     public Game(List<Player> players, int level) {
         this.players = players;
-        this.observers = new ConcurrentHashMap<>();
-        for (Player p : players) {
+        this.observers= new ConcurrentHashMap<>();
+        for(Player p : players){
             observers.put(p.getNickname(), p.getObserver());
         }
         this.level = level;
@@ -1026,6 +1026,7 @@ public class Game implements Game_Interface {
         }
     }
 
+    //todo qui mancano gli update perchè odio i box
     @Override
     public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) {
         try {

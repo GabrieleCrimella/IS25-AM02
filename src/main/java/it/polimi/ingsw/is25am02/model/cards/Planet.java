@@ -17,7 +17,7 @@ import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.DECISION
 
 public class Planet extends Card {
     private final int daysLost;
-    private final ArrayList<LinkedList<Box>> planetOffers;
+    private ArrayList<LinkedList<Box>> planetOffers;
     private final ArrayList<LinkedList<BoxType>> planetOffersTypes;
     private final ArrayList<Integer> occupied; //tiene conto di quali pianeti sono occupati
     private final LinkedList<Player> landed;
@@ -39,8 +39,10 @@ public class Planet extends Card {
     }
 
     private void initializeOccupied(){
+        planetOffers = new ArrayList<LinkedList<Box>>();
         for (int i = 0; i < planetOffersTypes.size(); i++) {
             this.occupied.add(0);
+            planetOffers.add(new LinkedList<>());
         }
     }
 
@@ -119,8 +121,10 @@ public class Planet extends Card {
                     }
                 }
             }
-            planetOffers.add(index, planetList);
-            setStateCard(StateCardType.BOXMANAGEMENT);
+            //planetOffers.add(index, planetList);
+            planetOffers.set(index, planetList);
+            game.getCurrentCard().setStateCard(StateCardType.BOXMANAGEMENT);
+            //setStateCard(StateCardType.BOXMANAGEMENT);
             boxesWon = planetOffers.get(index);
         }
         else if (player.equals(game.getGameboard().getRanking().getLast())){

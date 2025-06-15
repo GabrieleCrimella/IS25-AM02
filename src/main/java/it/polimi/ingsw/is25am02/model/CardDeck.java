@@ -236,6 +236,8 @@ public class CardDeck {
                     case "PLANETS":
                         daysLost = levelNode.get("daysLost").asInt();
                         planetOffersTypes.clear();
+                        ArrayList<LinkedList<Box>> currentPlanetOffers = new ArrayList<>();
+                        ArrayList<LinkedList<BoxType>> currentPlanetOffersTypes = new ArrayList<>();
                         for (JsonNode boxListNode : levelNode.get("boxes")) {
                             LinkedList<BoxType> boxList = new LinkedList<>();
                             for (JsonNode boxNode : boxListNode) {
@@ -252,11 +254,11 @@ public class CardDeck {
                                     throw new IllegalArgumentException("I cannot add a box to planetoffer from JSON");
                                 boxList.add(box);
                             }
-
-                            planetOffersTypes.add(boxList); // Aggiungi la lista alla lista principale
+                            currentPlanetOffers.add(new LinkedList<Box>()); //sto mettendo una riga vuota per ogni planetoffers.
+                            currentPlanetOffersTypes.add(boxList); // Aggiungi la lista alla lista principale
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Planet(level, store, daysLost, planetOffers, planetOffersTypes, imagepath,comment,testFlight));
+                        initialDeck.add(new Planet(level, store, daysLost, planetOffers, currentPlanetOffersTypes, imagepath,comment,testFlight));
                         break;
                     case "WARZONE1":
                         daysLost = levelNode.get("daysLost").asInt();
