@@ -65,7 +65,8 @@
       "right": "> Your ship is correct, wait until everyone is checked right",
       "wrong": "> Your ship is wrong remove some tiles to make it right"
     },
-    "ready": "> We are waiting for all players to be ready to start the game, use /status to see how other players are doing"
+    "ready": "> We are waiting for all players to be ready to start the game, use /status to see how other players are doing",
+    "loginDone": "> You are logged in as {nickname}"
   },
   "disconnect": {
     "lobby_owner": "> The owner has disconnected from the lobby, so you got kicked out",

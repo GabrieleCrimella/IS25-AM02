@@ -100,6 +100,7 @@ public class GUIApplication extends Application implements ConsoleClient {
         HomeSceneController controller = loader.getController();
         controller.initialize();
 
+        GUIController.getInstance().addControllerToList((it.polimi.ingsw.is25am02.view.gui.controllers.GeneralController) controller, "HomeScene");
 
         stage.show();
     }
@@ -212,7 +213,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     }
 
     @Override
-    public void moveOnGameboard( int pos) {
+    public void moveOnGameboard(int pos) {
         Platform.runLater(() -> {
             GUIController.getInstance().<InGameController>switchScene("InGame", "in game", controller -> {
                 controller.movePlayerToPosition(pos);
@@ -224,7 +225,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     public void setBuildView(int level, PlayerColor color) {
         //System.out.println("setBuildView - ho ricevuto una richiesta di build");
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             GUIController.getInstance().<BuildController>switchScene("Build", "Build", controller -> {
                 controller.initialize(level, color);
             });
@@ -233,7 +234,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void setGameView(int level, PlayerColor color) {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
                 controller.initialize(level, color);
             });
@@ -243,7 +244,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void updateStats() {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
                 controller.updateStats();
             });

@@ -32,13 +32,15 @@ public class HomeSceneController extends GeneralController{
 
     @FXML private ImageView backgroundImage;
 
+    private String nickname;
+
 
     // Richiamo il ClientController dal singleton di GUIController
     private ClientController clientController;
 
     @FXML
     private void onLogin() {
-        String nickname = nicknameField.getText().trim();
+        nickname = nicknameField.getText().trim();
         clientController = GUIController.getInstance().getController();
 
         if (nickname.isEmpty()) {
@@ -47,20 +49,22 @@ public class HomeSceneController extends GeneralController{
         }
 
         try {
-
             clientController.nicknameRegistration(nickname, clientController.getVirtualView());
-            GUIController c = GUIController.getInstance();
-            c.setNickname(nickname);
-
-            // Cambio scena verso la lobby
-            //todo va fatto solo se il server cambia stato
-
-            GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
-                g.initialize(clientController);
-            });
         } catch (Exception e) {
             showError("Errore durante il login: " + e.getMessage());
         }
+    }
+
+    public void loginDone(){
+        GUIController c = GUIController.getInstance();
+        c.setNickname(nickname);
+
+        // Cambio scena verso la lobby
+        //todo va fatto solo se il server cambia stato
+
+        GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
+            g.initialize(clientController);
+        });
     }
 
     @FXML

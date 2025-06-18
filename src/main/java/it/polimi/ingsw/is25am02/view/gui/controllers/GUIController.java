@@ -40,6 +40,13 @@ public class GUIController implements Runnable {
         }
     }
 
+    public synchronized void addControllerToList(GeneralController c, String fxmlName) {
+        if (!controllers.containsKey(fxmlName)) {
+            controllers.put(fxmlName, c);
+            inUse = fxmlName;
+        }
+    }
+
     public static synchronized GUIController getInstance() {
         if (instance == null) {
             throw new IllegalStateException("GUIController non è stato ancora inizializzato!");
@@ -151,26 +158,32 @@ public class GUIController implements Runnable {
     }
 
     public void showMessage(String keys, Map<String, String> params) {
-        if (keys.equals("build.addTile")) {
+        if (keys.equals("info.loginDone")) {
+            if (inUse.equals("HomeScene")) {
+                HomeSceneController homeCtrl = (HomeSceneController) controllers.get(inUse);
+                homeCtrl.loginDone();
+                return;
+            }
+        } else if (keys.equals("build.addTile")) {
             if (inUse.equals("Build")) {
                 BuildController bldCtrl = (BuildController) controllers.get(inUse);
                 bldCtrl.onAddTileSuccess();
                 return;
             }
-        }else if (keys.equals("build.returnTile")){
-            if(inUse.equals("Build")){
+        } else if (keys.equals("build.returnTile")) {
+            if (inUse.equals("Build")) {
                 BuildController bldCtrl = (BuildController) controllers.get(inUse);
                 bldCtrl.onReturnTileSuccess();
                 return;
             }
-        }else if(keys.equals("info.gameState")){
-            if(params.containsKey("state") && params.get("state").equals("INITIALIZATION_SPACESHIP")){
+        } else if (keys.equals("info.gameState")) {
+            if (params.containsKey("state") && params.get("state").equals("INITIALIZATION_SPACESHIP")) {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
                     bldCtrl.setInitializationSpaceship();
                 }
             }
-        }else if (keys.equals("info.finished")) {
+        } else if (keys.equals("info.finished")) {
             if (inUse.equals("Build")) {
                 BuildController bldCtrl = (BuildController) controllers.get(inUse);
                 bldCtrl.onShipFinished();
@@ -187,13 +200,13 @@ public class GUIController implements Runnable {
             getController().getGameV().getHourglass().setTimeLeft(timeleft);
             BuildController bldCtrl = (BuildController) controllers.get(inUse);
             bldCtrl.seeHourglass(timeleft);
-        }else {
+        } else {
             controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
     }
 
     public void onRemoveTile(Coordinate coordinate) {
-        if(inUse.equals("Build")) {
+        if (inUse.equals("Build")) {
             BuildController bldCtrl = (BuildController) controllers.get(inUse);
             bldCtrl.onRemoveTile(coordinate);
         }

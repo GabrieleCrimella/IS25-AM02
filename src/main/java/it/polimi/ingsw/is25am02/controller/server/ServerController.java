@@ -164,6 +164,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                         client.setMenuState(MenuState.MENU);
                         client.setNickname(nickname);
                         pingManager.registerClient(nickname);
+                        client.displayMessage("info.loginDone", Map.of("nickname", nickname));
                     } else {
                         client.reportError("error.menu.nickname.taken", null);
                     }
