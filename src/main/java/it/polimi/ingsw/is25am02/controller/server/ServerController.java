@@ -260,6 +260,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                             Lobby lobby = lobbies.get(lobbyId);
                             Player p = new Player(new Spaceship(lobby.getLevel()), nickname, color, client, lobbyId);
                             lobby.addPlayer(p);
+                            client.displayMessage("lobby.join", Map.of("num", String.valueOf(lobby.getId())));
                             if (lobby.isFull()) {
                                 startGame(lobby);
                                 lobbies.remove(lobbyId);
@@ -270,7 +271,6 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                                     player.getObserver().setBuildView(lobby.getLevel(), player.getColor());
                                 }
                             } else {
-                                client.displayMessage("lobby.join", Map.of("num", String.valueOf(lobby.getId())));
                                 client.setMenuState(MenuState.WAITING);
                             }
                         }

@@ -64,6 +64,8 @@ public class LobbyController extends GeneralController{
     @FXML
     private ChoiceBox<String> colorChoiceBox;
 
+    private StackPane dimBackground;
+
 
     @FXML
     private Label errorLabel;
@@ -176,7 +178,7 @@ public class LobbyController extends GeneralController{
     }
 
     private void showJoinDialog(LobbyView lobby) {
-        StackPane dimBackground = new StackPane();
+        dimBackground = new StackPane();
         dimBackground.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6);");
         dimBackground.setPrefSize(root.getWidth(), root.getHeight());
 
@@ -204,8 +206,6 @@ public class LobbyController extends GeneralController{
 
             try {
                 clientController.joinLobby(clientController.getVirtualView(), lobby.getId(), controller.getNickname(), selectedColor);
-                hideButtonShowLoading();
-                root.getChildren().remove(dimBackground); // Rimuove overlay
             } catch (RemoteException ex) {
                 errorLabel.setText("Errore durante il join: " + ex.getMessage());
             }
@@ -318,5 +318,10 @@ public class LobbyController extends GeneralController{
 
     private void displayError(String message) {
         Platform.runLater(() -> errorLabel.setText(message));
+    }
+
+    public void onJoinLobbySuccess() {
+        hideButtonShowLoading();
+        root.getChildren().remove(dimBackground); // Rimuove overlay
     }
 }

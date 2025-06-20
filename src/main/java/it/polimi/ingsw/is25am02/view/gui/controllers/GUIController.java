@@ -158,7 +158,13 @@ public class GUIController implements Runnable {
     }
 
     public void showMessage(String keys, Map<String, String> params) {
-        if (keys.equals("info.loginDone")) {
+        if (keys.equals("lobby.join")) {
+            if(inUse.equals("lobby")){
+                LobbyController lobbyCtrl = (LobbyController) controllers.get(inUse);
+                lobbyCtrl.onJoinLobbySuccess();
+                return;
+            }
+        } else if (keys.equals("info.loginDone")) {
             if (inUse.equals("HomeScene")) {
                 HomeSceneController homeCtrl = (HomeSceneController) controllers.get(inUse);
                 homeCtrl.loginDone();
