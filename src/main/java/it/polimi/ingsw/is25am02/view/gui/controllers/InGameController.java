@@ -512,6 +512,7 @@ public class InGameController extends GeneralController{
     }
 
     public void movePlayerToPosition(int cellId){
+        int numStep = GUIController.getInstance().getController().getGameV().getGlobalBoard().getNumstep();
 
         Map<PlayerColor, ImageView> pieceMap = Map.of(
                 PlayerColor.BLUE, playerBluePiece,
@@ -526,7 +527,9 @@ public class InGameController extends GeneralController{
             showNotification("Error taking player color", NotificationType.ERROR, 5000);
         }
         ImageView myPiece = pieceMap.get(mycolor);
-        Pane targetPane = GameboardCells.get(cellId+1);
+        int targetIndex = ((cellId + 1) % numStep + numStep) % numStep;
+        System.out.println("Target index: " + targetIndex);
+        Pane targetPane = GameboardCells.get(targetIndex);
 
         if (targetPane != null && myPiece != null) {
             Bounds bounds = targetPane.getBoundsInParent();
@@ -551,7 +554,9 @@ public class InGameController extends GeneralController{
                         .getPositions()
                         .get(player);
 
-                Pane targetPaneOther = GameboardCells.get(cellIdOther+1);
+                int targetIndexOther = ((cellIdOther + 1) % numStep + numStep) % numStep;
+                System.out.println("Target index other: " + targetIndexOther);
+                Pane targetPaneOther = GameboardCells.get(targetIndexOther);
 
                 if (targetPaneOther != null && piece != null) {
                     Bounds bounds = targetPaneOther.getBoundsInParent();
