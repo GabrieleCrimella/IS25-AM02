@@ -89,6 +89,10 @@ public class InGameController extends GeneralController {
     private Button choiceboxes;
     @FXML
     private Button finishcannon;
+    @FXML
+    private Button choiceboxfalse;
+    @FXML
+    private Button finishmoveboxes;
 
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
@@ -429,6 +433,7 @@ public class InGameController extends GeneralController {
                     GUIController.getInstance().getController().moveBox(
                             GUIController.getInstance().getNickname(), getFirstCoordinateOfType(box),
                             coordinate, box, true);
+                    myBoxes.remove(coordinate);
                 } catch (RemoteException e) {
                     showNotification("Error with move box", NotificationType.ERROR, 3000);
                 }
@@ -437,7 +442,22 @@ public class InGameController extends GeneralController {
         });
 
         minus.setOnAction(ev -> {//se rimuovo box, allora li aggiungo alla mappa myboxes nel caso l'utente volesse poi riaggiungerli
-            myBoxes.put(coordinate, box);
+            if(GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
+                try {
+                    GUIController.getInstance().getController().moveBox(
+                            GUIController.getInstance().getNickname(), coordinate, new Coordinate(-1, -1), box, true);
+                } catch (RemoteException e) {
+                    showNotification("Error with move box", NotificationType.ERROR, 3000);
+                }
+                myBoxes.put(coordinate, box);
+            } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE)) {
+                try {
+                    GUIController.getInstance().getController().removeBox(GUIController.getInstance().getNickname(), coordinate, box);
+                } catch (RemoteException e) {
+                    showNotification("Error with remove box", NotificationType.ERROR, 3000);
+                }
+            }
+
         });
 
         row.getChildren().addAll(label, plus, minus);
@@ -512,9 +532,9 @@ public class InGameController extends GeneralController {
         if (newCard.getCardType().equals(CardType.ABANDONED_STATION)) {
             choiceboxes.setVisible(true);
             choiceboxes.setDisable(false);
+            choiceboxfalse.setVisible(true);
+            choiceboxfalse.setDisable(false);
         } else if (newCard.getCardType().equals(CardType.TRAFFICKER)) {
-            choiceboxes.setVisible(true);
-            choiceboxes.setDisable(false);
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
         }
@@ -524,6 +544,19 @@ public class InGameController extends GeneralController {
     public void onNextCard() {
         try {
             GUIController.getInstance().getController().playNextCard(GUIController.getInstance().getNickname());
+            choiceboxes.setVisible(false);
+            choiceboxes.setDisable(true);
+            choiceboxfalse.setVisible(false);
+            choiceboxfalse.setDisable(true);
+            finishcannon.setVisible(false);
+            finishcannon.setDisable(true);
+            doubleCannonLabel.setVisible(false);
+            batteryLabel.setVisible(false);
+            choiceboxfalse.setVisible(false);
+            finishmoveboxes.setVisible(false);
+            finishmoveboxes.setDisable(true);
+            batteries = new ArrayList<>();
+            doublecannons = new ArrayList<>();
         } catch (RemoteException e) {
             showNotification("Error taking next card", NotificationType.ERROR, 5000);
         }
@@ -588,18 +621,48 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
+    public void onChoiceBoxFalse(){
+        try {
+            GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), false);
+        } catch (RemoteException e) {
+            showNotification("Error during choice box", NotificationType.ERROR, 5000);
+        }
+    }
+
+    @FXML
     public void onChoiceBox() {
         try {
             GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), true);
+            choiceboxfalse.setVisible(false);
+            finishmoveboxes.setVisible(true);
+            finishmoveboxes.setDisable(false);
         } catch (RemoteException e) {
             showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
 
     }
 
+    @FXML
+    public void onfinishMoveBoxes(){
+        try {
+            GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1, -1), boxCoordinate, BoxType.GREEN, false);
+        } catch (RemoteException e) {
+            showNotification("Error during choice box", NotificationType.ERROR, 5000);
+        }
+    }
+
 
     @FXML
     public void onNextPlayer() {
+        choiceboxes.setVisible(false);
+        choiceboxes.setDisable(true);
+        choiceboxfalse.setVisible(false);
+        choiceboxfalse.setDisable(true);
+        finishcannon.setVisible(false);
+        finishcannon.setDisable(true);
+        doubleCannonLabel.setVisible(false);
+        batteryLabel.setVisible(false);
+        choiceboxfalse.setVisible(false);
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)) {
             if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
                 try {
@@ -619,12 +682,6 @@ public class InGameController extends GeneralController {
             if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
                 try {
                     GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1, -1), boxCoordinate, BoxType.GREEN, false);
-                } catch (RemoteException e) {
-                    showNotification("Error during move box", NotificationType.ERROR, 5000);
-                }
-            } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.DECISION)) {
-                try {
-                    GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), false);
                 } catch (RemoteException e) {
                     showNotification("Error during move box", NotificationType.ERROR, 5000);
                 }
@@ -648,6 +705,12 @@ public class InGameController extends GeneralController {
     public void onFinishChoiceCannon() {//prendo la lista di batterie e la lista di cannoni e le mando al server
         try {
             GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), doublecannons, batteries);
+            choiceboxes.setVisible(true);
+            choiceboxes.setDisable(false);
+            choiceboxfalse.setVisible(true);
+            choiceboxfalse.setDisable(false);
+            finishcannon.setVisible(false);
+            finishcannon.setDisable(true);
         } catch (RemoteException e) {
             showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
