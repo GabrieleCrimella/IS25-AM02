@@ -213,7 +213,6 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                         client.displayMessage("lobby.show", Map.of("num", String.valueOf(lobbyId), "owner", lobbies.get(lobbyId).getPlayers().getFirst().getNickname(), "att", String.valueOf(lobbies.get(lobbyId).getPlayers().size()), "max", String.valueOf(lobbies.get(lobbyId).getMaxPlayers())));
                     }
                     client.setLobbiesView(convertToLobbyViewMap(lobbies));
-                    System.out.println("ricevuta richiesta lsita lobby");
                 }
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "connection problem in method getLobbies", e);

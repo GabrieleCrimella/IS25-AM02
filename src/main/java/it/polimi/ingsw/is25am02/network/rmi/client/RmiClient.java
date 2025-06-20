@@ -424,6 +424,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             }
         }
         printOnConsole();
+        console.updateCurrentPlayer();
     }
 
     @Override
