@@ -2,10 +2,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
-import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
-import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
-import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
@@ -33,7 +30,7 @@ import javafx.scene.layout.VBox;
 import java.rmi.RemoteException;
 import java.util.*;
 
-public class InGameController extends GeneralController{
+public class InGameController extends GeneralController {
     @FXML
     private StackPane root;
     @FXML
@@ -50,39 +47,62 @@ public class InGameController extends GeneralController{
     private Pane SpaceshipPane;
     @FXML
     private StackPane viewSpaceshipPopup;
-    @FXML private Label creditsValue;
-    @FXML private Label lostTilesValue;
-    @FXML private Label batteriesValue;
-    @FXML private Label RedValue;
-    @FXML private Label GreenValue;
-    @FXML private Label BlueValue;
-    @FXML private Label YellowValue;
-    @FXML private Label humansValue;
-    @FXML private Label brownAliensValue;
-    @FXML private Label purpleAliensValue;
-    @FXML private ImageView MySpaceshipImage;
-    @FXML private ImageView backgroundImage;
-    @FXML private Pane MySpaceship;
-    @FXML private Pane cardPane;
-    @FXML private ImageView playerBluePiece;
-    @FXML private ImageView playerGreenPiece;
-    @FXML private ImageView playerRedPiece;
-    @FXML private ImageView playerYellowPiece;
-    @FXML private Label currentPlayerNameLabel;
-    @FXML private Button choiceboxes;
-    @FXML private Button finishcannon;
+    @FXML
+    private Label creditsValue;
+    @FXML
+    private Label lostTilesValue;
+    @FXML
+    private Label batteriesValue;
+    @FXML
+    private Label RedValue;
+    @FXML
+    private Label GreenValue;
+    @FXML
+    private Label BlueValue;
+    @FXML
+    private Label YellowValue;
+    @FXML
+    private Label humansValue;
+    @FXML
+    private Label brownAliensValue;
+    @FXML
+    private Label purpleAliensValue;
+    @FXML
+    private ImageView MySpaceshipImage;
+    @FXML
+    private ImageView backgroundImage;
+    @FXML
+    private Pane MySpaceship;
+    @FXML
+    private Pane cardPane;
+    @FXML
+    private ImageView playerBluePiece;
+    @FXML
+    private ImageView playerGreenPiece;
+    @FXML
+    private ImageView playerRedPiece;
+    @FXML
+    private ImageView playerYellowPiece;
+    @FXML
+    private Label currentPlayerNameLabel;
+    @FXML
+    private Button choiceboxes;
+    @FXML
+    private Button finishcannon;
 
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
-    private Map<Coordinate,BoxType> myBoxes = new HashMap<>();
-    private  List<Coordinate> batteries = new ArrayList<>();
+    private Map<Coordinate, BoxType> myBoxes = new HashMap<>();
+    private List<Coordinate> batteries = new ArrayList<>();
     private List<Coordinate> doublecannons = new ArrayList<>();
     private Coordinate boxCoordinate;
     private int doubleCannonCount = 0;
     private int batteryCount = 0;
-    @FXML private Label doubleCannonLabel;
-    @FXML private Label batteryLabel;
+    @FXML
+    private Label doubleCannonLabel;
+    @FXML
+    private Label batteryLabel;
 
     @FXML
     public void initialize(int level, PlayerColor color) {
@@ -221,7 +241,7 @@ public class InGameController extends GeneralController{
                             Optional<TileV> tileOpt = spaceship[row][col];
                             if (tileOpt.isPresent()) {
                                 TileV tile = tileOpt.get();
-                                StackPane tileNode = createTile(tile,true);
+                                StackPane tileNode = createTile(tile, true);
 
                                 for (Node node : SpaceshipPane.getChildren()) {
                                     if (node instanceof Pane && node.getId() != null && node.getId().equals("cell_" + row + "_" + col)) {
@@ -244,7 +264,7 @@ public class InGameController extends GeneralController{
 
             playerButtonsContainer.getChildren().add(playerButton);
         }
-        for(PlayerV p: GUIController.getInstance().getController().getGameV().getPlayers()){
+        for (PlayerV p : GUIController.getInstance().getController().getGameV().getPlayers()) {
             playerColors.put(p.getNickname(), p.getColor());
         }
     }
@@ -254,19 +274,18 @@ public class InGameController extends GeneralController{
         viewSpaceshipPopup.setVisible(false);
     }
 
-    private StackPane createTile(TileV tile,boolean isOtherPlayer) {
+    private StackPane createTile(TileV tile, boolean isOtherPlayer) {
         // Container della tile
         StackPane tilePane = new StackPane();
         ImageView imageView = new ImageView();
-        if(isOtherPlayer){
+        if (isOtherPlayer) {
 
-        tilePane.setPrefSize(149, 149); // stessa misura usata altrove
-        tilePane.setMinSize(149, 149);
-        tilePane.setMaxSize(149, 149);
+            tilePane.setPrefSize(149, 149); // stessa misura usata altrove
+            tilePane.setMinSize(149, 149);
+            tilePane.setMaxSize(149, 149);
             imageView.setFitWidth(149);
             imageView.setFitHeight(149);
-        }
-        else{
+        } else {
             tilePane.setPrefSize(72, 72); // stessa misura usata altrove
             tilePane.setMinSize(72, 72);
             tilePane.setMaxSize(72, 72);
@@ -302,18 +321,18 @@ public class InGameController extends GeneralController{
         } catch (RemoteException e) {
             showNotification("Error loading your spaceship", NotificationType.ERROR, 5000);
         }
-        if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE)||
+        if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) ||
                 spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE))) {
             boxCoordinate = coordinate;
             showBoxManagementPopup(coordinate);
 
 
-        } else if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_CANNON))) {
+        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_CANNON))) {
             doubleCannonCount++;
             doubleCannonLabel.setText("Number of double cannon activated: " + doubleCannonCount);
             doubleCannonLabel.setVisible(true);
             doublecannons.add(coordinate);
-        } else if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
+        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
             batteryCount++;
             batteryLabel.setText("Number of batteries used: " + batteryCount);
             batteryLabel.setVisible(true);
@@ -366,7 +385,7 @@ public class InGameController extends GeneralController{
                 Coordinate coord = entry.getKey();
                 BoxType type = entry.getValue();
                 try {
-                    GUIController.getInstance().getController().removeBox(GUIController.getInstance().getNickname(),coord, type);  // Assicurati che il metodo esista e sia accessibile
+                    GUIController.getInstance().getController().removeBox(GUIController.getInstance().getNickname(), coord, type);  // Assicurati che il metodo esista e sia accessibile
                 } catch (RemoteException e) {
                     showNotification("Error removing boxes", NotificationType.ERROR, 5000);
                 }
@@ -387,7 +406,7 @@ public class InGameController extends GeneralController{
         HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER);
 
-        Label label = new Label(String.valueOf(box.name() + " boxes: " ));
+        Label label = new Label(String.valueOf(box.name() + " boxes: "));
         label.getStyleClass().add("info-value");
 
         Button plus = new Button("+");
@@ -397,15 +416,15 @@ public class InGameController extends GeneralController{
         minus.getStyleClass().add("main-button");
 
         plus.setOnAction(ev -> {
-            if(myBoxes.isEmpty()){//se aggiungo un box e non ho tolto nessun box da nessuna parte, vuol dire che sto prendendo quelli della carta
+            if (myBoxes.isEmpty()) {//se aggiungo un box e non ho tolto nessun box da nessuna parte, vuol dire che sto prendendo quelli della carta
                 try {
                     GUIController.getInstance().getController().moveBox(
-                            GUIController.getInstance().getNickname(), new Coordinate(-1,-1),
+                            GUIController.getInstance().getNickname(), new Coordinate(-1, -1),
                             coordinate, box, true);
                 } catch (RemoteException e) {
                     showNotification("Error with move box", NotificationType.ERROR, 3000);
                 }
-            } else{//altrimenti sto prendendo quelli dalla mappa che ho creato prima
+            } else {//altrimenti sto prendendo quelli dalla mappa che ho creato prima
                 try {
                     GUIController.getInstance().getController().moveBox(
                             GUIController.getInstance().getNickname(), getFirstCoordinateOfType(box),
@@ -435,8 +454,7 @@ public class InGameController extends GeneralController{
     }
 
 
-
-    public void setMySpaceship(){
+    public void setMySpaceship() {
         for (Node node : MySpaceship.getChildren()) {
             if (node instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
                 pane.getChildren().clear();
@@ -447,7 +465,7 @@ public class InGameController extends GeneralController{
                     int row = Integer.parseInt(parts[1]);
                     int col = Integer.parseInt(parts[2]);
 
-                    clickedOnTile(new Coordinate(row,col)); // chiamata al tuo metodo
+                    clickedOnTile(new Coordinate(row, col)); // chiamata al tuo metodo
                 });
             }
         }
@@ -460,7 +478,7 @@ public class InGameController extends GeneralController{
                     Optional<TileV> tileOpt = spaceship[row][col];
                     if (tileOpt.isPresent()) {
                         TileV tile = tileOpt.get();
-                        StackPane tileNode = createTile(tile,false);
+                        StackPane tileNode = createTile(tile, false);
 
                         for (Node node : MySpaceship.getChildren()) {
                             if (node instanceof Pane && node.getId() != null && node.getId().equals("cell_" + row + "_" + col)) {
@@ -491,10 +509,10 @@ public class InGameController extends GeneralController{
         imageView.setImage(new Image(getClass().getResourceAsStream(newCard.getImagePath())));
         cardPane.getChildren().clear();
         cardPane.getChildren().add(imageView);
-        if(newCard.getCardType().equals(CardType.ABANDONED_STATION)){
+        if (newCard.getCardType().equals(CardType.ABANDONED_STATION)) {
             choiceboxes.setVisible(true);
             choiceboxes.setDisable(false);
-        } else if(newCard.getCardType().equals(CardType.TRAFFICKER)){
+        } else if (newCard.getCardType().equals(CardType.TRAFFICKER)) {
             choiceboxes.setVisible(true);
             choiceboxes.setDisable(false);
             finishcannon.setVisible(true);
@@ -503,7 +521,7 @@ public class InGameController extends GeneralController{
     }
 
     @FXML
-    public void onNextCard(){
+    public void onNextCard() {
         try {
             GUIController.getInstance().getController().playNextCard(GUIController.getInstance().getNickname());
         } catch (RemoteException e) {
@@ -511,7 +529,7 @@ public class InGameController extends GeneralController{
         }
     }
 
-    public void movePlayerToPosition(int cellId){
+    public void movePlayerToPosition(int cellId) {
         int numStep = GUIController.getInstance().getController().getGameV().getGlobalBoard().getNumstep();
 
         Map<PlayerColor, ImageView> pieceMap = Map.of(
@@ -528,7 +546,6 @@ public class InGameController extends GeneralController{
         }
         ImageView myPiece = pieceMap.get(mycolor);
         int targetIndex = ((cellId + 1) % numStep + numStep) % numStep;
-        System.out.println("Target index: " + targetIndex);
         Pane targetPane = GameboardCells.get(targetIndex);
 
         if (targetPane != null && myPiece != null) {
@@ -555,7 +572,6 @@ public class InGameController extends GeneralController{
                         .get(player);
 
                 int targetIndexOther = ((cellIdOther + 1) % numStep + numStep) % numStep;
-                System.out.println("Target index other: " + targetIndexOther);
                 Pane targetPaneOther = GameboardCells.get(targetIndexOther);
 
                 if (targetPaneOther != null && piece != null) {
@@ -572,9 +588,9 @@ public class InGameController extends GeneralController{
     }
 
     @FXML
-    public void onChoiceBox(){
+    public void onChoiceBox() {
         try {
-            GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(),true);
+            GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), true);
         } catch (RemoteException e) {
             showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
@@ -583,21 +599,43 @@ public class InGameController extends GeneralController{
 
 
     @FXML
-    public void onNextPlayer(){
-        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)){
-            try {
-                //GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1,-1), boxCoordinate, BoxType.GREEN,false);
-                GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(),false);
-            } catch (RemoteException e) {
-                showNotification("Error during choice box", NotificationType.ERROR, 5000);
+    public void onNextPlayer() {
+        if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)) {
+            if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
+                try {
+                    GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1, -1), boxCoordinate, BoxType.GREEN, false);
+                } catch (RemoteException e) {
+                    showNotification("Error during move box", NotificationType.ERROR, 5000);
+                }
+            } else {
+                try {
+
+                    GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), false);
+                } catch (RemoteException e) {
+                    showNotification("Error during choice box", NotificationType.ERROR, 5000);
+                }
             }
-        } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER)){
-            try {
-                GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), new ArrayList<>(), new ArrayList<>());
-            } catch (RemoteException e) {
-                showNotification("Error during choice box", NotificationType.ERROR, 5000);
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER)) {
+            if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
+                try {
+                    GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1, -1), boxCoordinate, BoxType.GREEN, false);
+                } catch (RemoteException e) {
+                    showNotification("Error during move box", NotificationType.ERROR, 5000);
+                }
+            } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.DECISION)) {
+                try {
+                    GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), false);
+                } catch (RemoteException e) {
+                    showNotification("Error during move box", NotificationType.ERROR, 5000);
+                }
+            } else {
+                try {
+                    GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), new ArrayList<>(), new ArrayList<>());
+                } catch (RemoteException e) {
+                    showNotification("Error during choice box", NotificationType.ERROR, 5000);
+                }
             }
-        }else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE)){
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE)) {
             try {
                 GUIController.getInstance().getController().choiceDoubleMotor(GUIController.getInstance().getNickname(), new ArrayList<>(), new ArrayList<>());
             } catch (RemoteException e) {
@@ -607,7 +645,7 @@ public class InGameController extends GeneralController{
     }
 
     @FXML
-    public void onFinishChoiceCannon(){//prendo la lista di batterie e la lista di cannoni e le mando al server
+    public void onFinishChoiceCannon() {//prendo la lista di batterie e la lista di cannoni e le mando al server
         try {
             GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), doublecannons, batteries);
         } catch (RemoteException e) {
