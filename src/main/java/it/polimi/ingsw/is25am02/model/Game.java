@@ -1032,7 +1032,10 @@ public class Game implements Game_Interface {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.BOXMANAGEMENT, player);
             currentPlayerControl(player);
-            moveControl(player, start, end, boxType, on);
+            if (on){
+                moveControl(player, start, end, boxType, on);
+            }
+
 
             if (start.x() == -1 && start.y() == -1) { //Start equals Planet
                 getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
@@ -1641,7 +1644,14 @@ public class Game implements Game_Interface {
             if (p.getSpaceship().calculateNumHuman() == 0) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
-                p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
+                try {
+                    p.getObserver().displayMessage("You are out of the game", null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                //p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
             }
 
             //0 motorPower in OpenSpace
@@ -1649,7 +1659,12 @@ public class Game implements Game_Interface {
                 if (getCurrentCard().getFly().get(p) == 0) {
                     getGameboard().getPositions().remove(p);
                     p.setStatePlayer(StatePlayerType.OUT_GAME);
-                    p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
+                    try {
+                        p.getObserver().displayMessage("You are out of the game", null);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    //p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
                 }
             }
 
@@ -1657,7 +1672,12 @@ public class Game implements Game_Interface {
             if (positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
-                p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
+                try {
+                    p.getObserver().displayMessage("You are out of the game", null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                //p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
             }
         }
         getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());

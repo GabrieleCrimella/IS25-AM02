@@ -68,6 +68,9 @@ public class InGameController extends GeneralController{
     @FXML private ImageView playerGreenPiece;
     @FXML private ImageView playerRedPiece;
     @FXML private ImageView playerYellowPiece;
+    @FXML private Label currentPlayerNameLabel;
+    @FXML private Button choiceboxes;
+    @FXML private Button finishcannon;
 
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
@@ -312,7 +315,7 @@ public class InGameController extends GeneralController{
             doublecannons.add(coordinate);
         } else if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
             batteryCount++;
-            batteryLabel.setText("Number of batteries used " + batteryCount);
+            batteryLabel.setText("Number of batteries used: " + batteryCount);
             batteryLabel.setVisible(true);
             batteries.add(coordinate);
         }
@@ -349,10 +352,10 @@ public class InGameController extends GeneralController{
         title.getStyleClass().add("white-context-label");
 
 
-        HBox redRow = createBoxRow(BoxType.RED, tile.getNumRedBox(), coordinate);
-        HBox yellowRow = createBoxRow(BoxType.YELLOW, tile.getNumYellowBox(), coordinate);
-        HBox greenRow = createBoxRow(BoxType.GREEN, tile.getNumGreenBox(), coordinate);
-        HBox blueRow = createBoxRow(BoxType.BLUE, tile.getNumBlueBox(), coordinate);
+        HBox redRow = createBoxRow(BoxType.RED, coordinate);
+        HBox yellowRow = createBoxRow(BoxType.YELLOW, coordinate);
+        HBox greenRow = createBoxRow(BoxType.GREEN, coordinate);
+        HBox blueRow = createBoxRow(BoxType.BLUE, coordinate);
 
         Button finishButton = new Button("Finish");
         finishButton.getStyleClass().add("main-button"); // Assicurati che il tuo CSS definisca .main-button
@@ -380,11 +383,11 @@ public class InGameController extends GeneralController{
         root.getChildren().add(dimBackground);
     }
 
-    private HBox createBoxRow(BoxType box, int initialValue, Coordinate coordinate) {
+    private HBox createBoxRow(BoxType box, Coordinate coordinate) {
         HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER);
 
-        Label label = new Label(String.valueOf(box.name() + " boxes: " + initialValue));
+        Label label = new Label(String.valueOf(box.name() + " boxes: " ));
         label.getStyleClass().add("info-value");
 
         Button plus = new Button("+");
@@ -488,6 +491,15 @@ public class InGameController extends GeneralController{
         imageView.setImage(new Image(getClass().getResourceAsStream(newCard.getImagePath())));
         cardPane.getChildren().clear();
         cardPane.getChildren().add(imageView);
+        if(newCard.getCardType().equals(CardType.ABANDONED_STATION)){
+            choiceboxes.setVisible(true);
+            choiceboxes.setDisable(false);
+        } else if(newCard.getCardType().equals(CardType.TRAFFICKER)){
+            choiceboxes.setVisible(true);
+            choiceboxes.setDisable(false);
+            finishcannon.setVisible(true);
+            finishcannon.setDisable(false);
+        }
     }
 
     @FXML
@@ -500,6 +512,7 @@ public class InGameController extends GeneralController{
     }
 
     public void movePlayerToPosition(int cellId){
+        int numStep = GUIController.getInstance().getController().getGameV().getGlobalBoard().getNumstep();
 
         Map<PlayerColor, ImageView> pieceMap = Map.of(
                 PlayerColor.BLUE, playerBluePiece,
@@ -514,7 +527,9 @@ public class InGameController extends GeneralController{
             showNotification("Error taking player color", NotificationType.ERROR, 5000);
         }
         ImageView myPiece = pieceMap.get(mycolor);
-        Pane targetPane = GameboardCells.get(cellId+1);
+        int targetIndex = ((cellId + 1) % numStep + numStep) % numStep;
+        System.out.println("Target index: " + targetIndex);
+        Pane targetPane = GameboardCells.get(targetIndex);
 
         if (targetPane != null && myPiece != null) {
             Bounds bounds = targetPane.getBoundsInParent();
@@ -539,7 +554,9 @@ public class InGameController extends GeneralController{
                         .getPositions()
                         .get(player);
 
-                Pane targetPaneOther = GameboardCells.get(cellIdOther+1);
+                int targetIndexOther = ((cellIdOther + 1) % numStep + numStep) % numStep;
+                System.out.println("Target index other: " + targetIndexOther);
+                Pane targetPaneOther = GameboardCells.get(targetIndexOther);
 
                 if (targetPaneOther != null && piece != null) {
                     Bounds bounds = targetPaneOther.getBoundsInParent();
@@ -569,9 +586,22 @@ public class InGameController extends GeneralController{
     public void onNextPlayer(){
         if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)){
             try {
-                GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1,-1), boxCoordinate, BoxType.GREEN,false);
+                //GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1,-1), boxCoordinate, BoxType.GREEN,false);
+                GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(),false);
             } catch (RemoteException e) {
                 showNotification("Error during choice box", NotificationType.ERROR, 5000);
+            }
+        } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER)){
+            try {
+                GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), new ArrayList<>(), new ArrayList<>());
+            } catch (RemoteException e) {
+                showNotification("Error during choice box", NotificationType.ERROR, 5000);
+            }
+        }else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE)){
+            try {
+                GUIController.getInstance().getController().choiceDoubleMotor(GUIController.getInstance().getNickname(), new ArrayList<>(), new ArrayList<>());
+            } catch (RemoteException e) {
+                showNotification("Error during next player", NotificationType.ERROR, 5000);
             }
         }
     }
@@ -583,5 +613,9 @@ public class InGameController extends GeneralController{
         } catch (RemoteException e) {
             showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
+    }
+
+    public void updateCurrentPlayerName() {
+        currentPlayerNameLabel.setText(GUIController.getInstance().getController().getGameV().getCurrentState().getCurrentPlayer().getNickname());
     }
 }

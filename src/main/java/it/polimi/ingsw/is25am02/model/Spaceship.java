@@ -498,24 +498,26 @@ public class Spaceship {
                 }
             }
         } else if (rotationType == RotationType.EAST) {
-            for (int t = 12; t > 0; t--) {
+            //for (int t = 0; t < 12; t++) {
+            for (int t = 12; t > 0; t--) { //original
                 if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.EAST) != ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
                     return true;
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.EAST) == ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
                     return false;
                 }
             }
         } else if (rotationType == RotationType.WEST) {
-            for (int t = 0; t < 12; t++) {
+            //for (int t = 12; t > 0; t--) {
+            for (int t = 0; t < 12; t++) { //original
                 if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.WEST) != ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
                     return true;
-                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.NORTH) == ConnectorType.NONE) {
+                } else if (getTile(num, t).isPresent() && getTile(num, t).get().connectorOnSide(RotationType.WEST) == ConnectorType.NONE) {
                     targetTileX = num;
                     targetTileY = t;
                     return false;
