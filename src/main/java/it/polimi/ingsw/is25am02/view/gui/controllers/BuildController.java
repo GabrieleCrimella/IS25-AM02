@@ -359,6 +359,11 @@ public class BuildController extends GeneralController {
             readyButton.setVisible(false);
             addTileButton.setVisible(false);
             returnTileButton.setVisible(false);
+
+            if(level==0){
+                flipHourglassButton.setVisible(false);
+                seeHourglassButton.setVisible(false);
+            }
         });
     }
 

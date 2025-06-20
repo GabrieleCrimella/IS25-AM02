@@ -610,7 +610,6 @@ public class Game implements Game_Interface {
 
             player.setStatePlayer(StatePlayerType.FINISHED);
 
-
             getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[3 - alreadyFinished]);
             for (String nick : observers.keySet()) {
                 try {
@@ -639,9 +638,8 @@ public class Game implements Game_Interface {
                 if (level != 0) {
                     deck.createFinalDeck(); //mischio i mazzetti e creo il deck finale
                 }
-            } else {
-                player.getObserver().displayMessage("info.finished", null);
             }
+            player.getObserver().displayMessage("info.finished", null);
 
         } catch (IllegalStateException e) {
             try {

@@ -130,6 +130,7 @@ public class GameV {
                 params.put("correctstate",stateCard.toString());
                 params.put("wrongstate", getCurrentCard().getStateCard().toString());
                 console.reportError("error.stateCard", null);
+                //todo maybe we have to insert params instead of null?!??!?!?
                 return false;
             }
             if (!getCurrentState().getPhase().equals(stateGame)) {
