@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -81,8 +82,6 @@ public class BuildController extends GeneralController {
     private Group livello2Group;
     @FXML
     private Group bookedGroup;
-
-
     @FXML
     private Button miniDeck1;
     @FXML
@@ -123,32 +122,34 @@ public class BuildController extends GeneralController {
     private Coordinate coordinate;
 
     public void newTile(TileV newTile) {
-        // Pulisce eventuali elementi precedenti
-        rotation = RotationType.NORTH;
-        postoInizialeTile.getChildren().clear();
+        Platform.runLater(() -> {
+            // Pulisce eventuali elementi precedenti
+            rotation = RotationType.NORTH;
+            postoInizialeTile.getChildren().clear();
 
-        // Crea l'ImageView dinamicamente
-        ImageView imageView = new ImageView();
-        currentTileImage = imageView;
-        imageView.setOnMouseClicked(e -> rotate());
-        imageView.setFitWidth(149);
-        imageView.setFitHeight(149);
-        imageView.setLayoutX(10);
-        imageView.setLayoutY(10);
-        imageView.setPreserveRatio(true);
-        imageView.setStyle("-fx-cursor: hand;");
-        imageView.getStyleClass().add("draggableTile");
+            // Crea l'ImageView dinamicamente
+            ImageView imageView = new ImageView();
+            currentTileImage = imageView;
+            imageView.setOnMouseClicked(e -> rotate());
+            imageView.setFitWidth(149);
+            imageView.setFitHeight(149);
+            imageView.setLayoutX(10);
+            imageView.setLayoutY(10);
+            imageView.setPreserveRatio(true);
+            imageView.setStyle("-fx-cursor: hand;");
+            imageView.getStyleClass().add("draggableTile");
 
-        // Imposta l'immagine (da una proprietà della TileV)
-        imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
-        postoInizialeTile.getChildren().add(imageView);
+            // Imposta l'immagine (da una proprietà della TileV)
+            imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
+            postoInizialeTile.getChildren().add(imageView);
 
-        //la seguente operazione forse la farei solo a seguito di una add!!!
-        //tiles.put(imageView, postoInizialeTile);
-        setupDragAndDrop(imageView);
-        takeTileButton.setVisible(false);
-        addTileButton.setVisible(true);
-        returnTileButton.setVisible(true);
+            //la seguente operazione forse la farei solo a seguito di una add!!!
+            //tiles.put(imageView, postoInizialeTile);
+            setupDragAndDrop(imageView);
+            takeTileButton.setVisible(false);
+            addTileButton.setVisible(true);
+            returnTileButton.setVisible(true);
+        });
     }
 
     public void newCard(CardV newCard) {
@@ -208,9 +209,11 @@ public class BuildController extends GeneralController {
     }
 
     private void setupDragAndDropBooked(ImageView imageView) {
-        imageView.setOnDragDetected(event -> {
-            imageView.startFullDrag();
-            event.consume();
+        Platform.runLater(() -> {
+            imageView.setOnDragDetected(event -> {
+                imageView.startFullDrag();
+                event.consume();
+            });
         });
 
         // boardPane.getChildren() include anche il livello2Group
@@ -229,19 +232,22 @@ public class BuildController extends GeneralController {
     }
 
     private void setupDropTargetBooked(Pane slot, ImageView imageView) {
-        slot.setOnMouseDragReleased(event -> {
-            ((Pane) imageView.getParent()).getChildren().remove(imageView);
-            imageView.setLayoutX(0);
-            imageView.setLayoutY(0);
-            slot.getChildren().add(imageView);
+        Platform.runLater(() -> {
+            slot.setOnMouseDragReleased(event -> {
+                ((Pane) imageView.getParent()).getChildren().remove(imageView);
+                imageView.setLayoutX(0);
+                imageView.setLayoutY(0);
+                slot.getChildren().add(imageView);
 
-            coordinate = getCoordinatesFromId(slot);
-            posizioneAttuale.setVisible(true);
-            posizioneNuovaTile.setVisible(true);
-            posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
+                coordinate = getCoordinatesFromId(slot);
+                posizioneAttuale.setVisible(true);
+                posizioneNuovaTile.setVisible(true);
+                posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
 
-            event.consume();
+                event.consume();
+            });
         });
+
     }
 
     @FXML
@@ -348,10 +354,12 @@ public class BuildController extends GeneralController {
                 .toList();
 
         setOtherPlayers(otherPlayers);
-        checkButton.setVisible(false);
-        readyButton.setVisible(false);
-        addTileButton.setVisible(false);
-        returnTileButton.setVisible(false);
+        Platform.runLater(() -> {
+            checkButton.setVisible(false);
+            readyButton.setVisible(false);
+            addTileButton.setVisible(false);
+            returnTileButton.setVisible(false);
+        });
     }
 
     private StackPane createTile(TileV tile) {
@@ -420,52 +428,54 @@ public class BuildController extends GeneralController {
     }
 
     public void setOtherPlayers(List<String> otherPlayerNicknames) {
-        playerButtonsContainer.getChildren().clear();
-        for (Node node : SpaceshipPane.getChildren()) {
-            if (node instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
-                pane.getChildren().clear();
+        Platform.runLater(() -> {
+            playerButtonsContainer.getChildren().clear();
+            for (Node node : SpaceshipPane.getChildren()) {
+                if (node instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
+                    pane.getChildren().clear();
+                }
             }
-        }
 
-        for (String nickname : otherPlayerNicknames) {
-            Button playerButton = new Button(nickname);
-            playerButton.setPrefWidth(150);
-            playerButton.setPrefHeight(51);
-            playerButton.getStyleClass().add("main-button");
+            for (String nickname : otherPlayerNicknames) {
+                Button playerButton = new Button(nickname);
+                playerButton.setPrefWidth(150);
+                playerButton.setPrefHeight(51);
+                playerButton.getStyleClass().add("main-button");
 
-            // Puoi anche settare un'azione personalizzata qui
-            playerButton.setOnAction(e -> {
-                try {
-                    PlayerV playerToShow = GUIController.getInstance().getController().getPlayerVFromNickname(nickname);
-                    Optional<TileV>[][] spaceship = playerToShow.getSpaceshipBoard();
-                    for (int row = 0; row < spaceship.length; row++) {
-                        for (int col = 0; col < spaceship[row].length; col++) {
-                            Optional<TileV> tileOpt = spaceship[row][col];
-                            if (tileOpt.isPresent()) {
-                                TileV tile = tileOpt.get();
-                                StackPane tileNode = createTile(tile);
+                // Puoi anche settare un'azione personalizzata qui
+                playerButton.setOnAction(e -> {
+                    try {
+                        PlayerV playerToShow = GUIController.getInstance().getController().getPlayerVFromNickname(nickname);
+                        Optional<TileV>[][] spaceship = playerToShow.getSpaceshipBoard();
+                        for (int row = 0; row < spaceship.length; row++) {
+                            for (int col = 0; col < spaceship[row].length; col++) {
+                                Optional<TileV> tileOpt = spaceship[row][col];
+                                if (tileOpt.isPresent()) {
+                                    TileV tile = tileOpt.get();
+                                    StackPane tileNode = createTile(tile);
 
-                                for (Node node : SpaceshipPane.getChildren()) {
-                                    if (node instanceof Pane && node.getId() != null && node.getId().equals("cell_" + row + "_" + col)) {
-                                        ((Pane) node).getChildren().add(tileNode);
-                                        break;
+                                    for (Node node : SpaceshipPane.getChildren()) {
+                                        if (node instanceof Pane && node.getId() != null && node.getId().equals("cell_" + row + "_" + col)) {
+                                            ((Pane) node).getChildren().add(tileNode);
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        // Mostra il popup
+                        viewSpaceshipPopup.setVisible(true);
+
+                    } catch (RemoteException ex) {
+                        showNotification("Fail to get player from nickname", NotificationType.ERROR, 5000);
                     }
 
-                    // Mostra il popup
-                    viewSpaceshipPopup.setVisible(true);
+                });
 
-                } catch (RemoteException ex) {
-                    showNotification("Fail to get player from nickname", NotificationType.ERROR, 5000);
-                }
-
-            });
-
-            playerButtonsContainer.getChildren().add(playerButton);
-        }
+                playerButtonsContainer.getChildren().add(playerButton);
+            }
+        });
     }
 
     @FXML
@@ -486,10 +496,11 @@ public class BuildController extends GeneralController {
     }
 
     public void seeHourglass(long timeleft) {
-
-        hourglassTimeLabel.setText("Tempo residuo: " + timeleft);
-        // Mostra il popup con sfondo sfocato
-        hourglassPopup.setVisible(true);
+        Platform.runLater(() -> {
+            hourglassTimeLabel.setText("Tempo residuo: " + timeleft);
+            // Mostra il popup con sfondo sfocato
+            hourglassPopup.setVisible(true);
+        });
     }
 
     private void aggiungiTileCentrale(PlayerColor color) {
@@ -501,6 +512,7 @@ public class BuildController extends GeneralController {
             case "yellow" -> "/image/tiles/GT-new_tiles_16_for web61.jpg";
             default -> throw new IllegalArgumentException("Colore non supportato: " + color);
         };
+
 
         // Crea ImageView
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
@@ -589,14 +601,17 @@ public class BuildController extends GeneralController {
         try {
             GUIController.getInstance().getController().takeTile(GUIController.getInstance().getNickname());
         } catch (RemoteException e) {
-            showNotification("Failed to take tile", NotificationType.ERROR, 500);
+            Platform.runLater(() -> {showNotification("Failed to take tile", NotificationType.ERROR, 500);});
+
         }
     }
 
     @FXML
     public void onAddTile() {
         if (coordinate == null) {
-            showNotification("Please select a tile position", NotificationType.ERROR, 5000);
+            Platform.runLater(() -> {
+                showNotification("Please select a tile position", NotificationType.ERROR, 5000);
+            });
             return;
         }
 
@@ -676,7 +691,9 @@ public class BuildController extends GeneralController {
     @FXML
     public void rotate() {
         if (currentTileImage == null) {
-            showNotification("No tile to rotate", NotificationType.ERROR, 5000);
+            Platform.runLater(() -> {
+                showNotification("No tile to rotate", NotificationType.ERROR, 5000);
+            });
             return;
         }
         if (rotation == RotationType.NORTH) {
@@ -698,30 +715,32 @@ public class BuildController extends GeneralController {
             case SOUTH -> 180;
             case WEST -> 270;
         };
-        currentTileImage.setRotate(angle);
+        Platform.runLater(() -> currentTileImage.setRotate(angle));
     }
 
     public void onAddTileSuccess() {
-        // Reset the draggable tile
-        showNotification("tile added successfully", NotificationType.SUCCESS, 5000);
-        currentTileImage.getStyleClass().remove("draggableTile");
-        currentTileImage.setOnMouseClicked(null);
-        currentTileImage.setOnMousePressed(null);
-        currentTileImage.setOnMouseDragged(null);
-        currentTileImage.setOnDragDetected(null);
-        currentTileImage.setOnMouseReleased(null);
-        currentTileImage.setOnDragOver(null);
-        currentTileImage.setOnDragDropped(null);
+        Platform.runLater(() -> {
+            // Reset the draggable tile
+            showNotification("tile added successfully", NotificationType.SUCCESS, 5000);
+            currentTileImage.getStyleClass().remove("draggableTile");
+            currentTileImage.setOnMouseClicked(null);
+            currentTileImage.setOnMousePressed(null);
+            currentTileImage.setOnMouseDragged(null);
+            currentTileImage.setOnDragDetected(null);
+            currentTileImage.setOnMouseReleased(null);
+            currentTileImage.setOnDragOver(null);
+            currentTileImage.setOnDragDropped(null);
 
-        tiles.put(currentTileImage, getPaneFromImageView(currentTileImage));
-        currentTileImage = null;
-        coordinate = null;
-        posizioneAttuale.setVisible(false);
-        posizioneNuovaTile.setVisible(false);
-        rotation = RotationType.NORTH;
-        takeTileButton.setVisible(true);
-        addTileButton.setVisible(false);
-        returnTileButton.setVisible(false);
+            tiles.put(currentTileImage, getPaneFromImageView(currentTileImage));
+            currentTileImage = null;
+            coordinate = null;
+            posizioneAttuale.setVisible(false);
+            posizioneNuovaTile.setVisible(false);
+            rotation = RotationType.NORTH;
+            takeTileButton.setVisible(true);
+            addTileButton.setVisible(false);
+            returnTileButton.setVisible(false);
+        });
     }
 
     private Pane getPaneFromImageView(ImageView currentTileImage) {
@@ -744,29 +763,30 @@ public class BuildController extends GeneralController {
     }
 
     public void onShipFinished() {
-        currentTileImage = null;
-        postoInizialeTile.setVisible(false);
-        posizioneAttuale.setVisible(false);
-        posizioneNuovaTile.setVisible(false);
-        addTileButton.setVisible(false);
-        returnTileButton.setVisible(false);
-        flipHourglassButton.setVisible(false);
-        seeHourglassButton.setVisible(false);
-        miniDeck1.setVisible(false);
-        miniDeck2.setVisible(false);
-        miniDeck3.setVisible(false);
-        miniDecklabel.setVisible(false);
-        playerButtonsContainer.setVisible(false);
-        heapTileButton.setVisible(false);
-        takeTileButton.setVisible(false);
-        finishButton.setVisible(false);
-        viewOtherSpaceshipLabel.setText("Fase di check!");
-        checkButton.setVisible(true);
+        Platform.runLater(() -> {
+            currentTileImage = null;
+            postoInizialeTile.setVisible(false);
+            posizioneAttuale.setVisible(false);
+            posizioneNuovaTile.setVisible(false);
+            addTileButton.setVisible(false);
+            returnTileButton.setVisible(false);
+            flipHourglassButton.setVisible(false);
+            seeHourglassButton.setVisible(false);
+            miniDeck1.setVisible(false);
+            miniDeck2.setVisible(false);
+            miniDeck3.setVisible(false);
+            miniDecklabel.setVisible(false);
+            playerButtonsContainer.setVisible(false);
+            heapTileButton.setVisible(false);
+            takeTileButton.setVisible(false);
+            finishButton.setVisible(false);
+            viewOtherSpaceshipLabel.setText("Fase di check!");
+            checkButton.setVisible(true);
+        });
 
     }
 
     public void onRemoveTile(Coordinate coordinate) {
-        System.out.println("la sto rimuovendo la tile dalla posizione: " + coordinate);
         // Rimuove la tile dalla posizione specificata
         for (Pane tile : tiles.values()) {
             if (getCoordinatesFromId(tile).equals(coordinate)) {
@@ -776,15 +796,16 @@ public class BuildController extends GeneralController {
         }
 
         //todo perchè non mi esegue il codice successivo???
+        Platform.runLater(() -> {
+            // Mostra un messaggio di successo
+            showNotification("Tile removed successfully", NotificationType.SUCCESS, 5000);
 
-        // Mostra un messaggio di successo
-        showNotification("Tile removed successfully", NotificationType.SUCCESS, 5000);
-
-        // Resetta lo stato corrente
-        currentTileImage = null;
-        this.coordinate = null;
-        //posizioneAttuale.setVisible(false);
-        //posizioneNuovaTile.setVisible(false);
+            // Resetta lo stato corrente
+            currentTileImage = null;
+            this.coordinate = null;
+            //posizioneAttuale.setVisible(false);
+            //posizioneNuovaTile.setVisible(false);
+        });
     }
 
     public void onCheckPressed() {
@@ -804,49 +825,50 @@ public class BuildController extends GeneralController {
     }
 
     public void onSpaceshipRight() {
-        // Mostra un messaggio di successo
-        showNotification("Spaceship is correct!", NotificationType.SUCCESS, 5000);
+        Platform.runLater(() -> {
+            // Mostra un messaggio di successo
+            showNotification("Spaceship is correct!", NotificationType.SUCCESS, 5000);
 
-        // Resetta lo stato corrente
-        currentTileImage = null;
-        this.coordinate = null;
-        viewOtherSpaceshipLabel.setText("OK! Waiting...");
-        checkButton.setVisible(false);
-        /*
-        try {
-            GUIController.getInstance().getController().ready(GUIController.getInstance().getNickname());
-        } catch (RemoteException e) {
-            showNotification("Failed to be ready", NotificationType.ERROR, 5000);
-        }
-         */
-        for (ImageView tile : tiles.keySet()) {
-            tile.setOnMouseClicked(null);
-        }
+            // Resetta lo stato corrente
+            currentTileImage = null;
+            this.coordinate = null;
+            viewOtherSpaceshipLabel.setText("OK! Waiting...");
+            checkButton.setVisible(false);
+
+            for (ImageView tile : tiles.keySet()) {
+                tile.setOnMouseClicked(null);
+            }
+        });
     }
 
     public void onSpaceshipWrong() {
         wrongSpaceship = true;
-        viewOtherSpaceshipLabel.setText("Remove a tile...");
+        Platform.runLater(() -> {
+            viewOtherSpaceshipLabel.setText("Remove a tile...");
+        });
         for (ImageView tile : tiles.keySet()) {
-
-            tile.setOnMouseClicked(null);
-
             final ImageView currentTile = tile; //se non final, la lambda non la vede!
 
-            tile.setOnMouseClicked(e -> {
-                coordinate = getCoordinatesFromId(tiles.get(currentTile));
-                try {
-                    GUIController.getInstance().getController().removeTile(GUIController.getInstance().getNickname(), coordinate);
-                } catch (RemoteException ex) {
-                    showNotification("Failed to remove tile", NotificationType.ERROR, 5000);
-                }
+            Platform.runLater(() -> {
+                tile.setOnMouseClicked(null);
+
+                tile.setOnMouseClicked(e -> {
+                    coordinate = getCoordinatesFromId(tiles.get(currentTile));
+                    try {
+                        GUIController.getInstance().getController().removeTile(GUIController.getInstance().getNickname(), coordinate);
+                    } catch (RemoteException ex) {
+                        showNotification("Failed to remove tile", NotificationType.ERROR, 5000);
+                    }
+                });
             });
         }
     }
 
     public void setInitializationSpaceship() {
-        viewOtherSpaceshipLabel.setText("Initialize your spaceship!");
-        readyButton.setVisible(true);
+        Platform.runLater(() -> {
+            viewOtherSpaceshipLabel.setText("Initialize your spaceship!");
+            readyButton.setVisible(true);
+        });
     }
 
     public void onReadyPressed() {
@@ -859,11 +881,23 @@ public class BuildController extends GeneralController {
     }
 
     public void onReturnTileSuccess() {
-        showNotification("Tile returned successfully", NotificationType.SUCCESS, 5000);
-        postoInizialeTile.getChildren().remove(currentTileImage);
-        currentTileImage = null;
-        takeTileButton.setVisible(true);
-        addTileButton.setVisible(false);
-        returnTileButton.setVisible(false);
+        Platform.runLater(() -> {
+            showNotification("Tile returned successfully", NotificationType.SUCCESS, 5000);
+            Parent parent = currentTileImage.getParent();
+            if (currentTileImage.getParent() instanceof Pane parentPane) {
+                parentPane.getChildren().remove(currentTileImage);
+            }
+            //postoInizialeTile.getChildren().remove(currentTileImage);
+            currentTileImage = null;
+            takeTileButton.setVisible(true);
+            addTileButton.setVisible(false);
+            returnTileButton.setVisible(false);
+
+            coordinate = null;
+            posizioneAttuale.setVisible(false);
+            posizioneNuovaTile.setVisible(false);
+            rotation = RotationType.NORTH;
+        });
+
     }
 }
