@@ -12,6 +12,7 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
 
 import java.rmi.RemoteException;
+import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -40,8 +41,8 @@ public class Game implements Game_Interface {
 
     public Game(List<Player> players, int level) {
         this.players = players;
-        this.observers= new ConcurrentHashMap<>();
-        for(Player p : players){
+        this.observers = new ConcurrentHashMap<>();
+        for (Player p : players) {
             observers.put(p.getNickname(), p.getObserver());
         }
         this.level = level;
@@ -464,7 +465,7 @@ public class Game implements Game_Interface {
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile(player.getNickname());
-            player.getObserver().displayMessage("build.returnTile",null);
+            player.getObserver().displayMessage("build.returnTile", null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -682,7 +683,7 @@ public class Game implements Game_Interface {
                 }*/
                 if (alreadyChecked == players.size()) {
                     this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-                    for(Player p : players) {
+                    for (Player p : players) {
                         p.getObserver().displayMessage("info.gameState", Map.of("state", "INITIALIZATION_SPACESHIP"));
                     }
                 } else {
@@ -964,13 +965,14 @@ public class Game implements Game_Interface {
             typeControl(player, pos, TileType.CABIN);
 
             getCurrentCard().removeCrew(this, player, giveTile(player, pos));
+            /* //l'aggiornamento viene già fatto sopra
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showCrewRemoval(pos, player.getNickname());
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
                 }
-            }
+            }*/
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1032,32 +1034,42 @@ public class Game implements Game_Interface {
         try {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.BOXMANAGEMENT, player);
             currentPlayerControl(player);
-            if (on){
+            if (on) {
                 moveControl(player, start, end, boxType, on);
             }
 
 
             if (start.x() == -1 && start.y() == -1) { //Start equals Planet
-                getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
-                for (String nick : observers.keySet()) {
-                    try {
-                        observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
-                    }
-                }
-            } else if (end.x() == -1 && end.y() == -1) { //End equals Planet
-                getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), getCurrentCard().getBoxesWon(), boxType, on);
-                for (String nick : observers.keySet()) {
-                    try {
-                        observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
-                    }
-                }
-            } else { //Start and End are types of storage
-                getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
                 if (on) {
+                    getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                        }
+                    }
+                } else {
+                    getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), new ArrayList<>(), boxType, on);
+                }
+
+            } else if (end.x() == -1 && end.y() == -1) { //End equals Planet
+                if (on) {
+                    getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), getCurrentCard().getBoxesWon(), boxType, on);
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                        }
+                    }
+                } else {
+                    getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), new ArrayList<>(), boxType, on);
+                }
+
+            } else { //Start and End are types of storage
+                if (on) {
+                    getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
                     for (String nick : observers.keySet()) {
                         try {
                             observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
@@ -1066,7 +1078,11 @@ public class Game implements Game_Interface {
                             ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
                         }
                     }
+                } else {
+                    getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), new ArrayList<>(), boxType, on);
                 }
+
+
             }
         } catch (IllegalStateException e) {
             try {

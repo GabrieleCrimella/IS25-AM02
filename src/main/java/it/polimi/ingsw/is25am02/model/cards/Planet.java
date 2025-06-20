@@ -127,6 +127,9 @@ public class Planet extends Card {
             //setStateCard(StateCardType.BOXMANAGEMENT);
             boxesWon = planetOffers.get(index);
         }
+        else if (index >= 0 && index <= planetOffersTypes.size()-1 && occupied.get(index) != 0){
+            throw new IllegalArgumentException("This option has already been used");
+        }
         else if (player.equals(game.getGameboard().getRanking().getLast())){
             Iterator<Player> it = landed.descendingIterator();
             while(it.hasNext()) {

@@ -588,7 +588,7 @@ public class Spaceship {
         switch (bigOrSmall) {
             case 0: //Small
                 if (target.isPresent()) {
-                    if (!isShielded(rotationType)) {
+                    if (!isShielded(rotationType) || !storage.isPresent()) {
                         removeTile(nicknameP, targetTileX, targetTileY);
                         return isSpaceshipDivided();
                     } else {
