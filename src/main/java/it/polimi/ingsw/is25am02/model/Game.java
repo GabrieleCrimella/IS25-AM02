@@ -727,17 +727,29 @@ public class Game implements Game_Interface {
             if (player.getSpaceship().checkSpaceship()) {
                 player.setStatePlayer(StatePlayerType.CORRECT_SHIP);
                 this.currentState.setPhase(StateGameType.CHECK);
+                player.getObserver().displayMessage("info.spaceship.right", null);
                 alreadyChecked++;
+            }else{
+                player.getObserver().reportError("info.spaceship.wrong", null);
             }
 
             if (alreadyChecked == players.size()) {
                 this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+                for (Player p : players) {
+                    p.getObserver().displayMessage("info.gameState", Map.of("state", "INITIALIZATION_SPACESHIP"));
+                }
             }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method checkWrongSpaceship");
+            }
+        } catch (Exception e) {
+            try {
+                player.getObserver().reportError("error.state", null);
+            } catch (Exception ex) {
+                reportErrorOnServer("connection problem in method checkspaceship");
             }
         }
     }
