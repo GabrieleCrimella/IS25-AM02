@@ -86,25 +86,30 @@ public class InGameController extends GeneralController {
     @FXML
     private Label currentPlayerNameLabel;
     @FXML
-    private Button choiceboxes;
+    private Button choiceboxtrue;
     @FXML
     private Button finishcannon;
     @FXML
     private Button choiceboxfalse;
     @FXML
     private Button finishmoveboxes;
-
+    @FXML
+    private Button finishmotor;
+    @FXML
+    private Button rollDice;
+    @FXML private ImageView diceAnimation;
+    @FXML private Label diceResult;
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
     private Map<Coordinate, BoxType> myBoxes = new HashMap<>();
     private List<Coordinate> batteries = new ArrayList<>();
-    private List<Coordinate> doublecannons = new ArrayList<>();
+    private List<Coordinate> doubles = new ArrayList<>();
     private Coordinate boxCoordinate;
-    private int doubleCannonCount = 0;
+    private int doubleCount = 0;
     private int batteryCount = 0;
     @FXML
-    private Label doubleCannonLabel;
+    private Label doubleLabel;
     @FXML
     private Label batteryLabel;
 
@@ -332,15 +337,28 @@ public class InGameController extends GeneralController {
 
 
         } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_CANNON))) {
-            doubleCannonCount++;
-            doubleCannonLabel.setText("Number of double cannon activated: " + doubleCannonCount);
-            doubleCannonLabel.setVisible(true);
-            doublecannons.add(coordinate);
+            doubleCount++;
+            doubleLabel.setText("Number of double cannon activated: " + doubleCount);
+            doubleLabel.setVisible(true);
+            doubles.add(coordinate);
         } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
-            batteryCount++;
-            batteryLabel.setText("Number of batteries used: " + batteryCount);
-            batteryLabel.setVisible(true);
-            batteries.add(coordinate);
+            if(GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.CHOICE_ATTRIBUTES)){
+                batteryCount++;
+                batteryLabel.setText("Number of batteries used: " + batteryCount);
+                batteryLabel.setVisible(true);
+                batteries.add(coordinate);
+            } else if( GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE)) {
+                try {
+                    GUIController.getInstance().getController().removeBattery(GUIController.getInstance().getNickname(), coordinate);
+                } catch (RemoteException e) {
+                    showNotification("Error removing battery", NotificationType.ERROR, 5000);
+                }
+            }
+        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_MOTOR))) {
+            doubleCount++;
+            doubleLabel.setText("Number of double motor activated: " + doubleCount);
+            doubleLabel.setVisible(true);
+            doubles.add(coordinate);
         }
     }
 
@@ -437,12 +455,11 @@ public class InGameController extends GeneralController {
                 } catch (RemoteException e) {
                     showNotification("Error with move box", NotificationType.ERROR, 3000);
                 }
-
             }
         });
 
         minus.setOnAction(ev -> {//se rimuovo box, allora li aggiungo alla mappa myboxes nel caso l'utente volesse poi riaggiungerli
-            if(GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
+            if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
                 try {
                     GUIController.getInstance().getController().moveBox(
                             GUIController.getInstance().getNickname(), coordinate, new Coordinate(-1, -1), box, true);
@@ -450,14 +467,13 @@ public class InGameController extends GeneralController {
                     showNotification("Error with move box", NotificationType.ERROR, 3000);
                 }
                 myBoxes.put(coordinate, box);
-            } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE)) {
+            } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE)) {
                 try {
                     GUIController.getInstance().getController().removeBox(GUIController.getInstance().getNickname(), coordinate, box);
                 } catch (RemoteException e) {
                     showNotification("Error with remove box", NotificationType.ERROR, 3000);
                 }
             }
-
         });
 
         row.getChildren().addAll(label, plus, minus);
@@ -509,13 +525,9 @@ public class InGameController extends GeneralController {
                     }
                 }
             }
-
-
         } catch (RemoteException e) {
             showNotification("Error loading your spaceship", NotificationType.ERROR, 5000);
         }
-
-
     }
 
     public void newCard(CardV newCard) {
@@ -530,13 +542,19 @@ public class InGameController extends GeneralController {
         cardPane.getChildren().clear();
         cardPane.getChildren().add(imageView);
         if (newCard.getCardType().equals(CardType.ABANDONED_STATION)) {
-            choiceboxes.setVisible(true);
-            choiceboxes.setDisable(false);
+            choiceboxtrue.setVisible(true);
+            choiceboxtrue.setDisable(false);
             choiceboxfalse.setVisible(true);
             choiceboxfalse.setDisable(false);
         } else if (newCard.getCardType().equals(CardType.TRAFFICKER)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
+        } else if (newCard.getCardType().equals(CardType.OPENSPACE)){
+            finishmotor.setVisible(true);
+            finishmotor.setDisable(false);
+        } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)){
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
         }
     }
 
@@ -544,19 +562,8 @@ public class InGameController extends GeneralController {
     public void onNextCard() {
         try {
             GUIController.getInstance().getController().playNextCard(GUIController.getInstance().getNickname());
-            choiceboxes.setVisible(false);
-            choiceboxes.setDisable(true);
-            choiceboxfalse.setVisible(false);
-            choiceboxfalse.setDisable(true);
-            finishcannon.setVisible(false);
-            finishcannon.setDisable(true);
-            doubleCannonLabel.setVisible(false);
-            batteryLabel.setVisible(false);
-            choiceboxfalse.setVisible(false);
-            finishmoveboxes.setVisible(false);
-            finishmoveboxes.setDisable(true);
             batteries = new ArrayList<>();
-            doublecannons = new ArrayList<>();
+            doubles = new ArrayList<>();
         } catch (RemoteException e) {
             showNotification("Error taking next card", NotificationType.ERROR, 5000);
         }
@@ -621,19 +628,26 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
-    public void onChoiceBoxFalse(){
+    public void onChoiceBoxFalse() {
         try {
             GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), false);
+            choiceboxtrue.setVisible(false);
+            choiceboxtrue.setDisable(true);
+            choiceboxfalse.setVisible(false);
+            choiceboxfalse.setDisable(true);
         } catch (RemoteException e) {
             showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
     }
 
     @FXML
-    public void onChoiceBox() {
+    public void onChoiceBoxTrue() {
         try {
             GUIController.getInstance().getController().choiceBox(GUIController.getInstance().getNickname(), true);
+            choiceboxtrue.setVisible(false);
+            choiceboxtrue.setDisable(true);
             choiceboxfalse.setVisible(false);
+            choiceboxfalse.setDisable(true);
             finishmoveboxes.setVisible(true);
             finishmoveboxes.setDisable(false);
         } catch (RemoteException e) {
@@ -643,9 +657,11 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
-    public void onfinishMoveBoxes(){
+    public void onfinishMoveBoxes() {
         try {
             GUIController.getInstance().getController().moveBox(GUIController.getInstance().getNickname(), new Coordinate(-1, -1), boxCoordinate, BoxType.GREEN, false);
+            finishmoveboxes.setVisible(false);
+            finishmoveboxes.setDisable(true);
         } catch (RemoteException e) {
             showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
@@ -653,16 +669,7 @@ public class InGameController extends GeneralController {
 
 
     @FXML
-    public void onNextPlayer() {
-        choiceboxes.setVisible(false);
-        choiceboxes.setDisable(true);
-        choiceboxfalse.setVisible(false);
-        choiceboxfalse.setDisable(true);
-        finishcannon.setVisible(false);
-        finishcannon.setDisable(true);
-        doubleCannonLabel.setVisible(false);
-        batteryLabel.setVisible(false);
-        choiceboxfalse.setVisible(false);
+    public void onNextPlayer() { //metodo da togliere dopo che saranno finite tutte le carte
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION)) {
             if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.BOXMANAGEMENT)) {
                 try {
@@ -704,16 +711,72 @@ public class InGameController extends GeneralController {
     @FXML
     public void onFinishChoiceCannon() {//prendo la lista di batterie e la lista di cannoni e le mando al server
         try {
-            GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), doublecannons, batteries);
-            choiceboxes.setVisible(true);
-            choiceboxes.setDisable(false);
-            choiceboxfalse.setVisible(true);
-            choiceboxfalse.setDisable(false);
+            GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), doubles, batteries);
+            if(!doubles.isEmpty()) {
+                choiceboxtrue.setVisible(true);
+                choiceboxtrue.setDisable(false);
+                choiceboxfalse.setVisible(true);
+                choiceboxfalse.setDisable(false);
+            }
             finishcannon.setVisible(false);
             finishcannon.setDisable(true);
+            batteries = new ArrayList<>();
+            doubles = new ArrayList<>();
+            doubleCount = 0;
+            batteryCount = 0;
+            doubleLabel.setVisible(false);
+            batteryLabel.setVisible(false);
         } catch (RemoteException e) {
-            showNotification("Error during choice box", NotificationType.ERROR, 5000);
+            showNotification("Error during choice cannon", NotificationType.ERROR, 5000);
         }
+    }
+
+    @FXML
+    public void onFinishChoiceMotor(){
+        try {
+            GUIController.getInstance().getController().choiceDoubleMotor(GUIController.getInstance().getNickname(), doubles, batteries);
+            finishmotor.setVisible(false);
+            finishmotor.setDisable(true);
+            batteries = new ArrayList<>();
+            doubles = new ArrayList<>();
+            doubleCount = 0;
+            batteryCount = 0;
+            doubleLabel.setVisible(false);
+            batteryLabel.setVisible(false);
+        } catch (RemoteException e) {
+            showNotification("Error during choice motor", NotificationType.ERROR, 5000);
+        }
+
+    }
+
+    @FXML
+    public void onRollDice(){
+        diceAnimation.setVisible(true);
+        Image diceGif = new Image(getClass().getResource("/image/dices.gif").toExternalForm());
+        diceAnimation.setImage(diceGif);
+        try {
+            GUIController.getInstance().getController().rollDice(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Error rolling dice", NotificationType.ERROR, 5000);
+        }
+        new Thread(() -> {
+            int result = GUIController.getInstance().getController().getGameV().getDiceV().getResult();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Platform.runLater(() -> {
+                diceAnimation.setVisible(false);
+
+
+                diceResult.setText("Result: " + result);
+                diceResult.setVisible(true);
+            });
+        }).start();
+
     }
 
     public void updateCurrentPlayerName() {
