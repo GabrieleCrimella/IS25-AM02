@@ -592,7 +592,9 @@ public class Spaceship {
                         removeTile(nicknameP, targetTileX, targetTileY);
                         return isSpaceshipDivided();
                     } else {
-                        storage.get().removeBattery();
+                        if (storage.isPresent()) {
+                            storage.get().removeBattery();
+                        }
                         for (String nick:observers.keySet()) {
                             try {
                                 Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
@@ -773,7 +775,7 @@ public class Spaceship {
                 if (getTile(t, num).isPresent() && (getTile(t, num).get().getType().equals(TileType.CANNON)
                         || getTile(t, num).get().getType().equals(TileType.D_CANNON))) {
                     return getTile(t, num);
-                } else if (getTile(t, num).isPresent() && !getTile(num, t).get().getType().equals(TileType.CANNON)
+                } else if (getTile(t, num).isPresent() && !getTile(t, num).get().getType().equals(TileType.CANNON)
                         && !getTile(t, num).get().getType().equals(TileType.D_CANNON)) {
                     return Optional.empty();
                 }
