@@ -16,6 +16,8 @@
             </image>
         </ImageView>
 
+        <Label fx:id ="myname" layoutX="70.0" layoutY="5.0" styleClass="title-label" text="My name"/>
+
         <Label layoutX="70.0" layoutY="100.0" styleClass="white-context-label" text="View other spaceships"/>
         <VBox fx:id="playerButtonsContainer" layoutX="70.0" layoutY="140.0" spacing="10.0"/>
 
@@ -253,6 +255,8 @@
                 styleClass="main-button" text="Finish choice motor" visible="false"/>
         <Button fx:id="finishmoveboxes" layoutX="50.0" layoutY="340.0" onAction="#onfinishMoveBoxes" prefHeight="40.0" prefWidth="300.0"
                 styleClass="main-button" text="Finish move boxes" visible="false"/>
+        <Button fx:id="calculatedamage" layoutX="50.0" layoutY="340.0" onAction="#onCalculateDamage" prefHeight="40.0" prefWidth="300.0"
+                styleClass="main-button" text="Calculate damage" visible="false"/>
 
         <Button layoutX="270.0" layoutY="1000.0" onAction="#onNextPlayer" prefHeight="40.0" prefWidth="200.0"
                 styleClass="main-button" text="Next Player"/>
