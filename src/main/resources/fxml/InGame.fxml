@@ -227,21 +227,15 @@
         </StackPane>
 
         <Button layoutX="50.0" layoutY="1000.0" onAction="#onNextCard" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Next Card" />
-        <Pane fx:id="cardPane" layoutX="118.0" layoutY="500.0" prefHeight="419.0" prefWidth="324.0">
-         <children>
-            <Pane fx:id="planet_1" layoutX="34.0" layoutY="69.0" prefHeight="63.0" prefWidth="256.0" />
-            <Pane fx:id="planet_2" layoutX="34.0" layoutY="165.0" prefHeight="63.0" prefWidth="256.0" />
-            <Pane fx:id="planet_3" layoutX="34.0" layoutY="267.0" prefHeight="63.0" prefWidth="256.0" />
-            <Pane fx:id="planet_4" layoutX="34.0" layoutY="330.0" prefHeight="63.0" prefWidth="256.0" />
-         </children></Pane>
-
+        <Pane fx:id="cardPane" layoutX="118.0" layoutY="500.0" prefHeight="419.0" prefWidth="324.0"/>
 
         <Button fx:id="choiceboxtrue" layoutX="50.0" layoutY="270.0" onAction="#onChoiceBoxTrue" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice box true" visible="false" />
         <Button fx:id="choiceboxfalse" layoutX="50.0" layoutY="340.0" onAction="#onChoiceBoxFalse" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice box false" visible="false" />
-        <Button fx:id="finishcannon" layoutX="50.0" layoutY="340.0" onAction="#onFinishChoiceCannon" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice cannon" visible="false" />
+        <Button fx:id="finishcannon" layoutX="50.0" layoutY="410.0" onAction="#onFinishChoiceCannon" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice cannon" visible="false" />
         <Button fx:id="finishmotor" layoutX="50.0" layoutY="340.0" onAction="#onFinishChoiceMotor" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice motor" visible="false" />
         <Button fx:id="finishmoveboxes" layoutX="50.0" layoutY="340.0" onAction="#onfinishMoveBoxes" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish move boxes" visible="false" />
         <Button fx:id="calculatedamage" layoutX="50.0" layoutY="340.0" onAction="#onCalculateDamage" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Calculate damage" visible="false" />
+        <Button fx:id="noChoicePlanet" layoutX="50.0" layoutY="270.0" onAction="#onNoChoicePlanet" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="I don't want to land" visible="false" />
 
         <Button layoutX="270.0" layoutY="1000.0" onAction="#onNextPlayer" prefHeight="40.0" prefWidth="200.0" styleClass="main-button" text="Next Player" />
 

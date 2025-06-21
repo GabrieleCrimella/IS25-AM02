@@ -106,13 +106,7 @@ public class InGameController extends GeneralController {
     @FXML
     private Button calculatedamage;
     @FXML
-    private Pane planet_1;
-    @FXML
-    private Pane planet_2;
-    @FXML
-    private Pane planet_3;
-    @FXML
-    private Pane planet_4;
+    private Button noChoicePlanet;
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
@@ -554,6 +548,11 @@ public class InGameController extends GeneralController {
     }
 
     public void newCard(CardV newCard) {
+        calculatedamage.setVisible(false);
+        calculatedamage.setDisable(true);
+        rollDice.setVisible(false);
+        rollDice.setDisable(true);
+        diceResult.setVisible(false);
         ImageView imageView = new ImageView();
         imageView.setFitWidth(300);
         imageView.setFitHeight(500);
@@ -575,40 +574,43 @@ public class InGameController extends GeneralController {
         } else if (newCard.getCardType().equals(CardType.OPENSPACE)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
+        } else if (newCard.getCardType().equals(CardType.WARZONE1)) {
+            finishmotor.setVisible(true);
+            finishmotor.setDisable(false);
+            finishcannon.setVisible(true);
+            finishcannon.setDisable(false);
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
+            calculatedamage.setVisible(true);
+            calculatedamage.setDisable(false);
         } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)) {
             rollDice.setVisible(true);
             rollDice.setDisable(false);
+            calculatedamage.setVisible(true);
+            calculatedamage.setDisable(false);
         } else if (newCard.getCardType().equals(CardType.PLANET)) {
             finishmoveboxes.setVisible(true);
             finishmoveboxes.setDisable(false);
-            planet_1.setOnMouseClicked(event -> {
-                try {
-                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 0);
-                } catch (RemoteException e) {
-                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
-                }
-            });
-            planet_2.setOnMouseClicked(event -> {
-                try {
-                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 1);
-                } catch (RemoteException e) {
-                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
-                }
-            });
-            planet_3.setOnMouseClicked(event -> {
-                try {
-                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 2);
-                } catch (RemoteException e) {
-                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
-                }
-            });
-            planet_4.setOnMouseClicked(event -> {
-                try {
-                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 3);
-                } catch (RemoteException e) {
-                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
-                }
-            });
+            noChoicePlanet.setVisible(true);
+            noChoicePlanet.setDisable(false);
+            for (int i = 0; i < 4; i++) {
+                Pane planetPane = new Pane();
+                planetPane.setPrefSize(200, 50);
+                planetPane.setLayoutX(34);
+                planetPane.setLayoutY(69 + (i * 90)); // Spaziatura tra i pane
+                planetPane.getStyleClass().add("planet-pane");
+
+                final int index = i;
+                planetPane.setOnMouseClicked(event -> {
+                    try {
+                        GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), index);
+                    } catch (RemoteException e) {
+                        showNotification("Error in choice planet", NotificationType.ERROR, 5000);
+                    }
+                });
+
+                cardPane.getChildren().add(planetPane);
+            }
         }
     }
 
@@ -827,10 +829,12 @@ public class InGameController extends GeneralController {
 
 
                 diceResult.setVisible(true);
+                int result = GUIController.getInstance().getController().getGameV().getDiceV().getResult();
+                diceResult.setText("Result: " + result);
+
             });
         }).start();
-        calculatedamage.setVisible(true);
-        calculatedamage.setDisable(false);
+
 
     }
 
@@ -842,8 +846,6 @@ public class InGameController extends GeneralController {
     public void onCalculateDamage() {
         try {
             GUIController.getInstance().getController().calculateDamage(GUIController.getInstance().getNickname(), new Coordinate(-1, -1));
-            calculatedamage.setVisible(false);
-            calculatedamage.setDisable(true);
         } catch (RemoteException e) {
             showNotification("Error with calculate damage", NotificationType.ERROR, 5000);
         }
@@ -884,6 +886,19 @@ public class InGameController extends GeneralController {
             return new Coordinate(row, col);
         } catch (NumberFormatException e) {
             return null;
+        }
+    }
+
+    @FXML
+    public void onNoChoicePlanet(){
+        try {
+            GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), -1);
+            noChoicePlanet.setVisible(false);
+            noChoicePlanet.setDisable(true);
+            finishmoveboxes.setVisible(false);
+            finishmoveboxes.setDisable(true);
+        } catch (RemoteException e) {
+            showNotification("Error with choice planet", NotificationType.ERROR, 5000);
         }
     }
 
