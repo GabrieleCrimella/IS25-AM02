@@ -215,6 +215,9 @@ public class GUIController implements Runnable {
         if (inUse.equals("Build")) {
             BuildController bldCtrl = (BuildController) controllers.get(inUse);
             bldCtrl.onRemoveTile(coordinate);
+        } else if(inUse.equals("InGame")){
+            InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+            inGameCtrl.onRemoveTile(coordinate);
         }
     }
 }

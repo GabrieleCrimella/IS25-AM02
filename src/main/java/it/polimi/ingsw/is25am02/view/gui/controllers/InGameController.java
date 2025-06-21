@@ -97,10 +97,22 @@ public class InGameController extends GeneralController {
     private Button finishmotor;
     @FXML
     private Button rollDice;
-    @FXML private ImageView diceAnimation;
-    @FXML private Label diceResult;
-    @FXML private Label myname;
-    @FXML private Button calculatedamage;
+    @FXML
+    private ImageView diceAnimation;
+    @FXML
+    private Label diceResult;
+    @FXML
+    private Label myname;
+    @FXML
+    private Button calculatedamage;
+    @FXML
+    private Pane planet_1;
+    @FXML
+    private Pane planet_2;
+    @FXML
+    private Pane planet_3;
+    @FXML
+    private Pane planet_4;
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
@@ -345,20 +357,20 @@ public class InGameController extends GeneralController {
             doubleLabel.setVisible(true);
             doubles.add(coordinate);
         } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
-            if(GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.CHOICE_ATTRIBUTES) && (
-                    GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER)||
-                    GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE))) {
+            if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.CHOICE_ATTRIBUTES) && (
+                    GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER) ||
+                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE))) {
                 batteryCount++;
                 batteryLabel.setText("Number of batteries used: " + batteryCount);
                 batteryLabel.setVisible(true);
                 batteries.add(coordinate);
-            } else if( GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE)) {
+            } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE)) {
                 try {
                     GUIController.getInstance().getController().removeBattery(GUIController.getInstance().getNickname(), coordinate);
                 } catch (RemoteException e) {
                     showNotification("Error removing battery", NotificationType.ERROR, 5000);
                 }
-            } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.METEORITES_STORM)){
+            } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.METEORITES_STORM)) {
                 try {
                     GUIController.getInstance().getController().calculateDamage(GUIController.getInstance().getNickname(), coordinate);
                 } catch (RemoteException e) {
@@ -560,12 +572,43 @@ public class InGameController extends GeneralController {
         } else if (newCard.getCardType().equals(CardType.TRAFFICKER)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
-        } else if (newCard.getCardType().equals(CardType.OPENSPACE)){
+        } else if (newCard.getCardType().equals(CardType.OPENSPACE)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
-        } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)){
+        } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)) {
             rollDice.setVisible(true);
             rollDice.setDisable(false);
+        } else if (newCard.getCardType().equals(CardType.PLANET)) {
+            finishmoveboxes.setVisible(true);
+            finishmoveboxes.setDisable(false);
+            planet_1.setOnMouseClicked(event -> {
+                try {
+                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 0);
+                } catch (RemoteException e) {
+                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
+                }
+            });
+            planet_2.setOnMouseClicked(event -> {
+                try {
+                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 1);
+                } catch (RemoteException e) {
+                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
+                }
+            });
+            planet_3.setOnMouseClicked(event -> {
+                try {
+                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 2);
+                } catch (RemoteException e) {
+                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
+                }
+            });
+            planet_4.setOnMouseClicked(event -> {
+                try {
+                    GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), 3);
+                } catch (RemoteException e) {
+                    showNotification("Error in choice planet", NotificationType.ERROR, 5000);
+                }
+            });
         }
     }
 
@@ -723,7 +766,7 @@ public class InGameController extends GeneralController {
     public void onFinishChoiceCannon() {//prendo la lista di batterie e la lista di cannoni e le mando al server
         try {
             GUIController.getInstance().getController().choiceDoubleCannon(GUIController.getInstance().getNickname(), doubles, batteries);
-            if(!doubles.isEmpty()) {
+            if (!doubles.isEmpty()) {
                 choiceboxtrue.setVisible(true);
                 choiceboxtrue.setDisable(false);
                 choiceboxfalse.setVisible(true);
@@ -743,7 +786,7 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
-    public void onFinishChoiceMotor(){
+    public void onFinishChoiceMotor() {
         try {
             GUIController.getInstance().getController().choiceDoubleMotor(GUIController.getInstance().getNickname(), doubles, batteries);
             finishmotor.setVisible(false);
@@ -761,7 +804,7 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
-    public void onRollDice(){
+    public void onRollDice() {
         diceResult.setVisible(false);
         diceAnimation.setVisible(true);
         Image diceGif = new Image(getClass().getResource("/image/dices.gif").toExternalForm());
@@ -791,11 +834,12 @@ public class InGameController extends GeneralController {
 
     }
 
-    public void updateDice(int result){
+    public void updateDice(int result) {
         diceResult.setText("Result: " + result);
     }
 
-    @FXML public void onCalculateDamage(){
+    @FXML
+    public void onCalculateDamage() {
         try {
             GUIController.getInstance().getController().calculateDamage(GUIController.getInstance().getNickname(), new Coordinate(-1, -1));
             calculatedamage.setVisible(false);
@@ -804,6 +848,45 @@ public class InGameController extends GeneralController {
             showNotification("Error with calculate damage", NotificationType.ERROR, 5000);
         }
     }
+
+    public void onRemoveTile(Coordinate coordinate) {
+        Platform.runLater(() -> {
+            for (Node node : MySpaceship.getChildren()) {
+                if (node instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("cell_")) {
+                    Coordinate paneCoord = getCoordinatesFromId(pane);
+                    if (paneCoord != null && paneCoord.equals(coordinate)) {
+                        pane.getChildren().clear();
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    public Coordinate getCoordinatesFromId(Node node) {
+        if (node == null || node.getId() == null) {
+            return null;
+        }
+
+        String id = node.getId(); // es. "cell_3_5"
+        if (!id.startsWith("cell_")) {
+            return null;
+        }
+
+        String[] parts = id.split("_");
+        if (parts.length != 3) {
+            return null;
+        }
+
+        try {
+            int row = Integer.parseInt(parts[1]);
+            int col = Integer.parseInt(parts[2]);
+            return new Coordinate(row, col);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
 
     public void updateCurrentPlayerName() {
         currentPlayerNameLabel.setText(GUIController.getInstance().getController().getGameV().getCurrentState().getCurrentPlayer().getNickname());
