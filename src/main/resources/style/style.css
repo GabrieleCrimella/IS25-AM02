@@ -258,3 +258,13 @@
     -fx-background-radius: 5;
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 0, 0.6), 10, 0.5, 0, 0);
 }
+
+.planet-pane {
+    -fx-border-color: transparent;
+    -fx-border-width: 3;
+    -fx-background-color: trasparent;
+}
+
+.planet-pane:hover {
+    -fx-border-color: yellow;
+}
