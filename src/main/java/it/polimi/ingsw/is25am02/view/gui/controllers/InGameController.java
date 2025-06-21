@@ -772,11 +772,14 @@ public class InGameController extends GeneralController {
                 diceAnimation.setVisible(false);
 
 
-                diceResult.setText("Result: " + result);
                 diceResult.setVisible(true);
             });
         }).start();
 
+    }
+
+    public void updateDice(int result){
+        diceResult.setText("Result: " + result);
     }
 
     public void updateCurrentPlayerName() {

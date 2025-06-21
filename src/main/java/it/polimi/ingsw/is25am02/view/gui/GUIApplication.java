@@ -262,6 +262,15 @@ public class GUIApplication extends Application implements ConsoleClient {
     }
 
     @Override
+    public void updateDice(int result) {
+        Platform.runLater(() -> {
+            GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
+                controller.updateDice(result);
+            });
+        });
+    }
+
+    @Override
     public GraphicPrinter getPrinter() {
         return null;
     }

@@ -28,6 +28,7 @@ public interface ConsoleClient {
     void setGameView(int level, PlayerColor color);
     void updateStats();
     void updateCurrentPlayer();
+    void updateDice(int result);
     GraphicPrinter getPrinter();
     void startCountdown();
     void spaceshipBrokenUpdate(String details);
