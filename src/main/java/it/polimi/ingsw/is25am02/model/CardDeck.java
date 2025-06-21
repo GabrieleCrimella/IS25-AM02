@@ -263,6 +263,7 @@ public class CardDeck {
                     case "WARZONE1":
                         daysLost = levelNode.get("daysLost").asInt();
                         aliveLost = levelNode.get("aliveLost").asInt();
+                        ArrayList<Pair<Integer, RotationType>> currentShots = new ArrayList<Pair<Integer, RotationType>>();
                         shots.clear();
                         for (JsonNode shotNode : levelNode.get("shots")) {
                             int smallOrBig = shotNode.get(0).asInt();
@@ -276,14 +277,15 @@ public class CardDeck {
                             } else if (shotNode.get(1).asText().equals("west")) {
                                 rotation = RotationType.WEST;
                             } else throw new IllegalArgumentException("I cannot add a shot from JSON");
-                            shots.add(new Pair<>(smallOrBig, rotation));
+                            currentShots.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new WarZone_I(level, daysLost, aliveLost, shots, imagepath,comment,testFlight));
+                        initialDeck.add(new WarZone_I(level, daysLost, aliveLost, currentShots, imagepath,comment,testFlight));
                         break;
                     case "WARZONE2":
                         daysLost = levelNode.get("daysLost").asInt();
                         boxesLost = levelNode.get("boxesLost").asInt();
+                        ArrayList<Pair<Integer, RotationType>> currentShots2 = new ArrayList<Pair<Integer, RotationType>>();
                         shots.clear();
                         for (JsonNode shotNode : levelNode.get("shots")) {
                             int smallOrBig = shotNode.get(0).asInt();
@@ -297,10 +299,10 @@ public class CardDeck {
                             } else if (shotNode.get(1).asText().equals("west")) {
                                 rotation = RotationType.WEST;
                             } else throw new IllegalArgumentException("I cannot add a shot from JSON");
-                            shots.add(new Pair<>(smallOrBig, rotation));
+                            currentShots2.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new WarZone_II(level, daysLost, boxesLost, shots, imagepath,comment,testFlight));
+                        initialDeck.add(new WarZone_II(level, daysLost, boxesLost, currentShots2, imagepath,comment,testFlight));
                         break;
                 }
             }
@@ -403,6 +405,7 @@ public class CardDeck {
                 }
             }
         }
+        game.setDiceResultManually(0);
         return nextCard;
     }
 }
