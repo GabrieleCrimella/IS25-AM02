@@ -339,31 +339,32 @@ public class CardDeck {
 
     public Card playnextCard(Game game){//deve prendere la prossima carta da final deck
         Card nextCard;
-        //se la carta corrente è una di quelle con le box metto gli scarti in store
-        if(finalDeck.getFirst().getCardType().equals(CardType.ABANDONED_STATION) || finalDeck.getFirst().getCardType().equals(CardType.TRAFFICKER)){
-            if(!finalDeck.getFirst().getBoxesWon().isEmpty()){
-                for(Box box : finalDeck.getFirst().getBoxesWon()){
-                    store.addBox(box);
-                }
-                finalDeck.getFirst().clearBoxWon();
-            }
-        } else if (finalDeck.getFirst().getCardType().equals(CardType.PLANET)) {
-            if(!( finalDeck.getFirst()).getPlanetOffers().isEmpty()){
-                for(LinkedList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()){
-                    for(Box box : boxlist){
+        if (game.getCurrentCard().getCardType() != CardType.INITIAL_CARD) {
+            //se la carta corrente è una di quelle con le box metto gli scarti in store
+            if (finalDeck.getFirst().getCardType().equals(CardType.ABANDONED_STATION) || finalDeck.getFirst().getCardType().equals(CardType.TRAFFICKER)) {
+                if (!finalDeck.getFirst().getBoxesWon().isEmpty()) {
+                    for (Box box : finalDeck.getFirst().getBoxesWon()) {
                         store.addBox(box);
                     }
+                    finalDeck.getFirst().clearBoxWon();
                 }
-                finalDeck.getFirst().clearPlanetOffers();
+            } else if (finalDeck.getFirst().getCardType().equals(CardType.PLANET)) {
+                if (!(finalDeck.getFirst()).getPlanetOffers().isEmpty()) {
+                    for (LinkedList<Box> boxlist : finalDeck.getFirst().getPlanetOffers()) {
+                        for (Box box : boxlist) {
+                            store.addBox(box);
+                        }
+                    }
+                    finalDeck.getFirst().clearPlanetOffers();
+                }
             }
-        }
-        finalDeck.removeFirst();
-        if(finalDeck.isEmpty()){
-            return null;
+            finalDeck.removeFirst();
+            if (finalDeck.isEmpty()) {
+                return null;
+            }
         }
         nextCard = finalDeck.getFirst();
         game.getCurrentState().setCurrentCard(nextCard);
-
 
         //only 1 player is IN_GAME, he skips WarZone
         if(game.getGameboard().getPositions().size() == 1){
@@ -407,5 +408,6 @@ public class CardDeck {
         }
         game.setDiceResultManually(0);
         return nextCard;
+
     }
 }

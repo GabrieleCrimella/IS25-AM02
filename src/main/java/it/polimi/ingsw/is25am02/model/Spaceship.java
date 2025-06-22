@@ -222,11 +222,13 @@ public class Spaceship {
             }
         }
         for (Optional<Tile> t : spaceshipIterator.reference()) {
-            if (t.isPresent() && !rightMask[spaceshipIterator.getX(t.get())][spaceshipIterator.getY(t.get())]) {
-                spaceshipIterator.removeOneTile(spaceshipIterator.getX(t.get()), spaceshipIterator.getY(t.get()));
+            int x = spaceshipIterator.getX(t.get());
+            int y = spaceshipIterator.getY(t.get());
+            if (t.isPresent() && !rightMask[x][y]) {
+                spaceshipIterator.removeOneTile(x, y);
                 for (String nick : observers.keySet()) {
                     try {
-                        observers.get(nick).showTileRemoval(new Coordinate(spaceshipIterator.getX(t.get()), spaceshipIterator.getY(t.get())), nicknameP);
+                        observers.get(nick).showTileRemoval(new Coordinate(x, y), nicknameP);
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method keepBlock update", e);
                     }
