@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BuildController extends GeneralController {
+    private int level=0;
     private Timeline timeline;
     @FXML
     public Button readyButton;
@@ -228,6 +229,7 @@ public class BuildController extends GeneralController {
 
     @FXML
     public void initialize(int level, PlayerColor color) {
+        this.level=level;
         booked = false;
         index = 0;
         wrongSpaceship = false;
@@ -766,11 +768,13 @@ public class BuildController extends GeneralController {
             returnTileButton.setVisible(false);
 
             if(theFirstTileHasBeenAdded==false){
-                theFirstTileHasBeenAdded=true;
-                miniDecklabel.setVisible(true);
-                miniDeck1.setVisible(true);
-                miniDeck2.setVisible(true);
-                miniDeck3.setVisible(true);
+                if(level==2) {
+                    theFirstTileHasBeenAdded = true;
+                    miniDecklabel.setVisible(true);
+                    miniDeck1.setVisible(true);
+                    miniDeck2.setVisible(true);
+                    miniDeck3.setVisible(true);
+                }
             }
         });
     }
