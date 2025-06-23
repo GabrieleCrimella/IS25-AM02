@@ -153,6 +153,10 @@ public class BuildController extends GeneralController {
             imageView.getStyleClass().add("draggableTile");
 
             // Imposta l'immagine (da una proprietà della TileV)
+            if(newTile.getImagePath()==null || newTile.getImagePath().isEmpty()||getClass().getResourceAsStream(newTile.getImagePath())==null) {
+                onReturnTile();
+                return;
+            }
             imageView.setImage(new Image(getClass().getResourceAsStream(newTile.getImagePath())));
             postoInizialeTile.getChildren().add(imageView);
 
