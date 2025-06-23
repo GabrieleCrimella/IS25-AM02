@@ -233,6 +233,16 @@ public class Game implements Game_Interface {
                     globalBoard.decreaseHourGlassFlip();
                 }
                 //player.onHourglassUpdate();
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).displayMessage("hourglass.flipped",null);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method flipHourglass", e);
+                    } catch (Exception e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method flipHourglass", e);
+                        reportErrorOnServer("connection problem in method flipHourglass");
+                    }
+                }
             } else {
                 throw new IllegalStateException("");
             }

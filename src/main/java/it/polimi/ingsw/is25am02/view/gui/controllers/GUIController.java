@@ -216,6 +216,12 @@ public class GUIController implements Runnable {
                 }
                 //controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
             }
+            case "hourglass.flipped"->{
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onHourglassFlipped();
+                }
+            }
             case "hourglass.time" -> {
                 int timeleft = Integer.parseInt(params.get("tim"));
                 getController().getGameV().getHourglass().setTimeLeft(timeleft);

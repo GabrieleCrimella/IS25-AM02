@@ -90,7 +90,8 @@
     "bookedTile": "Tile booked"
   },
   "hourglass": {
-    "time": "Time left: {tim}"
+    "time": "Time left: {tim}",
+    "flipped": "Hourglass flipped: 60 seconds remaining!"
   },
   "helper": {
     "build": {

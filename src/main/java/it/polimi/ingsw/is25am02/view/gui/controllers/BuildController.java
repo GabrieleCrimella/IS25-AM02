@@ -1,6 +1,5 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
@@ -8,6 +7,8 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.HeapTileV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -31,8 +33,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BuildController extends GeneralController {
+    private Timeline timeline;
     @FXML
     public Button readyButton;
+    @FXML
+    public Label labelHourglass;
     private boolean wrongSpaceship;
     private Map<ImageView, Pane> tiles;
     @FXML
@@ -43,8 +48,6 @@ public class BuildController extends GeneralController {
     public Button addTileButton;
     @FXML
     public Button flipHourglassButton;
-    @FXML
-    public Button seeHourglassButton;
     @FXML
     public Button heapTileButton;
     @FXML
@@ -94,6 +97,7 @@ public class BuildController extends GeneralController {
     @FXML
     private ScrollPane scrollHeapPane;
 
+    private int secondsLeft;
 
     @FXML
     private StackPane viewSpaceshipPopup;
@@ -120,6 +124,8 @@ public class BuildController extends GeneralController {
     private Pane boardPane;
     @FXML
     private StackPane confirmBookedPopup;
+
+    private boolean theFirstTileHasBeenAdded = false;
 
     private Pane currentDraggedTilePane;
     private String bookedTargetId;
@@ -322,8 +328,12 @@ public class BuildController extends GeneralController {
 
             if (level == 0) {
                 flipHourglassButton.setVisible(false);
-                seeHourglassButton.setVisible(false);
             }
+            labelHourglass.setVisible(false);
+            miniDecklabel.setVisible(false);
+            miniDeck1.setVisible(false);
+            miniDeck2.setVisible(false);
+            miniDeck3.setVisible(false);
         });
     }
 
@@ -386,7 +396,7 @@ public class BuildController extends GeneralController {
     public void onFlipHourglass() {
         try {
             GUIController.getInstance().getController().flipHourglass(GUIController.getInstance().getNickname());
-            showNotification("Hourglass flipped!", NotificationType.SUCCESS, 2000);
+            //showNotification("Hourglass flipped!", NotificationType.SUCCESS, 2000);
         } catch (RemoteException e) {
             showNotification("Impossible to flip the hourglass", NotificationType.ERROR, 3000);
         }
@@ -564,7 +574,7 @@ public class BuildController extends GeneralController {
             }
 
             ImageView i = null;
-            Pane p=null;
+            Pane p = null;
 
             if (booked) {
                 for (ImageView im : tilesBooked.keySet()) {
@@ -754,6 +764,14 @@ public class BuildController extends GeneralController {
             takeTileButton.setVisible(true);
             addTileButton.setVisible(false);
             returnTileButton.setVisible(false);
+
+            if(theFirstTileHasBeenAdded==false){
+                theFirstTileHasBeenAdded=true;
+                miniDecklabel.setVisible(true);
+                miniDeck1.setVisible(true);
+                miniDeck2.setVisible(true);
+                miniDeck3.setVisible(true);
+            }
         });
     }
 
@@ -785,7 +803,6 @@ public class BuildController extends GeneralController {
             addTileButton.setVisible(false);
             returnTileButton.setVisible(false);
             flipHourglassButton.setVisible(false);
-            seeHourglassButton.setVisible(false);
             miniDeck1.setVisible(false);
             miniDeck2.setVisible(false);
             miniDeck3.setVisible(false);
@@ -943,5 +960,34 @@ public class BuildController extends GeneralController {
             addTileButton.setVisible(false);
             returnTileButton.setVisible(false);
         });
+    }
+
+    public void onHourglassFlipped() {
+        Platform.runLater(() -> {
+            showNotification("Hourglass flipped successfully", NotificationType.SUCCESS, 5000);
+            flipHourglassButton.setVisible(false);
+            labelHourglass.setVisible(true);
+            this.secondsLeft = 60; // Inizia il conto alla rovescia da 60 secondi
+            setupTimer();
+            timeline.playFromStart();
+        });
+    }
+
+    private void setupTimer() {
+        // Inizializza la Timeline
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), event -> {
+                    // Questo blocco di codice viene eseguito ogni secondo
+                    secondsLeft--;
+
+                    if (secondsLeft >= 0) {
+                        labelHourglass.setText(secondsLeft + "s left!");
+                    } else {
+                        timeline.stop();
+                        System.out.println("Tempo scaduto!");
+                    }
+                })
+        );
+        timeline.setCycleCount(secondsLeft + 1); // 60s, 59s, ..., 0s (61 aggiornamenti)
     }
 }
