@@ -108,6 +108,24 @@
         </VBox>
     </StackPane>
 
+    <StackPane fx:id="addCrewPopup" style="-fx-background-color: rgba(0, 0, 0, 0.6);" visible="false"
+               xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
+        <VBox alignment="TOP_CENTER" maxHeight="300" maxWidth="400" spacing="20"
+              style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;">
+
+            <Label fx:id="addCrewTitle" text="Add crew to tile (x,y)" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <!-- Contenitore dinamico per le opzioni -->
+            <VBox fx:id="aliveTypeContainer" alignment="CENTER" spacing="10" />
+
+            <HBox alignment="CENTER" spacing="20">
+                <Button text="Conferma" onAction="#onConfirmAddCrew" styleClass="main-button" />
+                <Button text="Annulla" onAction="#onCancelAddCrew" styleClass="main-button" />
+            </HBox>
+        </VBox>
+    </StackPane>
+
+
     <StackPane fx:id="confirmBookedPopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
         <VBox alignment="TOP_CENTER" maxHeight="200" maxWidth="600" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
             <Label styleClass="context-label" text="Are you sure you want to add a booked tile?" />

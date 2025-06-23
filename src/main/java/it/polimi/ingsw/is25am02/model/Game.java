@@ -833,6 +833,7 @@ public class Game implements Game_Interface {
                     }
                 }
             }
+            player.getObserver().displayMessage("build.addCrew", null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -857,6 +858,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addCrew");
             }
+        } catch (Exception e) {
+            reportErrorOnServer("connection problem in method addCrew");
         }
     }
 

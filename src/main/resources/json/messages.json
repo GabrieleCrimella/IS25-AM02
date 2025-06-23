@@ -87,7 +87,8 @@
   "build": {
     "addTile": "Tile added to your ship",
     "returnTile": "Tile returned to the heap",
-    "bookedTile": "Tile booked"
+    "bookedTile": "Tile booked",
+    "addCrew": "Crew member added to your tile"
   },
   "ingame": {
     "hidechoicebox": "Choice box {visible}",

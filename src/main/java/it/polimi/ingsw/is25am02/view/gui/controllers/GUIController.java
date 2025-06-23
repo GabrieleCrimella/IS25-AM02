@@ -298,6 +298,13 @@ public class GUIController implements Runnable {
                     inGameCtrl.showdiceresult();
                 }
             }
+            case "build.addCrew"->{
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onAddCrewSuccess();
+                    return;
+                }
+            }
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }

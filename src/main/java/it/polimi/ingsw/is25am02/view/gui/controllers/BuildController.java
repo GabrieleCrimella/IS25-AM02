@@ -1,8 +1,10 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
+import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.HeapTileV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
@@ -16,10 +18,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -33,6 +33,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BuildController extends GeneralController {
+    private ToggleGroup aliveTypeGroup = new ToggleGroup();
+    @FXML
+    public StackPane addCrewPopup;
+    @FXML
+    public Label addCrewTitle;
+    @FXML
+    public VBox aliveTypeContainer;
     private int level = 0;
     private Timeline timeline;
     @FXML
@@ -153,7 +160,7 @@ public class BuildController extends GeneralController {
             imageView.getStyleClass().add("draggableTile");
 
             // Imposta l'immagine (da una proprietà della TileV)
-            if(newTile.getImagePath()==null || newTile.getImagePath().isEmpty()||getClass().getResourceAsStream(newTile.getImagePath())==null) {
+            if (newTile.getImagePath() == null || newTile.getImagePath().isEmpty() || getClass().getResourceAsStream(newTile.getImagePath()) == null) {
                 onReturnTile();
                 return;
             }
@@ -505,6 +512,7 @@ public class BuildController extends GeneralController {
         // Rimuove contenuti precedenti e aggiunge l'immagine
         tileCentrale.getChildren().clear();
         tileCentrale.getChildren().add(imageView);
+        tiles.put(imageView,tileCentrale);
     }
 
     public Coordinate getCoordinatesFromId(Node node) {
@@ -908,8 +916,45 @@ public class BuildController extends GeneralController {
         Platform.runLater(() -> {
             viewOtherSpaceshipLabel.setText("Initialize your spaceship!");
             readyButton.setVisible(true);
+
+            aliveTypeContainer.getChildren().clear(); // pulisce eventuali precedenti
+
+            // Crea un RadioButton per ogni valore dell'enum
+            for (AliveType type : AliveType.values()) {
+                RadioButton rb = new RadioButton(type.name());
+                rb.setToggleGroup(aliveTypeGroup);
+                aliveTypeContainer.getChildren().add(rb);
+            }
+
+            aliveTypeGroup.selectToggle(null); // deseleziona all'apertura
+
+            for (ImageView im : tiles.keySet()) {
+                im.setOnMouseClicked(null);
+
+                GUIController.getInstance().getController().getGameV().getPlayers().stream()
+                        .filter(p -> p.getNickname().equals(GUIController.getInstance().getNickname()))
+                        .findFirst()
+                        .ifPresent(player -> {
+                            int x = getCoordinatesFromId(tiles.get(im)).x();
+                            int y = getCoordinatesFromId(tiles.get(im)).y();
+
+                            Optional<TileV> tileOpt = player.getSpaceshipBoard()[x][y];
+
+                            if (tileOpt.isPresent()) {
+                                TileType type = tileOpt.get().getType();
+                                if (type == TileType.CABIN) {
+                                    im.setOnMouseClicked(e -> {
+                                        coordinate = getCoordinatesFromId(tiles.get(im));
+                                        addCrewTitle.setText("Add crew to tile (" + coordinate.x() + "," + coordinate.y() + ")");
+                                        addCrewPopup.setVisible(true);
+                                    });
+                                }
+                            }
+                        });
+            }
         });
     }
+
 
     public void onReadyPressed() {
         try {
@@ -1011,5 +1056,33 @@ public class BuildController extends GeneralController {
     public void onReturnMiniDeck() {
         miniDeckPopup.setVisible(false);
         miniDeckCardsContainer.getChildren().clear();
+    }
+
+    public void onCancelAddCrew() {
+        addCrewPopup.setVisible(false);
+        coordinate = null;
+    }
+
+    public void onConfirmAddCrew() {
+        RadioButton selectedRadioButton = (RadioButton) aliveTypeGroup.getSelectedToggle();
+        if (selectedRadioButton == null || coordinate == null) {
+            showNotification("Please select a crew type!", NotificationType.ERROR, 5000);
+            return;
+        }
+
+        AliveType selectedType = AliveType.valueOf(selectedRadioButton.getText());
+        try {
+            GUIController.getInstance().getController().addCrew(GUIController.getInstance().getNickname(), coordinate, selectedType);
+        } catch (RemoteException e) {
+            showNotification("Failed to add crew", NotificationType.ERROR, 5000);
+        }
+    }
+
+    public void onAddCrewSuccess() {
+        Platform.runLater(() -> {
+            showNotification("Crew added successfully", NotificationType.SUCCESS, 5000);
+            addCrewPopup.setVisible(false);
+            coordinate = null;
+        });
     }
 }
