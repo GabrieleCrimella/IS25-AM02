@@ -111,6 +111,8 @@ public class InGameController extends GeneralController {
     private Button choiceYes;
     @FXML
     private Button choiceNo;
+    @FXML
+    private VBox commentBox;
 
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
@@ -580,6 +582,8 @@ public class InGameController extends GeneralController {
         choiceYes.setDisable(true);
         noChoicePlanet.setVisible(false);
         noChoicePlanet.setDisable(true);
+        batteryLabel.setVisible(false);
+        doubleLabel.setVisible(false);
         ImageView imageView = new ImageView();
         imageView.setFitWidth(300);
         imageView.setFitHeight(500);
@@ -595,11 +599,13 @@ public class InGameController extends GeneralController {
             choiceboxtrue.setDisable(false);
             choiceboxfalse.setVisible(true);
             choiceboxfalse.setDisable(false);
+            loadComments("Abandoned station: if you have enough alive on board, you can choose whether to take the boxes or not. If you choose to do so, click on the storage and add the boxes you want");
         } else if (newCard.getCardType().equals(CardType.ABANDONED_SHIP)) {
             choiceYes.setVisible(true);
             choiceYes.setDisable(false);
             choiceNo.setVisible(true);
             choiceNo.setDisable(false);
+            loadComments("Abandoned ship: you can choose whether or not to sacrifice alive to gain credits");
         } else if(newCard.getCardType().equals(CardType.PIRATE) ){
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
@@ -607,37 +613,36 @@ public class InGameController extends GeneralController {
             calculatedamage.setDisable(false);
             rollDice.setVisible(true);
             rollDice.setDisable(false);
+            loadComments("Pirate: you can choose to activate cannons using batteries by clicking on them. If you win, you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must roll the dice to find out where you'll be hit and activate Calculate Damage by clicking on a battery or directly on Calculate Damage");
         } else if(newCard.getCardType().equals(CardType.SLAVE_OWNER) ){
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
+            loadComments("Slave Owner: you can choose to activate cannons using batteries by clicking on them. If you win you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must click on the cabins to eliminate the alive crew members..");
         } else if(newCard.getCardType().equals(CardType.WARZONE2)){
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
-            finishmotor.setVisible(true);
-            finishmotor.setDisable(false);
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
+            loadComments("War Zone 2: Phase 1, you can choose to activate cannons using batteries; Phase 2: you can choose to activate motors using batteries; the player with fewer motors must choose where to remove boxes by clicking on storages. Phase 3: the player with fewer alive must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.TRAFFICKER)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
+            loadComments("Trafficker: you can choose to activate cannons using batteries by clicking on them. If you win, you can add boxes by clicking on the storage. If it's a draw, it's the next player's turn. If you lose, you must leave behind 2 boxes by reducing their quantity. If you've run out of boxes, you lose batteries instead by clicking on the battery storage.");
         } else if (newCard.getCardType().equals(CardType.OPENSPACE)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
+            loadComments("Open space: you can choose to activate motors using batteries by clicking on them.");
         } else if (newCard.getCardType().equals(CardType.WARZONE1)) {
-            finishmotor.setVisible(true);
-            finishmotor.setDisable(false);
-            finishcannon.setVisible(true);
-            finishcannon.setDisable(false);
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
-            diceResult.setVisible(true);
-            calculatedamage.setVisible(true);
-            calculatedamage.setDisable(false);
+            try {
+                GUIController.getInstance().getController().choiceCrew(GUIController.getInstance().getNickname());
+            } catch (RemoteException e) {
+                showNotification("Error in choice crew", NotificationType.ERROR, 5000);
+            }
+            loadComments("War Zone 1: Phase 1, the player with fewer humans automatically loses flight days. Phase 2, you can choose to activate motors using batteries; the player with fewer motors must choose where to remove alive crew members by clicking on the cabins. Phase 3, you can choose to activate cannons using batteries; the player with fewer cannons must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)) {
             rollDice.setVisible(true);
             rollDice.setDisable(false);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
+            loadComments("Meterites Storm: the leader will roll the dice, and you can calculate damage by clicking on the battery if you want to use it, or by clicking on Calculate Damage, for all the meteorites shown on the card. If your ship breaks apart, you'll be able to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.PLANET)) {
             finishmoveboxes.setVisible(true);
             finishmoveboxes.setDisable(false);
@@ -661,6 +666,7 @@ public class InGameController extends GeneralController {
 
                 cardPane.getChildren().add(planetPane);
             }
+            loadComments("Planets: you can choose which planet to board by clicking on the card, then click on the storage to load the boxes.");
         }
     }
 
@@ -918,6 +924,15 @@ public class InGameController extends GeneralController {
         batteryCount = 0;
         doubleLabel.setVisible(false);
         batteryLabel.setVisible(false);
+        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)){
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
+            calculatedamage.setVisible(true);
+            calculatedamage.setDisable(false);
+        } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)){
+            finishmotor.setVisible(true);
+            finishmotor.setDisable(false);
+        }
     }
 
     public void hideFinishMotor(int number) {
@@ -929,6 +944,21 @@ public class InGameController extends GeneralController {
         batteryCount = 0;
         doubleLabel.setVisible(false);
         batteryLabel.setVisible(false);
+        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
+            try {
+                GUIController.getInstance().getController().choiceCrew(GUIController.getInstance().getNickname());
+            } catch (RemoteException e) {
+                showNotification("Error with choice crew", NotificationType.ERROR, 5000);
+            }
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
+            calculatedamage.setVisible(true);
+            calculatedamage.setDisable(false);
+        } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)){
+            finishcannon.setVisible(true);
+            finishcannon.setDisable(false);
+        }
+
     }
 
     public void hideMoveBox(){
@@ -945,4 +975,47 @@ public class InGameController extends GeneralController {
         //calculatedamage.setVisible(false);
         //calculatedamage.setDisable(true);
     }
+
+    public void afterChoiceCrew(){
+        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
+            finishmotor.setVisible(true);
+            finishmotor.setDisable(false);
+            finishcannon.setVisible(true);
+            finishcannon.setDisable(false);
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
+            diceResult.setVisible(true);
+            calculatedamage.setVisible(true);
+            calculatedamage.setDisable(false);
+        }
+    }
+
+    public void showdiceresult(){
+        diceResult.setVisible(true);
+        int result = GUIController.getInstance().getController().getGameV().getDiceV().getResult();
+        diceResult.setText("Result: " + result);
+
+    }
+
+
+    public void loadComments(String comments) {
+        commentBox.getChildren().clear();
+
+        if (comments == null || comments.isBlank()) {
+            return;
+        }
+
+        String[] commentList = comments.split("\\n");
+
+        for (String comment : commentList) {
+            Label commentLabel = new Label(comment);
+            commentLabel.setWrapText(true);
+            commentLabel.setStyle("-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-border-color: #ccc; -fx-background-radius: 5;");
+
+            HBox container = new HBox(commentLabel);
+            container.setStyle("-fx-padding: 5;");
+            commentBox.getChildren().add(container);
+        }
+    }
 }
+

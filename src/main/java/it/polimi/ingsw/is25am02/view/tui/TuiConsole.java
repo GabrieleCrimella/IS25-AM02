@@ -679,6 +679,12 @@ public class TuiConsole implements Runnable, ConsoleClient {
     }
 
     @Override
+    public void onResultState() {
+
+    }
+
+
+    @Override
     public void reportError(String keys, Map<String, String> params) {
         System.err.println(messManager.getMessageWithParams(keys, params));
     }

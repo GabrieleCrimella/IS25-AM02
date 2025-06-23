@@ -96,7 +96,9 @@
     "hidefinishmotor": "Double motor choice finished, {number} motors activated",
     "hidemovebox": "Box choice finished",
     "hidechoiceplanet": "Planet choice finished",
-    "hidecalculatedamage": "Damage finished"
+    "hidecalculatedamage": "Damage finished",
+    "afterchoicecrew": "You have finished choice crew",
+    "diceupdate": "Dice updated"
   },
   "hourglass": {
     "time": "Time left: {tim}",

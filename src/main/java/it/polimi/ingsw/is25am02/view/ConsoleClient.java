@@ -10,6 +10,8 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public interface ConsoleClient {
@@ -29,6 +31,7 @@ public interface ConsoleClient {
     void updateStats();
     void updateCurrentPlayer();
     void updateDice(int result);
+    void onResultState();
     GraphicPrinter getPrinter();
     void startCountdown();
     void spaceshipBrokenUpdate(String details);

@@ -286,6 +286,18 @@ public class GUIController implements Runnable {
                     inGameCtrl.hideCalculateDamage();
                 }
             }
+            case "ingame.afterchoicecrew"->{
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.afterChoiceCrew();
+                }
+            }
+            case "ingame.diceupdate"->{
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.showdiceresult();
+                }
+            }
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }

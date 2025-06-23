@@ -28,6 +28,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -266,6 +267,15 @@ public class GUIApplication extends Application implements ConsoleClient {
         Platform.runLater(() -> {
             GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
                 controller.updateDice(result);
+            });
+        });
+    }
+
+    @Override
+    public void onResultState() {
+        Platform.runLater(() -> {
+            GUIController.getInstance().<ResultController>switchScene("Result", "Result", controller -> {
+                controller.initialize();
             });
         });
     }

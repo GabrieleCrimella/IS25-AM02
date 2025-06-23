@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane prefHeight="1080" prefWidth="1920" fx:id="root" focusTraversable="true" stylesheets="@../style/style.css"
+           xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="it.polimi.ingsw.is25am02.view.gui.controllers.ResultController">
+
+
+    <ImageView fx:id="backgroundImage" fitHeight="1080" fitWidth="1920" preserveRatio="false">
+        <image>
+            <Image url="@../image/background.jpg"/>
+        </image>
+    </ImageView>
+
+    <Label fx:id="winnersLabel" text="The winners are:" styleClass="title-label" />
+
+
+
+
+
+</StackPane>
+
