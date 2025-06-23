@@ -8,6 +8,7 @@ public class PingManager {
     private final int TIMEOUT_SECONDS = 10;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+    //Create a thread that periodically decreases client alive times
     public PingManager(ServerController controller) {
         scheduler.scheduleAtFixedRate(() -> {
             for (String nickname : pingMap.keySet()) {
@@ -26,12 +27,14 @@ public class PingManager {
         pingMap.put(nickname, TIMEOUT_SECONDS);
     }
 
+    //Reset alive time for the client called nickname
     public void ping(String nickname) {
         if (pingMap.containsKey(nickname)) {
             pingMap.put(nickname, TIMEOUT_SECONDS);
         }
     }
 
+    //Close scheduler
     public void stop() {
         scheduler.shutdownNow();
 

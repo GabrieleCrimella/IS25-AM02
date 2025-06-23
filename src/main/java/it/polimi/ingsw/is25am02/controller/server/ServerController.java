@@ -29,18 +29,21 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ServerController extends UnicastRemoteObject implements VirtualServer {
-    //Gestione Coda
+
+    //Attributes for queue management
     private final BlockingQueue<Runnable> methodQueue = new LinkedBlockingQueue<>();
     private final ExecutorService threadPool = Executors.newFixedThreadPool(8);
     private static final Runnable POISON_PILL = () -> {};
     private Thread queueProcessor;
+
+    //Logger
     public static final Logger logger = Logger.getLogger(ServerController.class.getName());
-    //todo gestire concorrenza logger
+
+    //Attributes for ping management
     private final PingManager pingManager;
     private boolean running = true;
 
-
-    //Gestione Login, Lobby, Inizio partita
+    //Login Management, Lobby, Game Start
     private final Map<Integer, Lobby> lobbies = new ConcurrentHashMap<>();
     private final Map<Integer, GameSession> activeGames = new ConcurrentHashMap<>();
     private final Map<String, VirtualView> registeredClients = new ConcurrentHashMap<>();
@@ -49,6 +52,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     public ServerController() throws RemoteException {
         super();
         try {
+            //Create logger
             FileHandler fh = new FileHandler("server.log", true);
             fh.setFormatter(new SimpleFormatter());
             logger.addHandler(fh);
@@ -56,9 +60,11 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             logger.log(Level.SEVERE, "Failed to setup logger FileHandler", e);
         }
         startQueueProcessor();
+        //Start ping Manager
         pingManager = new PingManager(this);
     }
 
+    //Start the main queue
     private void startQueueProcessor() {
         queueProcessor = new Thread(() -> {
             pingFromServer();
@@ -76,6 +82,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         queueProcessor.start();
     }
 
+    //Close the main queue
     public void shutdown() {
         if (methodQueue.offer(POISON_PILL)) {
             try {
@@ -85,14 +92,13 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             }
             running = false; //close pingClients thread
             threadPool.shutdownNow();
-            System.out.println(">> ThreadPool shutdown.");
-            System.out.println(">> Thread administrator shutdown.");
             pingManager.stop();
         } else {
-            System.out.println(">> ThreadPool shutdown failed.");
+            logger.log(Level.SEVERE, "ThreadPool shutdown failed");
         }
     }
 
+    //Creation of the thread that periodically sends the alive signal to the clients
     public void pingFromServer() {
         Thread pingClients = new Thread(() -> {
             while (running) {
@@ -118,17 +124,20 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         }
     }
 
+    //When a client appears disconnected (its time is equal to 0)
     public void disconnectClient(String nickname){
         synchronized (registeredClients) {
-            //lo cancello dai player attivi
+            //Delete from activeClient
             registeredClients.remove(nickname);
         }
 
         synchronized (lobbies) {
-            //controllo se è in una lobby non ancora cominciata
+            //Check if it's in a lobby that hasn't started yet
             for (Lobby lobby : lobbies.values()) {
                 for (Player player : lobby.getPlayers()) {
                     if (player.getNickname().equals(nickname)) {
+
+                        //if the client is the owner, the lobby is closed
                         if (lobby.getPlayers().getFirst().getNickname().equals(nickname)) {
                             lobbies.remove(lobby.getId());
                             lobby.getPlayers().removeFirst();
@@ -140,7 +149,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                                     logger.log(Level.SEVERE, "connection problem during client disconnection (case lobby_owner) " + e);
                                 }
                             }
-                        } else {
+                        } else { //The client is removed and other participants are notified
                             lobby.getPlayers().remove(player);
                             for (Player player2 : lobby.getPlayers()) {
                                 try {
@@ -156,6 +165,8 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             }
         }
 
+        //Check if it's in a game that has already started
+        //If it is found, the game is closed and the other players are returned to the lobby
         synchronized (activeGames) {
             for (GameSession gameSession : activeGames.values()) {
                 for (Player player : gameSession.getGame().getPlayers()) {
@@ -199,7 +210,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
     public synchronized void createLobby(VirtualView client, String nickname, int maxPlayers, PlayerColor color, int level) {
         methodQueue.offer(() -> {
-            boolean found = false;
+            boolean found;
             synchronized (registeredClients) {
                 found = registeredClients.containsKey(nickname);
             }
@@ -242,17 +253,15 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         });
     }
 
-    public static Map<Integer, LobbyView> convertToLobbyViewMap(Map<Integer, Lobby> lobbies) {
+    private static Map<Integer, LobbyView> convertToLobbyViewMap(Map<Integer, Lobby> lobbies) {
         Map<Integer, LobbyView> result = new HashMap<>();
 
         for (Map.Entry<Integer, Lobby> entry : lobbies.entrySet()) {
             Lobby lobby = entry.getValue();
-
             List<String> nicknames = lobby.getPlayers()
                     .stream()
                     .map(player -> player.getNickname())
                     .collect(Collectors.toList());
-
             LobbyView view = new LobbyView(
                     lobby.getId(),
                     lobby.getMaxPlayers(),
@@ -262,7 +271,6 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
             result.put(entry.getKey(), view);
         }
-
         return result;
     }
 
@@ -288,7 +296,6 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                                 lobbies.remove(lobbyId);
 
                                 for (Player player : lobby.getPlayers()) {
-                                    //player.getObserver().displayMessage("start", null);
                                     player.getObserver().setMenuState(MenuState.GAME);
                                     player.getObserver().setBuildView(lobby.getLevel(), player.getColor());
                                 }
@@ -393,7 +400,6 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         });
     }
 
-    //todo sostituire Tile con qualhce tipo primitivo univoco che rappresenti però anche rotazione ecc.
     public void takeTile(String nickname, String tile_imagePath) {
         methodQueue.offer(() -> {
             try {
@@ -767,7 +773,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     g.getQueue().offer(() -> g.getGame().calculateDamage(player, pos));
                 }
             } catch (PlayerNotFoundException e) {
-                logger.log(Level.SEVERE, "nickname "+nickname+" not found in method ");
+                logger.log(Level.SEVERE, "nickname " + nickname + " not found in method ");
             }
         });
     }
@@ -781,7 +787,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                     g.getQueue().offer(() -> g.getGame().keepBlock(player, pos));
                 }
             } catch (PlayerNotFoundException e) {
-                logger.log(Level.SEVERE, "nickname " + nickname + " not fount in method keepBlock", e);
+                logger.log(Level.SEVERE, "nickname " + nickname + " not found in method keepBlock", e);
             }
         });
     }

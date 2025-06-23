@@ -13,7 +13,7 @@ public class GameSession {
     private final Game game;
     private final int lobbyId;
 
-    //Gestione Coda
+    //Attributes for queue management
     private final BlockingQueue<Runnable> gameMethodQueue = new LinkedBlockingQueue<>();
     private final ExecutorService gameThreadPool = Executors.newFixedThreadPool(4);
     private static final Runnable POISON_PILL = () -> {};
@@ -32,6 +32,7 @@ public class GameSession {
     public int getLobbyId() { return lobbyId; }
     public BlockingQueue<Runnable> getQueue() { return gameMethodQueue; }
 
+    //Start single queue for game
     private void startGameQueueProcessor() {
         gameQueueProcessor = new Thread(() -> {
             while (true) {
@@ -40,6 +41,7 @@ public class GameSession {
                     if (task == POISON_PILL) break;
                     gameThreadPool.submit(task);
                 } catch (InterruptedException e) {
+                    //todo sistemare con logger
                     e.getMessage();
                     break;
                 }
@@ -48,18 +50,16 @@ public class GameSession {
         gameQueueProcessor.start();
     }
 
+    //Close queue
     public void shutdown() {
-        if(gameMethodQueue.offer(POISON_PILL)){
+        if(gameMethodQueue.offer(POISON_PILL)) {
             try {
                 gameQueueProcessor.join();
             } catch (InterruptedException e) {
+                //todo sistemare con logger
                 e.printStackTrace();
             }
             gameThreadPool.shutdownNow();
-            System.out.println(">> GameThreadPool with lobby Id (" + lobbyId +") shutdown.");
-            System.out.println(">> GameThread administrator with lobby Id (" + lobbyId +") shutdown.");
-        } else {
-            System.out.println(">> GameThreadPool with lobby Id (" + lobbyId +") shutdown failed.");
         }
     }
 }

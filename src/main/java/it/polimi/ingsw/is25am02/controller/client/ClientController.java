@@ -2,8 +2,6 @@ package it.polimi.ingsw.is25am02.controller.client;
 
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
-import it.polimi.ingsw.is25am02.model.tiles.Tile;
-import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.network.ConnectionClient;
 import it.polimi.ingsw.is25am02.network.VirtualServer;
 import it.polimi.ingsw.is25am02.network.VirtualView;
@@ -37,16 +35,16 @@ public class ClientController implements VirtualServer {
     private boolean running;
     private GameV gameV;
     private int timeLeft = 8;
-    //todo devo definire gameV una volta che so in che game sono
 
-    public GameV getGameV() {
-        return gameV;
-    }
 
     public ClientController(ConnectionClient connection) {
         this.connection = connection;
         this.menuState = MenuState.LOGIN;
         this.running = true;
+    }
+
+    public GameV getGameV() {
+        return gameV;
     }
 
     public void setGameV(GameV gameV) {
@@ -59,14 +57,11 @@ public class ClientController implements VirtualServer {
         menuState = state;
     }
 
-    public MenuState getMenuState() {
-        return menuState;
-    }
-
     public VirtualView getVirtualView() {
         return (VirtualView) connection;
     }
 
+    //Close client
     public void closeConnect() throws Exception {
         connection.closeConnection();
         running = false;
@@ -87,9 +82,16 @@ public class ClientController implements VirtualServer {
                 return p;
             }
         }
-        //todo messagio di errore
+        //todo messagio di errore chiedere
         //throw new PlayerNotFoundException("Player <" + nickname + "> not found");
         return null; //messo solo per non dare errore
+    }
+
+    public HeapTileV getHeapTiles() throws RemoteException {
+        if (menuControl(MenuState.GAME)) {
+            return gameV.getHeapTilesV();
+        }
+        return null;
     }
 
     public StatePlayerType getState(String nickname) {
@@ -100,7 +102,7 @@ public class ClientController implements VirtualServer {
                 .orElse(null);
     }
 
-    @SuppressWarnings("all")
+    //This method sends ping signal to the server for the client
     public void ping(String nickname) throws RemoteException {
         Thread pingThread = new Thread(() -> {
             while (running) {
@@ -119,24 +121,30 @@ public class ClientController implements VirtualServer {
         pingThread.start();
     }
 
+    //This method manages the ping signal that the server periodically sends to clients
     public void heartManager(){
         scheduler.scheduleAtFixedRate(() -> {
             timeLeft =  timeLeft - 1;
             if (timeLeft <= 0) {
                 try {
+                    //Close client and stop scheduler
                     closeConnect();
                     scheduler.shutdownNow();
                 } catch (Exception e) {
+                    //todo sistemare con logger
                     System.out.println("Impossibile chiudere il client");
                 }
             }
         }, 1, 1, TimeUnit.SECONDS);
     }
 
+    //Reset server ping
     public void heartbeat(){
         timeLeft = 8;
     }
 
+
+    //Methods for interacting with the server both inside and outside a game
     public void nicknameRegistration(String nickname, VirtualView client) throws RemoteException {
         if (menuControl(MenuState.LOGIN)) {
             connection.getServer().nicknameRegistration(nickname, client);
@@ -275,7 +283,6 @@ public class ClientController implements VirtualServer {
         }
     }
 
-    //todo qui puoi controllare che la spaceship vada bene prima di mandarlo al server
     public void checkSpaceship(String nickname) throws RemoteException {
         if (menuControl(MenuState.GAME) && gameV.stateControl(StateGameType.CHECK, StatePlayerType.FINISHED, StateCardType.FINISH, getPlayerVFromNickname(nickname))) {
             connection.getServer().checkSpaceship(nickname);
@@ -408,14 +415,7 @@ public class ClientController implements VirtualServer {
         }
     }
 
-    public HeapTileV getHeapTiles() throws RemoteException {
-        if (menuControl(MenuState.GAME)) {
-            return gameV.getHeapTilesV();
-        }
-        return null;
-    }
-
-
+    //This method checks the menu state and report errors to the console
     private boolean menuControl(MenuState state) {
         if (menuState != state) {
             if (menuState == MenuState.LOGIN) {
@@ -436,6 +436,4 @@ public class ClientController implements VirtualServer {
             return true;
         }
     }
-
-
 }
