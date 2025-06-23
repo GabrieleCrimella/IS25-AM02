@@ -93,6 +93,11 @@
     "time": "Time left: {tim}",
     "flipped": "Hourglass flipped: 60 seconds remaining!"
   },
+  "minideck": {
+    "view": "Now you can see the MiniDeck #{index}",
+    "return": "MiniDeck returned",
+    "viewing": "minideck #{index} is being viewed by another player"
+  },
   "helper": {
     "build": {
       "0": "Welcome trucker now begins the construction phase of your ship! \nLet's start with some simple rules, by doing /take you take a tile from the pile and place it in the current tile slot \nat this point you can decide whether to rotate it, add it to your ship or return it to the pile and take a new one. \nBuild your ship according to your needs and use /legend to see the meanings of the pieces. Have fun!",

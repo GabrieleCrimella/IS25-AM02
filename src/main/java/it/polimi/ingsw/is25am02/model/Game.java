@@ -235,7 +235,7 @@ public class Game implements Game_Interface {
                 //player.onHourglassUpdate();
                 for (String nick : observers.keySet()) {
                     try {
-                        observers.get(nick).displayMessage("hourglass.flipped",null);
+                        observers.get(nick).displayMessage("hourglass.flipped", null);
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method flipHourglass", e);
                     } catch (Exception e) {
@@ -305,6 +305,7 @@ public class Game implements Game_Interface {
 
             player.setNumDeck(index);
             deck.giveDeck(index);
+            player.getObserver().displayMessage("minideck.view", Map.of("index", String.valueOf(index)));
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showMinideckUpdate(nick, index);
@@ -333,10 +334,12 @@ public class Game implements Game_Interface {
             }
         } catch (AlreadyViewingException e) {
             try {
-                player.getObserver().reportError("error.viewing", null);
+                player.getObserver().reportError("minideck.viewing",Map.of("index", String.valueOf(index)));
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeminideck");
             }
+        } catch (Exception e) {
+            reportErrorOnServer("connection problem in method takeminideck");
         }
     }
 
@@ -352,6 +355,7 @@ public class Game implements Game_Interface {
             deck.returnDeck(player.getNumDeck());
             player.setNumDeck(-1);
 
+            player.getObserver().displayMessage("minideck.return", null);
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showMinideckUpdate(nick, -1);
@@ -385,6 +389,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnminideck");
             }
+        } catch (Exception e) {
+            reportErrorOnServer("connection problem in method returnminideck");
         }
     }
 
@@ -549,7 +555,7 @@ public class Game implements Game_Interface {
 
             player.getSpaceship().bookTile(player);
 
-            player.getObserver().displayMessage("build.bookedTile",null);
+            player.getObserver().displayMessage("build.bookedTile", null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);

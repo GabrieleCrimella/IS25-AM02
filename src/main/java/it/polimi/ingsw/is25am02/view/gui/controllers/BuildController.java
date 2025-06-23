@@ -372,8 +372,12 @@ public class BuildController extends GeneralController {
 
     @FXML
     public void closeMiniDeckPopup() {
-        miniDeckPopup.setVisible(false);
-        miniDeckCardsContainer.getChildren().clear();
+        try {
+            GUIController.getInstance().getController().returnMiniDeck(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Failed to return mini deck", NotificationType.ERROR, 5000);
+        }
+
     }
 
     @FXML
@@ -460,11 +464,7 @@ public class BuildController extends GeneralController {
 
         try {
             GUIController.getInstance().getController().takeMiniDeck(GUIController.getInstance().getNickname(), Integer.parseInt(deckId) - 1);
-            List<CardV> minideckTaken = GUIController.getInstance().getController().getGameV().getDeck().getDeck().get(Integer.parseInt(deckId) - 1);
-            for (CardV card : minideckTaken) {
-                newCard(card);
-            }
-            miniDeckPopup.setVisible(true);
+
         } catch (RemoteException e) {
             showNotification("Failed to take mini deck " + deckId, NotificationType.ERROR, 5000);
         }
@@ -989,5 +989,18 @@ public class BuildController extends GeneralController {
                 })
         );
         timeline.setCycleCount(secondsLeft + 1); // 60s, 59s, ..., 0s (61 aggiornamenti)
+    }
+
+    public void onViewMiniDeck(String deckId) {
+        List<CardV> minideckTaken = GUIController.getInstance().getController().getGameV().getDeck().getDeck().get(Integer.parseInt(deckId));
+        for (CardV card : minideckTaken) {
+            newCard(card);
+        }
+        miniDeckPopup.setVisible(true);
+    }
+
+    public void onReturnMiniDeck() {
+        miniDeckPopup.setVisible(false);
+        miniDeckCardsContainer.getChildren().clear();
     }
 }

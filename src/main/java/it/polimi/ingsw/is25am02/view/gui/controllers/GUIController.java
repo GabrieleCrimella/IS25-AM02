@@ -228,6 +228,18 @@ public class GUIController implements Runnable {
                 BuildController bldCtrl = (BuildController) controllers.get(inUse);
                 bldCtrl.seeHourglass(timeleft);
             }
+            case "minideck.view"->{
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onViewMiniDeck(params.get("index"));
+                }
+            }
+            case "minideck.return"->{
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onReturnMiniDeck();
+                }
+            }
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
