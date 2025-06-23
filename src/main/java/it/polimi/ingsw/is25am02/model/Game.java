@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.DECISION;
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.EFFECT_ON_PLAYER;
@@ -148,11 +149,25 @@ public class Game implements Game_Interface {
 
     public void setDiceResult() {
         this.diceResult = globalBoard.getDice().pickRandomNumber();
+        for (String nick : observers.keySet()) {
+            try {
+                observers.get(nick).showDiceUpdate(nick, diceResult);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method setdiceresultmanually", e);
+            }
+        }
     }
 
     public void setDiceResultManually(int diceResult) {
         this.diceResult = diceResult;
         globalBoard.getDice().setManuallyResult(diceResult);
+        for (String nick : observers.keySet()) {
+            try {
+                observers.get(nick).showDiceUpdate(nick, diceResult);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method setdiceresultmanually", e);
+            }
+        }
     }
 
     public void setBuildTimeIsOver() {
@@ -1396,10 +1411,10 @@ public class Game implements Game_Interface {
             //setDiceResult();
             setDiceResultManually(8);
             getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-
+            /*
             for (Player p : players) {
                 p.onDiceUpdate(player.getNickname(), getGameboard().getDice());
-            }
+            } ho messo questa parte dentro a setDiceResultManually*/
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1504,6 +1519,7 @@ public class Game implements Game_Interface {
 
     @Override
     public void Winners() {
+        Map<String, Integer> winnersMap = new LinkedHashMap<>();
         try {
             if (getCurrentState().getPhase() != StateGameType.RESULT) {
                 throw new IllegalStateException("");
@@ -1554,14 +1570,36 @@ public class Game implements Game_Interface {
                     p.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
                 }
             }
-
+            /*
             for (Player p : getPlayers()) {
                 if (p.getSpaceship().getCosmicCredits() > 0) {
                     winners.add(p);
                 }
-            }
+            }*/
+            winnersMap = getPlayers().stream()
+                    .collect(Collectors.toMap(
+                            p -> p.getNickname(),
+                            p -> p.getSpaceship().getCosmicCredits()
+                    ));
 
-            winners.sort(Comparator.comparingInt(p -> p.getSpaceship().getCosmicCredits()));
+            winnersMap = winnersMap.entrySet().stream()
+                    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            Map.Entry::getValue,
+                            (e1, e2) -> e1,
+                            LinkedHashMap::new
+                    ));
+
+            //winners.sort(Comparator.comparingInt(p -> p.getSpaceship().getCosmicCredits()));
+
+            for (Player p : players) {
+                try {
+                    p.getObserver().showWinnersUpdate(winnersMap);
+                } catch (Exception ex) {
+                    reportErrorOnServer("connection problem in method Winners");
+                }
+            }
             //todo chiama un metodo della view per mostrare la classifica
 
         } catch (IllegalStateException e) {

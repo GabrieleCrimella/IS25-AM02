@@ -229,6 +229,14 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
+    @Override
+    public void showWinnersUpdate(Map<String, Integer> winners) {
+        for (PlayerV playerv : gameV.getPlayers()) {
+            gameV.setWinners(winners);
+            console.getPrinter().printWinners(playerv.getNickname());
+        }
+    }
+
     //viene chiamato quando viene girata la clessidra
     @Override
     public void showHourglassUpdate(long timeLeft) {

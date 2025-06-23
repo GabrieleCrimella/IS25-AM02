@@ -85,4 +85,6 @@ public interface VirtualView extends Remote {
     void showEarlyLandingUpdate(String nickname) throws RemoteException;
 
     void showBuildTimeIsOverUpdate() throws RemoteException;
+
+    void showWinnersUpdate(Map<String, Integer> winners) throws RemoteException;
 }

@@ -226,4 +226,9 @@ public class SocketClient implements ConnectionClient, VirtualView {
     public void showBuildTimeIsOverUpdate() throws RemoteException {
 
     }
+
+    @Override
+    public void showWinnersUpdate(Map<String, Integer> winners) throws RemoteException {
+
+    }
 }

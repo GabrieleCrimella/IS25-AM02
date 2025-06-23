@@ -34,7 +34,8 @@ public class ClientController implements VirtualServer {
     private MenuState menuState;
     private boolean running;
     private GameV gameV;
-    private int timeLeft = 8;
+    private int timeLeft = 2000000000;
+    //todo devo definire gameV una volta che so in che game sono
 
 
     public ClientController(ConnectionClient connection) {
@@ -140,7 +141,7 @@ public class ClientController implements VirtualServer {
 
     //Reset server ping
     public void heartbeat(){
-        timeLeft = 8;
+        timeLeft = 2000000000;
     }
 
 
@@ -403,9 +404,9 @@ public class ClientController implements VirtualServer {
         }
     }
 
-    public void Winners(int lobbyId) throws RemoteException {
+    public void Winners(int lobbyid) throws RemoteException {
         if (menuControl(MenuState.GAME)) {
-            connection.getServer().Winners(lobbyId);
+            connection.getServer().Winners(lobbyid);
         }
     }
 
