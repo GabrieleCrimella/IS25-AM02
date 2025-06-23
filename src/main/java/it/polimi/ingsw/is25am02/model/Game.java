@@ -737,7 +737,7 @@ public class Game implements Game_Interface {
                 this.currentState.setPhase(StateGameType.CHECK);
                 player.getObserver().displayMessage("info.spaceship.right", null);
                 alreadyChecked++;
-            }else{
+            } else {
                 player.getObserver().reportError("info.spaceship.wrong", null);
             }
 
@@ -920,22 +920,24 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
-            if (deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
-                this.getCurrentState().setPhase(StateGameType.RESULT);
-            } else {
-                LinkedList<String> order = new LinkedList<>();
-                for (Player pOrder : getGameboard().getRanking()) {
-                    order.add(pOrder.getNickname());
-                }
-                getCurrentState().getCurrentCard().setCurrentOrder(order);
-                this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
+            Card nextCard = deck.playnextCard(this);
+            LinkedList<String> order = new LinkedList<>();
+            for (Player pOrder : getGameboard().getRanking()) {
+                order.add(pOrder.getNickname());
             }
+            getCurrentState().getCurrentCard().setCurrentOrder(order);
+            this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
+
 
             for (Player p : players) {
                 p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
             }
             if (getCurrentCard().getCardType().equals(CardType.STARDUST) || getCurrentCard().getCardType().equals(CardType.EPIDEMY)) {
                 getCurrentCard().effect(this);
+            }
+            if (nextCard == null || globalBoard.getPositions().isEmpty()) {
+                this.getCurrentState().setPhase(StateGameType.RESULT);
+                return;
             }
         } catch (IllegalStateException e) {
             try {
