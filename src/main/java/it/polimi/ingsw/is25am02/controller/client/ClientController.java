@@ -122,7 +122,6 @@ public class ClientController implements VirtualServer {
     public void heartManager(){
         scheduler.scheduleAtFixedRate(() -> {
             timeLeft =  timeLeft - 1;
-            System.out.println(timeLeft);
             if (timeLeft <= 0) {
                 try {
                     closeConnect();
