@@ -198,7 +198,7 @@ public class PlayerV {
             for (int j = 0; j < 12; j++) {
                 if (spaceshipBoard[i][j].isPresent()) {
                     TileV tile = spaceshipBoard[i][j].get();
-                    if (tile.getNumRedBox() == 1) {
+                    if (tile.getNumHumans() == 1) {
                         aliveList.add(AliveType.HUMAN);
                     } else if (tile.getNumHumans() == 2) {
                         aliveList.add(AliveType.HUMAN);
