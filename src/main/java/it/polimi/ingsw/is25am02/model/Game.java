@@ -40,8 +40,8 @@ public class Game implements Game_Interface {
 
     public Game(List<Player> players, int level) {
         this.players = players;
-        this.observers= new ConcurrentHashMap<>();
-        for(Player p : players){
+        this.observers = new ConcurrentHashMap<>();
+        for (Player p : players) {
             observers.put(p.getNickname(), p.getObserver());
         }
         this.level = level;
@@ -233,6 +233,16 @@ public class Game implements Game_Interface {
                     globalBoard.decreaseHourGlassFlip();
                 }
                 //player.onHourglassUpdate();
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).displayMessage("hourglass.flipped", null);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method flipHourglass", e);
+                    } catch (Exception e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method flipHourglass", e);
+                        reportErrorOnServer("connection problem in method flipHourglass");
+                    }
+                }
             } else {
                 throw new IllegalStateException("");
             }
@@ -295,6 +305,7 @@ public class Game implements Game_Interface {
 
             player.setNumDeck(index);
             deck.giveDeck(index);
+            player.getObserver().displayMessage("minideck.view", Map.of("index", String.valueOf(index)));
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showMinideckUpdate(nick, index);
@@ -323,10 +334,12 @@ public class Game implements Game_Interface {
             }
         } catch (AlreadyViewingException e) {
             try {
-                player.getObserver().reportError("error.viewing", null);
+                player.getObserver().reportError("minideck.viewing", Map.of("index", String.valueOf(index)));
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeminideck");
             }
+        } catch (Exception e) {
+            reportErrorOnServer("connection problem in method takeminideck");
         }
     }
 
@@ -342,6 +355,7 @@ public class Game implements Game_Interface {
             deck.returnDeck(player.getNumDeck());
             player.setNumDeck(-1);
 
+            player.getObserver().displayMessage("minideck.return", null);
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showMinideckUpdate(nick, -1);
@@ -375,6 +389,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnminideck");
             }
+        } catch (Exception e) {
+            reportErrorOnServer("connection problem in method returnminideck");
         }
     }
 
@@ -538,6 +554,8 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.getSpaceship().bookTile(player);
+
+            player.getObserver().displayMessage("build.bookedTile", null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -562,6 +580,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method booktile");
             }
+        }catch (Exception e) {
+            ServerController.logger.log(Level.SEVERE, "error in method bookTile", e);
         }
     }
 
@@ -573,6 +593,7 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.getSpaceship().addBookedTile(player.getNickname(), index, pos.x(), pos.y(), rotation);
+            player.getObserver().displayMessage("build.addTile", null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -597,6 +618,9 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addbookedTile");
             }
+        }catch (Exception e) {
+
+            ServerController.logger.log(Level.SEVERE, "error in method addBookedTile", e);
         }
     }
 
@@ -912,22 +936,23 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             currentState.setCurrentPlayer(getGameboard().getRanking().getFirst());
-            if (deck.playnextCard(this) == null || globalBoard.getPositions().isEmpty()) {
-                this.getCurrentState().setPhase(StateGameType.RESULT);
-            } else {
-                LinkedList<String> order = new LinkedList<>();
-                for (Player pOrder : getGameboard().getRanking()) {
-                    order.add(pOrder.getNickname());
-                }
-                getCurrentState().getCurrentCard().setCurrentOrder(order);
-                this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
+            Card nextCard = deck.playnextCard(this);
+            LinkedList<String> order = new LinkedList<>();
+            for (Player pOrder : getGameboard().getRanking()) {
+                order.add(pOrder.getNickname());
             }
+            getCurrentState().getCurrentCard().setCurrentOrder(order);
+            this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
 
             for (Player p : players) {
                 p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
             }
             if (getCurrentCard().getCardType().equals(CardType.STARDUST) || getCurrentCard().getCardType().equals(CardType.EPIDEMY)) {
                 getCurrentCard().effect(this);
+            }
+            if (nextCard == null || globalBoard.getPositions().isEmpty()) {
+                this.getCurrentState().setPhase(StateGameType.RESULT);
+                return;
             }
         } catch (IllegalStateException e) {
             try {
