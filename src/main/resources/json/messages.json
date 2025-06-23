@@ -89,6 +89,15 @@
     "returnTile": "Tile returned to the heap",
     "bookedTile": "Tile booked"
   },
+  "ingame": {
+    "hidechoicebox": "Choice box {visible}",
+    "hidechoice": "Choice made: {choice}",
+    "hidefinishcannon": "Double cannon choice finished, {number} cannons activated",
+    "hidefinishmotor": "Double motor choice finished, {number} motors activated",
+    "hidemovebox": "Box choice finished",
+    "hidechoiceplanet": "Planet choice finished",
+    "hidecalculatedamage": "Damage finished"
+  },
   "hourglass": {
     "time": "Time left: {tim}",
     "flipped": "Hourglass flipped: 60 seconds remaining!"
