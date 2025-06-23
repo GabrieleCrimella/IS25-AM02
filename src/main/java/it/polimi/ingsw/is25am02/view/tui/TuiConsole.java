@@ -373,7 +373,16 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     }
                     int crewX = Integer.parseInt(tokenizer.nextToken());
                     int crewY = Integer.parseInt(tokenizer.nextToken());
-                    AliveType type = AliveType.valueOf(tokenizer.nextToken().toUpperCase());
+                    AliveType type;
+
+                    try {
+                        type = AliveType.valueOf(tokenizer.nextToken().toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        // Gestione dell'errore: il valore non corrisponde a nessun enum
+                        System.err.println("Valore non valido per AliveType.");
+                        System.out.println("Valori validi sono: " + Arrays.toString(AliveType.values()));
+                        break;
+                    }
                     controller.addCrew(nickname, new Coordinate(crewX, crewY), type);
                     break;
 
