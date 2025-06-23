@@ -538,6 +538,8 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.getSpaceship().bookTile(player);
+
+            player.getObserver().displayMessage("build.bookedTile",null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -562,6 +564,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method booktile");
             }
+        } catch (Exception e) {
+            ServerController.logger.log(Level.SEVERE, "error in method bookTile", e);
         }
     }
 
@@ -573,6 +577,7 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.getSpaceship().addBookedTile(player.getNickname(), index, pos.x(), pos.y(), rotation);
+            player.getObserver().displayMessage("build.addTile", null);
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -597,6 +602,9 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addbookedTile");
             }
+        } catch (Exception e) {
+
+            ServerController.logger.log(Level.SEVERE, "error in method addBookedTile", e);
         }
     }
 

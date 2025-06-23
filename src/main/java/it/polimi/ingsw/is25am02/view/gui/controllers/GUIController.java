@@ -158,56 +158,72 @@ public class GUIController implements Runnable {
     }
 
     public void showMessage(String keys, Map<String, String> params) {
-        if (keys.equals("lobby.join")) {
-            if(inUse.equals("lobby")){
-                LobbyController lobbyCtrl = (LobbyController) controllers.get(inUse);
-                lobbyCtrl.onJoinLobbySuccess();
-                return;
-            }
-        } else if (keys.equals("info.loginDone")) {
-            if (inUse.equals("HomeScene")) {
-                HomeSceneController homeCtrl = (HomeSceneController) controllers.get(inUse);
-                homeCtrl.loginDone();
-                return;
-            }
-        } else if (keys.equals("build.addTile")) {
-            if (inUse.equals("Build")) {
-                BuildController bldCtrl = (BuildController) controllers.get(inUse);
-                bldCtrl.onAddTileSuccess();
-                return;
-            }
-        } else if (keys.equals("build.returnTile")) {
-            if (inUse.equals("Build")) {
-                BuildController bldCtrl = (BuildController) controllers.get(inUse);
-                bldCtrl.onReturnTileSuccess();
-                return;
-            }
-        } else if (keys.equals("info.gameState")) {
-            if (params.containsKey("state") && params.get("state").equals("INITIALIZATION_SPACESHIP")) {
+        switch (keys) {
+            case "build.bookedTile"->{
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
-                    bldCtrl.setInitializationSpaceship();
+                    bldCtrl.onBookedTileSuccess();
+                    return;
                 }
             }
-        } else if (keys.equals("info.finished")) {
-            if (inUse.equals("Build")) {
-                BuildController bldCtrl = (BuildController) controllers.get(inUse);
-                bldCtrl.onShipFinished();
-                return;
+            case "lobby.join" -> {
+                if (inUse.equals("lobby")) {
+                    LobbyController lobbyCtrl = (LobbyController) controllers.get(inUse);
+                    lobbyCtrl.onJoinLobbySuccess();
+                    return;
+                }
             }
-        } else if (keys.equals("info.spaceship.right")) {
-            if (inUse.equals("Build")) {
-                BuildController bldCtrl = (BuildController) controllers.get(inUse);
-                bldCtrl.onSpaceshipRight();
+            case "info.loginDone" -> {
+                if (inUse.equals("HomeScene")) {
+                    HomeSceneController homeCtrl = (HomeSceneController) controllers.get(inUse);
+                    homeCtrl.loginDone();
+                    return;
+                }
             }
-            //controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
-        } else if (keys.equals("hourglass.time")) {
-            int timeleft = Integer.parseInt(params.get("tim"));
-            getController().getGameV().getHourglass().setTimeLeft(timeleft);
-            BuildController bldCtrl = (BuildController) controllers.get(inUse);
-            bldCtrl.seeHourglass(timeleft);
-        } else {
-            controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
+            case "build.addTile" -> {
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onAddTileSuccess();
+                    return;
+                }
+            }
+            case "build.returnTile" -> {
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onReturnTileSuccess();
+                    return;
+                }
+            }
+            case "info.gameState" -> {
+                if (params.containsKey("state") && params.get("state").equals("INITIALIZATION_SPACESHIP")) {
+                    if (inUse.equals("Build")) {
+                        BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                        bldCtrl.setInitializationSpaceship();
+                    }
+                }
+            }
+            case "info.finished" -> {
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onShipFinished();
+                    return;
+                }
+            }
+            case "info.spaceship.right" -> {
+                if (inUse.equals("Build")) {
+                    BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                    bldCtrl.onSpaceshipRight();
+                }
+                //controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
+            }
+            case "hourglass.time" -> {
+                int timeleft = Integer.parseInt(params.get("tim"));
+                getController().getGameV().getHourglass().setTimeLeft(timeleft);
+                BuildController bldCtrl = (BuildController) controllers.get(inUse);
+                bldCtrl.seeHourglass(timeleft);
+            }
+            default ->
+                    controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
     }
 

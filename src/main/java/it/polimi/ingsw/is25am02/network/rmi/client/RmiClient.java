@@ -461,9 +461,10 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showBookedTileNullityUpdate(String nickname, int index, Coordinate pos) throws RemoteException {
+    public void showBookedTileNullityUpdate(String nickname, int index, Coordinate pos, RotationType rotation) throws RemoteException {
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
+                playerv.getBookedTiles().get(index).setRotationType(rotation);
                 playerv.setSpaceshipBoardTile(playerv.getBookedTiles().get(index), pos);
                 playerv.getBookedTiles().put(index, null);
             }

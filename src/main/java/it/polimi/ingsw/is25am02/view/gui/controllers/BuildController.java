@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
@@ -100,11 +101,15 @@ public class BuildController extends GeneralController {
     @FXML
     private StackPane miniDeckPopup;
 
+    private int index;
+    private boolean booked;
+
     @FXML
     private HBox miniDeckCardsContainer;
 
     @FXML
     private ImageView popupBackgroundImage;
+    private Map<ImageView, Pane> tilesBooked;
 
     @FXML
     private void closeSpacePopup() {
@@ -123,6 +128,7 @@ public class BuildController extends GeneralController {
 
     public void newTile(TileV newTile) {
         Platform.runLater(() -> {
+            booked = false;
             // Pulisce eventuali elementi precedenti
             rotation = RotationType.NORTH;
             postoInizialeTile.getChildren().clear();
@@ -148,6 +154,7 @@ public class BuildController extends GeneralController {
             setupDragAndDrop(imageView);
             takeTileButton.setVisible(false);
             addTileButton.setVisible(true);
+            addTileButton.setText("Add Tile");
             returnTileButton.setVisible(true);
         });
     }
@@ -177,19 +184,10 @@ public class BuildController extends GeneralController {
 
     @FXML
     private void onConfirmBookedYes() {
-        confirmBookedPopup.setVisible(false);
-
         if (currentDraggedTilePane != null) {
             try {
                 GUIController.getInstance().getController().bookTile(GUIController.getInstance().getNickname());
-                currentTileImage.setOnMouseClicked(null);
-                currentTileImage.setOnMousePressed(null);
-                currentTileImage.setOnMouseDragged(null);
-                currentTileImage.setOnDragDetected(null);
-                currentTileImage.setOnMouseReleased(null);
-                currentTileImage.setOnDragOver(null);
-                currentTileImage.setOnDragDropped(null);
-                setupDragAndDropBooked(currentTileImage);
+/*
                 try {
                     int idbooked;
                     if (bookedTargetId.equals("booked_1")) {
@@ -201,52 +199,11 @@ public class BuildController extends GeneralController {
                 } catch (RemoteException e) {
                     showNotification("Impossible to add a booked tile", NotificationType.ERROR, 3000);
                 }
+ */
             } catch (RemoteException e) {
                 showNotification("Impossible to book a tile", NotificationType.ERROR, 3000);
             }
         }
-
-    }
-
-    private void setupDragAndDropBooked(ImageView imageView) {
-        Platform.runLater(() -> {
-            imageView.setOnDragDetected(event -> {
-                imageView.startFullDrag();
-                event.consume();
-            });
-        });
-
-        // boardPane.getChildren() include anche il livello2Group
-        for (Node node : boardPane.getChildren()) {
-            if (node instanceof Pane slot) {
-                setupDropTargetBooked(slot, imageView);
-            } else if (node instanceof Group group) {
-                // Aggiungi listener anche ai figli del gruppo
-                for (Node subNode : group.getChildrenUnmodifiable()) {
-                    if (subNode instanceof Pane subSlot) {
-                        setupDropTargetBooked(subSlot, imageView);
-                    }
-                }
-            }
-        }
-    }
-
-    private void setupDropTargetBooked(Pane slot, ImageView imageView) {
-        Platform.runLater(() -> {
-            slot.setOnMouseDragReleased(event -> {
-                ((Pane) imageView.getParent()).getChildren().remove(imageView);
-                imageView.setLayoutX(0);
-                imageView.setLayoutY(0);
-                slot.getChildren().add(imageView);
-
-                coordinate = getCoordinatesFromId(slot);
-                posizioneAttuale.setVisible(true);
-                posizioneNuovaTile.setVisible(true);
-                posizioneNuovaTile.setText("(" + coordinate.x() + ", " + coordinate.y() + ")");
-
-                event.consume();
-            });
-        });
 
     }
 
@@ -265,9 +222,12 @@ public class BuildController extends GeneralController {
 
     @FXML
     public void initialize(int level, PlayerColor color) {
+        booked = false;
+        index = 0;
         wrongSpaceship = false;
         String imagePath;
         tiles = new HashMap<>();
+        tilesBooked = new HashMap<>();
         root.getStylesheets().add(
                 getClass().getResource("/style/style.css").toExternalForm()
         );
@@ -360,7 +320,7 @@ public class BuildController extends GeneralController {
             addTileButton.setVisible(false);
             returnTileButton.setVisible(false);
 
-            if(level==0){
+            if (level == 0) {
                 flipHourglassButton.setVisible(false);
                 seeHourglassButton.setVisible(false);
             }
@@ -557,7 +517,26 @@ public class BuildController extends GeneralController {
 
 
     private void setupDragAndDrop(ImageView imageView) {
+        //imageView rappresenta la tile appena aggiunta, inizialmente posta nello spazio a sx
         imageView.setOnDragDetected(event -> {
+            if (imageView.getParent().getId().startsWith("booked_")) {
+                if (currentTileImage == null) {
+                    currentTileImage = imageView;
+                    booked = true;
+                    index = Integer.parseInt(imageView.getParent().getId().replace("booked_", ""));
+                    takeTileButton.setVisible(false);
+                    addTileButton.setVisible(true);
+                    returnTileButton.setVisible(true);
+                    imageView.getStyleClass().add("draggableTile");
+                    imageView.startFullDrag();
+                    event.consume();
+                    return;
+                } else {
+                    showNotification("there's already a tile to place in the spaceship!", NotificationType.ERROR, 3000);
+                    event.consume();
+                    return;
+                }
+            }
             imageView.startFullDrag();
             event.consume();
         });
@@ -579,10 +558,34 @@ public class BuildController extends GeneralController {
 
     private void setupDropTarget(Pane slot, ImageView imageView) {
         slot.setOnMouseDragReleased(event -> {
-            ((Pane) imageView.getParent()).getChildren().remove(imageView);
-            imageView.setLayoutX(0);
-            imageView.setLayoutY(0);
-            slot.getChildren().add(imageView);
+            if (currentTileImage == null) {
+                event.consume();
+                return; // Nessuna tile da droppare
+            }
+
+            ImageView i = null;
+            Pane p=null;
+
+            if (booked) {
+                for (ImageView im : tilesBooked.keySet()) {
+                    if (im.getParent().getId().equals("booked_" + index)) {
+                        p = tilesBooked.get(im);
+                        i = im;
+                        break;
+                    }
+                }
+                if (i == null) {
+                    i = imageView;
+                    p = (Pane) imageView.getParent();
+                }
+            } else {
+                i = imageView;
+                p = (Pane) imageView.getParent();
+            }
+            p.getChildren().remove(i);
+            i.setLayoutX(0);
+            i.setLayoutY(0);
+            slot.getChildren().add(i);
 
             String id = slot.getId();
             if ("booked_1".equals(id) || "booked_2".equals(id)) {
@@ -621,7 +624,13 @@ public class BuildController extends GeneralController {
         }
 
         try {
-            GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
+            if (booked) {
+                System.out.println(index + " " + coordinate + " " + rotation);
+                GUIController.getInstance().getController().addBookedTile(GUIController.getInstance().getNickname(), index, coordinate, rotation);
+                //todo ricordarsi di togliere la tile da tilesBooked
+            } else {
+                GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
+            }
         } catch (RemoteException e) {
             showNotification("Failed to add tile", NotificationType.ERROR, 5000);
         }
@@ -904,5 +913,35 @@ public class BuildController extends GeneralController {
             rotation = RotationType.NORTH;
         });
 
+    }
+
+    public void onBookedTileSuccess() {
+        Platform.runLater(() -> {
+            confirmBookedPopup.setVisible(false);
+
+            showNotification("tile booked successfully", NotificationType.SUCCESS, 5000);
+            currentTileImage.getStyleClass().remove("draggableTile");
+
+            /*
+            currentTileImage.setOnMouseClicked(null);
+            currentTileImage.setOnMousePressed(null);
+            currentTileImage.setOnMouseDragged(null);
+            currentTileImage.setOnDragDetected(null);
+            currentTileImage.setOnMouseReleased(null);
+            currentTileImage.setOnDragOver(null);
+            currentTileImage.setOnDragDropped(null);
+            setupDragAndDrop(currentTileImage);
+             */
+
+            tilesBooked.put(currentTileImage, (Pane) currentTileImage.getParent());
+            currentTileImage = null;
+            coordinate = null;
+            posizioneAttuale.setVisible(false);
+            posizioneNuovaTile.setVisible(false);
+            rotation = RotationType.NORTH;
+            takeTileButton.setVisible(true);
+            addTileButton.setVisible(false);
+            returnTileButton.setVisible(false);
+        });
     }
 }

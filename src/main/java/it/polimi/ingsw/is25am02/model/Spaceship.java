@@ -99,7 +99,7 @@ public class Spaceship {
             for (String nick : observers.keySet()) {
                 Coordinate pos = new Coordinate(x, y);
                 try {
-                    observers.get(nick).showBookedTileNullityUpdate(nicknameP, index, pos);
+                    observers.get(nick).showBookedTileNullityUpdate(nicknameP, index, pos, rotation);
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in method showbookedtilenullity update", e);
                 }
