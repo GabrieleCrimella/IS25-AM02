@@ -44,16 +44,18 @@ public class Hourglass {
                 if (timeLeft <= 0) {
                     timer.cancel();
                     running = false;
-                    if (game.getGameboard().getHourGlassFlip() == 0) {
+                    if (game.getGameboard().getHourGlassFlip() == 1) {
                         game.setBuildTimeIsOver();
                         for (Player p : game.getPlayers()) {
                             try {
                                 if (p.getStatePlayer().equals(StatePlayerType.NOT_FINISHED)){
-                                    p.setStatePlayer(StatePlayerType.FINISHED);
+                                    game.shipFinished(p);
+                                    //p.setStatePlayer(StatePlayerType.FINISHED);
                                 }
-                                p.onPlayerStateUpdate(p.getNickname(), p.getStatePlayer());
-                                p.getObserver().showBuildTimeIsOverUpdate();
-                            } catch (RemoteException e) {
+                                //p.onPlayerStateUpdate(p.getNickname(), p.getStatePlayer());
+                                //p.getObserver().showBuildTimeIsOverUpdate();
+                                //p.getObserver().displayMessage("hourglass.finished",null);
+                            } catch (Exception e) {
                                 ServerController.logger.log(Level.SEVERE, "error in fliphourglass", e);
                             }
                         }

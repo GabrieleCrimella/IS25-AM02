@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BuildController extends GeneralController {
-    private int level=0;
+    private int level = 0;
     private Timeline timeline;
     @FXML
     public Button readyButton;
@@ -229,7 +229,7 @@ public class BuildController extends GeneralController {
 
     @FXML
     public void initialize(int level, PlayerColor color) {
-        this.level=level;
+        this.level = level;
         booked = false;
         index = 0;
         wrongSpaceship = false;
@@ -767,8 +767,8 @@ public class BuildController extends GeneralController {
             addTileButton.setVisible(false);
             returnTileButton.setVisible(false);
 
-            if(theFirstTileHasBeenAdded==false){
-                if(level==2) {
+            if (theFirstTileHasBeenAdded == false) {
+                if (level == 2) {
                     theFirstTileHasBeenAdded = true;
                     miniDecklabel.setVisible(true);
                     miniDeck1.setVisible(true);
@@ -800,6 +800,7 @@ public class BuildController extends GeneralController {
 
     public void onShipFinished() {
         Platform.runLater(() -> {
+            labelHourglass.setVisible(false);
             currentTileImage = null;
             postoInizialeTile.setVisible(false);
             posizioneAttuale.setVisible(false);
