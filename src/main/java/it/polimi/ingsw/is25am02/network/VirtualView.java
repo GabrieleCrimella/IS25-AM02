@@ -14,6 +14,8 @@ import java.rmi.RemoteException;
 Interface that defines the methods used by the server to notify clients of state changes.
 */
 public interface VirtualView extends Remote {
+    void pingFromServer() throws RemoteException;
+
     void reportError(String keys, Map<String, String> params) throws Exception;
 
     void displayMessage(String keys, Map<String, String> params) throws Exception;

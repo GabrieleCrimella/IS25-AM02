@@ -69,6 +69,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
+    public void pingFromServer() throws RemoteException {
+        console.getController().heartbeat();
+    }
+
+    @Override
     public void spaceshipBrokenUpdate(String nickname) throws RemoteException {
         printOnConsole();
         displayMessage("", null);

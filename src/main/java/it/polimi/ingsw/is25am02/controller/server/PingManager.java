@@ -5,27 +5,25 @@ import java.util.concurrent.*;
 
 public class PingManager {
     private final Map<String, Integer> pingMap = new ConcurrentHashMap<>();
-    private final int TIMEOUT_SECONDS = 200000000;
+    private final int TIMEOUT_SECONDS = 10;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public PingManager(ServerController controller) {
         scheduler.scheduleAtFixedRate(() -> {
             for (String nickname : pingMap.keySet()) {
-                if(pingMap.get(nickname) != TIMEOUT_SECONDS + 1) {
-                    int timeLeft = pingMap.get(nickname) - 1;
-                    if (timeLeft <= 0) {
-                        pingMap.remove(nickname);
-                        controller.disconnectClient(nickname);
-                    } else {
-                        pingMap.put(nickname, timeLeft);
-                    }
+                int timeLeft = pingMap.get(nickname) - 1;
+                if (timeLeft <= 0) {
+                    pingMap.remove(nickname);
+                    controller.disconnectClient(nickname);
+                } else {
+                    pingMap.put(nickname, timeLeft);
                 }
             }
         }, 1, 1, TimeUnit.SECONDS);
     }
 
     public void registerClient(String nickname) {
-        pingMap.put(nickname, TIMEOUT_SECONDS + 1);
+        pingMap.put(nickname, TIMEOUT_SECONDS);
     }
 
     public void ping(String nickname) {

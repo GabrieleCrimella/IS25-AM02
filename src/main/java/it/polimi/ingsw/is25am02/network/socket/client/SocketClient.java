@@ -18,22 +18,18 @@ import java.util.Map;
 public class SocketClient implements ConnectionClient, VirtualView {
     private ServerHandler handler;
     private ConsoleClient console;
-    private Socket socket;
 
     @Override
     public void startConnection(String ip) throws Exception {
-        socket = new Socket(ip, 8080);
+        Socket socket = new Socket(ip, 8080);
         handler = new ServerHandler(socket, console);
         System.out.println("Client connesso");
         new Thread(handler).start();
     }
 
     @Override
-    public void closeConnection() throws Exception {
-        // Chiude il socket
-        if (socket != null && !socket.isClosed()) {
-            socket.close();
-        }
+    public void closeConnection() {
+        handler.closeConnection();
     }
 
     @Override
@@ -58,6 +54,11 @@ public class SocketClient implements ConnectionClient, VirtualView {
 
     @Override
     public void displayMessage(String keys, Map<String, String> params) throws Exception {
+
+    }
+
+    @Override
+    public void pingFromServer() throws RemoteException {
 
     }
 
