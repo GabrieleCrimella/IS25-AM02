@@ -501,6 +501,14 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     controller.keepBlock(nickname, new Coordinate(keepX, keepY));
                     break;
 
+                case "winner":
+                    if(tokenizer.countTokens() != 1) {
+                        reportError("error.reading.input.syntax", Map.of("syntax", "/result <lobbyId>"));
+                        break;
+                    }
+                    int lobbyid = Integer.parseInt(tokenizer.nextToken());
+                    controller.Winners(lobbyid);
+
                 default:
                     reportError("error.reading.notFound", Map.of("command", command));
                     break;

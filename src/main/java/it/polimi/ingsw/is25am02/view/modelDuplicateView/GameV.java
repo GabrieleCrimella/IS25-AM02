@@ -16,10 +16,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import it.polimi.ingsw.is25am02.view.ConsoleClient;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GameV {
     private String gameName;
@@ -33,6 +30,7 @@ public class GameV {
     private HourglassV hourglass;
     private CardDeckV deck;
     private ConsoleClient console;
+    private Map<String, Integer > winners;
 
 
     public GameV(List<PlayerV> players, int level, GameboardV globalBoard, StateV currentState, boolean buildTimeIsOver, ConsoleClient console, CardDeckV deck) {
@@ -54,6 +52,13 @@ public class GameV {
         this.buildTimeIsOver = buildTimeIsOver;
     }
 
+    public Map<String, Integer> getWinners() {
+        return winners;
+    }
+
+    public void setWinners(Map<String, Integer> winners) {
+        this.winners = winners;
+    }
 
     public HeapTileV getHeapTilesV() {
         return heapTilesV;

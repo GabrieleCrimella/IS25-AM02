@@ -51,12 +51,13 @@ public class GraphicPrinter {
             printCurrentSpaceship(myName);
             printSpaceship(myName);
             printCurrentTile(myName);
-            if(game.getLevel() != 0) printBookedTile(myName);
+            if (game.getLevel() != 0) printBookedTile(myName);
             printTileOrientation(myName);
         } else if (game.getCurrentState().getPhase() == StateGameType.CHECK || game.getCurrentState().getPhase() == StateGameType.CORRECTION) {
             printCurrentSpaceship(myName);
             printSpaceship(myName);
             printTileOrientation(myName);
+        } else if (game.getCurrentState().getPhase() == StateGameType.RESULT) {
         } else {
             printCurrentSpaceship(myName);
             printSpaceship(myName);
@@ -73,14 +74,27 @@ public class GraphicPrinter {
 
     public void printCurrentSpaceship(String myName) {
         System.out.print("Current spaceship: ");
-        for( PlayerV p : game.getPlayers()) {
-            if( p.getNickname().equals(myName)) {
+        for (PlayerV p : game.getPlayers()) {
+            if (p.getNickname().equals(myName)) {
                 System.out.printf(" %s ", CIANO + p.getNickname() + RESET);
             } else {
                 System.out.printf(" %s ", p.getNickname());
             }
         }
         System.out.println();
+    }
+
+    public void printWinners(String myName) {
+        for (PlayerV p : game.getPlayers()) {
+            if (p.getNickname().equals(myName)) {
+                System.out.print("Position: \n");
+                for (String nick : game.getWinners().keySet()) {
+                    System.out.println(nick + " has " + game.getWinners().get(nick) + " points");
+
+                }
+                return;
+            }
+        }
     }
 
     public void printMyState(String name) {
@@ -107,8 +121,8 @@ public class GraphicPrinter {
 
     public void printCardComment() {
         System.out.println("Card Comment | Comment: " + game.getCurrentState().getCurrentCard().getComment());
-        if(game.getCurrentState().getCurrentCard().getCardType() == CardType.METEORITES_STORM || game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE1 || game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE2 ) { //todo mettere le altre carte
-            if(game.getDiceV().getResult() != 0) {
+        if (game.getCurrentState().getCurrentCard().getCardType() == CardType.METEORITES_STORM || (game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE1) || game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE2) { //todo mettere le altre carte
+            if (game.getDiceV().getResult() != 0) {
                 System.out.println("Dice result: " + game.getDiceV().getResult());
             } else {
                 System.out.println("Dice result: --");
@@ -116,7 +130,7 @@ public class GraphicPrinter {
         }
     }
 
-    public void printDeck(int num){
+    public void printDeck(int num) {
         clearConsole();
         List<CardV> cards = game.getDeck().getDeck().get(num);
         System.out.println("Deck:");
@@ -146,7 +160,7 @@ public class GraphicPrinter {
         //Column numbers
         System.out.print("      ");
         for (int j = START_COL; j <= END_COL; j++) {
-            if(j < 10) System.out.printf("  %d   ", j);
+            if (j < 10) System.out.printf("  %d   ", j);
             else System.out.printf(" %d   ", j);
         }
         System.out.println();
@@ -175,7 +189,7 @@ public class GraphicPrinter {
             //Second line (side connectors and type tile)
             System.out.printf("  %2d |", i);
             for (int j = START_COL; j <= END_COL; j++) {
-                if(pl.getSpaceshipMask()[i][j]) {
+                if (pl.getSpaceshipMask()[i][j]) {
                     if (pl.getSpaceshipBoard()[i][j].isEmpty()) {
                         System.out.print("     |");
                     } else {
@@ -265,10 +279,14 @@ public class GraphicPrinter {
         HashMap<Integer, TileV> bookedTiles = pl.getBookedTiles();
 
         System.out.print("Booked tile with Rotation: ");
-        if(bookedTiles.get(1) == null) System.out.print(" - ");
-        else { System.out.print(bookedTiles.get(1).getRotationType() + " "); }
-        if(bookedTiles.get(2) == null) System.out.print(" - ");
-        else { System.out.print(bookedTiles.get(2).getRotationType()); }
+        if (bookedTiles.get(1) == null) System.out.print(" - ");
+        else {
+            System.out.print(bookedTiles.get(1).getRotationType() + " ");
+        }
+        if (bookedTiles.get(2) == null) System.out.print(" - ");
+        else {
+            System.out.print(bookedTiles.get(2).getRotationType());
+        }
         System.out.println();
 
         for (int j = 1; j <= 2; j++) {
@@ -336,35 +354,35 @@ public class GraphicPrinter {
         HashMap<Coordinate, TileV> cannons = new HashMap<>();
         HashMap<Coordinate, TileV> shields = new HashMap<>();
 
-        for(int i=0; i<12; i++){
-            for(int j=0; j<12; j++){
-                if(pl.getSpaceshipBoard()[i][j].isPresent()){
-                    switch(pl.getSpaceshipBoard()[i][j].get().getType()){
-                        case MOTOR, D_MOTOR -> engines.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
-                        case CANNON, D_CANNON -> cannons.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
-                        case SHIELD -> shields.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (pl.getSpaceshipBoard()[i][j].isPresent()) {
+                    switch (pl.getSpaceshipBoard()[i][j].get().getType()) {
+                        case MOTOR, D_MOTOR -> engines.put(new Coordinate(i, j), pl.getSpaceshipBoard()[i][j].get());
+                        case CANNON, D_CANNON -> cannons.put(new Coordinate(i, j), pl.getSpaceshipBoard()[i][j].get());
+                        case SHIELD -> shields.put(new Coordinate(i, j), pl.getSpaceshipBoard()[i][j].get());
                     }
                 }
             }
         }
         StateGameType phase = game.getCurrentState().getPhase();
 
-        if(phase == StateGameType.BUILD || phase == StateGameType.CHECK || phase == StateGameType.CORRECTION){
+        if (phase == StateGameType.BUILD || phase == StateGameType.CHECK || phase == StateGameType.CORRECTION) {
             System.out.print("Engines:  ");
-            for(Map.Entry<Coordinate, TileV> entry : engines.entrySet()){
+            for (Map.Entry<Coordinate, TileV> entry : engines.entrySet()) {
                 System.out.printf("(%d,%d) %s\t  ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getRotationType());
             }
             System.out.println();
         }
         System.out.print("Cannons:  ");
-        for(Map.Entry<Coordinate, TileV> entry : cannons.entrySet()){
+        for (Map.Entry<Coordinate, TileV> entry : cannons.entrySet()) {
             System.out.printf("(%d,%d) %s\t  ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getRotationType());
         }
         System.out.println();
         System.out.print("Shields:  ");
-        for(Map.Entry<Coordinate, TileV> entry : shields.entrySet()){
+        for (Map.Entry<Coordinate, TileV> entry : shields.entrySet()) {
             StringBuilder sb = new StringBuilder();
-            switch(entry.getValue().getRotationType()){
+            switch (entry.getValue().getRotationType()) {
                 case NORTH -> sb.append("N-E");
                 case WEST -> sb.append("N-W");
                 case EAST -> sb.append("S-E");
@@ -391,13 +409,14 @@ public class GraphicPrinter {
         HashMap<Coordinate, TileV> cabins = new HashMap<>();
         HashMap<Coordinate, TileV> storage = new HashMap<>();
 
-        for(int i=0; i<12; i++){
-            for(int j=0; j<12; j++){
-                if(pl.getSpaceshipBoard()[i][j].isPresent()){
-                    switch(pl.getSpaceshipBoard()[i][j].get().getType()){
-                        case BATTERY -> batteries.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
-                        case CABIN -> cabins.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
-                        case SPECIAL_STORAGE, STORAGE -> storage.put(new Coordinate(i,j), pl.getSpaceshipBoard()[i][j].get());
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (pl.getSpaceshipBoard()[i][j].isPresent()) {
+                    switch (pl.getSpaceshipBoard()[i][j].get().getType()) {
+                        case BATTERY -> batteries.put(new Coordinate(i, j), pl.getSpaceshipBoard()[i][j].get());
+                        case CABIN -> cabins.put(new Coordinate(i, j), pl.getSpaceshipBoard()[i][j].get());
+                        case SPECIAL_STORAGE, STORAGE ->
+                                storage.put(new Coordinate(i, j), pl.getSpaceshipBoard()[i][j].get());
                     }
                 }
             }
@@ -405,8 +424,8 @@ public class GraphicPrinter {
 
         int maxOnLine = 0;
         System.out.print("Storage:  \t");
-        for(Map.Entry<Coordinate, TileV> entry : storage.entrySet()){
-            if(maxOnLine < 4) {
+        for (Map.Entry<Coordinate, TileV> entry : storage.entrySet()) {
+            if (maxOnLine < 4) {
                 System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), countBox(entry.getValue()), entry.getValue().getNumMaxBox());
                 System.out.print(printItem(entry.getValue()) + "\t");
                 maxOnLine++;
@@ -420,8 +439,8 @@ public class GraphicPrinter {
         maxOnLine = 0;
         System.out.println();
         System.out.print("Battery: \t");
-        for(Map.Entry<Coordinate, TileV> entry : batteries.entrySet()){
-            if(maxOnLine < 4) {
+        for (Map.Entry<Coordinate, TileV> entry : batteries.entrySet()) {
+            if (maxOnLine < 4) {
                 System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumBattery(), entry.getValue().getNumMaxBattery());
                 System.out.print(printItem(entry.getValue()) + "\t");
                 maxOnLine++;
@@ -435,15 +454,13 @@ public class GraphicPrinter {
         maxOnLine = 0;
         System.out.println();
         System.out.print("Crew:     \t");
-        for(Map.Entry<Coordinate, TileV> entry : cabins.entrySet()){
-            if(maxOnLine < 4) {
-                if (entry.getValue().getNumPAliens()>0){
+        for (Map.Entry<Coordinate, TileV> entry : cabins.entrySet()) {
+            if (maxOnLine < 4) {
+                if (entry.getValue().getNumPAliens() > 0) {
                     System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumPAliens(), 1);
-                }
-                else if (entry.getValue().getNumBAliens()>0){
+                } else if (entry.getValue().getNumBAliens() > 0) {
                     System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumBAliens(), 1);
-                }
-                else{
+                } else {
                     System.out.printf(" (%d,%d) | %d/%d | ", entry.getKey().x(), entry.getKey().y(), entry.getValue().getNumHumans(), 2);
                 }
                 System.out.print(printItem(entry.getValue()) + "\t");
@@ -457,15 +474,15 @@ public class GraphicPrinter {
         System.out.println();
     }
 
-    public void printHeapTiles(){
+    public void printHeapTiles() {
         List<TileV> tiles = game.getHeapTilesV().getListTileV();
         int num = 0;
         int index;
 
-        while(num <= tiles.size()){
+        while (num <= tiles.size()) {
             index = num;
             for (int j = 1; j <= 10; j++) {
-                if(num < 10) System.out.printf("   %d    ", num);
+                if (num < 10) System.out.printf("   %d    ", num);
                 else if (num < 100) System.out.printf("  %d    ", num);
                 else System.out.printf("  %d   ", num);
                 num++;
@@ -485,7 +502,7 @@ public class GraphicPrinter {
                 index++;
             }
             System.out.println();
-            index = num-10;
+            index = num - 10;
             for (int j = 1; j <= 10; j++) {
                 if (index >= tiles.size() || tiles.get(index) == null) {
                     System.out.print("|     | ");
@@ -498,7 +515,7 @@ public class GraphicPrinter {
                 index++;
             }
             System.out.println();
-            index = num-10;
+            index = num - 10;
             for (int j = 1; j <= 10; j++) {
                 if (index >= tiles.size() || tiles.get(index) == null) {
                     System.out.print("|     | ");
@@ -516,11 +533,11 @@ public class GraphicPrinter {
         }
     }
 
-    private int countBox(TileV tile){
+    private int countBox(TileV tile) {
         return tile.getNumBlueBox() + tile.getNumRedBox() + tile.getNumGreenBox() + tile.getNumYellowBox();
     }
 
-    private String printItem(TileV tile){
+    private String printItem(TileV tile) {
         StringBuilder sb = new StringBuilder();
 
         if (tile.getType() == TileType.BATTERY) {
@@ -532,19 +549,16 @@ public class GraphicPrinter {
             int pAlien = tile.getNumPAliens();
             int bAlien = tile.getNumBAliens();
 
-            if(crew == 2) {
+            if (crew == 2) {
                 sb.append(BIANCO + "#" + RESET + BIANCO + "#" + RESET);
                 return sb.toString();
-            }
-            else if(crew == 1) {
+            } else if (crew == 1) {
                 sb.append(BIANCO + "#" + RESET);
                 return sb.toString();
-            }
-            else if(pAlien == 1) {
+            } else if (pAlien == 1) {
                 sb.append(MAGENTA + "#" + RESET);
                 return sb.toString();
-            }
-            else if(bAlien == 1) {
+            } else if (bAlien == 1) {
                 sb.append(MARRONE + "#" + RESET);
                 return sb.toString();
             } else return "";
@@ -562,29 +576,47 @@ public class GraphicPrinter {
         }
     }
 
-    private char connectorSymbol (TileV tile, RotationType direction){
+    private char connectorSymbol(TileV tile, RotationType direction) {
         ConnectorType[] connectors = tile.getConnectors();
         RotationType rotation = tile.getRotationType();
 
         int index = (direction.getNum() - rotation.getNum() + 4) % 4;
         ConnectorType connector = connectors[index];
         switch (connector) {
-            case SINGLE -> { return '·';}
-            case DOUBLE -> {return ':';}
-            case UNIVERSAL -> {return '!';}
-            default -> {return ' ';}
+            case SINGLE -> {
+                return '·';
+            }
+            case DOUBLE -> {
+                return ':';
+            }
+            case UNIVERSAL -> {
+                return '!';
+            }
+            default -> {
+                return ' ';
+            }
         }
     }
 
-    private String stringTile (PlayerV player, int x, int y) {
-        if(x == 7 && y == 7 && player.getSpaceshipBoard()[x][y].isPresent() && player.getSpaceshipBoard()[x][y].get().getType() == TileType.CABIN) {
+    private String stringTile(PlayerV player, int x, int y) {
+        if (x == 7 && y == 7 && player.getSpaceshipBoard()[x][y].isPresent() && player.getSpaceshipBoard()[x][y].get().getType() == TileType.CABIN) {
             PlayerColor playerColor = player.getColor();
             switch (playerColor) {
-                case RED -> {return ROSSO + "C" + RESET;}
-                case BLUE -> {return BLU + "C" + RESET;}
-                case GREEN -> {return VERDE + "C" + RESET;}
-                case YELLOW -> {return GIALLO + "C" + RESET;}
-                default -> {return BIANCO + "C" + RESET;}
+                case RED -> {
+                    return ROSSO + "C" + RESET;
+                }
+                case BLUE -> {
+                    return BLU + "C" + RESET;
+                }
+                case GREEN -> {
+                    return VERDE + "C" + RESET;
+                }
+                case YELLOW -> {
+                    return GIALLO + "C" + RESET;
+                }
+                default -> {
+                    return BIANCO + "C" + RESET;
+                }
             }
         } else {
             TileV tile = player.getSpaceshipBoard()[x][y].get();
@@ -598,25 +630,47 @@ public class GraphicPrinter {
 
     private String getString(TileV tile) {
         switch (tile.getType()) {
-            case CABIN -> { return BIANCO + "C" + RESET;}
-            case CANNON -> { return MAGENTA + "G" + RESET;}
-            case D_CANNON -> { return VERDE_FOGLIA + "G" + RESET;}
-            case MOTOR -> { return MARRONE + "M" + RESET;}
-            case D_MOTOR -> { return VERDE_FOGLIA + "M" + RESET;}
-            case STRUCTURAL -> { return BIANCO + "#" + RESET;}
-            case SHIELD -> { return VERDE_FOGLIA + "S" + RESET;}
-            case BROWN_CABIN -> { return MARRONE + "O" + RESET;}
-            case PURPLE_CABIN -> { return MAGENTA + "O" + RESET;}
-            case BATTERY -> { return VERDE + "E" + RESET;}
+            case CABIN -> {
+                return BIANCO + "C" + RESET;
+            }
+            case CANNON -> {
+                return MAGENTA + "G" + RESET;
+            }
+            case D_CANNON -> {
+                return VERDE_FOGLIA + "G" + RESET;
+            }
+            case MOTOR -> {
+                return MARRONE + "M" + RESET;
+            }
+            case D_MOTOR -> {
+                return VERDE_FOGLIA + "M" + RESET;
+            }
+            case STRUCTURAL -> {
+                return BIANCO + "#" + RESET;
+            }
+            case SHIELD -> {
+                return VERDE_FOGLIA + "S" + RESET;
+            }
+            case BROWN_CABIN -> {
+                return MARRONE + "O" + RESET;
+            }
+            case PURPLE_CABIN -> {
+                return MAGENTA + "O" + RESET;
+            }
+            case BATTERY -> {
+                return VERDE + "E" + RESET;
+            }
             case STORAGE -> {
-                if(tile.getNumMaxBox() == 2) return CIANO + "D" + RESET;
+                if (tile.getNumMaxBox() == 2) return CIANO + "D" + RESET;
                 else return CIANO + "T" + RESET;
             }
             case SPECIAL_STORAGE -> {
-                if(tile.getNumMaxBox() == 2) return   ROSA + "D" + RESET;
-                else return   ROSA + "S" + RESET;
+                if (tile.getNumMaxBox() == 2) return ROSA + "D" + RESET;
+                else return ROSA + "S" + RESET;
             }
-            default -> { return RESET;}
+            default -> {
+                return RESET;
+            }
         }
     }
 
@@ -642,7 +696,9 @@ public class GraphicPrinter {
         System.out.println("Gameboard with spaces: " + game.getGlobalBoard().getNumstep());
         for (int i = 0; i < game.getPlayers().size(); i++) {
             int step = game.getGlobalBoard().getPosition(game.getPlayers().get(i));
-            if(step >= game.getGlobalBoard().getNumstep()) { step = step % game.getGlobalBoard().getNumstep(); }
+            if (step >= game.getGlobalBoard().getNumstep()) {
+                step = step % game.getGlobalBoard().getNumstep();
+            }
             System.out.println(game.getPlayers().get(i).getNickname() + ": " + step);
         }
         System.out.println("If the leader doubles you during the effect of a card and at the end of the card\nyou are still in a double situation you are eliminated from the game" +
@@ -651,17 +707,17 @@ public class GraphicPrinter {
 
     public void printRules() {
         if (game.getCurrentState().getPhase() == StateGameType.BUILD) {
-            if(game.getLevel() == 0) {
+            if (game.getLevel() == 0) {
                 console.displayMessage("helper.build.0", null);
             } else {
                 console.displayMessage("helper.build.1", null);
             }
         } else if (game.getCurrentState().getPhase() == StateGameType.CHECK) {
             console.displayMessage("helper.check", null);
-        } else if(game.getCurrentState().getPhase() == StateGameType.CORRECTION){
+        } else if (game.getCurrentState().getPhase() == StateGameType.CORRECTION) {
             console.displayMessage("helper.correction", null);
-        } else if(game.getCurrentState().getPhase() == StateGameType.INITIALIZATION_SPACESHIP){
-            if(game.getLevel() == 0) {
+        } else if (game.getCurrentState().getPhase() == StateGameType.INITIALIZATION_SPACESHIP) {
+            if (game.getLevel() == 0) {
                 console.displayMessage("helper.initialization.0", null);
             } else {
                 console.displayMessage("helper.initialization.1", null);
@@ -687,7 +743,7 @@ public class GraphicPrinter {
 
     public void printStatus() {
         System.out.println("\nStatus:");
-        for(PlayerV i : game.getPlayers()){
+        for (PlayerV i : game.getPlayers()) {
             System.out.println(i.getNickname() + " status : " + i.getStatePlayer());
         }
         System.out.println("Game : " + game.getCurrentState().getPhase());
@@ -695,30 +751,30 @@ public class GraphicPrinter {
 
     public void printHelp() {
         PlayerV myself = null;
-        if(game == null){
+        if (game == null) {
             console.displayMessage("command.pregame", null);
         } else {
-            if(game.getCurrentState().getPhase() == StateGameType.BUILD) {
+            if (game.getCurrentState().getPhase() == StateGameType.BUILD) {
                 console.displayMessage("command.build", null);
-            } else if(game.getCurrentState().getPhase() == StateGameType.CHECK) {
+            } else if (game.getCurrentState().getPhase() == StateGameType.CHECK) {
                 console.displayMessage("command.check", null);
             } else if (game.getCurrentState().getPhase() == StateGameType.CORRECTION) {
-                for(PlayerV player : game.getPlayers()){
-                    if(player.getNickname().equals(myName)){
+                for (PlayerV player : game.getPlayers()) {
+                    if (player.getNickname().equals(myName)) {
                         myself = player;
                         break;
                     }
                 }
-                if(myself != null && myself.getStatePlayer().equals(StatePlayerType.CORRECT_SHIP)) {
+                if (myself != null && myself.getStatePlayer().equals(StatePlayerType.CORRECT_SHIP)) {
                     console.displayMessage("command.correction.true", null);
                 } else {
                     console.displayMessage("command.correction.false", null);
                 }
-            } else if(game.getCurrentState().getPhase() == StateGameType.INITIALIZATION_SPACESHIP) {
+            } else if (game.getCurrentState().getPhase() == StateGameType.INITIALIZATION_SPACESHIP) {
                 console.displayMessage("command.initial", null);
-            } else if(game.getCurrentState().getPhase() == StateGameType.TAKE_CARD) {
+            } else if (game.getCurrentState().getPhase() == StateGameType.TAKE_CARD) {
                 console.displayMessage("command.take", null);
-            } else if(game.getCurrentState().getPhase() == StateGameType.EFFECT_ON_PLAYER) {
+            } else if (game.getCurrentState().getPhase() == StateGameType.EFFECT_ON_PLAYER) {
                 switch (game.getCurrentState().getCurrentCard().getCardType()) {
                     case PLANET:
                         console.displayMessage("command.effect.planet", null);

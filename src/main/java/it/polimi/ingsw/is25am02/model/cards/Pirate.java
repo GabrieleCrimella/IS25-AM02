@@ -74,7 +74,8 @@ public class Pirate extends Enemies {
             } else if (playerPower == getCannonPowers()) {
                 //if (player.equals(game.getGameboard().getRanking().getLast()) && !losers.isEmpty()) {
                 if (player.getNickname().equals(getCurrentOrder().getLast()) && !losers.isEmpty()){
-                    setStateCard(StateCardType.ROLL);
+                    game.setDiceResultManually(0);
+                    game.getCurrentCard().setStateCard(StateCardType.ROLL);
                     phase++;
                 } else {
                     game.nextPlayer();
@@ -83,7 +84,8 @@ public class Pirate extends Enemies {
                 losers.add(player);
                 //if (player.equals(game.getGameboard().getRanking().getLast())) {
                 if (player.getNickname().equals(getCurrentOrder().getLast()) && !losers.isEmpty()){
-                    setStateCard(StateCardType.ROLL);
+                    game.setDiceResultManually(0);
+                    game.getCurrentCard().setStateCard(StateCardType.ROLL);
                     phase++;
                 }
             }
@@ -116,7 +118,8 @@ public class Pirate extends Enemies {
                 game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
             } else {
-                setStateCard(StateCardType.ROLL);
+                game.setDiceResultManually(0);
+                game.getCurrentCard().setStateCard(StateCardType.ROLL);
                 game.getCurrentState().setCurrentPlayer(losers.getFirst());
                 phase++;
             }
@@ -133,6 +136,7 @@ public class Pirate extends Enemies {
             } else {
                 if (player.equals(losers.getLast()) && currentIndex < shots.size() - 1) {
                     currentIndex++;
+                    game.setDiceResultManually(0);
                     game.getCurrentCard().setStateCard(StateCardType.ROLL);
                     game.getCurrentState().setCurrentPlayer(losers.getFirst());
                 } else if (player.equals(losers.getLast()) && currentIndex == shots.size() - 1) {

@@ -731,7 +731,7 @@ public class ClientHandler implements Runnable, VirtualView {
                     goodRequest = true;
                     break;
 
-                case "Winners":
+                case "winners":
                     if (!params.has("lobbyId") || !params.get("lobbyId").isJsonPrimitive() ||
                             !params.get("lobbyId").getAsJsonPrimitive().isNumber()) {
                         goodRequest = false;
@@ -1461,5 +1461,10 @@ public class ClientHandler implements Runnable, VirtualView {
         } catch (IOException e) {
             System.err.println("Errore durante l'invio del metodo showBuildTimeIsOverUpdate: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void showWinnersUpdate(Map<String, Integer> winners) throws RemoteException{
+        //todo davide bisgona aggiungere questo metodo
     }
 }

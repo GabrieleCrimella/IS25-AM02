@@ -36,6 +36,7 @@ public class MeteoritesStorm extends Card {
 
         if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
             currentIndex++;
+            game.setDiceResultManually(0);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
             game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
         }
@@ -58,6 +59,7 @@ public class MeteoritesStorm extends Card {
         else{
             if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
                 currentIndex++;
+                game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
             }

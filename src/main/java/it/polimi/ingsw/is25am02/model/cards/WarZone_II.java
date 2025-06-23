@@ -217,6 +217,7 @@ public class WarZone_II extends Card{
                 }
                 currentPhase++;
                 game.getCurrentState().setCurrentPlayer(p);
+                game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
             }
             else game.nextPlayer();
@@ -232,6 +233,7 @@ public class WarZone_II extends Card{
             if (res) {
                 game.getCurrentCard().setStateCard(StateCardType.DECISION);
             } else {
+                game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
             }
             currentIndex++;
@@ -248,6 +250,7 @@ public class WarZone_II extends Card{
     public void keepBlocks(Game game, Player player, Coordinate pos){
         if(currentPhase == 4) {
             player.getSpaceship().keepBlock(player.getNickname(), pos);
+            game.setDiceResultManually(0);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
         }
         else throw new IllegalStateException();

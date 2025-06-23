@@ -214,7 +214,7 @@ public class Spaceship {
 
     //tiene le tiles passate come parametro sulla spaceshipe e aumenta le wastedTiles. Rimuovi i tiles
     public void keepBlock(String nicknameP, Coordinate pos) {
-        boolean[][] rightMask = new boolean[0][0];
+        boolean[][] rightMask = null;
         for (boolean[][] mask : branches) {
             if (mask[pos.x()][pos.y()]) {
                 rightMask = mask;
