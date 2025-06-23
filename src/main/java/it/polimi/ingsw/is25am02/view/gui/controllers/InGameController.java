@@ -107,6 +107,11 @@ public class InGameController extends GeneralController {
     private Button calculatedamage;
     @FXML
     private Button noChoicePlanet;
+    @FXML
+    private Button abandonedshipYes;
+    @FXML
+    private Button abandonedshipNo;
+
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
     private Map<String, PlayerColor> playerColors = new HashMap<>();
@@ -376,6 +381,12 @@ public class InGameController extends GeneralController {
             doubleLabel.setText("Number of double motor activated: " + doubleCount);
             doubleLabel.setVisible(true);
             doubles.add(coordinate);
+        } else if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN))){
+            try {
+                GUIController.getInstance().getController().removeCrew(GUIController.getInstance().getNickname(), coordinate);
+            } catch (RemoteException e) {
+                showNotification("Error during remove crew", NotificationType.ERROR, 5000);
+            }
         }
     }
 
@@ -553,6 +564,12 @@ public class InGameController extends GeneralController {
         rollDice.setVisible(false);
         rollDice.setDisable(true);
         diceResult.setVisible(false);
+        abandonedshipNo.setVisible(false);
+        abandonedshipNo.setDisable(true);
+        abandonedshipYes.setVisible(false);
+        abandonedshipYes.setDisable(true);
+        noChoicePlanet.setVisible(false);
+        noChoicePlanet.setDisable(true);
         ImageView imageView = new ImageView();
         imageView.setFitWidth(300);
         imageView.setFitHeight(500);
@@ -568,6 +585,11 @@ public class InGameController extends GeneralController {
             choiceboxtrue.setDisable(false);
             choiceboxfalse.setVisible(true);
             choiceboxfalse.setDisable(false);
+        } else if (newCard.getCardType().equals(CardType.ABANDONED_SHIP)) {
+            abandonedshipYes.setVisible(true);
+            abandonedshipYes.setDisable(false);
+            abandonedshipNo.setVisible(true);
+            abandonedshipNo.setDisable(false);
         } else if (newCard.getCardType().equals(CardType.TRAFFICKER)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
@@ -899,6 +921,32 @@ public class InGameController extends GeneralController {
             finishmoveboxes.setDisable(true);
         } catch (RemoteException e) {
             showNotification("Error with choice planet", NotificationType.ERROR, 5000);
+        }
+    }
+
+    @FXML
+    public void onAbandonedshipYes(){
+        try {
+            GUIController.getInstance().getController().choice(GUIController.getInstance().getNickname(), true);
+            abandonedshipYes.setVisible(false);
+            abandonedshipYes.setDisable(true);
+            abandonedshipNo.setVisible(false);
+            abandonedshipNo.setDisable(true);
+        } catch (RemoteException e) {
+            showNotification("Error with choice", NotificationType.ERROR, 5000);
+        }
+    }
+
+    @FXML
+    public void onAbandonedshipNo(){
+        try {
+            GUIController.getInstance().getController().choice(GUIController.getInstance().getNickname(), false);
+            abandonedshipYes.setVisible(false);
+            abandonedshipYes.setDisable(true);
+            abandonedshipNo.setVisible(false);
+            abandonedshipNo.setDisable(true);
+        } catch (RemoteException e) {
+            showNotification("Error with choice", NotificationType.ERROR, 5000);
         }
     }
 
