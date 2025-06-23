@@ -240,6 +240,52 @@ public class GUIController implements Runnable {
                     bldCtrl.onReturnMiniDeck();
                 }
             }
+            case "ingame.hidechoicebox"->{
+                boolean visible = Boolean.parseBoolean(params.get("visible"));
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.hideChoiceBox(visible);
+                }
+            }
+            case "ingame.hidechoice"->{
+                boolean choice = Boolean.parseBoolean(params.get("choice"));
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.hideChoice(choice);
+                }
+            }
+            case "ingame.hidefinishcannon"->{
+                int number = Integer.parseInt(params.get("number"));
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.hideFinishCannon(number);
+                }
+            }
+            case "ingame.hidefinishmotor"->{
+                int number = Integer.parseInt(params.get("number"));
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.hideFinishMotor(number);
+                }
+            }
+            case "ingame.hidemovebox"->{
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.hideMoveBox();
+                }
+            }
+            case "ingame.hidechoiceplanet"->{
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.hideChoicePlanet();
+                }
+            }
+            case "ingame.hidecalculatedamage"->{
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.hideCalculateDamage();
+                }
+            }
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }

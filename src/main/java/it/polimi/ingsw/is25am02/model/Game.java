@@ -970,6 +970,11 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choice(this, player, choice);
+            try {
+                player.getObserver().displayMessage("ingame.hidechoice", Map.of("choice", String.valueOf(choice)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1047,6 +1052,11 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choiceBox(this, player, choice);
+            try {
+                player.getObserver().displayMessage("ingame.hidechoicebox", Map.of("visible", String.valueOf(choice)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1118,6 +1128,13 @@ public class Game implements Game_Interface {
 
 
             }
+            if(!on){
+                try {
+                    player.getObserver().displayMessage("ingame.hidemovebox", null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1147,6 +1164,11 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choicePlanet(this, player, index);
+            try {
+                player.getObserver().displayMessage("ingame.hidechoiceplanet", null);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1176,6 +1198,11 @@ public class Game implements Game_Interface {
             choicesControl(player, motors, batteries, TileType.D_MOTOR);
 
             getCurrentCard().choiceDoubleMotor(this, player, motors, batteries);
+            try {
+                player.getObserver().displayMessage("ingame.hidefinishmotor", Map.of("number", String.valueOf(motors.size())));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1217,6 +1244,11 @@ public class Game implements Game_Interface {
             choicesControl(player, cannons, batteries, TileType.D_CANNON);
 
             getCurrentCard().choiceDoubleCannon(this, player, cannons, batteries);
+            try {
+                player.getObserver().displayMessage("ingame.hidefinishcannon", Map.of("number", String.valueOf(cannons.size())));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1387,6 +1419,13 @@ public class Game implements Game_Interface {
             }
 
             getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(), pos.y()));
+            if(pos.x() == -1 && pos.y() == -1) {
+                try {
+                    player.getObserver().displayMessage("ingame.hidecalculatedamage", null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);

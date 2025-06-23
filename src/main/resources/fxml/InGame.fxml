@@ -232,14 +232,12 @@
         <Button fx:id="choiceboxtrue" layoutX="50.0" layoutY="270.0" onAction="#onChoiceBoxTrue" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice box true" visible="false" />
         <Button fx:id="choiceboxfalse" layoutX="50.0" layoutY="340.0" onAction="#onChoiceBoxFalse" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice box false" visible="false" />
         <Button fx:id="finishcannon" layoutX="50.0" layoutY="410.0" onAction="#onFinishChoiceCannon" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice cannon" visible="false" />
-        <Button fx:id="finishmotor" layoutX="50.0" layoutY="340.0" onAction="#onFinishChoiceMotor" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice motor" visible="false" />
+        <Button fx:id="finishmotor" layoutX="50.0" layoutY="270.0" onAction="#onFinishChoiceMotor" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice motor" visible="false" />
         <Button fx:id="finishmoveboxes" layoutX="50.0" layoutY="340.0" onAction="#onfinishMoveBoxes" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish move boxes" visible="false" />
         <Button fx:id="calculatedamage" layoutX="50.0" layoutY="340.0" onAction="#onCalculateDamage" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Calculate damage" visible="false" />
         <Button fx:id="noChoicePlanet" layoutX="50.0" layoutY="270.0" onAction="#onNoChoicePlanet" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="I don't want to land" visible="false" />
-        <Button fx:id="abandonedshipYes" layoutX="50.0" layoutY="270.0" onAction="#onAbandonedshipYes" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="I want to see ship" visible="false" />
-        <Button fx:id="abandonedshipNo" layoutX="50.0" layoutY="340.0" onAction="#onAbandonedshipNo" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Go ahead" visible="false" />
-
-        <Button layoutX="270.0" layoutY="1000.0" onAction="#onNextPlayer" prefHeight="40.0" prefWidth="200.0" styleClass="main-button" text="Next Player" />
+        <Button fx:id="choiceYes" layoutX="50.0" layoutY="270.0" onAction="#onChoiceYes" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice yes" visible="false" />
+        <Button fx:id="choiceNo" layoutX="50.0" layoutY="340.0" onAction="#onChoiceNo" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice no" visible="false" />
 
         <Label layoutX="66.0" layoutY="231.0" styleClass="white-context-label" text="Current player:" />
         <Label fx:id="currentPlayerNameLabel" layoutX="240.0" layoutY="231.0" styleClass="white-context-label" text="..." />
