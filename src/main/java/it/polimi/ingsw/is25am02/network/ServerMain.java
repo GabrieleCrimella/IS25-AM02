@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.network;
 
 import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.network.rmi.server.RmiServer;
+import it.polimi.ingsw.is25am02.network.socket.server.SocketServer;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -17,7 +18,9 @@ public class ServerMain {
             RmiServer rmiServer = new RmiServer();
             rmiServer.startServer(controller);
 
-            //todo istanziare il socket server
+            //SocketServer on
+            SocketServer socketServer = new SocketServer();
+            socketServer.startServer(controller);
 
             Scanner scanner = new Scanner(System.in);
             while(activeServers > 0){
@@ -28,7 +31,7 @@ public class ServerMain {
                     rmiServer.stopServer(controller);
                     activeServers--;
                 } else if (ris == 2) {
-                    //todo spegniemento server Socket
+                    socketServer.stopServer();
                     activeServers--;
                 } else {
                     System.out.println("Wrong input");

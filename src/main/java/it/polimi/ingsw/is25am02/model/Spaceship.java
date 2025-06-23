@@ -247,7 +247,6 @@ public class Spaceship {
                 ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
             }
         }
-        //listener.onCurrentTileNullityUpdate();
     }
 
     public void setCurrentTile(String nicknameP, Tile t) throws AlreadyViewingException {

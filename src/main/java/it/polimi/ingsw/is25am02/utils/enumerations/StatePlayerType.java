@@ -8,6 +8,7 @@ public enum StatePlayerType {
     IN_GAME,
     OUT_GAME;
 
+    /*
     @Override
     public String toString(){
         if(this.equals(FINISHED)){
@@ -27,6 +28,6 @@ public enum StatePlayerType {
         }
         else
             return "out game";
-    }
+    }*/
 
 }

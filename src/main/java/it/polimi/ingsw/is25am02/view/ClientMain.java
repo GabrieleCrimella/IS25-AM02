@@ -25,8 +25,8 @@ public class ClientMain {
                 };
                 ClientController controller = new ClientController(connection);
 
-                connection.startConnection(args[2]);
                 connection.setView(console);
+                connection.startConnection(args[2]);
 
                 console.setController(controller);
                 console.start();

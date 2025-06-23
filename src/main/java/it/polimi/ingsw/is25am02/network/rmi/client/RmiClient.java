@@ -22,7 +22,7 @@ import java.util.*;
 
 
 public class RmiClient extends UnicastRemoteObject implements VirtualView, ConnectionClient {
-    VirtualServer server;
+    VirtualServer server = null;
     ConsoleClient console;
     GameV gameV;
 
@@ -369,10 +369,11 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             List<CardV> cardVList = new ArrayList<>();
 
             for (List<Object> cardData : cardDataList) {
-                StateCardType stateCardV = (StateCardType) cardData.get(0);
+                StateCardType stateCardV = StateCardType.valueOf(cardData.get(0).toString());
                 String imagePath = (String) cardData.get(1);
                 String comment = (String) cardData.get(2);
-                CardType cardTypeV = (CardType) cardData.get(3);
+                CardType cardTypeV = CardType.valueOf(cardData.get(3).toString());
+
 
                 // Corretto l'ordine per il costruttore
                 CardV cardV = new CardV(stateCardV, imagePath, cardTypeV, comment);

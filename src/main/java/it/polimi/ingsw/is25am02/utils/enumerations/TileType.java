@@ -1,8 +1,10 @@
 package it.polimi.ingsw.is25am02.utils.enumerations;
 
 public enum TileType {
-    CANNON, CABIN, MOTOR, BATTERY, SHIELD, STORAGE, SPECIAL_STORAGE, D_CANNON, D_MOTOR, STRUCTURAL, PURPLE_CABIN, BROWN_CABIN;
+    CANNON, CABIN, MOTOR, BATTERY, SHIELD, STORAGE, SPECIAL_STORAGE, D_CANNON, D_MOTOR, STRUCTURAL, PURPLE_CABIN, BROWN_CABIN
 
+
+    /*
     @Override
     public String toString(){
         if(this.equals(CANNON)){
@@ -24,21 +26,21 @@ public enum TileType {
             return "storage";
         }
         else if(this.equals(SPECIAL_STORAGE)){
-            return "special storage";
+            return "special_storage";
         }
         else if(this.equals(D_CANNON)){
-            return "double cannon";
+            return "d_cannon";
         }
         else if(this.equals(D_MOTOR)){
-            return "double motor";
+            return "d_motor";
         }
         else if(this.equals(STRUCTURAL)){
             return "structural";
         }
         else if(this.equals(PURPLE_CABIN)){
-            return "purple cabin";
+            return "purple_cabin";
         }
         else
-            return "brown cabin";
-    }
+            return "brown_cabin";
+    }*/
 }

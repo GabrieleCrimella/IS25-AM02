@@ -168,7 +168,6 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
             spaceshipBoard[x][y] = Optional.empty();
             //listener.onRemoveTileUpdate(new Coordinate(x,y));
         }
-
         else throw new IllegalArgumentException("Invalid tile position");
     }
 
