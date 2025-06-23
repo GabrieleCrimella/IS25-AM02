@@ -28,6 +28,8 @@ public class ServerHandler implements Runnable, VirtualServer{
     private RmiClient rmi;
     private final Gson gson = new Gson();
     private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private boolean running = true;
 
     public ServerHandler(Socket socket, ConsoleClient console) {
         this.socket = socket;
@@ -40,34 +42,44 @@ public class ServerHandler implements Runnable, VirtualServer{
         }
     }
 
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     public void run() {
-        try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+        try {
+            in = new ObjectInputStream(socket.getInputStream());
 
             Object receivedObject;
             // Il ciclo si chiude quando il client si disconnette
-            while ((receivedObject = in.readObject()) != null) {
+            while (running && (receivedObject = in.readObject()) != null) {
                 String jsonString = (String) receivedObject;
                 try {
                     Command com = gson.fromJson(jsonString, Command.class);
                     processCommand(com);
 
                 } catch (Exception e) {
-                    System.err.println("Errore con client: " + e.getMessage());
+                    System.err.println("Errore con client1: " + e.getMessage());
                 }
             }
-        } catch (EOFException e) {
-            // Server spento
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Errore con client: " + e.getMessage());
+            if(running) {
+                System.out.println("Il server ha chiuso la connessione");
+            }
         } finally {
             closeConnection();
         }
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         try {
+            running = false;
             if (socket != null && !socket.isClosed()) {
+                out.close();
+                in.close();
                 socket.close();
+                in = null;
+                out = null;
             }
         } catch (IOException e) {
             System.err.println("Errore chiusura socket: " + e.getMessage());
@@ -79,6 +91,9 @@ public class ServerHandler implements Runnable, VirtualServer{
             JsonObject params = cmd.getParams();
 
             switch (cmd.getCommand()) {
+                case "heartbeat":
+                    rmi.pingFromServer();
+                    break;
                 case "displayMessage":
                     String keys = gson.fromJson(params.get("keys"), String.class);
                     Type mapType = new TypeToken<Map<String, String>>(){}.getType();
@@ -311,9 +326,11 @@ public class ServerHandler implements Runnable, VirtualServer{
             //Creation Command
             Command cmd = new Command("ping", params);
 
-            //Sending
-            out.writeObject(gson.toJson(cmd));
-            out.flush();
+            if(out != null) {
+                //Sending
+                out.writeObject(gson.toJson(cmd));
+                out.flush();
+            }
         } catch (IOException e) {
             System.err.println("Errore durante l'invio del metodo ping: " + e.getMessage());
         }

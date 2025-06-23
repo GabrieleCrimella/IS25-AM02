@@ -14,6 +14,9 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.RotationType.*;
 
@@ -29,9 +32,11 @@ import static it.polimi.ingsw.is25am02.utils.enumerations.RotationType.*;
 
 public class ClientController implements VirtualServer {
     private final ConnectionClient connection;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private MenuState menuState;
     private boolean running;
     private GameV gameV;
+    private int timeLeft = 8;
     //todo devo definire gameV una volta che so in che game sono
 
     public GameV getGameV() {
@@ -65,6 +70,7 @@ public class ClientController implements VirtualServer {
     public void closeConnect() throws Exception {
         connection.closeConnection();
         running = false;
+        System.exit(0);
     }
 
     public TileV getTileFromID(int id) {
@@ -113,10 +119,30 @@ public class ClientController implements VirtualServer {
         pingThread.start();
     }
 
+    public void heartManager(){
+        scheduler.scheduleAtFixedRate(() -> {
+            timeLeft =  timeLeft - 1;
+            System.out.println(timeLeft);
+            if (timeLeft <= 0) {
+                try {
+                    closeConnect();
+                    scheduler.shutdownNow();
+                } catch (Exception e) {
+                    System.out.println("Impossibile chiudere il client");
+                }
+            }
+        }, 1, 1, TimeUnit.SECONDS);
+    }
+
+    public void heartbeat(){
+        timeLeft = 8;
+    }
+
     public void nicknameRegistration(String nickname, VirtualView client) throws RemoteException {
         if (menuControl(MenuState.LOGIN)) {
             connection.getServer().nicknameRegistration(nickname, client);
             ping(nickname);
+            heartManager();
         }
     }
 

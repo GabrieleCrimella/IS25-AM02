@@ -37,6 +37,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     public static final Logger logger = Logger.getLogger(ServerController.class.getName());
     //todo gestire concorrenza logger
     private final PingManager pingManager;
+    private boolean running = true;
 
 
     //Gestione Login, Lobby, Inizio partita
@@ -60,6 +61,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
     private void startQueueProcessor() {
         queueProcessor = new Thread(() -> {
+            pingFromServer();
             while (true) {
                 try {
                     Runnable task = methodQueue.take();
@@ -81,6 +83,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
             } catch (InterruptedException e) {
                 e.getMessage();
             }
+            running = false; //close pingClients thread
             threadPool.shutdownNow();
             System.out.println(">> ThreadPool shutdown.");
             System.out.println(">> Thread administrator shutdown.");
@@ -88,6 +91,25 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
         } else {
             System.out.println(">> ThreadPool shutdown failed.");
         }
+    }
+
+    public void pingFromServer() {
+        Thread pingClients = new Thread(() -> {
+            while (running) {
+                try {
+                    for(String client : registeredClients.keySet()) {
+                        registeredClients.get(client).pingFromServer();
+                    }
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                } catch (RemoteException e) {
+                    break;
+                }
+            }
+        });
+        pingClients.start();
     }
 
     public void ping(String nickname) throws RemoteException {

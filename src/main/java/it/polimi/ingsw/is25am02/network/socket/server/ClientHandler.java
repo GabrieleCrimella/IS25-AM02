@@ -27,7 +27,9 @@ public class ClientHandler implements Runnable, VirtualView {
     private final Socket socket;
     private final ServerController controller;
     private final Gson gson = new Gson();
-    private final ObjectOutputStream out;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private boolean running = true;
 
     public ClientHandler(Socket socket, ServerController controller) throws IOException {
         this.socket = socket;
@@ -36,33 +38,39 @@ public class ClientHandler implements Runnable, VirtualView {
     }
 
     public void run() {
-        try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
-
+        try {
+            in = new ObjectInputStream(socket.getInputStream());
             Object receivedObject;
             // Il ciclo si chiude quando il client si disconnette
-            while ((receivedObject = in.readObject()) != null) {
+            while (running && (receivedObject = in.readObject()) != null) {
                     String jsonString = (String) receivedObject;
+
                     try {
                         Command cmd = gson.fromJson(jsonString, Command.class);
                         processCommand(cmd);
 
                     } catch (Exception e) {
-                        System.err.println("Errore con client: " + e.getMessage());
+                        System.err.println("Errore con client1: " + e.getMessage());
                     }
             }
-        } catch (EOFException e) {
-            // Client disconnesso normalmente
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Errore con client: " + e.getMessage());
+            if(running) {
+                System.out.println("Il client ha chiuso la connessione");
+            }
         } finally {
             closeConnection();
         }
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         try {
+            running = false;
             if (socket != null && !socket.isClosed()) {
+                out.close();
+                in.close();
                 socket.close();
+                in = null;
+                out = null;
             }
         } catch (IOException e) {
             System.err.println("Errore chiusura socket: " + e.getMessage());
@@ -755,6 +763,23 @@ public class ClientHandler implements Runnable, VirtualView {
             System.err.println("Errore nel parsing JSON: " + e.getMessage());
         } catch (Exception e) {
             System.err.println("Errore interno generico: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void pingFromServer() throws RemoteException {
+        try {
+            //Creation Json for params
+            JsonObject jsonParams = new JsonObject();
+
+            //Creation Command
+            Command cmd = new Command("heartbeat", jsonParams);
+
+            //Sending
+            out.writeObject(gson.toJson(cmd));
+            out.flush();
+        } catch (IOException e) {
+            System.err.println("Errore durante l'invio del metodo pingFromServer: " + e.getMessage());
         }
     }
 
