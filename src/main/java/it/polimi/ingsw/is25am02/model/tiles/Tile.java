@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Cannon, DoubleCannon, DoubleMotor, Motors, PurpleCabin, Shield, SpecialStorage, Storage, Structural{
-//todo: ricordiamoci di mettere che all'inizio della preparazione della nave i giocatori trovano già posizionata la "tile iniziale" colorata al centro della loro nave
     private final TileType tType;
     private final ConnectorType[] connectors;
     private final String imagePath;
@@ -26,7 +25,7 @@ public sealed abstract class Tile permits BatteryStorage, BrownCabin, Cabin, Can
     //Constructor
     public Tile(TileType t, ConnectorType[] connectors, RotationType rotationType, String imagePath) {
         this.tType = t;
-        // Connectors array has to be of length 4
+        // Connector array has to be of length 4
         if (connectors.length != 4) {
             throw new IllegalArgumentException("Connectors array doesn't have exactly 4 elements.");
         }

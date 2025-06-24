@@ -69,11 +69,13 @@ public class WarZone_I extends Card {
                     }
                 }
                 game.getGameboard().move((-1) * flyback, p);
-                for (String nick : observers.keySet()) {
-                    try {
-                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choicecrew", e);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choicecrew", e);
+                        }
                     }
                 }
                 currentPhase++;
@@ -143,17 +145,19 @@ public class WarZone_I extends Card {
         if (currentPhase == 2) {
             try {
                 cabin.removeCrew();
-                for (String nick : observers.keySet()) {
-                    try {
-                        Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
-                        observers.get(nick).showCrewRemoval(pos, player.getNickname());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method removecrew", e);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
+                            observers.get(nick).showCrewRemoval(pos, player.getNickname());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method removecrew (comunication)", e);
+                        }
                     }
                 }
                 aliveRemoved++;
             } catch (IllegalRemoveException e) {
-                System.out.println(e.getMessage());
+                ServerController.logger.log(Level.SEVERE, "error in method removecrew", e);
             }
 
             if (aliveRemoved == aliveLost) {
@@ -176,14 +180,15 @@ public class WarZone_I extends Card {
             for (Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
                 if (observers != null){
-                for (String nick : observers.keySet()) {
-                    try {
-                        Coordinate pos = new Coordinate(battery.x(), battery.y());
-                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                    for (String nick : observers.keySet()) {
+                        try {
+                            Coordinate pos = new Coordinate(battery.x(), battery.y());
+                            observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                        }
                     }
-                }}
+                }
             }
             //if (player.getNickname().equals(getCurrentOrder().getLast())) {
             if (player.equals(game.getGameboard().getRanking().getLast())) {

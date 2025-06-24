@@ -62,14 +62,15 @@ public class WarZone_II extends Card{
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
                 if (observers != null){
-                for (String nick:observers.keySet()) {
-                    try {
-                        Coordinate pos = new Coordinate (battery.x(),battery.y());
-                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                    for (String nick:observers.keySet()) {
+                        try {
+                            Coordinate pos = new Coordinate (battery.x(),battery.y());
+                            observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                        }
                     }
-                }}
+                }
             }
             if (player.getNickname().equals(getCurrentOrder().getLast())) {
             //if (player.equals(game.getGameboard().getRanking().getLast())) {
@@ -82,11 +83,13 @@ public class WarZone_II extends Card{
                     }
                 }
                 game.getGameboard().move((-1) * flyback, p);
-                for (String nick:observers.keySet()) {
-                    try {
-                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                        }
                     }
                 }
                 //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
@@ -106,12 +109,14 @@ public class WarZone_II extends Card{
             declarationMotor.put(player, player.getSpaceship().calculateMotorPower(dMotors));
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
-                for (String nick:observers.keySet()) {
-                    try {
-                        Coordinate pos = new Coordinate (battery.x(),battery.y());
-                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublemotor", e);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            Coordinate pos = new Coordinate(battery.x(), battery.y());
+                            observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choicedoublemotor", e);
+                        }
                     }
                 }
             }
@@ -142,12 +147,14 @@ public class WarZone_II extends Card{
                 for (Box box : boxes) {
                     if (box.getType() == type) {
                         storage.removeBox(box);
-                        for (String nick:observers.keySet()) {
-                            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
-                            try {
-                                observers.get(nick).showBoxUpdate(pos,player.getNickname(), player.getSpaceship().getTile(pos.x(), pos.y()).get().getOccupationTypes());
-                            } catch (RemoteException e) {
-                                ServerController.logger.log(Level.SEVERE, "error in method removebox", e);
+                        if(observers != null) {
+                            for (String nick : observers.keySet()) {
+                                Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
+                                try {
+                                    observers.get(nick).showBoxUpdate(pos, player.getNickname(), player.getSpaceship().getTile(pos.x(), pos.y()).get().getOccupationTypes());
+                                } catch (RemoteException e) {
+                                    ServerController.logger.log(Level.SEVERE, "error in method removebox", e);
+                                }
                             }
                         }
                         boxesRemoved++;
@@ -172,12 +179,14 @@ public class WarZone_II extends Card{
         if(currentPhase == 2) {
             if(player.getSpaceship().noBox()){
                 storage.removeBattery();
-                for (String nick:observers.keySet()) {
-                    try {
-                        Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
-                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(pos.x(), pos.y()).get().getNumBattery());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method removebattery", e);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
+                            observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(pos.x(), pos.y()).get().getNumBattery());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method removebattery", e);
+                        }
                     }
                 }
                 boxesRemoved++;
@@ -196,7 +205,7 @@ public class WarZone_II extends Card{
         else throw new IllegalStateException();
     }
 
-    //solo per testing
+    //only for testing
     @Override
     public void setCurrentPhase(int phase){
         currentPhase = phase;

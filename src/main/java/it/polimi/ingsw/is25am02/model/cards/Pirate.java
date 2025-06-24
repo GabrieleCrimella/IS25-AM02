@@ -102,16 +102,18 @@ public class Pirate extends Enemies {
                 //Applico effetti (Volo e Crediti)
                 player.getSpaceship().addCosmicCredits(getCredit());
                 game.getGameboard().move((-1) * getDaysLost(), player);
-                for (String nick:observers.keySet()) {
-                    try {
-                        observers.get(nick).showCreditUpdate(player.getNickname(),player.getSpaceship().getCosmicCredits());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choice", e);
-                    }
-                    try {
-                        observers.get(nick).showPositionUpdate(player.getNickname(),game.getGameboard().getPositions().get(player));
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showCreditUpdate(player.getNickname(), player.getSpaceship().getCosmicCredits());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                        }
+                        try {
+                            observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                        }
                     }
                 }
             }

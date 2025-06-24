@@ -46,7 +46,6 @@ public class HeapTiles {
         return setTiles;
     }
 
-    //todo: sistema gli ID, per ora li hai messi a 1 per test
     private void loadTiles() {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = null;
@@ -54,6 +53,7 @@ public class HeapTiles {
             String JSON_FILE_PATH = "src/main/resources/json/tiles.json";
             rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
         } catch (IOException e) {
+            //todo logger
             System.out.println("Error in reading JSON file");
             e.printStackTrace();
         }
@@ -153,9 +153,7 @@ public class HeapTiles {
                 }
             }
         }
-
         return drawnTile;
-
     }
 
     public Set<Tile> getVisibleTiles() {
@@ -185,7 +183,6 @@ public class HeapTiles {
                 }
             }
         }
-
     }
 
     public void addTile(Tile t, boolean visible) {

@@ -85,7 +85,7 @@ class PlanetTest {
         Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes, null, null, true);
 
         //todo qui ho cambiato il box con boxtype
-        planet.moveBox(game, player1, planetOffers.get(0), storage1.getOccupation(), BoxType.RED, true );
+        planet.moveBox(game, player1, planetOffers.getFirst(), storage1.getOccupation(), BoxType.RED, true );
 
         //correct start
         ArrayList<Box> correctPlanet1boxes = new ArrayList<Box>();
@@ -171,6 +171,12 @@ class PlanetTest {
         Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes, null, null, true);
         game.getCurrentState().setCurrentCard(planet);
         game.getCurrentState().setCurrentPlayer(player1);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 
         //player 2 e 3 non atterrano su nessun pianeta
         //todo qui ho cambiato il box con boxtype
@@ -270,6 +276,12 @@ class PlanetTest {
         Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes, null, null, true);
         game.getCurrentState().setCurrentCard(planet);
         game.getCurrentState().setCurrentPlayer(player1);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 
 
         //todo qui ho cambiato il box con boxtype

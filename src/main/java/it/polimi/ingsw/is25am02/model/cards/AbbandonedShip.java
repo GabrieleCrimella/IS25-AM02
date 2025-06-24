@@ -45,12 +45,14 @@ public class AbbandonedShip extends Card{
             //Applico effetti (Volo e Crediti)
             player.getSpaceship().addCosmicCredits(creditWin);
             game.getGameboard().move((-1)*flyBack, player);
-            for (String nick:observers.keySet()) {
-                try {
-                    observers.get(nick).showCreditUpdate(player.getNickname(),player.getSpaceship().getCosmicCredits());
-                    observers.get(nick).showPositionUpdate(player.getNickname(),game.getGameboard().getPositions().get(player));
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showCreditUpdate(player.getNickname(), player.getSpaceship().getCosmicCredits());
+                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                    }
                 }
             }
         } else {
@@ -61,12 +63,14 @@ public class AbbandonedShip extends Card{
     @Override
     public void removeCrew(Game game, Player player, Tile cabin) throws IllegalRemoveException {
         cabin.removeCrew();
-        for (String nick:observers.keySet()) {
-            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
-            try {
-                observers.get(nick).showCrewRemoval(pos, player.getNickname());
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+        if(observers != null) {
+            for (String nick : observers.keySet()) {
+                Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
+                try {
+                    observers.get(nick).showCrewRemoval(pos, player.getNickname());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                }
             }
         }
         AliveRemoved++;

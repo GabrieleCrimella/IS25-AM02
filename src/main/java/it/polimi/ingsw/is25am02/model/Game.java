@@ -37,7 +37,7 @@ public class Game implements Game_Interface {
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
-    private final List<Player> winners = new ArrayList<>();
+    private List<Player> winners = new ArrayList<>();
 
     public Game(List<Player> players, int level) {
         this.players = players;
@@ -1610,12 +1610,14 @@ public class Game implements Game_Interface {
 
             //winners.sort(Comparator.comparingInt(p -> p.getSpaceship().getCosmicCredits()));
 
-            for (Player p : players) {
-                try {
-                    p.getObserver().showWinnersUpdate(winnersMap);
-                    p.getObserver().displayMessage("ingame.winners", Map.of("winners", winnersMap.toString()));
-                } catch (Exception ex) {
-                    reportErrorOnServer("connection problem in method Winners");
+            if(observers != null) {
+                for (Player p : players) {
+                    try {
+                        p.getObserver().showWinnersUpdate(winnersMap);
+                        p.getObserver().displayMessage("ingame.winners", Map.of("winners", winnersMap.toString()));
+                    } catch (Exception ex) {
+                        reportErrorOnServer("connection problem in method Winners");
+                    }
                 }
             }
             //todo chiama un metodo della view per mostrare la classifica
@@ -1790,7 +1792,9 @@ public class Game implements Game_Interface {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
                 try {
-                    p.getObserver().displayMessage("info.outOfGame", null);
+                    if(p.getObserver() != null) {
+                        p.getObserver().displayMessage("info.outOfGame", null);
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

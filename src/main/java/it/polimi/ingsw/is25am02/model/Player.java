@@ -49,242 +49,271 @@ public class Player implements UpdateListener {
 
     @Override
     public void onCreditUpdate(int credit) {
-        try {
-            observer.showCreditUpdate(nickname, credit);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show credit update", e);
+        if(observer != null) {
+            try {
+                observer.showCreditUpdate(nickname, credit);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show credit update", e);
+            }
         }
     }
 
     @Override
     public void onRemoveTileUpdate(Coordinate coordinate) {
-        try {
-            observer.showTileRemoval(coordinate, getNickname());
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show tile removal", e);
+        if(observer != null) {
+            try {
+                observer.showTileRemoval(coordinate, getNickname());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show tile removal", e);
+            }
         }
     }
 
     @Override
     public void onRemoveBatteryUpdate(int battery, Coordinate coordinate) {
-        try {
-            observer.showBatteryRemoval(coordinate, getNickname(), battery);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show battery removal", e);
+        if(observer != null) {
+            try {
+                observer.showBatteryRemoval(coordinate, getNickname(), battery);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show battery removal", e);
 
+            }
         }
     }
 
     @Override
     public void onRemoveCrewUpdate(String nickname, Coordinate coordinate) {
-        try {
-            observer.showCrewRemoval(coordinate, nickname);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show crew removal", e);
+        if(observer != null) {
+            try {
+                observer.showCrewRemoval(coordinate, nickname);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show crew removal", e);
+            }
         }
     }
 
     @Override
     public void onPositionUpdate(String nickname, int position) {
-        try {
-            if (observers != null){
-            observer.showPositionUpdate(nickname, position);}
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show position update", e);
+        if(observer != null) {
+            try {
+                observer.showPositionUpdate(nickname, position);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show position update", e);
+            }
         }
     }
 
     @Override
     public void onHourglassUpdate() {
-        try {
-            observer.showHourglassUpdate(0);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show hourglass update", e);
+        if(observer != null) {
+            try {
+                observer.showHourglassUpdate(0);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show hourglass update", e);
 
+            }
         }
     }
 
     @Override
     public void onDiceUpdate(String nickname, Dice dice) {
-        try {
-            observer.showDiceUpdate(nickname, dice.getResult());
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show dice update", e);
+        if(observer != null) {
+            try {
+                observer.showDiceUpdate(nickname, dice.getResult());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show dice update", e);
 
+            }
         }
     }
 
     @Override
     public void onTileAdditionToSpaceship(String nickname, Tile tile, Coordinate coordinate) {
-        try {
-            observer.showTileAdditionUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nickname, coordinate);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show tile addition update", e);
+        if(observer != null) {
+            try {
+                observer.showTileAdditionUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nickname, coordinate);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show tile addition update", e);
+            }
         }
     }
 
 
     @Override
     public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions, HashMap<Integer, Pair<List<Card>, Boolean>> deck) {
-        try {
-            HashMap<String, PlayerColor> playersColor = new HashMap<>();
-            for (Player p : players) {
-                playersColor.put(p.getNickname(), p.getColor());
-            }
-            HashMap<Integer, List<List<Object>>> deckV = new HashMap<>();
-            for (Map.Entry<Integer, Pair<List<Card>, Boolean>> entry : deck.entrySet()) {
-                Integer key = entry.getKey();
-                List<Card> cardList = entry.getValue().getKey();
-
-                List<List<Object>> convertedCardList = new ArrayList<>();
-
-                for (Card card : cardList) {
-                    List<Object> cardAttributes = new ArrayList<>();
-                    cardAttributes.add(card.getStateCard());
-                    cardAttributes.add(card.getImagePath());
-                    cardAttributes.add(card.getComment());
-                    cardAttributes.add(card.getCardType());
-
-                    convertedCardList.add(cardAttributes);
+        if(observer != null) {
+            try {
+                HashMap<String, PlayerColor> playersColor = new HashMap<>();
+                for (Player p : players) {
+                    playersColor.put(p.getNickname(), p.getColor());
                 }
-                deckV.put(key, convertedCardList);
+                HashMap<Integer, List<List<Object>>> deckV = new HashMap<>();
+                for (Map.Entry<Integer, Pair<List<Card>, Boolean>> entry : deck.entrySet()) {
+                    Integer key = entry.getKey();
+                    List<Card> cardList = entry.getValue().getKey();
+
+                    List<List<Object>> convertedCardList = new ArrayList<>();
+
+                    for (Card card : cardList) {
+                        List<Object> cardAttributes = new ArrayList<>();
+                        cardAttributes.add(card.getStateCard());
+                        cardAttributes.add(card.getImagePath());
+                        cardAttributes.add(card.getComment());
+                        cardAttributes.add(card.getCardType());
+
+                        convertedCardList.add(cardAttributes);
+                    }
+                    deckV.put(key, convertedCardList);
+                }
+
+                observer.showUpdateEverything(level, playersColor, currentcard.getImagePath(), currentcard.getStateCard(), currentcard.getCardType(), currentcard.getComment(), state.getPhase(), nickname, mask, positions, deckV);
+            } catch (Exception e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
             }
-
-            observer.showUpdateEverything(level, playersColor, currentcard.getImagePath(), currentcard.getStateCard(), currentcard.getCardType(), currentcard.getComment(), state.getPhase(), nickname, mask, positions, deckV);
-        } catch (Exception e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
-
         }
     }
 
 
     @Override
     public void onBoxUpdate(Coordinate coordinate, List<BoxType> box) {
-        try {
-            observer.showBoxUpdate(coordinate, getNickname(), box);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show box addition update", e);
+        if(observer != null) {
+            try {
+                observer.showBoxUpdate(coordinate, getNickname(), box);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show box addition update", e);
+            }
         }
-
     }
 
     @Override
     public void onMiniDeckUpdate(int deck) {
-        try {
-            observer.showMinideckUpdate(getNickname(), deck);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method mini deck update", e);
-
+        if(observer != null) {
+            try {
+                observer.showMinideckUpdate(getNickname(), deck);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method mini deck update", e);
+            }
         }
-
     }
 
     @Override
     public void onCurrentCardUpdate(String imagepath, StateCardType statecard, CardType type, String comment) {
-        try {
-            observer.showCurrentCardUpdate(imagepath, statecard, type, comment);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show current card update", e);
-
+        if(observer != null) {
+            try {
+                observer.showCurrentCardUpdate(imagepath, statecard, type, comment);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show current card update", e);
+            }
         }
-
     }
 
     @Override
     public void onCurrentTileUpdate(String nickname, Tile tile) {
-        try {
-            observer.showCurrentTileUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nickname);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show current tile update", e);
-
+        if(observer != null) {
+            try {
+                observer.showCurrentTileUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nickname);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show current tile update", e);
+            }
         }
-
     }
 
     @Override
     public void onCurrentTileNullityUpdate(String nickname) {
-        try {
-            observer.showCurrentTileNullityUpdate(nickname);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show current tile nullity update", e);
+        if(observer != null) {
+            try {
+                observer.showCurrentTileNullityUpdate(nickname);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show current tile nullity update", e);
+            }
         }
     }
 
     @Override
     public void onVsibilityUpdate(String nickname, Tile tile) {
-        try {
-            observer.showVisibilityUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox());
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show visibility update", e);
-
+        if(observer != null) {
+            try {
+                observer.showVisibilityUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show visibility update", e);
+            }
         }
-
     }
 
     @Override
     public void onTileRemovalFromHTUpdate(String imagepath) {
-        try {
-            observer.showTileRemovalFromHeapTile(imagepath);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show tile removal from Heap Tile", e);
-
+        if(observer != null) {
+            try {
+                observer.showTileRemovalFromHeapTile(imagepath);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show tile removal from Heap Tile", e);
+            }
         }
-
     }
 
     @Override
     public void onDeckAllowedUpdate() {
-        try {
-            observer.showDeckAllowUpdate(getNickname());
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show deck allow update", e);
+        if(observer != null) {
+            try {
+                observer.showDeckAllowUpdate(getNickname());
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show deck allow update", e);
+            }
         }
     }
 
     @Override
     public void onGameStateUpdate(StateGameType stateGameType) {
-        try {
-            observer.showGameStateUpdate(stateGameType);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show game state update", e);
+        if(observer != null) {
+            try {
+                observer.showGameStateUpdate(stateGameType);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show game state update", e);
+            }
         }
     }
 
     @Override
     public void onCardStateUpdate(StateCardType stateCardType) {
-        try {
-            observer.showCardStateUpdate(stateCardType);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show card state update", e);
+        if(observer != null) {
+            try {
+                observer.showCardStateUpdate(stateCardType);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show card state update", e);
+            }
         }
-
     }
 
     @Override
     public void onPlayerStateUpdate(String nickname, StatePlayerType statePlayerType) {
-        try {
-            observer.showPlayerStateUpdate(nickname, statePlayerType);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show state player update", e);
+        if(observer != null) {
+            try {
+                observer.showPlayerStateUpdate(nickname, statePlayerType);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show state player update", e);
+            }
         }
-
     }
 
     @Override
     public void onBookTileUpdate(String nickname) {
-        try {
-            observer.showBookTileUpdate(nickname);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show book tile update", e);
+        if(observer != null) {
+            try {
+                observer.showBookTileUpdate(nickname);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show book tile update", e);
+            }
         }
     }
 
     @Override
     public void onCurrentPlayerUpdate(String nickname) {
-        try {
-            observer.showCurrentPlayerUpdate(nickname);
-        } catch (RemoteException e) {
-            ServerController.logger.log(Level.SEVERE, "error in method show current player update", e);
+        if(observer != null) {
+            try {
+                observer.showCurrentPlayerUpdate(nickname);
+            } catch (RemoteException e) {
+                ServerController.logger.log(Level.SEVERE, "error in method show current player update", e);
+            }
         }
     }
 

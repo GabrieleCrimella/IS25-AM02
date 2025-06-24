@@ -42,23 +42,27 @@ public class OpenSpace extends Card {
         if(!batteries.isEmpty()){
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
-                for (String nick:observers.keySet()) {
-                    try {
-                        Coordinate pos = new Coordinate (battery.x(),battery.y());
-                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method removebattery in choice double motor", e);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            Coordinate pos = new Coordinate(battery.x(), battery.y());
+                            observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method removebattery in choice double motor", e);
+                        }
                     }
                 }
             }
         }
         fly.put(player,flyForward);
         game.getGameboard().move(flyForward, player);
-        for (String nick:observers.keySet()) {
-            try {
-                observers.get(nick).showPositionUpdate(player.getNickname(),game.getGameboard().getPositions().get(player));
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method choicedoublemotor", e);
+        if(observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method choicedoublemotor", e);
+                }
             }
         }
         game.nextPlayer();

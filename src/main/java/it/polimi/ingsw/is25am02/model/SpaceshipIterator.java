@@ -158,6 +158,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
             }
 
         } catch (IOException e) {
+            //todo logger
             System.out.println("Error reading JSON file - spaceship mask");
             e.printStackTrace();
         }
@@ -221,7 +222,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
                 spaceshipBoard[x][y+1].isPresent() ){
             return true;
         }
-            return false;
+        return false;
     }
 
     public void addInitialTile(Tile tile, int x, int y) throws IllegalAddException {

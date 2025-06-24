@@ -63,12 +63,14 @@ public class Trafficker extends Card {
         double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
         for(Coordinate battery : batteries) {
             player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
-            for (String nick:observers.keySet()) {
-                try {
-                    Coordinate pos = new Coordinate (battery.x(),battery.y());
-                    observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        Coordinate pos = new Coordinate(battery.x(), battery.y());
+                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                    }
                 }
             }
         }
@@ -106,11 +108,13 @@ public class Trafficker extends Card {
         if(choice){
             setStateCard(StateCardType.BOXMANAGEMENT);
             game.getGameboard().move((-1)*daysLost, player);
-            for (String nick:observers.keySet()) {
-                try {
-                    observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method choicebox", e);
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choicebox", e);
+                    }
                 }
             }
         }
@@ -146,12 +150,14 @@ public class Trafficker extends Card {
             for(Box box : boxes){
                 if(box.getType() == type){
                     storage.removeBox(box);
-                    for (String nick:observers.keySet()) {
-                        Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
-                        try {
-                            observers.get(nick).showBoxUpdate(pos,player.getNickname(), player.getSpaceship().getTile(pos.x(), pos.y()).get().getOccupationTypes());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in method removebox", e);
+                    if(observers != null) {
+                        for (String nick : observers.keySet()) {
+                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
+                            try {
+                                observers.get(nick).showBoxUpdate(pos, player.getNickname(), player.getSpaceship().getTile(pos.x(), pos.y()).get().getOccupationTypes());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method removebox", e);
+                            }
                         }
                     }
                     boxesRemove++;
@@ -178,12 +184,14 @@ public class Trafficker extends Card {
     public void removeBattery(Game game, Player player, Tile storage) throws IllegalRemoveException {
         if(player.getSpaceship().noBox()){
             storage.removeBattery();
-            for (String nick:observers.keySet()) {
-                try {
-                    Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
-                    observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(pos.x(), pos.y()).get().getNumBattery());
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method removebattery", e);
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(storage), player.getSpaceship().getSpaceshipIterator().getY(storage));
+                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(pos.x(), pos.y()).get().getNumBattery());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method removebattery", e);
+                    }
                 }
             }
             boxesRemove++;

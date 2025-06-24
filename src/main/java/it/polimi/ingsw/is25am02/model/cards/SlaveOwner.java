@@ -45,14 +45,15 @@ public class SlaveOwner extends Enemies{
         for(Coordinate battery : batteries) {
             player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
             if (observers != null){
-            for (String nick:observers.keySet()) {
-                try {
-                    Coordinate pos = new Coordinate (battery.x(),battery.y());
-                    observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                for (String nick:observers.keySet()) {
+                    try {
+                        Coordinate pos = new Coordinate (battery.x(),battery.y());
+                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
+                    }
                 }
-            }}
+            }
         }
 
         //Paragoni
@@ -72,12 +73,14 @@ public class SlaveOwner extends Enemies{
         if(choice){
             player.getSpaceship().addCosmicCredits(getCredit());
             game.getGameboard().move((-1)*getDaysLost(), player);
-            for (String nick:observers.keySet()) {
-                try {
-                    observers.get(nick).showCreditUpdate(player.getNickname(),player.getSpaceship().getCosmicCredits());
-                    observers.get(nick).showPositionUpdate(player.getNickname(),game.getGameboard().getPositions().get(player));
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showCreditUpdate(player.getNickname(), player.getSpaceship().getCosmicCredits());
+                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method choice", e);
+                    }
                 }
             }
         }
@@ -88,12 +91,14 @@ public class SlaveOwner extends Enemies{
     @Override
     public void removeCrew(Game game, Player player, Tile cabin) throws IllegalRemoveException {
         cabin.removeCrew();
-        for (String nick:observers.keySet()) {
-            Coordinate pos = new Coordinate (player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
-            try {
-                observers.get(nick).showCrewRemoval(pos, player.getNickname());
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+        if(observers != null) {
+            for (String nick : observers.keySet()) {
+                Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(cabin), player.getSpaceship().getSpaceshipIterator().getY(cabin));
+                try {
+                    observers.get(nick).showCrewRemoval(pos, player.getNickname());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                }
             }
         }
         AliveRemoved++;

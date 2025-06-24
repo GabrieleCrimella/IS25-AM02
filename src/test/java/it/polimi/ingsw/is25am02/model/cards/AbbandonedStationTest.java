@@ -9,6 +9,8 @@ import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
+import it.polimi.ingsw.is25am02.view.tui.TuiConsole;
+import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

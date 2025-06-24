@@ -11,6 +11,7 @@ import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -149,6 +150,12 @@ class PirateTest {
 
         game.getCurrentState().setCurrentCard(pirate);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 
         Coordinate position = new Coordinate(8, 6);
         List<Coordinate> coordcannon = new ArrayList<>();

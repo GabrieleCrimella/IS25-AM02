@@ -32,7 +32,7 @@ public class AbbandonedStation extends Card {
         this.cardType = CardType.ABANDONED_STATION;
     }
     @Override
-    public void addBoxWon(Box box){boxesWon.add(box);}
+    public void addBoxWon(Box box) { boxesWon.add(box); }
 
     @Override
     public void clearBoxWon(){
@@ -56,14 +56,16 @@ public class AbbandonedStation extends Card {
 
     @Override
     public void choiceBox(Game game, Player player, boolean choice){
-        if(player.getSpaceship().calculateNumAlive() >= AliveNeeded && choice){ //se ho abbastanza giocatori per salire sulla nave
+        if(player.getSpaceship().calculateNumAlive() >= AliveNeeded && choice){ //if I have enough crewmates
             setStateCard(StateCardType.BOXMANAGEMENT);
             game.getGameboard().move((-1)*daysLost, player);
-            for (String nick:observers.keySet()) {
-                try {
-                    observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                    }
                 }
             }
         }

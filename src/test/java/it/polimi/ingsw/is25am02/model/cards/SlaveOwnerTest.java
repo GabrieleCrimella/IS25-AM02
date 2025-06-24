@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -143,6 +144,12 @@ class SlaveOwnerTest {
 
         game.getCurrentState().setCurrentCard(slaveOwner);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 /*
         Queato era per quando c'erano i pair
         Pair<Tile, Tile> primaCoppia = new  Pair<>(dcannon1, battery3);

@@ -259,7 +259,6 @@ public class Spaceship {
                 }
             }
         }
-
     }
 
     public void setCurrentTile(String nicknameP, Tile t) throws AlreadyViewingException {
@@ -274,7 +273,6 @@ public class Spaceship {
                     }
                 }
             }
-
         } else {
             throw new AlreadyViewingException("CurrentTile already set");
         }
@@ -383,7 +381,7 @@ public class Spaceship {
 
     public void removeCosmicCredits(int numCosmicCredits) {
         cosmicCredits -= numCosmicCredits;
-        if (observers !=null){
+        if (observers != null){
             listener.onCreditUpdate(numCosmicCredits);
         }
     }
@@ -489,7 +487,9 @@ public class Spaceship {
 
     public void removeBattery(BatteryStorage t) throws IllegalRemoveException {
         t.removeBattery();
-        listener.onRemoveBatteryUpdate(t.getNumBattery(), new Coordinate(spaceshipIterator.getX(t), spaceshipIterator.getY(t)));
+        if(observers != null) {
+            listener.onRemoveBatteryUpdate(t.getNumBattery(), new Coordinate(spaceshipIterator.getX(t), spaceshipIterator.getY(t)));
+        }
     }
     //dovrebbe essere girato giusto
     //il metodo controlla se è esposto un certo lato nella riga/colonna num
@@ -728,7 +728,6 @@ public class Spaceship {
                         }
                     }
                 }
-
             }
         }
     }

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
+
+import java.util.logging.Level;
 
 
 public class Epidemy extends Card {
@@ -26,7 +29,7 @@ public class Epidemy extends Card {
             try {
                 p.getSpaceship().epidemyRemove(p.getNickname());
             } catch (IllegalRemoveException e) {
-                System.out.println(e.getMessage());
+                ServerController.logger.log(Level.SEVERE, "error in method effect for epidemy: ", e);
             }
         }
     }

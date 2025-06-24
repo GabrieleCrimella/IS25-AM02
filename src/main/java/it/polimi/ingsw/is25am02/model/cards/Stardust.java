@@ -39,11 +39,13 @@ public class Stardust extends Card {
         while (it.hasNext()) {
             Player player = it.next();
             game.getGameboard().move((-1) * player.getSpaceship().calculateExposedConnectors(), player );
-            for (String nick:observers.keySet()) {
-                try {
-                    observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                    }
                 }
             }
         }

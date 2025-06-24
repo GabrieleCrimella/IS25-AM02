@@ -2,6 +2,7 @@ package it.polimi.ingsw.is25am02.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.cards.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
@@ -13,6 +14,7 @@ import javafx.util.Pair;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 @SuppressWarnings("all")
 public class CardDeck {
@@ -96,7 +98,7 @@ public class CardDeck {
         try {
             rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
         } catch (IOException e) {
-            System.out.println("Error in reading Card JSON file");
+            ServerController.logger.log(Level.SEVERE, "error in method loadCard", e);
         }
         String imagepath;
         String comment;

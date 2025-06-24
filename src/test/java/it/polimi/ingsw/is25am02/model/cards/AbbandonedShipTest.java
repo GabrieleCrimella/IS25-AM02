@@ -10,6 +10,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -438,6 +439,12 @@ class AbbandonedShipTest {
         Card abbandonedShip = new AbbandonedShip(level, AliveLost, creditWin, flyBack, null, null, true);
         //Set state
         game.getCurrentState().setCurrentCard(abbandonedShip);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
         //First player wants to use the card
         try {
@@ -490,6 +497,12 @@ class AbbandonedShipTest {
         Card abbandonedShip = new AbbandonedShip(level, AliveLost, creditWin, flyBack, null, null, true);
         //Set state
         game.getCurrentState().setCurrentCard(abbandonedShip);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
         game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
         //First player wants to use the card
         try {

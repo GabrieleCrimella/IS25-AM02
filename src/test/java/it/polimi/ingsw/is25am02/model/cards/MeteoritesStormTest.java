@@ -10,7 +10,9 @@ import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -144,6 +146,12 @@ class MeteoritesStormTest {
 
         game.getCurrentState().setCurrentCard(meteoritesStorm);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 
         game.calculateDamage(player1,new Coordinate(8,7));
 
@@ -284,6 +292,12 @@ class MeteoritesStormTest {
 
         game.getCurrentState().setCurrentCard(meteoritesStorm);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 
         game.calculateDamage(player1, new Coordinate(8, 7));
 
