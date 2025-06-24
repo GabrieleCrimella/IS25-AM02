@@ -346,13 +346,31 @@ public class InGameController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Error loading your spaceship", NotificationType.ERROR, 5000);
         }
-        if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) ||
-                spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE))) {
+        if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.DECISION) && (
+                GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.METEORITES_STORM) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2))) {
+            try {
+                GUIController.getInstance().getController().keepBlock(GUIController.getInstance().getNickname(), coordinate);
+            } catch (RemoteException e) {
+                showNotification("Error with keep blocks", NotificationType.ERROR, 5000);
+            }
+        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.STORAGE) ||
+                spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.SPECIAL_STORAGE)) && (
+                GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PLANET) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_STATION) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER))) {
             boxCoordinate = coordinate;
             showBoxManagementPopup(coordinate);
-
-
-        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_CANNON))) {
+        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_CANNON)) &&
+                (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.METEORITES_STORM) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER))) {
             doubleCount++;
             doubleLabel.setText("Number of double cannon activated: " + doubleCount);
             doubleLabel.setVisible(true);
@@ -360,12 +378,18 @@ public class InGameController extends GeneralController {
         } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
             if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.CHOICE_ATTRIBUTES) && (
                     GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER) ||
-                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE))) {
+                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE) ||
+                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1) ||
+                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
+                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER) ||
+                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE))) {
                 batteryCount++;
                 batteryLabel.setText("Number of batteries used: " + batteryCount);
                 batteryLabel.setVisible(true);
                 batteries.add(coordinate);
-            } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE)) {
+            } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE) &&
+                    (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
+                            GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER))) {
                 try {
                     GUIController.getInstance().getController().removeBattery(GUIController.getInstance().getNickname(), coordinate);
                 } catch (RemoteException e) {
@@ -378,12 +402,18 @@ public class InGameController extends GeneralController {
                     showNotification("Error during calculate damage", NotificationType.ERROR, 5000);
                 }
             }
-        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_MOTOR))) {
+        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.D_MOTOR)) &&
+                (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1) ||
+                        GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2))) {
             doubleCount++;
             doubleLabel.setText("Number of double motor activated: " + doubleCount);
             doubleLabel.setVisible(true);
             doubles.add(coordinate);
-        } else if(spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN))){
+        } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN))
+                && (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER) ||
+                GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1) ||
+                GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.ABANDONED_SHIP))) {
             try {
                 GUIController.getInstance().getController().removeCrew(GUIController.getInstance().getNickname(), coordinate);
             } catch (RemoteException e) {
@@ -606,19 +636,21 @@ public class InGameController extends GeneralController {
             choiceNo.setVisible(true);
             choiceNo.setDisable(false);
             loadComments("Abandoned ship: you can choose whether or not to sacrifice alive to gain credits");
-        } else if(newCard.getCardType().equals(CardType.PIRATE) ){
+        } else if (newCard.getCardType().equals(CardType.PIRATE)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
+            if(isLeader()){
+                rollDice.setVisible(true);
+                rollDice.setDisable(false);
+            }
             loadComments("Pirate: you can choose to activate cannons using batteries by clicking on them. If you win, you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must roll the dice to find out where you'll be hit and activate Calculate Damage by clicking on a battery or directly on Calculate Damage");
-        } else if(newCard.getCardType().equals(CardType.SLAVE_OWNER) ){
+        } else if (newCard.getCardType().equals(CardType.SLAVE_OWNER)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
             loadComments("Slave Owner: you can choose to activate cannons using batteries by clicking on them. If you win you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must click on the cabins to eliminate the alive crew members..");
-        } else if(newCard.getCardType().equals(CardType.WARZONE2)){
+        } else if (newCard.getCardType().equals(CardType.WARZONE2)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
             loadComments("War Zone 2: Phase 1, you can choose to activate cannons using batteries; Phase 2: you can choose to activate motors using batteries; the player with fewer motors must choose where to remove boxes by clicking on storages. Phase 3: the player with fewer alive must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
@@ -638,8 +670,10 @@ public class InGameController extends GeneralController {
             }
             loadComments("War Zone 1: Phase 1, the player with fewer humans automatically loses flight days. Phase 2, you can choose to activate motors using batteries; the player with fewer motors must choose where to remove alive crew members by clicking on the cabins. Phase 3, you can choose to activate cannons using batteries; the player with fewer cannons must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)) {
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
+            if(isLeader()){
+                rollDice.setVisible(false);
+                rollDice.setDisable(true);
+            }
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
             loadComments("Meterites Storm: the leader will roll the dice, and you can calculate damage by clicking on the battery if you want to use it, or by clicking on Calculate Damage, for all the meteorites shown on the card. If your ship breaks apart, you'll be able to choose which part to keep by clicking on a tile from that section.");
@@ -867,7 +901,7 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
-    public void onNoChoicePlanet(){
+    public void onNoChoicePlanet() {
         try {
             GUIController.getInstance().getController().choicePlanet(GUIController.getInstance().getNickname(), -1);
         } catch (RemoteException e) {
@@ -876,7 +910,7 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
-    public void onChoiceYes(){
+    public void onChoiceYes() {
         try {
             GUIController.getInstance().getController().choice(GUIController.getInstance().getNickname(), true);
         } catch (RemoteException e) {
@@ -885,7 +919,7 @@ public class InGameController extends GeneralController {
     }
 
     @FXML
-    public void onChoiceNo(){
+    public void onChoiceNo() {
         try {
             GUIController.getInstance().getController().choice(GUIController.getInstance().getNickname(), false);
         } catch (RemoteException e) {
@@ -897,25 +931,26 @@ public class InGameController extends GeneralController {
     public void updateCurrentPlayerName() {
         currentPlayerNameLabel.setText(GUIController.getInstance().getController().getGameV().getCurrentState().getCurrentPlayer().getNickname());
     }
-    public void hideChoiceBox(boolean visible){
+
+    public void hideChoiceBox(boolean visible) {
         choiceboxtrue.setVisible(false);
         choiceboxtrue.setDisable(true);
         choiceboxfalse.setVisible(false);
         choiceboxfalse.setDisable(true);
-        if(visible){ //if chioce box true
+        if (visible) { //if chioce box true
             finishmoveboxes.setVisible(true);
             finishmoveboxes.setDisable(false);
         }
     }
 
-    public void hideChoice(boolean choice){
+    public void hideChoice(boolean choice) {
         choiceNo.setVisible(false);
         choiceNo.setDisable(true);
         choiceYes.setVisible(false);
         choiceYes.setDisable(true);
     }
 
-    public void hideFinishCannon(int number){
+    public void hideFinishCannon(int number) {
         finishcannon.setVisible(false);
         finishcannon.setDisable(true);
         batteries = new ArrayList<>();
@@ -924,12 +959,14 @@ public class InGameController extends GeneralController {
         batteryCount = 0;
         doubleLabel.setVisible(false);
         batteryLabel.setVisible(false);
-        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)){
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
+        if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
+            if (isLeader()) {
+                rollDice.setVisible(true);
+                rollDice.setDisable(false);
+            }
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
-        } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)){
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
         }
@@ -944,53 +981,57 @@ public class InGameController extends GeneralController {
         batteryCount = 0;
         doubleLabel.setVisible(false);
         batteryLabel.setVisible(false);
-        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
+        if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             try {
                 GUIController.getInstance().getController().choiceCrew(GUIController.getInstance().getNickname());
             } catch (RemoteException e) {
                 showNotification("Error with choice crew", NotificationType.ERROR, 5000);
             }
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
+            if( isLeader()) {
+                rollDice.setVisible(true);
+                rollDice.setDisable(false);
+            }
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
-        } else if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)){
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
         }
 
     }
 
-    public void hideMoveBox(){
+    public void hideMoveBox() {
         finishmoveboxes.setVisible(false);
         finishmoveboxes.setDisable(true);
     }
 
-    public void hideChoicePlanet(){
+    public void hideChoicePlanet() {
         noChoicePlanet.setVisible(false);
         noChoicePlanet.setDisable(true);
     }
 
-    public void hideCalculateDamage(){
+    public void hideCalculateDamage() {
         //calculatedamage.setVisible(false);
         //calculatedamage.setDisable(true);
     }
 
-    public void afterChoiceCrew(){
-        if(GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
+    public void afterChoiceCrew() {
+        if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
+            if(isLeader()){
+                rollDice.setVisible(true);
+                rollDice.setDisable(false);
+            }
             diceResult.setVisible(true);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
         }
     }
 
-    public void showdiceresult(){
+    public void showdiceresult() {
         diceResult.setVisible(true);
         int result = GUIController.getInstance().getController().getGameV().getDiceV().getResult();
         diceResult.setText("Result: " + result);
@@ -1016,6 +1057,24 @@ public class InGameController extends GeneralController {
             container.setStyle("-fx-padding: 5;");
             commentBox.getChildren().add(container);
         }
+    }
+
+    public boolean isLeader() {
+        Map<PlayerV, Integer> positions = GUIController.getInstance()
+                .getController()
+                .getGameV()
+                .getGlobalBoard()
+                .getPositions();
+
+        Optional<Map.Entry<PlayerV, Integer>> maxEntry = positions.entrySet().stream()
+                .max(Map.Entry.comparingByValue());
+
+        boolean isMe = false;
+        if (maxEntry.isPresent()) {
+            String topPlayerNickname = maxEntry.get().getKey().getNickname();
+            isMe = topPlayerNickname.equals(GUIController.getInstance().getNickname());
+        }
+        return isMe;
     }
 }
 
