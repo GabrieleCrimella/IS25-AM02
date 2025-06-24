@@ -1613,6 +1613,7 @@ public class Game implements Game_Interface {
             for (Player p : players) {
                 try {
                     p.getObserver().showWinnersUpdate(winnersMap);
+                    p.getObserver().displayMessage("ingame.winners", Map.of("winners", winnersMap.toString()));
                 } catch (Exception ex) {
                     reportErrorOnServer("connection problem in method Winners");
                 }
