@@ -834,38 +834,38 @@ public class InGameController extends GeneralController {
 
     @FXML
     public void onRollDice() {
-        diceResult.setVisible(false);
-        diceAnimation.setVisible(true);
-        Image diceGif = new Image(getClass().getResource("/image/dices.gif").toExternalForm());
-        diceAnimation.setImage(diceGif);
         try {
             GUIController.getInstance().getController().rollDice(GUIController.getInstance().getNickname());
         } catch (RemoteException e) {
             showNotification("Error rolling dice", NotificationType.ERROR, 5000);
         }
-        new Thread(() -> {
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            Platform.runLater(() -> {
-                diceAnimation.setVisible(false);
-
-
-                diceResult.setVisible(true);
-                int result = GUIController.getInstance().getController().getGameV().getDiceV().getResult();
-                diceResult.setText("Result: " + result);
-
-            });
-        }).start();
     }
 
     public void updateDice(int result) {
-        diceResult.setText("Result: " + result);
-        diceResult.setVisible(true);
+        if(result >=2 && result <= 12) {
+
+            diceResult.setVisible(false);
+            diceAnimation.setVisible(true);
+            Image diceGif = new Image(getClass().getResource("/image/dices.gif").toExternalForm());
+            diceAnimation.setImage(diceGif);
+            new Thread(() -> {
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Platform.runLater(() -> {
+                    diceAnimation.setVisible(false);
+
+                    diceResult.setVisible(true);
+                    diceResult.setText("Result: " + result);
+
+                });
+            }).start();
+        }
     }
 
     @FXML

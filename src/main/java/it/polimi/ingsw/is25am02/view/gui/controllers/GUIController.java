@@ -295,12 +295,15 @@ public class GUIController implements Runnable {
                     inGameCtrl.afterChoiceCrew();
                 }
             }
+            /*
             case "ingame.diceupdate" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.showdiceresult();
                 }
             }
+
+             */
             case "build.addCrew" -> {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);

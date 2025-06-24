@@ -22,7 +22,7 @@
         <Label fx:id="diceTitleLabel" layoutX="1400.0" layoutY="100.0" styleClass="white-context-label" text="Dice" visible="false" />
         <Button fx:id="rollDice" layoutX="1550.0" layoutY="100.0" onAction="#onRollDice" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Roll dice" visible="false" />
         <ImageView fx:id="diceAnimation" fitHeight="200.0" fitWidth="300.0" layoutX="1400.0" layoutY="200.0" visible="false" />
-        <Label fx:id="diceResult" layoutX="1400.0" layoutY="220.0" prefHeight="40.0" prefWidth="100.0" styleClass="white-context-label" text="Result: " visible="false" />
+        <Label fx:id="diceResult" layoutX="1400.0" layoutY="220.0" prefHeight="40.0" prefWidth="156.0" styleClass="white-context-label" text="Result: 19" visible="false" />
 
 
         <Label layoutX="1421.0" layoutY="642.0" styleClass="white-context-label" text="My score" />

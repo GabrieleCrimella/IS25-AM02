@@ -1463,8 +1463,8 @@ public class Game implements Game_Interface {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.ROLL, player);
             currentPlayerControl(player);
 
-            //setDiceResult();
-            setDiceResultManually(8);
+            setDiceResult();
+            //setDiceResultManually(8);
             getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
             /*
             for (Player p : players) {
