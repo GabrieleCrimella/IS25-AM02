@@ -23,6 +23,7 @@ import static it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType.IN_GAM
 
 @SuppressWarnings("all")
 public class Game implements Game_Interface {
+    private int playersInGame;
     private int diceResult;
     private boolean buildTimeIsOver;
     private int maxAllowedPlayers;
@@ -40,6 +41,7 @@ public class Game implements Game_Interface {
     private List<Player> winners = new ArrayList<>();
 
     public Game(List<Player> players, int level) {
+        this.playersInGame = players.size();
         this.players = players;
         this.level = level;
         this.diceResult = 0;
@@ -672,7 +674,7 @@ public class Game implements Game_Interface {
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
                 player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
                 if (player.getSpaceship().getNumOfWastedTiles() > 0) {
-                    if (observers != null){
+                    if (observers != null) {
                         for (String nick : observers.keySet()) {
                             try {
                                 observers.get(nick).showCreditUpdate(player.getNickname(), (-1) * player.getSpaceship().getNumOfWastedTiles());
@@ -944,9 +946,9 @@ public class Game implements Game_Interface {
                 }
             }
             player.setStatePlayer(StatePlayerType.OUT_GAME);
-            player.getObserver().displayMessage("info.outOfGame", null);
-
             getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
+            player.getObserver().displayMessage("info.outOfGame", null);
+            decrementPlayerCount();
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -1619,7 +1621,7 @@ public class Game implements Game_Interface {
 
             //winners.sort(Comparator.comparingInt(p -> p.getSpaceship().getCosmicCredits()));
 
-            if(observers != null) {
+            if (observers != null) {
                 for (Player p : players) {
                     try {
                         p.getObserver().showWinnersUpdate(winnersMap);
@@ -1796,12 +1798,16 @@ public class Game implements Game_Interface {
     private void outOfGame() {
         HashMap<Player, Integer> positions = getGameboard().getPositions();
         for (Player p : getPlayers()) {
+            if(p.getStatePlayer()==StatePlayerType.OUT_GAME)
+                continue; //already out of game
+
             //0 Human on my spaceship
             if (p.getSpaceship().calculateNumHuman() == 0) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
+                decrementPlayerCount();
                 try {
-                    if(p.getObserver() != null) {
+                    if (p.getObserver() != null) {
                         p.getObserver().displayMessage("info.outOfGame", null);
                     }
                 } catch (Exception e) {
@@ -1817,6 +1823,7 @@ public class Game implements Game_Interface {
                 if (getCurrentCard().getFly().get(p) == 0) {
                     getGameboard().getPositions().remove(p);
                     p.setStatePlayer(StatePlayerType.OUT_GAME);
+                    decrementPlayerCount();
                     try {
                         p.getObserver().displayMessage("info.outOfGame", null);
                     } catch (Exception e) {
@@ -1830,6 +1837,7 @@ public class Game implements Game_Interface {
             if (positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
+                decrementPlayerCount();
                 try {
                     p.getObserver().displayMessage("info.outOfGame", null);
                 } catch (Exception e) {
@@ -1839,6 +1847,12 @@ public class Game implements Game_Interface {
             }
         }
         getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
+    }
+
+    private void decrementPlayerCount() {
+        playersInGame--;
+        if (playersInGame == 0)
+            this.getCurrentState().setPhase(StateGameType.RESULT);
     }
 
     private Tile giveTile(Player player, Coordinate pos) throws TileException {
