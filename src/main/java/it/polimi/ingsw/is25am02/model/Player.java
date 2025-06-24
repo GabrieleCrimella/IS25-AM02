@@ -97,6 +97,11 @@ public class Player implements UpdateListener {
         if(observer != null) {
             try {
                 observer.showPositionUpdate(nickname, position);
+                try {
+                    observers.get(nickname).displayMessage("ingame.moveongameboard", Map.of("nick", nickname, "pos", String.valueOf(position)));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             } catch (RemoteException e) {
                 ServerController.logger.log(Level.SEVERE, "error in method show position update", e);
             }
