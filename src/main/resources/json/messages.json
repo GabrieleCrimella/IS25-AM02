@@ -99,7 +99,9 @@
     "hidechoiceplanet": "Planet choice finished",
     "hidecalculatedamage": "Damage finished",
     "afterchoicecrew": "You have finished choice crew",
-    "diceupdate": "Dice updated"
+    "diceupdate": "Dice updated",
+    "moveongameboard": "Player moved to position {pos}",
+    "winners": "winners {winners}"
   },
   "hourglass": {
     "time": "Time left: {tim}",
