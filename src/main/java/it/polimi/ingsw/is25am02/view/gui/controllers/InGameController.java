@@ -37,6 +37,8 @@ public class InGameController extends GeneralController {
     @FXML
     public Button earlyLandingButton;
     @FXML
+    public StackPane outGamePopup;
+    @FXML
     private StackPane root;
     @FXML
     private Group level1Gameboard;
@@ -1101,21 +1103,7 @@ public class InGameController extends GeneralController {
             // Mostra un messaggio di notifica
             showNotification("You are out of the game", NotificationType.INFO, 5000);
 
-            // Disabilita i pulsanti e le interazioni
-            for (Node node : root.getChildren()) {
-                if (node instanceof Button button) {
-                    button.setDisable(true);
-                } else if (node instanceof ChoiceBox<?> choiceBox) {
-                    choiceBox.setDisable(true);
-                }
-            }
-
-            // Mostra un messaggio di uscita
-            Label exitMessage = new Label("You have been removed from the game.");
-            exitMessage.getStyleClass().add("exit-message");
-            exitMessage.setLayoutX((root.getWidth() - exitMessage.prefWidth(-1)) / 2);
-            exitMessage.setLayoutY((root.getHeight() - exitMessage.prefHeight(-1)) / 2);
-            root.getChildren().add(exitMessage);
+            outGamePopup.setVisible(true);
         });
     }
 

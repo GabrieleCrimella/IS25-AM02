@@ -250,5 +250,12 @@
 
     </Pane>
 
+    <StackPane fx:id="outGamePopup" style="-fx-background-color: rgba(0,0,0,0.6);" visible="false">
+        <VBox alignment="TOP_CENTER" maxHeight="200" maxWidth="600" spacing="10" style="-fx-background-color: yellow; -fx-background-radius: 15; -fx-padding: 20;">
+            <Label styleClass="context-label" text="You are out of the game!" />
+            <Label styleClass="context-label" text="Wait the end of the game to see the results" />
+        </VBox>
+    </StackPane>
+
 
 </StackPane>
