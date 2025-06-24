@@ -25,7 +25,7 @@ Currently, the development is in progress, with all core functionalities planned
 | CLI               |✅|
 | GUI               |✅|
 | Multiple games    |✅|
-| Test flisht       |✅|
+| Test flight       |✅|
 | Persistence       |⬜|
 | Resilience        |⬜|
 
