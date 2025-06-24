@@ -16,18 +16,18 @@ Currently, the development is in progress, with all core functionalities planned
 
 ## Status of the work
 
-| Functionality  | Status           | 
-|----------------|------------------|
-| Basic rules    |✅|
-| Complete rules |✅|
-| Socket connection |🟧|
-| RMI connection |✅|
-| CLI            |✅|
-| GUI            |🟧|
-| Multiple games |✅|
-| Persistence    |⬜|
-| Resilience     |⬜|
-| Chat           |⬜|
+| Functionality     | Status           | 
+|-------------------|------------------|
+| Basic rules       |✅|
+| Complete rules    |✅|
+| Socket connection |✅|
+| RMI connection    |✅|
+| CLI               |✅|
+| GUI               |✅|
+| Multiple games    |✅|
+| Test flisht       |✅|
+| Persistence       |⬜|
+| Resilience        |⬜|
 
 ⬜ = Not yet implemented
 
