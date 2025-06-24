@@ -32,6 +32,8 @@ import java.util.*;
 
 public class InGameController extends GeneralController {
     @FXML
+    public Label diceTitleLabel;
+    @FXML
     private StackPane root;
     @FXML
     private Group level1Gameboard;
@@ -218,6 +220,8 @@ public class InGameController extends GeneralController {
         setMySpaceship();
         updateStats();
         myname.setText(GUIController.getInstance().getNickname());
+        currentPlayerNameLabel.setText(GUIController.getInstance().getController().getGameV().getCurrentState().getCurrentPlayer().getNickname());
+        diceTitleLabel.setVisible(false);
         try {
             movePlayerToPosition(GUIController.getInstance().getController().getGameV().getGlobalBoard().getPositions().get(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname())));
         } catch (RemoteException e) {
@@ -603,8 +607,8 @@ public class InGameController extends GeneralController {
         finishmotor.setDisable(true);
         finishmoveboxes.setVisible(false);
         finishmoveboxes.setDisable(true);
+        diceTitleLabel.setVisible(false);
         rollDice.setVisible(false);
-        rollDice.setDisable(true);
         diceResult.setVisible(false);
         choiceNo.setVisible(false);
         choiceNo.setDisable(true);
@@ -645,6 +649,7 @@ public class InGameController extends GeneralController {
                 rollDice.setVisible(true);
                 rollDice.setDisable(false);
             }
+            diceTitleLabel.setVisible(true);
             loadComments("Pirate: you can choose to activate cannons using batteries by clicking on them. If you win, you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must roll the dice to find out where you'll be hit and activate Calculate Damage by clicking on a battery or directly on Calculate Damage");
         } else if (newCard.getCardType().equals(CardType.SLAVE_OWNER)) {
             finishcannon.setVisible(true);
@@ -673,6 +678,7 @@ public class InGameController extends GeneralController {
             if (isLeader()) {
                 rollDice.setVisible(true);
                 rollDice.setDisable(false);
+                diceTitleLabel.setVisible(true);
             }
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
