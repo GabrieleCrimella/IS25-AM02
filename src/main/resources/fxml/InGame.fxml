@@ -19,7 +19,7 @@
         <Label layoutX="70.0" layoutY="100.0" styleClass="white-context-label" text="View other spaceships" />
         <VBox fx:id="playerButtonsContainer" layoutX="70.0" layoutY="140.0" spacing="10.0" />
 
-        <Label fx:id="diceTitleLabel" layoutX="1400.0" layoutY="100.0" styleClass="white-context-label" text="Dice" />
+        <Label fx:id="diceTitleLabel" layoutX="1400.0" layoutY="100.0" styleClass="white-context-label" text="Dice" visible="false" />
         <Button fx:id="rollDice" layoutX="1550.0" layoutY="100.0" onAction="#onRollDice" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Roll dice" visible="false" />
         <ImageView fx:id="diceAnimation" fitHeight="200.0" fitWidth="300.0" layoutX="1400.0" layoutY="200.0" visible="false" />
         <Label fx:id="diceResult" layoutX="1400.0" layoutY="220.0" prefHeight="40.0" prefWidth="100.0" styleClass="white-context-label" text="Result: " visible="false" />
@@ -246,6 +246,7 @@
                 <Button onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
             </VBox>
         </StackPane>
+      <Button fx:id="earlyLandingButton" layoutX="1100.0" layoutY="25.0" onAction="#onEarlyLanding" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Early Landing" />
 
     </Pane>
 

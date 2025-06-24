@@ -8,6 +8,7 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -33,6 +34,8 @@ import java.util.*;
 public class InGameController extends GeneralController {
     @FXML
     public Label diceTitleLabel;
+    @FXML
+    public Button earlyLandingButton;
     @FXML
     private StackPane root;
     @FXML
@@ -173,6 +176,7 @@ public class InGameController extends GeneralController {
             level2Gameboard.setVisible(true);
             level2Gameboard.setManaged(true);
             level2Gameboard.setDisable(false);
+            earlyLandingButton.setVisible(true);
 
         } else {
             level1Gameboard.setVisible(true);
@@ -181,6 +185,7 @@ public class InGameController extends GeneralController {
             level2Gameboard.setVisible(false);
             level2Gameboard.setManaged(false);
             level2Gameboard.setDisable(true);
+            earlyLandingButton.setVisible(true);
         }
 
         backgroundImageView.setImage(new Image(getClass().getResourceAsStream(imagePath)));
@@ -1112,6 +1117,14 @@ public class InGameController extends GeneralController {
             exitMessage.setLayoutY((root.getHeight() - exitMessage.prefHeight(-1)) / 2);
             root.getChildren().add(exitMessage);
         });
+    }
+
+    public void onEarlyLanding() {
+        try {
+            GUIController.getInstance().getController().earlyLanding(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Error during early landing", NotificationType.ERROR, 5000);
+        }
     }
 }
 

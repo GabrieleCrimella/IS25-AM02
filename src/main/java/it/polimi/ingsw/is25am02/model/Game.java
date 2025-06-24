@@ -944,6 +944,7 @@ public class Game implements Game_Interface {
                 }
             }
             player.setStatePlayer(StatePlayerType.OUT_GAME);
+            player.getObserver().displayMessage("info.outOfGame", null);
 
             getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
         } catch (IllegalStateException e) {
@@ -958,6 +959,8 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method earlylanding");
             }
+        } catch (Exception e) {
+            ServerController.logger.log(Level.SEVERE, "error in method earlyLanding", e);
         }
     }
 
