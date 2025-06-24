@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -317,6 +318,13 @@ public class GUIController implements Runnable {
         } else if(inUse.equals("InGame")){
             InGameController inGameCtrl = (InGameController) controllers.get(inUse);
             inGameCtrl.onRemoveTile(coordinate);
+        }
+    }
+
+    public void newCard(CardV card) {
+        if(inUse.equals("InGame")){
+            InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+            inGameCtrl.newCard(card);
         }
     }
 }

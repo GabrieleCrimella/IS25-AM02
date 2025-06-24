@@ -768,7 +768,6 @@ public class InGameController extends GeneralController {
                 }
             }
         }
-
     }
 
     @FXML

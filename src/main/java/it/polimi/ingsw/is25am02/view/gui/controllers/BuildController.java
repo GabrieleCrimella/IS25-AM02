@@ -512,7 +512,7 @@ public class BuildController extends GeneralController {
         // Rimuove contenuti precedenti e aggiunge l'immagine
         tileCentrale.getChildren().clear();
         tileCentrale.getChildren().add(imageView);
-        tiles.put(imageView,tileCentrale);
+        tiles.put(imageView, tileCentrale);
     }
 
     public Coordinate getCoordinatesFromId(Node node) {
@@ -917,40 +917,42 @@ public class BuildController extends GeneralController {
             viewOtherSpaceshipLabel.setText("Initialize your spaceship!");
             readyButton.setVisible(true);
 
-            aliveTypeContainer.getChildren().clear(); // pulisce eventuali precedenti
+            if (level == 2) {
+                aliveTypeContainer.getChildren().clear(); // pulisce eventuali precedenti
 
-            // Crea un RadioButton per ogni valore dell'enum
-            for (AliveType type : AliveType.values()) {
-                RadioButton rb = new RadioButton(type.name());
-                rb.setToggleGroup(aliveTypeGroup);
-                aliveTypeContainer.getChildren().add(rb);
-            }
+                // Crea un RadioButton per ogni valore dell'enum
+                for (AliveType type : AliveType.values()) {
+                    RadioButton rb = new RadioButton(type.name());
+                    rb.setToggleGroup(aliveTypeGroup);
+                    aliveTypeContainer.getChildren().add(rb);
+                }
 
-            aliveTypeGroup.selectToggle(null); // deseleziona all'apertura
+                aliveTypeGroup.selectToggle(null); // deseleziona all'apertura
 
-            for (ImageView im : tiles.keySet()) {
-                im.setOnMouseClicked(null);
+                for (ImageView im : tiles.keySet()) {
+                    im.setOnMouseClicked(null);
 
-                GUIController.getInstance().getController().getGameV().getPlayers().stream()
-                        .filter(p -> p.getNickname().equals(GUIController.getInstance().getNickname()))
-                        .findFirst()
-                        .ifPresent(player -> {
-                            int x = getCoordinatesFromId(tiles.get(im)).x();
-                            int y = getCoordinatesFromId(tiles.get(im)).y();
+                    GUIController.getInstance().getController().getGameV().getPlayers().stream()
+                            .filter(p -> p.getNickname().equals(GUIController.getInstance().getNickname()))
+                            .findFirst()
+                            .ifPresent(player -> {
+                                int x = getCoordinatesFromId(tiles.get(im)).x();
+                                int y = getCoordinatesFromId(tiles.get(im)).y();
 
-                            Optional<TileV> tileOpt = player.getSpaceshipBoard()[x][y];
+                                Optional<TileV> tileOpt = player.getSpaceshipBoard()[x][y];
 
-                            if (tileOpt.isPresent()) {
-                                TileType type = tileOpt.get().getType();
-                                if (type == TileType.CABIN) {
-                                    im.setOnMouseClicked(e -> {
-                                        coordinate = getCoordinatesFromId(tiles.get(im));
-                                        addCrewTitle.setText("Add crew to tile (" + coordinate.x() + "," + coordinate.y() + ")");
-                                        addCrewPopup.setVisible(true);
-                                    });
+                                if (tileOpt.isPresent()) {
+                                    TileType type = tileOpt.get().getType();
+                                    if (type == TileType.CABIN) {
+                                        im.setOnMouseClicked(e -> {
+                                            coordinate = getCoordinatesFromId(tiles.get(im));
+                                            addCrewTitle.setText("Add crew to tile (" + coordinate.x() + "," + coordinate.y() + ")");
+                                            addCrewPopup.setVisible(true);
+                                        });
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
     }

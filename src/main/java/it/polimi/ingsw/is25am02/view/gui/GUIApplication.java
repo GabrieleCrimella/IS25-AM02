@@ -206,9 +206,12 @@ public class GUIApplication extends Application implements ConsoleClient {
     @Override
     public void newCard(CardV card) {
         Platform.runLater(() -> {
+            GUIController.getInstance().newCard(card);
+            /*
             GUIController.getInstance().<InGameController>switchScene("InGame", "in game", controller -> {
                 controller.newCard(card);
             });
+             */
         });
 
     }
