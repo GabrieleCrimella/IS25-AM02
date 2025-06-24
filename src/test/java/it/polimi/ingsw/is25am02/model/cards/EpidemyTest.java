@@ -21,10 +21,10 @@ class EpidemyTest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -41,9 +41,9 @@ class EpidemyTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(),7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -53,9 +53,9 @@ class EpidemyTest {
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(),8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -65,9 +65,9 @@ class EpidemyTest {
         ConnectorType[] connectors3 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile cabin3 = new Cabin(t3, connectors3, rotationType3, id3);
+        Tile cabin3 = new Cabin(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(8,8, cabin3);
+            spaceship1.addTile(player1.getNickname(),8,8, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -101,7 +101,7 @@ class EpidemyTest {
     @Test
     void test_should_remove_affected_crew(){
         Game game = make_a_spaceship();
-        Card epidemy = new Epidemy(2);
+        Card epidemy = new Epidemy(2, null, null, true);
 
         game.getCurrentState().setCurrentCard(epidemy);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());

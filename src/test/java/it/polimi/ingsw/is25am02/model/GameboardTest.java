@@ -18,10 +18,10 @@ class GameboardTest {
         Spaceship spaceship2 = new Spaceship(0);
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -48,10 +48,10 @@ class GameboardTest {
         Spaceship spaceship2 = new Spaceship(0);
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -79,10 +79,10 @@ class GameboardTest {
         Spaceship spaceship2 = new Spaceship(0);
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -119,10 +119,10 @@ class GameboardTest {
         Spaceship spaceship2 = new Spaceship(0);
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         //lista da passare a initalizeGameboard
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -146,10 +146,10 @@ class GameboardTest {
         Spaceship spaceship2 = new Spaceship(0);
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         //lista da passare a initalizeGameboard
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -173,10 +173,10 @@ class GameboardTest {
         Spaceship spaceship2 = new Spaceship(0);
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         //lista da passare a initalizeGameboard
         List<Player> players = new ArrayList<Player>();
         players.add(player1);

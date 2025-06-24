@@ -27,13 +27,13 @@ class AbbandonedStationTest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -52,9 +52,9 @@ class AbbandonedStationTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -64,9 +64,9 @@ class AbbandonedStationTest {
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -76,9 +76,9 @@ class AbbandonedStationTest {
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile motor3 = new Motors(t3, connectors3, rotationType3, id3);
+        Tile motor3 = new Motors(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(7,8, motor3);
+            spaceship1.addTile(player1.getNickname(), 7,8, motor3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -89,9 +89,9 @@ class AbbandonedStationTest {
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
         int maxBattery = 3;
-        Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, id4, maxBattery);
+        Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, null, maxBattery);
         try {
-            spaceship1.addTile(6,8, battery4);
+            spaceship1.addTile(player1.getNickname(), 6,8, battery4);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -102,9 +102,9 @@ class AbbandonedStationTest {
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         boolean[] shielded = {true, false, false, true};
-        Tile shield5 = new Shield(t5, connectors5, rotationType5, id5, shielded);
+        Tile shield5 = new Shield(t5, connectors5, rotationType5, null, shielded);
         try {
-            spaceship1.addTile(6,7, shield5);
+            spaceship1.addTile(player1.getNickname(), 6,7, shield5);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -114,9 +114,9 @@ class AbbandonedStationTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon6 = new Cannon(t6, connectors6, rotationType6, id6);
+        Tile cannon6 = new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(7,6, cannon6);
+            spaceship1.addTile(player1.getNickname(), 7,6, cannon6);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -127,9 +127,9 @@ class AbbandonedStationTest {
         RotationType rotationType7 = RotationType.NORTH;
         int id7 = 1;
         int maxNum = 2;
-        Tile specialStorage7 = new SpecialStorage(t7, connectors7, rotationType7, id7, maxNum);
+        Tile specialStorage7 = new SpecialStorage(t7, connectors7, rotationType7, null, maxNum);
         try {
-            spaceship1.addTile(9,7, specialStorage7);
+            spaceship1.addTile(player1.getNickname(), 9,7, specialStorage7);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -174,7 +174,7 @@ class AbbandonedStationTest {
         boxesWon.add(redbox1);
         boxesWon.add(redbox2);
         boxesWon.add(bluebox);
-        AbbandonedStation abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes);
+        AbbandonedStation abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes, null, null, true);
 
         List<Box> availableBoxes = abbandonedStation.getBoxesWon();
         if(availableBoxes==null){
@@ -216,7 +216,7 @@ class AbbandonedStationTest {
         boxesWon.add(redbox1);
         boxesWon.add(redbox2);
         boxesWon.add(bluebox);
-        Card abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes);
+        Card abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes, null, null, true);
 
         List<Box> availableBoxes = abbandonedStation.getBoxesWon();
 

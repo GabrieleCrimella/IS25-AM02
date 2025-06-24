@@ -44,6 +44,7 @@ public class SlaveOwner extends Enemies{
         double playerPower = player.getSpaceship().calculateCannonPower(dCannon);
         for(Coordinate battery : batteries) {
             player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+            if (observers != null){
             for (String nick:observers.keySet()) {
                 try {
                     Coordinate pos = new Coordinate (battery.x(),battery.y());
@@ -51,7 +52,7 @@ public class SlaveOwner extends Enemies{
                 } catch (RemoteException e) {
                     ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
                 }
-            }
+            }}
         }
 
         //Paragoni

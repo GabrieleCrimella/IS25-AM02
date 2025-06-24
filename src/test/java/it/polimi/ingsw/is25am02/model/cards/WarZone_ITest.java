@@ -24,13 +24,13 @@ class WarZone_ITest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -49,9 +49,9 @@ class WarZone_ITest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -63,9 +63,9 @@ class WarZone_ITest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(),7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -77,9 +77,9 @@ class WarZone_ITest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(),8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -89,9 +89,9 @@ class WarZone_ITest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -101,9 +101,9 @@ class WarZone_ITest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
+        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(), 6,6, dcannon2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -114,9 +114,9 @@ class WarZone_ITest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player1.getNickname(), 7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -128,9 +128,9 @@ class WarZone_ITest {
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 1;
         int maxNum2 = 3;
-        Tile storage21 = new Storage(t22, connectors22, rotationType22, id22, maxNum2);
+        Tile storage21 = new Storage(t22, connectors22, rotationType22, null, maxNum2);
         try {
-            spaceship2.addTile(7,6, storage21);
+            spaceship2.addTile(player1.getNickname(), 7,6, storage21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -141,9 +141,9 @@ class WarZone_ITest {
         ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType31 = RotationType.NORTH;
         int id31 = 1;
-        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
+        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, null);
         try {
-            spaceship3.addTile(7,7, cabin31);
+            spaceship3.addTile(player1.getNickname(), 7,7, cabin31);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -153,9 +153,9 @@ class WarZone_ITest {
         ConnectorType[] connectors32 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType32 = RotationType.NORTH;
         int id32 = 1;
-        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, id32);
+        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, null);
         try {
-            spaceship3.addTile(7,8, cabin32);
+            spaceship3.addTile(player1.getNickname(), 7,8, cabin32);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -186,7 +186,7 @@ class WarZone_ITest {
         int flyback = 3;
         int aliveLost = 3;
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
-        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots);
+        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots, null, null, true);
 
         game.getCurrentState().setCurrentCard(warzone1);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -218,13 +218,13 @@ class WarZone_ITest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -243,9 +243,9 @@ class WarZone_ITest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -257,9 +257,9 @@ class WarZone_ITest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(), 7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -270,9 +270,9 @@ class WarZone_ITest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname() , 8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -282,9 +282,9 @@ class WarZone_ITest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dmotor1 = new DoubleMotor(t5, connectors5, rotationType5, id5);
+        Tile dmotor1 = new DoubleMotor(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dmotor1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dmotor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -294,9 +294,9 @@ class WarZone_ITest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dmotor2= new DoubleMotor(t6, connectors6, rotationType6, id6);
+        Tile dmotor2= new DoubleMotor(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dmotor2);
+            spaceship1.addTile(player1.getNickname(), 6,6, dmotor2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -307,9 +307,9 @@ class WarZone_ITest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player1.getNickname(), 7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -321,9 +321,9 @@ class WarZone_ITest {
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 1;
         int maxNum2 = 3;
-        Tile storage21 = new Storage(t22, connectors22, rotationType22, id22, maxNum2);
+        Tile storage21 = new Storage(t22, connectors22, rotationType22, null, maxNum2);
         try {
-            spaceship2.addTile(7,6, storage21);
+            spaceship2.addTile(player1.getNickname(), 7,6, storage21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -334,9 +334,9 @@ class WarZone_ITest {
         RotationType rotationType23 = RotationType.NORTH;
         int id23 = 1;
         int maxNum23 = 2;
-        Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, id23, maxNum23);
+        Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, null, maxNum23);
         try {
-            spaceship2.addTile(8,7, battery23);
+            spaceship2.addTile(player1.getNickname(), 8,7, battery23);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -346,9 +346,9 @@ class WarZone_ITest {
         ConnectorType[] connectors24 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType24 = RotationType.NORTH;
         int id24 = 1;
-        Tile dmotor24= new DoubleMotor(t24, connectors24, rotationType24, id24);
+        Tile dmotor24= new DoubleMotor(t24, connectors24, rotationType24, null);
         try {
-            spaceship2.addTile(6,6, dmotor24);
+            spaceship2.addTile(player1.getNickname(), 6,6, dmotor24);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -359,9 +359,9 @@ class WarZone_ITest {
         ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType31 = RotationType.NORTH;
         int id31 = 1;
-        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
+        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, null);
         try {
-            spaceship3.addTile(7,7, cabin31);
+            spaceship3.addTile(player1.getNickname(), 7,7, cabin31);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -371,9 +371,9 @@ class WarZone_ITest {
         ConnectorType[] connectors32 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType32 = RotationType.NORTH;
         int id32 = 1;
-        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, id32);
+        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, null);
         try {
-            spaceship3.addTile(7,8, cabin32);
+            spaceship3.addTile(player1.getNickname(), 7,8, cabin32);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -383,9 +383,9 @@ class WarZone_ITest {
         ConnectorType[] connectors33 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType33 = RotationType.NORTH;
         int id33 = 1;
-        Tile dmotor33= new DoubleMotor(t33, connectors33, rotationType33, id33);
+        Tile dmotor33= new DoubleMotor(t33, connectors33, rotationType33, null);
         try {
-            spaceship3.addTile(6,6, dmotor33);
+            spaceship3.addTile(player1.getNickname(), 6,6, dmotor33);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -396,9 +396,9 @@ class WarZone_ITest {
         RotationType rotationType34 = RotationType.NORTH;
         int id34 = 1;
         int maxNum34 = 2;
-        Tile battery34 = new BatteryStorage(t34, connectors34, rotationType34, id34, maxNum34);
+        Tile battery34 = new BatteryStorage(t34, connectors34, rotationType34, null, maxNum34);
         try {
-            spaceship3.addTile(8,7, battery34);
+            spaceship3.addTile(player3.getNickname(),8,7, battery34);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -409,9 +409,9 @@ class WarZone_ITest {
         ConnectorType[] connectors41 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType41 = RotationType.NORTH;
         int id41 = 1;
-        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, id41);
+        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, null);
         try {
-            spaceship4.addTile(7,7, cabin41);
+            spaceship4.addTile(player1.getNickname(), 7,7, cabin41);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -421,9 +421,9 @@ class WarZone_ITest {
         ConnectorType[] connectors42 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType42 = RotationType.NORTH;
         int id42 = 1;
-        Tile dmotor42 = new DoubleMotor(t42, connectors42, rotationType42, id42);
+        Tile dmotor42 = new DoubleMotor(t42, connectors42, rotationType42, null);
         try {
-            spaceship4.addTile(7,6, dmotor42);
+            spaceship4.addTile(player1.getNickname(), 7,6, dmotor42);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -456,7 +456,7 @@ class WarZone_ITest {
         int flyback = 3;
         int aliveLost = 1;
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
-        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots);
+        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots, null, null, true);
 
         game.getCurrentState().setCurrentCard(warzone1);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -529,13 +529,13 @@ class WarZone_ITest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -554,9 +554,9 @@ class WarZone_ITest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -568,9 +568,9 @@ class WarZone_ITest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(6,7, storage1);
+            spaceship1.addTile(player1.getNickname(), 6,7, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -582,9 +582,9 @@ class WarZone_ITest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -594,9 +594,9 @@ class WarZone_ITest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -606,9 +606,9 @@ class WarZone_ITest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon= new Cannon(t6, connectors6, rotationType6, id6);
+        Tile cannon= new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, cannon);
+            spaceship1.addTile(player1.getNickname(), 6,6, cannon);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -619,9 +619,9 @@ class WarZone_ITest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player1.getNickname(), 7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -633,9 +633,9 @@ class WarZone_ITest {
         RotationType rotationType23 = RotationType.NORTH;
         int id23 = 1;
         int maxNum23 = 2;
-        Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, id23, maxNum23);
+        Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, null, maxNum23);
         try {
-            spaceship2.addTile(8,7, battery23);
+            spaceship2.addTile(player1.getNickname(), 8,7, battery23);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -646,9 +646,9 @@ class WarZone_ITest {
         ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType31 = RotationType.NORTH;
         int id31 = 1;
-        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
+        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, null);
         try {
-            spaceship3.addTile(7,7, cabin31);
+            spaceship3.addTile(player1.getNickname(), 7,7, cabin31);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -658,9 +658,9 @@ class WarZone_ITest {
         ConnectorType[] connectors32 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType32 = RotationType.NORTH;
         int id32 = 1;
-        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, id32);
+        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, null);
         try {
-            spaceship3.addTile(7,8, cabin32);
+            spaceship3.addTile(player1.getNickname(), 7,8, cabin32);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -671,9 +671,9 @@ class WarZone_ITest {
         ConnectorType[] connectors41 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType41 = RotationType.NORTH;
         int id41 = 1;
-        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, id41);
+        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, null);
         try {
-            spaceship4.addTile(7,7, cabin41);
+            spaceship4.addTile(player1.getNickname(), 7,7, cabin41);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -709,7 +709,7 @@ class WarZone_ITest {
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
         Pair<Integer,RotationType> shot1 = new Pair<>(1,RotationType.NORTH);
         shots.add(shot1);
-        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots);
+        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots, null, null, true);
 
         game.getCurrentState().setCurrentCard(warzone1);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -775,13 +775,13 @@ class WarZone_ITest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -800,9 +800,9 @@ class WarZone_ITest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -814,9 +814,9 @@ class WarZone_ITest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(6,7, storage1);
+            spaceship1.addTile(player1.getNickname(), 6,7, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -828,9 +828,9 @@ class WarZone_ITest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -840,9 +840,9 @@ class WarZone_ITest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -852,9 +852,9 @@ class WarZone_ITest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon= new Cannon(t6, connectors6, rotationType6, id6);
+        Tile cannon= new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, cannon);
+            spaceship1.addTile(player1.getNickname(), 6,6, cannon);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -865,9 +865,9 @@ class WarZone_ITest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player1.getNickname(), 7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -879,9 +879,9 @@ class WarZone_ITest {
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 1;
         int maxNum2 = 3;
-        Tile storage21 = new Storage(t22, connectors22, rotationType22, id22, maxNum2);
+        Tile storage21 = new Storage(t22, connectors22, rotationType22, null, maxNum2);
         try {
-            spaceship2.addTile(6,7, storage21);
+            spaceship2.addTile(player1.getNickname(), 6,7, storage21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -892,9 +892,9 @@ class WarZone_ITest {
         RotationType rotationType23 = RotationType.NORTH;
         int id23 = 1;
         int maxNum23 = 2;
-        Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, id23, maxNum23);
+        Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, null, maxNum23);
         try {
-            spaceship2.addTile(8,7, battery23);
+            spaceship2.addTile(player1.getNickname(), 8,7, battery23);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -905,9 +905,9 @@ class WarZone_ITest {
         ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType31 = RotationType.NORTH;
         int id31 = 1;
-        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
+        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, null);
         try {
-            spaceship3.addTile(7,7, cabin31);
+            spaceship3.addTile(player1.getNickname(), 7,7, cabin31);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -917,9 +917,9 @@ class WarZone_ITest {
         ConnectorType[] connectors32 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType32 = RotationType.NORTH;
         int id32 = 1;
-        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, id32);
+        Tile cabin32 = new Cabin(t32, connectors32, rotationType32, null);
         try {
-            spaceship3.addTile(7,8, cabin32);
+            spaceship3.addTile(player1.getNickname(), 7,8, cabin32);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -930,9 +930,9 @@ class WarZone_ITest {
         ConnectorType[] connectors41 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType41 = RotationType.NORTH;
         int id41 = 1;
-        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, id41);
+        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, null);
         try {
-            spaceship4.addTile(7,7, cabin41);
+            spaceship4.addTile(player1.getNickname(), 7,7, cabin41);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -968,7 +968,7 @@ class WarZone_ITest {
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
         Pair<Integer,RotationType> shot1 = new Pair<>(1,RotationType.NORTH);
         shots.add(shot1);
-        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots);
+        Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots, null, null, true);
 
         game.getCurrentState().setCurrentCard(warzone1);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);

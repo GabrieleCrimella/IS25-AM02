@@ -102,12 +102,14 @@ public class WarZone_I extends Card {
             declarationMotor.put(player, player.getSpaceship().calculateMotorPower(dMotors));
             for (Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
-                for (String nick : observers.keySet()) {
-                    try {
-                        Coordinate pos = new Coordinate(battery.x(), battery.y());
-                        observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method choicedoublemotor", e);
+                if (observers != null){
+                    for (String nick : observers.keySet()) {
+                        try {
+                            Coordinate pos = new Coordinate(battery.x(), battery.y());
+                            observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method choicedoublemotor", e);
+                        }
                     }
                 }
             }
@@ -173,6 +175,7 @@ public class WarZone_I extends Card {
             declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
             for (Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+                if (observers != null){
                 for (String nick : observers.keySet()) {
                     try {
                         Coordinate pos = new Coordinate(battery.x(), battery.y());
@@ -180,7 +183,7 @@ public class WarZone_I extends Card {
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
                     }
-                }
+                }}
             }
             //if (player.getNickname().equals(getCurrentOrder().getLast())) {
             if (player.equals(game.getGameboard().getRanking().getLast())) {

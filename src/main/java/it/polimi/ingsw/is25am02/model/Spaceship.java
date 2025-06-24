@@ -76,12 +76,14 @@ public class Spaceship {
                 bookedTiles.put(2, currentTile);
             }
             currentTile = null;
-            for (String nick : observers.keySet()) {
-                try {
-                    observers.get(nick).showBookTileUpdate(player.getNickname());
-                    observers.get(nick).showCurrentTileNullityUpdate(player.getNickname());
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+            if (observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showBookTileUpdate(player.getNickname());
+                        observers.get(nick).showCurrentTileNullityUpdate(player.getNickname());
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                    }
                 }
             }
         }
@@ -96,14 +98,17 @@ public class Spaceship {
             addTile(nicknameP, x, y, bookedTiles.get(index));
             getTile(x, y).get().setRotationType(rotation);
             bookedTiles.put(index, null);
-            for (String nick : observers.keySet()) {
-                Coordinate pos = new Coordinate(x, y);
-                try {
-                    observers.get(nick).showBookedTileNullityUpdate(nicknameP, index, pos, rotation);
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method showbookedtilenullity update", e);
+            if (observers != null) {
+                for (String nick : observers.keySet()) {
+                    Coordinate pos = new Coordinate(x, y);
+                    try {
+                        observers.get(nick).showBookedTileNullityUpdate(nicknameP, index, pos, rotation);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method showbookedtilenullity update", e);
+                    }
                 }
             }
+
         }
     }
 
@@ -140,13 +145,16 @@ public class Spaceship {
                 alienCheck(x, y, AliveType.BROWN_ALIEN);
             }
             spaceshipIterator.removeOneTile(x, y);
-            for (String nick : observers.keySet()) {
-                try {
-                    observers.get(nick).showTileRemoval(new Coordinate(x, y), nicknameP);
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method removeTile update", e);
+            if (observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showTileRemoval(new Coordinate(x, y), nicknameP);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method removeTile update", e);
+                    }
                 }
             }
+
             numOfWastedTiles++;
 
             List<List<Tile>> effectiveBlocks = new LinkedList<>();
@@ -226,11 +234,13 @@ public class Spaceship {
             int y = spaceshipIterator.getY(t.get());
             if (t.isPresent() && !rightMask[x][y]) {
                 spaceshipIterator.removeOneTile(x, y);
-                for (String nick : observers.keySet()) {
-                    try {
-                        observers.get(nick).showTileRemoval(new Coordinate(x, y), nicknameP);
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method keepBlock update", e);
+                if (observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showTileRemoval(new Coordinate(x, y), nicknameP);
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method keepBlock update", e);
+                        }
                     }
                 }
                 addNumOfWastedTiles(1);
@@ -240,25 +250,31 @@ public class Spaceship {
 
     public void returnTile(String nicknameP) {
         currentTile = null;
-        for (String nick : observers.keySet()) {
-            try {
-                observers.get(nick).showCurrentTileNullityUpdate(nicknameP);
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+        if (observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showCurrentTileNullityUpdate(nicknameP);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                }
             }
         }
+
     }
 
     public void setCurrentTile(String nicknameP, Tile t) throws AlreadyViewingException {
         if (currentTile == null) {
             currentTile = t;
-            for (String nick : observers.keySet()) {
-                try {
-                    observers.get(nick).showCurrentTileUpdate(t.getImagePath(), t.getConnectors(), t.getRotationType(), t.getType(), t.getNumMaxBattery(), t.getNumMaxBox(), nicknameP);
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method set current tile", e);
+            if (observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showCurrentTileUpdate(t.getImagePath(), t.getConnectors(), t.getRotationType(), t.getType(), t.getNumMaxBattery(), t.getNumMaxBox(), nicknameP);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method set current tile", e);
+                    }
                 }
             }
+
         } else {
             throw new AlreadyViewingException("CurrentTile already set");
         }
@@ -360,12 +376,16 @@ public class Spaceship {
 
     public void addCosmicCredits(int numCosmicCredits) {
         cosmicCredits += numCosmicCredits;
-        listener.onCreditUpdate(numCosmicCredits);
+        if (observers != null){
+            listener.onCreditUpdate(numCosmicCredits);
+        }
     }
 
     public void removeCosmicCredits(int numCosmicCredits) {
         cosmicCredits -= numCosmicCredits;
-        listener.onCreditUpdate(numCosmicCredits);
+        if (observers !=null){
+            listener.onCreditUpdate(numCosmicCredits);
+        }
     }
 
     public int getNumOfWastedTiles() {
@@ -543,12 +563,14 @@ public class Spaceship {
                 if (isExposed(rotationType, num)) {
                     if (isShielded(rotationType) && storage.isPresent()) {
                         storage.get().removeBattery();
-                        for (String nick:observers.keySet()) {
-                            try {
-                                Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
-                                observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
-                            } catch (RemoteException e) {
-                                ServerController.logger.log(Level.SEVERE, "error in method removeBattery", e);
+                        if (observers != null){
+                            for (String nick:observers.keySet()) {
+                                try {
+                                    Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
+                                    observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
+                                } catch (RemoteException e) {
+                                    ServerController.logger.log(Level.SEVERE, "error in method removeBattery", e);
+                                }
                             }
                         }
                         return false;
@@ -565,14 +587,17 @@ public class Spaceship {
                         return false;
                     } else if (cannon.isPresent() && cannon.get().getType().equals(TileType.D_CANNON) && storage.isPresent()) {
                         storage.get().removeBattery();
-                        for (String nick:observers.keySet()) {
-                            try {
-                                Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
-                                observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
-                            } catch (RemoteException e) {
-                                ServerController.logger.log(Level.SEVERE, "error in method removebattery", e);
+                        if (observers != null){
+                            for (String nick:observers.keySet()) {
+                                try {
+                                    Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
+                                    observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
+                                } catch (RemoteException e) {
+                                    ServerController.logger.log(Level.SEVERE, "error in method removebattery", e);
+                                }
                             }
                         }
+
                         return false;
                     } else {
                         removeTile(nicknameP, targetTileX, targetTileY);
@@ -596,12 +621,14 @@ public class Spaceship {
                         if (storage.isPresent()) {
                             storage.get().removeBattery();
                         }
-                        for (String nick:observers.keySet()) {
-                            try {
-                                Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
-                                observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
-                            } catch (RemoteException e) {
-                                ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                        if (observers != null){
+                            for (String nick:observers.keySet()) {
+                                try {
+                                    Coordinate pos = new Coordinate (getSpaceshipIterator().getX(storage.get()),getSpaceshipIterator().getY(storage.get()));
+                                    observers.get(nick).showBatteryRemoval(pos, nicknameP, storage.get().getNumBattery());
+                                } catch (RemoteException e) {
+                                    ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                                }
                             }
                         }
                         return false;
@@ -691,14 +718,17 @@ public class Spaceship {
         if (!cabinAffected.isEmpty()) {
             for (Tile cabin : cabinAffected) {
                 cabin.removeCrew();
-                for (String nick:observers.keySet()) {
-                    Coordinate pos = new Coordinate (getSpaceshipIterator().getX(cabin),getSpaceshipIterator().getY(cabin));
-                    try {
-                        observers.get(nick).showCrewRemoval(pos, nicknameP);
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                if (observers != null) {
+                    for (String nick:observers.keySet()) {
+                        Coordinate pos = new Coordinate (getSpaceshipIterator().getX(cabin),getSpaceshipIterator().getY(cabin));
+                        try {
+                            observers.get(nick).showCrewRemoval(pos, nicknameP);
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                        }
                     }
                 }
+
             }
         }
     }

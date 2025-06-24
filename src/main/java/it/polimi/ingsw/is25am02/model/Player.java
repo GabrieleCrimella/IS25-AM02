@@ -48,27 +48,27 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCreditUpdate(int credit){
+    public void onCreditUpdate(int credit) {
         try {
-            observer.showCreditUpdate(nickname,credit);
+            observer.showCreditUpdate(nickname, credit);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show credit update", e);
         }
     }
 
     @Override
-    public void onRemoveTileUpdate(Coordinate coordinate){
+    public void onRemoveTileUpdate(Coordinate coordinate) {
         try {
-            observer.showTileRemoval(coordinate,getNickname());
+            observer.showTileRemoval(coordinate, getNickname());
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show tile removal", e);
         }
     }
 
     @Override
-    public void onRemoveBatteryUpdate(int battery, Coordinate coordinate){
+    public void onRemoveBatteryUpdate(int battery, Coordinate coordinate) {
         try {
-            observer.showBatteryRemoval(coordinate,getNickname(),battery);
+            observer.showBatteryRemoval(coordinate, getNickname(), battery);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show battery removal", e);
 
@@ -76,7 +76,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onRemoveCrewUpdate(String nickname, Coordinate coordinate){
+    public void onRemoveCrewUpdate(String nickname, Coordinate coordinate) {
         try {
             observer.showCrewRemoval(coordinate, nickname);
         } catch (RemoteException e) {
@@ -85,16 +85,17 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onPositionUpdate(String nickname, int position){
+    public void onPositionUpdate(String nickname, int position) {
         try {
-            observer.showPositionUpdate(nickname,position);
+            if (observers != null){
+            observer.showPositionUpdate(nickname, position);}
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show position update", e);
         }
     }
 
     @Override
-    public void onHourglassUpdate(){
+    public void onHourglassUpdate() {
         try {
             observer.showHourglassUpdate(0);
         } catch (RemoteException e) {
@@ -104,7 +105,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onDiceUpdate(String nickname,Dice dice){
+    public void onDiceUpdate(String nickname, Dice dice) {
         try {
             observer.showDiceUpdate(nickname, dice.getResult());
         } catch (RemoteException e) {
@@ -114,9 +115,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onTileAdditionToSpaceship(String nickname, Tile tile, Coordinate coordinate){
+    public void onTileAdditionToSpaceship(String nickname, Tile tile, Coordinate coordinate) {
         try {
-            observer.showTileAdditionUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(), tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(),nickname,coordinate);
+            observer.showTileAdditionUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nickname, coordinate);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show tile addition update", e);
         }
@@ -124,13 +125,13 @@ public class Player implements UpdateListener {
 
 
     @Override
-    public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions, HashMap<Integer , Pair<List<Card>,Boolean>> deck){
+    public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions, HashMap<Integer, Pair<List<Card>, Boolean>> deck) {
         try {
             HashMap<String, PlayerColor> playersColor = new HashMap<>();
-            for(Player p : players){
-                playersColor.put(p.getNickname(),p.getColor());
+            for (Player p : players) {
+                playersColor.put(p.getNickname(), p.getColor());
             }
-            HashMap<Integer , List<List<Object>>> deckV = new HashMap<>();
+            HashMap<Integer, List<List<Object>>> deckV = new HashMap<>();
             for (Map.Entry<Integer, Pair<List<Card>, Boolean>> entry : deck.entrySet()) {
                 Integer key = entry.getKey();
                 List<Card> cardList = entry.getValue().getKey();
@@ -149,7 +150,7 @@ public class Player implements UpdateListener {
                 deckV.put(key, convertedCardList);
             }
 
-            observer.showUpdateEverything(level, playersColor,currentcard.getImagePath(),currentcard.getStateCard(),currentcard.getCardType(),currentcard.getComment(),state.getPhase(), nickname, mask, positions, deckV);
+            observer.showUpdateEverything(level, playersColor, currentcard.getImagePath(), currentcard.getStateCard(), currentcard.getCardType(), currentcard.getComment(), state.getPhase(), nickname, mask, positions, deckV);
         } catch (Exception e) {
             ServerController.logger.log(Level.SEVERE, "error in method show update everything", e);
 
@@ -158,7 +159,7 @@ public class Player implements UpdateListener {
 
 
     @Override
-    public void onBoxUpdate(Coordinate coordinate, List<BoxType> box){
+    public void onBoxUpdate(Coordinate coordinate, List<BoxType> box) {
         try {
             observer.showBoxUpdate(coordinate, getNickname(), box);
         } catch (RemoteException e) {
@@ -168,7 +169,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onMiniDeckUpdate(int deck){
+    public void onMiniDeckUpdate(int deck) {
         try {
             observer.showMinideckUpdate(getNickname(), deck);
         } catch (RemoteException e) {
@@ -179,7 +180,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentCardUpdate(String imagepath, StateCardType statecard, CardType type, String comment){
+    public void onCurrentCardUpdate(String imagepath, StateCardType statecard, CardType type, String comment) {
         try {
             observer.showCurrentCardUpdate(imagepath, statecard, type, comment);
         } catch (RemoteException e) {
@@ -190,9 +191,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentTileUpdate(String nickname, Tile tile){
+    public void onCurrentTileUpdate(String nickname, Tile tile) {
         try {
-            observer.showCurrentTileUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(),tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox(), nickname);
+            observer.showCurrentTileUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nickname);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show current tile update", e);
 
@@ -201,7 +202,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCurrentTileNullityUpdate(String nickname){
+    public void onCurrentTileNullityUpdate(String nickname) {
         try {
             observer.showCurrentTileNullityUpdate(nickname);
         } catch (RemoteException e) {
@@ -210,9 +211,9 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onVsibilityUpdate(String nickname, Tile tile){
+    public void onVsibilityUpdate(String nickname, Tile tile) {
         try {
-            observer.showVisibilityUpdate(tile.getImagePath(),tile.getConnectors(),tile.getRotationType(), tile.getType(),tile.getNumMaxBattery(),tile.getNumMaxBox());
+            observer.showVisibilityUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox());
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show visibility update", e);
 
@@ -221,7 +222,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onTileRemovalFromHTUpdate(String imagepath){
+    public void onTileRemovalFromHTUpdate(String imagepath) {
         try {
             observer.showTileRemovalFromHeapTile(imagepath);
         } catch (RemoteException e) {
@@ -232,7 +233,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onDeckAllowedUpdate(){
+    public void onDeckAllowedUpdate() {
         try {
             observer.showDeckAllowUpdate(getNickname());
         } catch (RemoteException e) {
@@ -241,7 +242,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onGameStateUpdate(StateGameType stateGameType){
+    public void onGameStateUpdate(StateGameType stateGameType) {
         try {
             observer.showGameStateUpdate(stateGameType);
         } catch (RemoteException e) {
@@ -250,7 +251,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onCardStateUpdate(StateCardType stateCardType){
+    public void onCardStateUpdate(StateCardType stateCardType) {
         try {
             observer.showCardStateUpdate(stateCardType);
         } catch (RemoteException e) {
@@ -260,7 +261,7 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onPlayerStateUpdate(String nickname, StatePlayerType statePlayerType){
+    public void onPlayerStateUpdate(String nickname, StatePlayerType statePlayerType) {
         try {
             observer.showPlayerStateUpdate(nickname, statePlayerType);
         } catch (RemoteException e) {
@@ -270,15 +271,16 @@ public class Player implements UpdateListener {
     }
 
     @Override
-    public void onBookTileUpdate(String nickname){
+    public void onBookTileUpdate(String nickname) {
         try {
             observer.showBookTileUpdate(nickname);
         } catch (RemoteException e) {
             ServerController.logger.log(Level.SEVERE, "error in method show book tile update", e);
         }
     }
+
     @Override
-    public void onCurrentPlayerUpdate(String nickname){
+    public void onCurrentPlayerUpdate(String nickname) {
         try {
             observer.showCurrentPlayerUpdate(nickname);
         } catch (RemoteException e) {
@@ -298,7 +300,9 @@ public class Player implements UpdateListener {
         return color;
     }
 
-    public VirtualView getObserver() { return observer; }
+    public VirtualView getObserver() {
+        return observer;
+    }
 
     public StatePlayerType getStatePlayer() {
         return statePlayer;
@@ -306,20 +310,30 @@ public class Player implements UpdateListener {
 
     public void setStatePlayer(StatePlayerType statePlayer) {
         this.statePlayer = statePlayer;
-        for (String nick: observers.keySet()){
-            try {
-                observers.get(nick).showPlayerStateUpdate(nickname, statePlayer);
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in setstateplayer", e);
+        if (observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showPlayerStateUpdate(nickname, statePlayer);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in setstateplayer", e);
+                }
             }
         }
     }
 
-    public boolean getDeckAllowed() { return deckAllowed; }
+    public boolean getDeckAllowed() {
+        return deckAllowed;
+    }
 
-    public void setDeckAllowed() { this.deckAllowed = true; }
+    public void setDeckAllowed() {
+        this.deckAllowed = true;
+    }
 
-    public int getNumDeck() { return numDeck; }
+    public int getNumDeck() {
+        return numDeck;
+    }
 
-    public void setNumDeck(int numDeck) { this.numDeck = numDeck; }
+    public void setNumDeck(int numDeck) {
+        this.numDeck = numDeck;
+    }
 }

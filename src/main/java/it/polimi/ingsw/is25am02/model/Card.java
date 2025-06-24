@@ -52,7 +52,9 @@ public abstract class Card {
         return imagePath;
     }
 
-    public boolean getTestFlight() { return testFlight; }
+    public boolean getTestFlight() {
+        return testFlight;
+    }
 
     public int getLevel() {
         return level;
@@ -64,11 +66,13 @@ public abstract class Card {
 
     public void setStateCard(StateCardType stateCardType) {
         this.stateCard = stateCardType;
-        for (String nick:observers.keySet()) {
-            try {
-                observers.get(nick).showCardStateUpdate(stateCardType);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+        if (observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showCardStateUpdate(stateCardType);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -98,12 +102,12 @@ public abstract class Card {
     }
 
     //solo per testing
-    public void setCurrentPhase(int currentPhase) throws  IllegalPhaseException{
+    public void setCurrentPhase(int currentPhase) throws IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 
     //solo per testing
-    public void setPhase(int phase) throws IllegalPhaseException{
+    public void setPhase(int phase) throws IllegalPhaseException {
         throw new UnsupportedOperationException("Not supported method" + this.getCardType());
     }
 

@@ -17,13 +17,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE };
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(true, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -37,13 +37,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL };
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(true, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -57,13 +57,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL };
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(true, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -77,13 +77,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE };
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(true, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -97,13 +97,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE };
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(false, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -117,13 +117,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.NONE, ConnectorType.NONE, ConnectorType.NONE };
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(false, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -137,13 +137,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.EAST;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE };
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(true, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -157,13 +157,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.EAST;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.NONE };
         RotationType rotationType2 = RotationType.SOUTH;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(true, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -177,13 +177,13 @@ class TileTest {
         RotationType rotationType1 = RotationType.EAST;
         int id1 = 1;
         int maxBattery1 = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, id1, maxBattery1);
+        BatteryStorage batteryStorage = new BatteryStorage(t1, connectors1, rotationType1, null, maxBattery1);
         //second tile
         TileType t2 = TileType.MOTOR;
         ConnectorType[] connectors2 = {ConnectorType.NONE,ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.NONE };
         RotationType rotationType2 = RotationType.WEST;
         int id2 = 1;
-        Motors motor = new Motors(t2, connectors2, rotationType2, id2);
+        Motors motor = new Motors(t2, connectors2, rotationType2, null);
         //
         assertEquals(false, batteryStorage.checkConnectors(motor, RotationType.EAST));
     }
@@ -195,7 +195,7 @@ class TileTest {
         RotationType rotationType = RotationType.NORTH;
         int id = 1;
         int maxBattery = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t, connectors, rotationType, id, maxBattery);
+        BatteryStorage batteryStorage = new BatteryStorage(t, connectors, rotationType, null, maxBattery);
         assertEquals(ConnectorType.DOUBLE, batteryStorage.connectorOnSide(RotationType.NORTH));
         assertEquals(ConnectorType.NONE, batteryStorage.connectorOnSide(RotationType.EAST));
         assertEquals(ConnectorType.SINGLE, batteryStorage.connectorOnSide(RotationType.SOUTH));

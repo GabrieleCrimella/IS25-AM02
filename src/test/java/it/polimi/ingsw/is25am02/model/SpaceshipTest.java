@@ -22,10 +22,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -42,9 +42,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -54,9 +54,9 @@ class SpaceshipTest {
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile( player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -66,9 +66,9 @@ class SpaceshipTest {
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile motor3 = new Motors(t3, connectors3, rotationType3, id3);
+        Tile motor3 = new Motors(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(7,8, motor3);
+            spaceship1.addTile(player1.getNickname(), 7,8, motor3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -79,9 +79,9 @@ class SpaceshipTest {
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
         int maxBattery = 3;
-        Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, id4, maxBattery);
+        Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, null, maxBattery);
         try {
-            spaceship1.addTile(6,8, battery4);
+            spaceship1.addTile(player1.getNickname(), 6,8, battery4);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -92,9 +92,9 @@ class SpaceshipTest {
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         boolean[] shielded = {true, false, false, true};
-        Tile shield5 = new Shield(t5, connectors5, rotationType5, id5, shielded);
+        Tile shield5 = new Shield(t5, connectors5, rotationType5, null, shielded);
         try {
-            spaceship1.addTile(6,7, shield5);
+            spaceship1.addTile(player1.getNickname(), 6,7, shield5);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -104,9 +104,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon6 = new Cannon(t6, connectors6, rotationType6, id6);
+        Tile cannon6 = new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(7,6, cannon6);
+            spaceship1.addTile(player1.getNickname(), 7,6, cannon6);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -149,10 +149,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -168,111 +168,111 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         //controllo riga vuota 0
         for (int i=0;i<12;i++){
            int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 0, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 0, cabin1);});
         }
         //controllo riga vuota 1
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 1, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 1, cabin1);});
         }
         //controllo riga vuota 2
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 2, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 2, cabin1);});
         }
         //controllo riga vuota 3
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 3, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 3, cabin1);});
         }
         //controllo riga vuota 4
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 4, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 4, cabin1);});
         }
         //controllo riga 5
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(5, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(6, 5, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(7, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(8, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(9, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 4, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 5, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 6, 5, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 7, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 8, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 9, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 10, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 5, cabin1);});
 
         //controllo riga 6
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(5, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(7, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(9, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 4, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 5, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 7, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 9, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 10, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 6, cabin1);});
 
         //controllo riga 7
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(5, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(7, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(9, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 4, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 5, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 7, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 9, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 10, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 7, cabin1);});
 
         //controllo riga 8
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(5, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(7, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(9, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 4, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 5, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 7, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 9, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 10, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 8, cabin1);});
 
         //controllo riga 9
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(5, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(7, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(9, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 4, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 5, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 7, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(),8, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 9, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 10, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 9, cabin1);});
 
         //controllo riga vuota 10
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 10, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 10, cabin1);});
         }
         //controllo riga vuota 11
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 11, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 11, cabin1);});
         }
 
     }
@@ -286,10 +286,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -305,111 +305,111 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         //controllo riga vuota 0
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 0, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 0, cabin1);});
         }
         //controllo riga vuota 1
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 1, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 1, cabin1);});
         }
         //controllo riga vuota 2
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 2, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 2, cabin1);});
         }
         //controllo riga vuota 3
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 3, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 3, cabin1);});
         }
         //controllo riga vuota 4
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 4, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 4, cabin1);});
         }
         //controllo riga 5
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(5, 5, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(7, 5, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(9, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 5, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 4, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 5, 5, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 7, 5, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 9, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 10, 5, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 5, cabin1);});
 
         //controllo riga 6
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(4, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(5, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(7, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 6, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(9, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(10, 6, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 4, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 5, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 7, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 6, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 9, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 10, 6, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 6, cabin1);});
 
         //controllo riga 7
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(4, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(5, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(7, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(9, 7, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(10, 7, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname() , 1, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 4, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 5, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 7, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 9, 7, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 10, 7, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 7, cabin1);});
 
         //controllo riga 8
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(4, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(5, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(7, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(9, 8, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(10, 8, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 4, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 5, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname() , 6, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 7, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 9, 8, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 10, 8, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 8, cabin1);});
 
         //controllo riga 9
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(0, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(1, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(2, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(3, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(4, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(5, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(6, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(7, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(8, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(9, 9, cabin1);});
-        assertDoesNotThrow( () -> {spaceship1.addTile(10, 9, cabin1);});
-        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(11, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 0, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 1, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 2, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 3, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 4, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 5, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 6, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 7, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 8, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 9, 9, cabin1);});
+        assertDoesNotThrow( () -> {spaceship1.addTile(player1.getNickname(), 10, 9, cabin1);});
+        assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), 11, 9, cabin1);});
 
         //controllo riga vuota 10
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 10, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 10, cabin1);});
         }
         //controllo riga vuota 11
         for (int i=0;i<12;i++){
             int x=i;
-            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(x, 11, cabin1);});
+            assertThrows(IllegalArgumentException.class, () -> {spaceship1.addTile(player1.getNickname(), x, 11, cabin1);});
         }
 
     }
@@ -505,10 +505,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -524,9 +524,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -535,9 +535,9 @@ class SpaceshipTest {
         ConnectorType[] connectors2 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile motor1 = new Motors(t2, connectors2, rotationType2, id2);
+        Tile motor1 = new Motors(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(7,8, motor1);
+            spaceship1.addTile(player1.getNickname(), 7,8, motor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -546,9 +546,9 @@ class SpaceshipTest {
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile dmotor1 = new DoubleMotor(t3, connectors3, rotationType3, id3);
+        Tile dmotor1 = new DoubleMotor(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(8,8, dmotor1);
+            spaceship1.addTile(player1.getNickname(), 8,8, dmotor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -557,9 +557,9 @@ class SpaceshipTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile dmotor2 = new DoubleMotor(t4, connectors4, rotationType4, id4);
+        Tile dmotor2 = new DoubleMotor(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(6,8, dmotor2);
+            spaceship1.addTile(player1.getNickname() , 6,8, dmotor2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -583,10 +583,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -603,9 +603,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -616,9 +616,9 @@ class SpaceshipTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 2;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(), 7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -629,9 +629,9 @@ class SpaceshipTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 3;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -641,9 +641,9 @@ class SpaceshipTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(7,5, cannon1);
+            spaceship1.addTile(player1.getNickname(), 7,5, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -653,9 +653,9 @@ class SpaceshipTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -665,9 +665,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
+        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(), 6,6, dcannon2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -689,10 +689,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -712,9 +712,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -726,9 +726,9 @@ class SpaceshipTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(5,8, storage1);
+            spaceship1.addTile(player1.getNickname(), 5,8, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -739,9 +739,9 @@ class SpaceshipTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(6,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 6,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -751,9 +751,9 @@ class SpaceshipTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(9,7, cannon1);
+            spaceship1.addTile(player1.getNickname(), 9,7, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -763,9 +763,9 @@ class SpaceshipTest {
         ConnectorType[] connectors5 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, id5);
+        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -775,9 +775,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
+        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(5,7, cabin3);
+            spaceship1.addTile(player1.getNickname(), 5,7, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -800,10 +800,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -823,9 +823,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname() , 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -837,9 +837,9 @@ class SpaceshipTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(5,8, storage1);
+            spaceship1.addTile(player1.getNickname(), 5,8, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -850,9 +850,9 @@ class SpaceshipTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(6,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 6,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -862,9 +862,9 @@ class SpaceshipTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(9,7, cannon1);
+            spaceship1.addTile(player1.getNickname(), 9,7, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -874,9 +874,9 @@ class SpaceshipTest {
         ConnectorType[] connectors5 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, id5);
+        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -886,9 +886,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
+        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(5,7, cabin3);
+            spaceship1.addTile(player1.getNickname(), 5,7, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -911,10 +911,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -934,9 +934,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -948,9 +948,9 @@ class SpaceshipTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(5,8, storage1);
+            spaceship1.addTile(player1.getNickname(), 5,8, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -961,9 +961,9 @@ class SpaceshipTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(6,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 6,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -973,9 +973,9 @@ class SpaceshipTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(9,7, cannon1);
+            spaceship1.addTile(player1.getNickname(), 9,7, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -985,9 +985,9 @@ class SpaceshipTest {
         ConnectorType[] connectors5 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, id5);
+        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -997,9 +997,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
+        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(5,7, cabin3);
+            spaceship1.addTile(player1.getNickname(), 5,7, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1022,10 +1022,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -1045,9 +1045,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1059,9 +1059,9 @@ class SpaceshipTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(5,8, storage1);
+            spaceship1.addTile(player1.getNickname(), 5,8, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1072,9 +1072,9 @@ class SpaceshipTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(6,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 6,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1084,9 +1084,9 @@ class SpaceshipTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(9,7, cannon1);
+            spaceship1.addTile(player1.getNickname(), 9,7, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1096,9 +1096,9 @@ class SpaceshipTest {
         ConnectorType[] connectors5 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, id5);
+        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1108,9 +1108,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
+        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(5,7, cabin3);
+            spaceship1.addTile(player1.getNickname(), 5,7, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1120,9 +1120,9 @@ class SpaceshipTest {
         ConnectorType[] connectors7 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType7 = RotationType.NORTH;
         int id7 = 1;
-        Tile cabin4 = new Cabin(t7, connectors7, rotationType7, id7);
+        Tile cabin4 = new Cabin(t7, connectors7, rotationType7, null);
         try {
-            spaceship1.addTile(6,9, cabin4);
+            spaceship1.addTile(player1.getNickname(), 6,9, cabin4);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1147,10 +1147,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -1170,9 +1170,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname() , 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1184,9 +1184,9 @@ class SpaceshipTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(5,8, storage1);
+            spaceship1.addTile(player1.getNickname(), 5,8, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1197,9 +1197,9 @@ class SpaceshipTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(6,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 6,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1209,9 +1209,9 @@ class SpaceshipTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(9,7, cannon1);
+            spaceship1.addTile(player1.getNickname(), 9,7, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1221,9 +1221,9 @@ class SpaceshipTest {
         ConnectorType[] connectors5 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, id5);
+        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1233,9 +1233,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
+        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(5,7, cabin3);
+            spaceship1.addTile(player1.getNickname(), 5,7, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1265,10 +1265,10 @@ class SpaceshipTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -1285,9 +1285,9 @@ class SpaceshipTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1297,9 +1297,9 @@ class SpaceshipTest {
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(), 8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1309,9 +1309,9 @@ class SpaceshipTest {
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile motor3 = new Motors(t3, connectors3, rotationType3, id3);
+        Tile motor3 = new Motors(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(7,8, motor3);
+            spaceship1.addTile(player1.getNickname(), 7,8, motor3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1322,9 +1322,9 @@ class SpaceshipTest {
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
         int maxBattery = 3;
-        Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, id4, maxBattery);
+        Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, null, maxBattery);
         try {
-            spaceship1.addTile(6,8, battery4);
+            spaceship1.addTile(player1.getNickname(), 6,8, battery4);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1335,9 +1335,9 @@ class SpaceshipTest {
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         boolean[] shielded = {true, false, false, true};
-        Tile shield5 = new Shield(t5, connectors5, rotationType5, id5, shielded);
+        Tile shield5 = new Shield(t5, connectors5, rotationType5, null, shielded);
         try {
-            spaceship1.addTile(6,7, shield5);
+            spaceship1.addTile(player1.getNickname(), 6,7, shield5);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1347,9 +1347,9 @@ class SpaceshipTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon6 = new Cannon(t6, connectors6, rotationType6, id6);
+        Tile cannon6 = new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(7,6, cannon6);
+            spaceship1.addTile(player1.getNickname(), 7,6, cannon6);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1360,9 +1360,9 @@ class SpaceshipTest {
         RotationType rotationType7 = RotationType.NORTH;
         int id7 = 1;
         int maxNum = 2;
-        Tile specialStorage7 = new SpecialStorage(t7, connectors7, rotationType7, id7, maxNum);
+        Tile specialStorage7 = new SpecialStorage(t7, connectors7, rotationType7, null, maxNum);
         try {
-            spaceship1.addTile(9,7, specialStorage7);
+            spaceship1.addTile(player1.getNickname(), 9,7, specialStorage7);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1374,9 +1374,9 @@ class SpaceshipTest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player1.getNickname(), 7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1389,9 +1389,9 @@ class SpaceshipTest {
         ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType31 = RotationType.NORTH;
         int id31 = 1;
-        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
+        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, null);
         try {
-            spaceship3.addTile(7,7, cabin31);
+            spaceship3.addTile(player1.getNickname(), 7,7, cabin31);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -1404,9 +1404,9 @@ class SpaceshipTest {
         ConnectorType[] connectors41 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType41 = RotationType.NORTH;
         int id41 = 1;
-        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, id41);
+        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, null);
         try {
-            spaceship4.addTile(7,7, cabin41);
+            spaceship4.addTile(player1.getNickname(), 7,7, cabin41);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }

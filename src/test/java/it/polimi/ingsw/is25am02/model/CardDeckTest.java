@@ -26,7 +26,7 @@ class CardDeckTest {
         //CardDeck cardDeck = new CardDeck(2);
         List<Player> players = new ArrayList<>();
         Spaceship spaceship = new Spaceship(0);
-        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW));
+        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW, null, 1));
 
         Game game = new Game(players,2);
 
@@ -184,7 +184,7 @@ class CardDeckTest {
     public void playNextCardTest() {
         List<Player> players = new ArrayList<>();
         Spaceship spaceship = new Spaceship(2);
-        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW));
+        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW, null, 1));
         Game game = new Game(players,2); //todo anche testflight
         game.getGameboard().initializeGameBoard(players);
 
@@ -192,9 +192,9 @@ class CardDeckTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship.addTile(7,7, cabin1);
+            spaceship.addTile("mario", 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -204,9 +204,9 @@ class CardDeckTest {
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, null);
         try {
-            spaceship.addTile(8,7, cabin2);
+            spaceship.addTile("mario",8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -216,9 +216,9 @@ class CardDeckTest {
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile motor3 = new Motors(t3, connectors3, rotationType3, id3);
+        Tile motor3 = new Motors(t3, connectors3, rotationType3, null);
         try {
-            spaceship.addTile(7,8, motor3);
+            spaceship.addTile("mario", 7,8, motor3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }

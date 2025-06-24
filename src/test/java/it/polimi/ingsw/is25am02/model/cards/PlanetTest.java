@@ -30,10 +30,10 @@ class PlanetTest {
         Spaceship spaceship2 = new Spaceship(2);
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -48,7 +48,7 @@ class PlanetTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxNum1 = 3;
-        Tile storage1 = new Storage(t1, connectors1, rotationType1, id1, maxNum1);
+        Tile storage1 = new Storage(t1, connectors1, rotationType1, null, maxNum1);
 
         //tile 2
         TileType t2 = TileType.STORAGE;
@@ -56,7 +56,7 @@ class PlanetTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum2 = 3;
-        Tile storage2 = new Storage(t2, connectors2, rotationType2, id2, maxNum2);
+        Tile storage2 = new Storage(t2, connectors2, rotationType2, null, maxNum2);
         BlueBox tilebluebox = new BlueBox(BoxType.BLUE);
         try {
             storage2.addBox(tilebluebox);
@@ -82,7 +82,7 @@ class PlanetTest {
         planetOffers.add(planet2boxes);
         //Nel pianeta 1 ci sono due box rossi
         //Nel pianeta 2 c'è un box blu
-        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes);
+        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes, null, null, true);
 
         //todo qui ho cambiato il box con boxtype
         planet.moveBox(game, player1, planetOffers.get(0), storage1.getOccupation(), BoxType.RED, true );
@@ -106,10 +106,10 @@ class PlanetTest {
         Spaceship spaceship2 = new Spaceship(2);
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -124,7 +124,7 @@ class PlanetTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxNum1 = 3;
-        Tile storage1 = new Storage(t1, connectors1, rotationType1, id1, maxNum1);
+        Tile storage1 = new Storage(t1, connectors1, rotationType1, null, maxNum1);
 
         //tile 2
         TileType t2 = TileType.STORAGE;
@@ -132,7 +132,7 @@ class PlanetTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum2 = 3;
-        Tile storage2 = new Storage(t2, connectors2, rotationType2, id2, maxNum2);
+        Tile storage2 = new Storage(t2, connectors2, rotationType2, null, maxNum2);
         BlueBox tilebluebox = new BlueBox(BoxType.BLUE);
         try {
             storage2.addBox(tilebluebox);
@@ -168,7 +168,7 @@ class PlanetTest {
         planetOffersTypes.add(blu);
         //Nel pianeta 1 ci sono due box rossi
         //Nel pianeta 2 c'è un box blu
-        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes);
+        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes, null, null, true);
         game.getCurrentState().setCurrentCard(planet);
         game.getCurrentState().setCurrentPlayer(player1);
 
@@ -213,10 +213,10 @@ class PlanetTest {
         Spaceship spaceship2 = new Spaceship(2);
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -231,7 +231,7 @@ class PlanetTest {
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
         int maxNum1 = 3;
-        Tile storage1 = new Storage(t1, connectors1, rotationType1, id1, maxNum1);
+        Tile storage1 = new Storage(t1, connectors1, rotationType1, null, maxNum1);
 
         //tile 2
         TileType t2 = TileType.STORAGE;
@@ -239,7 +239,7 @@ class PlanetTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum2 = 3;
-        Tile storage2 = new Storage(t2, connectors2, rotationType2, id2, maxNum2);
+        Tile storage2 = new Storage(t2, connectors2, rotationType2, null, maxNum2);
         BlueBox tilebluebox = new BlueBox(BoxType.BLUE);
         try {
             storage2.addBox(tilebluebox);
@@ -267,7 +267,7 @@ class PlanetTest {
         planetOffersTypes.add(blu);
         //Nel pianeta 1 ci sono due box rossi
         //Nel pianeta 2 c'è un box blu
-        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes);
+        Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes, null, null, true);
         game.getCurrentState().setCurrentCard(planet);
         game.getCurrentState().setCurrentPlayer(player1);
 

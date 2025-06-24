@@ -22,13 +22,13 @@ class SlaveOwnerTest {
         Spaceship spaceship3 = new Spaceship(1);
         Spaceship spaceship4 = new Spaceship(1);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -47,9 +47,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -61,9 +61,9 @@ class SlaveOwnerTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 2;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(), 7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -74,9 +74,9 @@ class SlaveOwnerTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -86,9 +86,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(7,5, cannon1);
+            spaceship1.addTile(player1.getNickname(), 7,5, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -98,9 +98,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -110,9 +110,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
+        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(), 6,6, dcannon2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -139,7 +139,7 @@ class SlaveOwnerTest {
         int daysLost = 1;
         int credit = 8 ;
         int humanLost = 1;
-        Card slaveOwner = new SlaveOwner(level,cannonPowers, daysLost,credit,humanLost);
+        Card slaveOwner = new SlaveOwner(level,cannonPowers, daysLost,credit,humanLost, null, null, true);
 
         game.getCurrentState().setCurrentCard(slaveOwner);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -175,13 +175,13 @@ class SlaveOwnerTest {
         Spaceship spaceship3 = new Spaceship(1);
         Spaceship spaceship4 = new Spaceship(1);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -200,9 +200,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -214,9 +214,9 @@ class SlaveOwnerTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 2;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(),7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -227,9 +227,9 @@ class SlaveOwnerTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(),8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -239,9 +239,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(7,5, cannon1);
+            spaceship1.addTile(player1.getNickname(), 7,5, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -251,9 +251,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -263,9 +263,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
+        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(), 6,6, dcannon2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -289,7 +289,7 @@ class SlaveOwnerTest {
         int daysLost = 2;
         int credit = 8 ;
         int humanLost = 1;
-        Card slaveOwner = new SlaveOwner(level,cannonPowers, daysLost,credit,humanLost);
+        Card slaveOwner = new SlaveOwner(level,cannonPowers, daysLost,credit,humanLost, null, null, true);
 
         game.getCurrentState().setCurrentCard(slaveOwner);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -325,13 +325,13 @@ class SlaveOwnerTest {
         Spaceship spaceship3 = new Spaceship(1);
         Spaceship spaceship4 = new Spaceship(1);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null,1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -350,9 +350,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -364,9 +364,9 @@ class SlaveOwnerTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 2;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(), 7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -377,9 +377,9 @@ class SlaveOwnerTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(), 8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -389,9 +389,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(7,5, cannon1);
+            spaceship1.addTile(player1.getNickname(), 7,5, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -401,9 +401,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -413,9 +413,9 @@ class SlaveOwnerTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
+        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(), 6,6, dcannon2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -444,7 +444,7 @@ class SlaveOwnerTest {
         int daysLost = 2;
         int credit = 8 ;
         int humanLost = 1;
-        Card slaveOwner = new SlaveOwner(level,cannonPowers, daysLost,credit,humanLost);
+        Card slaveOwner = new SlaveOwner(level,cannonPowers, daysLost,credit,humanLost, null, null, true);
 
         game.getCurrentState().setCurrentCard(slaveOwner);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);

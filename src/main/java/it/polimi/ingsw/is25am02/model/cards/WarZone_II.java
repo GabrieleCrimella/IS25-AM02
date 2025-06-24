@@ -61,6 +61,7 @@ public class WarZone_II extends Card{
             declarationCannon.put(player, player.getSpaceship().calculateCannonPower(dCannon));
             for(Coordinate battery : batteries) {
                 player.getSpaceship().getTile(battery.x(), battery.y()).get().removeBattery();
+                if (observers != null){
                 for (String nick:observers.keySet()) {
                     try {
                         Coordinate pos = new Coordinate (battery.x(),battery.y());
@@ -68,7 +69,7 @@ public class WarZone_II extends Card{
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
                     }
-                }
+                }}
             }
             if (player.getNickname().equals(getCurrentOrder().getLast())) {
             //if (player.equals(game.getGameboard().getRanking().getLast())) {

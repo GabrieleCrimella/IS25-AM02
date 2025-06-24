@@ -144,13 +144,16 @@ public class HeapTiles {
 
         Tile drawnTile = iterator.next();
         setTiles.remove(drawnTile); // Rimuove la tessera estratta
-        for (String nick: observers.keySet()){
-            try {
-                observers.get(nick).showTileRemovalFromHeapTile(drawnTile.getImagePath());
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+        if (observers != null){
+            for (String nick: observers.keySet()){
+                try {
+                    observers.get(nick).showTileRemovalFromHeapTile(drawnTile.getImagePath());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+                }
             }
         }
+
         return drawnTile;
 
     }
@@ -173,23 +176,28 @@ public class HeapTiles {
         if (!setTiles.remove(t)) {
             throw new IllegalRemoveException("The tile: " + t.getType() + " isn't in heaptiles");
         }
-        for (String nick: observers.keySet()){
-            try {
-                observers.get(nick).showTileRemovalFromHeapTile(t.getImagePath());
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+        if (observers != null){
+            for (String nick: observers.keySet()){
+                try {
+                    observers.get(nick).showTileRemovalFromHeapTile(t.getImagePath());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+                }
             }
         }
+
     }
 
     public void addTile(Tile t, boolean visible) {
         if (visible) t.setVisible();
         setTiles.add(t);
-        for (String nick: observers.keySet()){
-            try {
-                observers.get(nick).showVisibilityUpdate(t.getImagePath(), t.getConnectors(), t.getRotationType(), t.getType(), t.getNumMaxBattery(), t.getNumMaxBox());
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+        if (observers != null){
+            for (String nick: observers.keySet()){
+                try {
+                    observers.get(nick).showVisibilityUpdate(t.getImagePath(), t.getConnectors(), t.getRotationType(), t.getType(), t.getNumMaxBattery(), t.getNumMaxBox());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method show tile removal from heap tile", e);
+                }
             }
         }
     }

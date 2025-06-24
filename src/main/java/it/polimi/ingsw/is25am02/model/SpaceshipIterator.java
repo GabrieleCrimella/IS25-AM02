@@ -199,13 +199,15 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     public void addTile(String nicknameP, Tile tile, int x, int y) throws IllegalAddException {
         if (spaceshipMask[x][y] && spaceshipBoard[x][y].isEmpty() && checkAddition(tile,x,y)){
             spaceshipBoard[x][y] = Optional.of(tile);
-            for (String nick: observers.keySet()){
-                Coordinate pos = new Coordinate (x,y);
-                try {
-                    observers.get(nick).showTileAdditionUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nicknameP, pos);
-                    observers.get(nick).showCurrentTileNullityUpdate(nicknameP);
-                } catch (Exception e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method show tile addition", e);
+            if (observers != null){
+                for (String nick: observers.keySet()){
+                    Coordinate pos = new Coordinate (x,y);
+                    try {
+                        observers.get(nick).showTileAdditionUpdate(tile.getImagePath(), tile.getConnectors(), tile.getRotationType(), tile.getType(), tile.getNumMaxBattery(), tile.getNumMaxBox(), nicknameP, pos);
+                        observers.get(nick).showCurrentTileNullityUpdate(nicknameP);
+                    } catch (Exception e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method show tile addition", e);
+                    }
                 }
             }
         }

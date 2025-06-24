@@ -22,7 +22,7 @@ class StorageTest {
         RotationType rotationType = RotationType.NORTH;
         int id = 1;
         int maxNum = 3;
-        Tile storage = new Storage(t, connectors, rotationType, id, maxNum);
+        Tile storage = new Storage(t, connectors, rotationType, null, maxNum);
 
         GreenBox greenBox = new GreenBox(BoxType.GREEN);
         List<Box> boxCorretti1 =  new ArrayList<>();

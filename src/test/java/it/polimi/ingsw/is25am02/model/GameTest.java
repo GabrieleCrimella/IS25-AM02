@@ -5,12 +5,17 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
 import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
+import it.polimi.ingsw.is25am02.network.VirtualView;
+import it.polimi.ingsw.is25am02.network.rmi.client.RmiClient;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameV;
 import org.junit.jupiter.api.Test;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,13 +43,13 @@ class GameTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         players.add(player1);
         players.add(player2);
@@ -61,13 +66,13 @@ class GameTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.IN_GAME);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -89,13 +94,18 @@ class GameTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        player1.setObservers(null);
         player1.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        player2.setObservers(null);
         player2.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        player3.setObservers(null);
         player3.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+        player4.setObservers(null);
         player4.setStatePlayer(StatePlayerType.IN_GAME);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -113,9 +123,9 @@ class GameTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -130,7 +140,7 @@ class GameTest {
         int maxNum = 2;
         Tile storage1 = new SpecialStorage(t2, connectors2, rotationType2, "", maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(),7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -153,9 +163,9 @@ class GameTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(),8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -165,9 +175,9 @@ class GameTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(7,5, cannon1);
+            spaceship1.addTile(player1.getNickname(),7,5, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -177,9 +187,9 @@ class GameTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(),8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -189,9 +199,9 @@ class GameTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
+        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(),6,6, dcannon2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -202,9 +212,9 @@ class GameTest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player2.getNickname(),7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -218,9 +228,9 @@ class GameTest {
         ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType31 = RotationType.NORTH;
         int id31 = 1;
-        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, id31);
+        Tile cabin31 = new Cabin(t31, connectors31, rotationType31, null);
         try {
-            spaceship3.addTile(7,7, cabin31);
+            spaceship3.addTile(player3.getNickname(),7,7, cabin31);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -234,9 +244,9 @@ class GameTest {
         ConnectorType[] connectors41 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType41 = RotationType.NORTH;
         int id41 = 1;
-        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, id41);
+        Tile cabin41 = new Cabin(t41, connectors41, rotationType41, null);
         try {
-            spaceship4.addTile(7,7, cabin41);
+            spaceship4.addTile(player4.getNickname(),7,7, cabin41);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -269,13 +279,13 @@ class GameTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.IN_GAME);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -292,9 +302,9 @@ class GameTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -304,9 +314,9 @@ class GameTest {
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, id2);
+        Tile cabin2 = new Cabin(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(),8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -324,9 +334,9 @@ class GameTest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player2.getNickname(),7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -336,9 +346,9 @@ class GameTest {
         ConnectorType[] connectors22 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 1;
-        Tile purplecabin22 = new PurpleCabin(t22, connectors22, rotationType22, id22);
+        Tile purplecabin22 = new PurpleCabin(t22, connectors22, rotationType22, null);
         try {
-            spaceship2.addTile(7,8, purplecabin22);
+            spaceship2.addTile(player2.getNickname(),7,8, purplecabin22);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -348,9 +358,9 @@ class GameTest {
         ConnectorType[] connectors23 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType23 = RotationType.NORTH;
         int id23 = 1;
-        Tile cabin23 = new Cabin(t23, connectors23, rotationType23, id23);
+        Tile cabin23 = new Cabin(t23, connectors23, rotationType23, null);
         try {
-            spaceship2.addTile(8,8, cabin23);
+            spaceship2.addTile(player2.getNickname(),8,8, cabin23);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -372,10 +382,10 @@ class GameTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -395,9 +405,9 @@ class GameTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(),7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -409,9 +419,9 @@ class GameTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 2;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(7,6, storage1);
+            spaceship1.addTile(player1.getNickname(),7,6, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -422,9 +432,9 @@ class GameTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8,7, battery3);
+            spaceship1.addTile(player1.getNickname(),8,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -434,9 +444,9 @@ class GameTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(7,5, cannon1);
+            spaceship1.addTile(player1.getNickname(),7,5, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -446,9 +456,9 @@ class GameTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(),8,6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -458,9 +468,9 @@ class GameTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, id6);
+        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(),6,6, dcannon2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -490,10 +500,10 @@ class GameTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -513,9 +523,9 @@ class GameTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(),7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -527,9 +537,9 @@ class GameTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(5,8, storage1);
+            spaceship1.addTile(player1.getNickname(),5,8, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -540,9 +550,9 @@ class GameTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(6,7, battery3);
+            spaceship1.addTile(player1.getNickname(),6,7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -552,9 +562,9 @@ class GameTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile cannon1= new Cannon(t4, connectors4, rotationType4, id4);
+        Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(9,7, cannon1);
+            spaceship1.addTile(player1.getNickname(),9,7, cannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -564,9 +574,9 @@ class GameTest {
         ConnectorType[] connectors5 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, id5);
+        Tile cabin2 = new Cabin(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8,7, cabin2);
+            spaceship1.addTile(player1.getNickname(),8,7, cabin2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -576,9 +586,9 @@ class GameTest {
         ConnectorType[] connectors6 = {ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, id6);
+        Tile cabin3 = new Cabin(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(5,7, cabin3);
+            spaceship1.addTile(player1.getNickname(),5,7, cabin3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -644,10 +654,10 @@ class GameTest {
         Spaceship spaceship3 = new Spaceship(0);
         Spaceship spaceship4 = new Spaceship(0);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
 
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -666,9 +676,9 @@ class GameTest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player2.getNickname(),7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -678,9 +688,9 @@ class GameTest {
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 2;
         int maxNum22 = 2;
-        Tile battery22 = new BatteryStorage(t22, connectors22, rotationType22, id22, maxNum22);
+        Tile battery22 = new BatteryStorage(t22, connectors22, rotationType22, null, maxNum22);
         try {
-            spaceship2.addTile(8,6, battery22);
+            spaceship2.addTile(player2.getNickname(),8,6, battery22);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -690,9 +700,9 @@ class GameTest {
         RotationType rotationType23 = RotationType.NORTH;
         int id23 = 0;
         boolean[] shielded = new boolean[]{true, true, false, false};
-        Tile shield23 = new Shield(t23, connectors23, rotationType23, id23, shielded);
+        Tile shield23 = new Shield(t23, connectors23, rotationType23, null, shielded);
         try {
-            spaceship2.addTile(8,7, shield23);
+            spaceship2.addTile(player2.getNickname(),8,7, shield23);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -725,10 +735,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -752,7 +762,7 @@ class GameTest {
         game.takeTile(playerRosso);
         Coordinate pos76 = new Coordinate(7,6);
         game.addTile(playerRosso,pos76, RotationType.NORTH);
-        spaceshipRosso.viewSpaceship();
+        //spaceshipRosso.viewSpaceship();
         assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
 
 
@@ -768,10 +778,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE,  null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -802,7 +812,7 @@ class GameTest {
         game.bookTile(playerRosso);
 
 
-        spaceshipRosso.viewSpaceship();
+        //spaceshipRosso.viewSpaceship();
         game.tilesSituation();
         assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
 
@@ -817,10 +827,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -858,12 +868,12 @@ class GameTest {
         game.returnTile(playerRosso);
 
         game.tilesSituation();
-        spaceshipRosso.viewSpaceship();
+        //spaceshipRosso.viewSpaceship();
 
         Coordinate pos87 = new Coordinate(8,7);
         game.addBookedTile(playerRosso, 1, pos87, RotationType.NORTH);
         game.tilesSituation();
-        spaceshipRosso.viewSpaceship();
+        //spaceshipRosso.viewSpaceship();
 
         assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
 
@@ -880,10 +890,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -909,7 +919,7 @@ class GameTest {
 
         //creo un tile come se fosse visibile
         ConnectorType connectors[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
-        Tile tileDiProva = new Cabin(TileType.CABIN, connectors, RotationType.NORTH, 1 );
+        Tile tileDiProva = new Cabin(TileType.CABIN, connectors, RotationType.NORTH, null );
         tileDiProva.setVisible();
         game.getHeapTile().getSetTiles().add(tileDiProva);
         game.takeTile(playerRosso, tileDiProva.getImagePath());
@@ -919,7 +929,7 @@ class GameTest {
         Coordinate pos75 = new Coordinate(7,6);
         game.addTile(playerRosso, pos75, RotationType.NORTH);
 
-        spaceshipRosso.viewSpaceship();
+        //spaceshipRosso.viewSpaceship();
         game.tilesSituation();
         assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
 
@@ -934,10 +944,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -990,7 +1000,7 @@ class GameTest {
         }
 
 
-        spaceshipRosso.viewSpaceship();
+        //spaceshipRosso.viewSpaceship();
         game.tilesSituation();
         assertEquals(StatePlayerType.NOT_FINISHED,playerRosso.getStatePlayer());
 
@@ -1005,10 +1015,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -1071,7 +1081,7 @@ class GameTest {
 
 
 
-        spaceshipRosso.viewSpaceship();
+        //spaceshipRosso.viewSpaceship();
         game.tilesSituation();
 
     }
@@ -1085,10 +1095,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -1125,7 +1135,7 @@ class GameTest {
 
         //aggiungo Cabina centrale al Rosso
         ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
-        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
         game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
@@ -1133,21 +1143,21 @@ class GameTest {
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Blu
-        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
         game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
-        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
         game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
-        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
         game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());
@@ -1229,10 +1239,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -1268,7 +1278,7 @@ class GameTest {
 
         //aggiungo Cabina centrale al Rosso
         ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
-        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
         game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
@@ -1276,21 +1286,21 @@ class GameTest {
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Blu
-        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
         game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
-        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
         game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
-        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
         game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());
@@ -1368,10 +1378,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -1408,7 +1418,7 @@ class GameTest {
 
         //aggiungo Cabina centrale al Rosso
         ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
-        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
         game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
@@ -1416,21 +1426,21 @@ class GameTest {
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Blu
-        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
         game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
-        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
         game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
-        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
         game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());
@@ -1526,10 +1536,10 @@ class GameTest {
         Spaceship spaceshipGiallo = new Spaceship(2);
 
         //inizializzo player
-        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED);
-        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE);
-        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN);
-        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW);
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
 
         //aggiungo player alla lista
         List<Player> giocatori = new ArrayList<Player>();
@@ -1566,7 +1576,7 @@ class GameTest {
 
         //aggiungo Cabina centrale al Rosso
         ConnectorType connectorsUUUU[] = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
-        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Rosso = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Rosso.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Rosso);
         game.takeTile(playerRosso, Cabina77Rosso.getImagePath());
@@ -1574,21 +1584,21 @@ class GameTest {
         game.addTile(playerRosso, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Blu
-        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Blu = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null );
         Cabina77Blu.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Blu);
         game.takeTile(playerBlu, Cabina77Blu.getImagePath());
         game.addTile(playerBlu, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Verde
-        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Verde = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null);
         Cabina77Verde.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Verde);
         game.takeTile(playerVerde, Cabina77Verde.getImagePath());
         game.addTile(playerVerde, pos77,RotationType.NORTH);
 
         //aggiungo Cabina centrale al Giallo
-        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, 1 );
+        Tile Cabina77Giallo = new Cabin(TileType.CABIN,connectorsUUUU, RotationType.NORTH, null);
         Cabina77Giallo.setVisible();
         game.getHeapTile().getSetTiles().add(Cabina77Giallo);
         game.takeTile(playerGiallo, Cabina77Giallo.getImagePath());

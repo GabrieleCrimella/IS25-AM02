@@ -22,10 +22,10 @@ class OpenSpaceTest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -42,9 +42,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(),7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -53,9 +53,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors2 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile motor1 = new Motors(t2, connectors2, rotationType2, id2);
+        Tile motor1 = new Motors(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(7,8, motor1);
+            spaceship1.addTile(player1.getNickname(),7,8, motor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -64,9 +64,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile dmotor1 = new DoubleMotor(t3, connectors3, rotationType3, id3);
+        Tile dmotor1 = new DoubleMotor(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(8,8, dmotor1);
+            spaceship1.addTile(player1.getNickname(),8,8, dmotor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -75,9 +75,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile dmotor2 = new DoubleMotor(t4, connectors4, rotationType4, id4);
+        Tile dmotor2 = new DoubleMotor(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(6,8, dmotor2);
+            spaceship1.addTile(player1.getNickname(),6,8, dmotor2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -87,9 +87,9 @@ class OpenSpaceTest {
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         int maxNum = 3;
-        Tile battery1 = new BatteryStorage(t5, connectors5, rotationType5, id5, maxNum);
+        Tile battery1 = new BatteryStorage(t5, connectors5, rotationType5, null, maxNum);
         try {
-            spaceship1.addTile(8,9, battery1);
+            spaceship1.addTile(player1.getNickname(),8,9, battery1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -112,7 +112,7 @@ class OpenSpaceTest {
         game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
 
         //creo la carta
-        Card openSpace = new OpenSpace(2);
+        Card openSpace = new OpenSpace(2, null, null, true);
 
         game.getCurrentState().setCurrentCard(openSpace);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
@@ -140,13 +140,13 @@ class OpenSpaceTest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.IN_GAME);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.IN_GAME);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -164,9 +164,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7,7, cabin1);
+            spaceship1.addTile(player1.getNickname(),7,7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -175,9 +175,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors2 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
-        Tile motor1 = new Motors(t2, connectors2, rotationType2, id2);
+        Tile motor1 = new Motors(t2, connectors2, rotationType2, null);
         try {
-            spaceship1.addTile(7,8, motor1);
+            spaceship1.addTile(player1.getNickname(),7,8, motor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -186,9 +186,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
-        Tile dmotor1 = new DoubleMotor(t3, connectors3, rotationType3, id3);
+        Tile dmotor1 = new DoubleMotor(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(8,8, dmotor1);
+            spaceship1.addTile(player1.getNickname(),8,8, dmotor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -197,9 +197,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
-        Tile dmotor2 = new DoubleMotor(t4, connectors4, rotationType4, id4);
+        Tile dmotor2 = new DoubleMotor(t4, connectors4, rotationType4, null);
         try {
-            spaceship1.addTile(6,8, dmotor2);
+            spaceship1.addTile(player1.getNickname(),6,8, dmotor2);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -209,9 +209,9 @@ class OpenSpaceTest {
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         int maxNum = 3;
-        Tile battery1 = new BatteryStorage(t5, connectors5, rotationType5, id5, maxNum);
+        Tile battery1 = new BatteryStorage(t5, connectors5, rotationType5, null, maxNum);
         try {
-            spaceship1.addTile(8,9, battery1);
+            spaceship1.addTile(player1.getNickname(),8,9, battery1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -223,9 +223,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
         int id21 = 1;
-        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, id21);
+        Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
-            spaceship2.addTile(7,7, cabin21);
+            spaceship2.addTile(player2.getNickname(), 7,7, cabin21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -234,9 +234,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors22 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE};
         RotationType rotationType22 = RotationType.NORTH;
         int id22 = 1;
-        Tile motor21 = new Motors(t22, connectors22, rotationType22, id22);
+        Tile motor21 = new Motors(t22, connectors22, rotationType22, null);
         try {
-            spaceship2.addTile(7,8, motor21);
+            spaceship2.addTile(player2.getNickname(),7,8, motor21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -245,9 +245,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors23 = {ConnectorType.SINGLE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.SINGLE};
         RotationType rotationType23 = RotationType.NORTH;
         int id23 = 1;
-        Tile dmotor21 = new DoubleMotor(t23, connectors23, rotationType23, id23);
+        Tile dmotor21 = new DoubleMotor(t23, connectors23, rotationType23, null);
         try {
-            spaceship2.addTile(8,8, dmotor21);
+            spaceship2.addTile(player2.getNickname(),8,8, dmotor21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -256,9 +256,9 @@ class OpenSpaceTest {
         ConnectorType[] connectors24 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType24 = RotationType.NORTH;
         int id24 = 1;
-        Tile dmotor22 = new DoubleMotor(t24, connectors24, rotationType24, id24);
+        Tile dmotor22 = new DoubleMotor(t24, connectors24, rotationType24, null);
         try {
-            spaceship2.addTile(6,8, dmotor22);
+            spaceship2.addTile(player2.getNickname(),6,8, dmotor22);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -268,9 +268,9 @@ class OpenSpaceTest {
         RotationType rotationType25 = RotationType.NORTH;
         int id25 = 1;
         int maxNum2 = 3;
-        Tile battery21 = new BatteryStorage(t25, connectors25, rotationType25, id25, maxNum2);
+        Tile battery21 = new BatteryStorage(t25, connectors25, rotationType25, null, maxNum2);
         try {
-            spaceship2.addTile(8,9, battery21);
+            spaceship2.addTile(player2.getNickname(),8,9, battery21);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -294,7 +294,7 @@ class OpenSpaceTest {
         game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
 
         //creo la carta
-        Card openSpace = new OpenSpace(2);
+        Card openSpace = new OpenSpace(2, null, null, true);
 
         game.getCurrentState().setCurrentCard(openSpace);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());

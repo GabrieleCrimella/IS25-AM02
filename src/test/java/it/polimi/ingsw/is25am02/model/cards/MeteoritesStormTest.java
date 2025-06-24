@@ -24,13 +24,13 @@ class MeteoritesStormTest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -49,9 +49,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7, 7, cabin1);
+            spaceship1.addTile(player1.getNickname(),7, 7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -63,9 +63,9 @@ class MeteoritesStormTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(6, 7, storage1);
+            spaceship1.addTile(player1.getNickname(),6, 7, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -77,9 +77,9 @@ class MeteoritesStormTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8, 7, battery3);
+            spaceship1.addTile(player1.getNickname(),8, 7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -89,9 +89,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8, 6, dcannon1);
+            spaceship1.addTile(player1.getNickname(),8, 6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -101,9 +101,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon = new Cannon(t6, connectors6, rotationType6, id6);
+        Tile cannon = new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6, 6, cannon);
+            spaceship1.addTile(player1.getNickname(),6, 6, cannon);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -113,9 +113,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors7 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE};
         RotationType rotationType7 = RotationType.NORTH;
         int id7 = 1;
-        Tile cabin7 = new Cabin(t7, connectors7, rotationType7, id7);
+        Tile cabin7 = new Cabin(t7, connectors7, rotationType7, null);
         try {
-            spaceship1.addTile(7, 8, cabin7);
+            spaceship1.addTile(player1.getNickname(),7, 8, cabin7);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -140,7 +140,7 @@ class MeteoritesStormTest {
         ArrayList<Pair<Integer, RotationType>> meteorites = new ArrayList<>();
         Pair<Integer,RotationType> meteor1 = new Pair<>(0,RotationType.NORTH);
         meteorites.add(meteor1);
-        Card meteoritesStorm = new MeteoritesStorm(level, meteorites);
+        Card meteoritesStorm = new MeteoritesStorm(level, meteorites, null, null, true);
 
         game.getCurrentState().setCurrentCard(meteoritesStorm);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
@@ -164,13 +164,13 @@ class MeteoritesStormTest {
         Spaceship spaceship3 = new Spaceship(2);
         Spaceship spaceship4 = new Spaceship(2);
         //4 player
-        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED);
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
         player1.setStatePlayer(StatePlayerType.FINISHED);
-        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
         player2.setStatePlayer(StatePlayerType.FINISHED);
-        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
         player3.setStatePlayer(StatePlayerType.FINISHED);
-        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
         player4.setStatePlayer(StatePlayerType.FINISHED);
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
@@ -189,9 +189,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
         int id1 = 1;
-        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, id1);
+        Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
-            spaceship1.addTile(7, 7, cabin1);
+            spaceship1.addTile(player1.getNickname(),7, 7, cabin1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -203,9 +203,9 @@ class MeteoritesStormTest {
         RotationType rotationType2 = RotationType.NORTH;
         int id2 = 1;
         int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, id2, maxNum);
+        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
-            spaceship1.addTile(6, 7, storage1);
+            spaceship1.addTile(player1.getNickname(),6, 7, storage1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -217,9 +217,9 @@ class MeteoritesStormTest {
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         int maxNum3 = 2;
-        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, id3, maxNum3);
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(8, 7, battery3);
+            spaceship1.addTile(player1.getNickname(),8, 7, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -229,9 +229,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
-        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, id5);
+        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(8, 6, dcannon1);
+            spaceship1.addTile(player1.getNickname(),8, 6, dcannon1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -241,9 +241,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
-        Tile cannon = new Cannon(t6, connectors6, rotationType6, id6);
+        Tile cannon = new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(6, 6, cannon);
+            spaceship1.addTile(player1.getNickname(),6, 6, cannon);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -253,9 +253,9 @@ class MeteoritesStormTest {
         ConnectorType[] connectors7 = {ConnectorType.UNIVERSAL, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE};
         RotationType rotationType7 = RotationType.NORTH;
         int id7 = 1;
-        Tile cabin7 = new Cabin(t7, connectors7, rotationType7, id7);
+        Tile cabin7 = new Cabin(t7, connectors7, rotationType7, null);
         try {
-            spaceship1.addTile(7, 8, cabin7);
+            spaceship1.addTile(player1.getNickname(),7, 8, cabin7);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -280,7 +280,7 @@ class MeteoritesStormTest {
         ArrayList<Pair<Integer, RotationType>> meteorites = new ArrayList<>();
         Pair<Integer, RotationType> meteor1 = new Pair<>(1, RotationType.NORTH);
         meteorites.add(meteor1);
-        Card meteoritesStorm = new MeteoritesStorm(level, meteorites);
+        Card meteoritesStorm = new MeteoritesStorm(level, meteorites, null, null, true);
 
         game.getCurrentState().setCurrentCard(meteoritesStorm);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);

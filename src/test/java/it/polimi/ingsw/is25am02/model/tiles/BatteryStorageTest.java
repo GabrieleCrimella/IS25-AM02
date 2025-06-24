@@ -16,7 +16,7 @@ class BatteryStorageTest {
         RotationType rotationType = RotationType.NORTH;
         int id = 1;
         int maxBattery = 3;
-        BatteryStorage batteryStorage = new BatteryStorage(t, connectors, rotationType, id, maxBattery);
+        BatteryStorage batteryStorage = new BatteryStorage(t, connectors, rotationType, null, maxBattery);
         assertEquals(3, batteryStorage.getNumBattery());
     }
 

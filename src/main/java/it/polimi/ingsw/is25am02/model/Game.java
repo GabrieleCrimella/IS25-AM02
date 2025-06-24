@@ -27,7 +27,7 @@ public class Game implements Game_Interface {
     private boolean buildTimeIsOver;
     private int maxAllowedPlayers;
     private final List<Player> players;
-    private final ConcurrentHashMap<String, VirtualView> observers;
+    private ConcurrentHashMap<String, VirtualView> observers;
     private final int level;
     private final CardDeck deck;
     private final Hourglass hourglass;
@@ -41,10 +41,6 @@ public class Game implements Game_Interface {
 
     public Game(List<Player> players, int level) {
         this.players = players;
-        this.observers = new ConcurrentHashMap<>();
-        for (Player p : players) {
-            observers.put(p.getNickname(), p.getObserver());
-        }
         this.level = level;
         this.diceResult = 0;
         this.buildTimeIsOver = false;
@@ -60,12 +56,19 @@ public class Game implements Game_Interface {
         this.currentState = new State(players.getFirst(), this);
         this.deck = new CardDeck(level);
         this.hourglass = new Hourglass();
-        for (Player p : players) {
-            p.setObservers(observers);
-            p.getSpaceship().setObservers(observers);
-            p.getSpaceship().getSpaceshipIterator().setObservers(observers);
-            heapTile.setObservers(observers);
-            currentState.setObservers(observers);
+        this.observers = null;
+        if (players.getFirst().getObserver() != null) {
+            this.observers = new ConcurrentHashMap<>();
+            for (Player p : players) {
+                observers.put(p.getNickname(), p.getObserver());
+            }
+            for (Player p : players) {
+                p.setObservers(observers);
+                p.getSpaceship().setObservers(observers);
+                p.getSpaceship().getSpaceshipIterator().setObservers(observers);
+                heapTile.setObservers(observers);
+                currentState.setObservers(observers);
+            }
         }
         for (Card card : deck.getInitialDeck()) {
             card.setObservers(observers);
@@ -529,15 +532,19 @@ public class Game implements Game_Interface {
                 //player can see the minidecks
                 if (!player.getDeckAllowed()) {
                     player.setDeckAllowed();
-                    for (String nick : observers.keySet()) {
-                        try {
-                            observers.get(nick).showDeckAllowUpdate(nick);
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                    if (observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showDeckAllowUpdate(nick);
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                            }
                         }
                     }
                 }
-                player.getObserver().displayMessage("build.addTile", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().displayMessage("build.addTile", null);
+                }
             }
         } catch (IllegalStateException e) {
             try {
@@ -569,8 +576,9 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.getSpaceship().bookTile(player);
-
-            player.getObserver().displayMessage("build.bookedTile", null);
+            if (player.getObserver() != null) {
+                player.getObserver().displayMessage("build.bookedTile", null);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -595,7 +603,7 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method booktile");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             ServerController.logger.log(Level.SEVERE, "error in method bookTile", e);
         }
     }
@@ -608,7 +616,9 @@ public class Game implements Game_Interface {
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
             player.getSpaceship().addBookedTile(player.getNickname(), index, pos.x(), pos.y(), rotation);
-            player.getObserver().displayMessage("build.addTile", null);
+            if (player.getObserver() != null) {
+                player.getObserver().displayMessage("build.addTile", null);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);
@@ -633,7 +643,7 @@ public class Game implements Game_Interface {
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addbookedTile");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
 
             ServerController.logger.log(Level.SEVERE, "error in method addBookedTile", e);
         }
@@ -661,11 +671,13 @@ public class Game implements Game_Interface {
             if (player.getSpaceship().getBookedTiles().values().stream().anyMatch(Objects::nonNull)) {
                 player.getSpaceship().addNumOfWastedTiles((int) player.getSpaceship().getBookedTiles().values().stream().filter(Objects::nonNull).count());
                 if (player.getSpaceship().getNumOfWastedTiles() > 0) {
-                    for (String nick : observers.keySet()) {
-                        try {
-                            observers.get(nick).showCreditUpdate(player.getNickname(), (-1) * player.getSpaceship().getNumOfWastedTiles());
-                        } catch (Exception e) {
-                            ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                    if (observers != null){
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showCreditUpdate(player.getNickname(), (-1) * player.getSpaceship().getNumOfWastedTiles());
+                            } catch (Exception e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                            }
                         }
                     }
                 }
@@ -803,11 +815,13 @@ public class Game implements Game_Interface {
             if (type.equals(AliveType.HUMAN)) { //se type è human aggiungo due umani
                 giveTile(player, pos).addCrew(player.getNickname(), type);
                 giveTile(player, pos).addCrew(player.getNickname(), type);
-                for (String nick : observers.keySet()) {
-                    try {
-                        observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                if (observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                        }
                     }
                 }
             } else if (type.equals(AliveType.BROWN_ALIEN)) { // se type è brown_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
@@ -1146,7 +1160,7 @@ public class Game implements Game_Interface {
 
 
             }
-            if(!on){
+            if (!on) {
                 try {
                     player.getObserver().displayMessage("ingame.hidemovebox", null);
                 } catch (Exception e) {
@@ -1437,7 +1451,7 @@ public class Game implements Game_Interface {
             }
 
             getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(), pos.y()));
-            if(pos.x() == -1 && pos.y() == -1) {
+            if (pos.x() == -1 && pos.y() == -1) {
                 try {
                     player.getObserver().displayMessage("ingame.hidecalculatedamage", null);
                 } catch (Exception e) {

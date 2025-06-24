@@ -18,7 +18,7 @@ public class State {
 
     public State(Player player, Game game) {
         this.phase = StateGameType.BUILD;
-        this.currentCard = new InitialCard(1, "","", false);
+        this.currentCard = new InitialCard(1, "", "", false);
         this.currentPlayer = player;
         this.game = game;
     }
@@ -41,36 +41,44 @@ public class State {
 
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
-        for (String nick: observers.keySet()){
-            try {
-                observers.get(nick).showCurrentCardUpdate(currentCard.getImagePath(), currentCard.getStateCard(), currentCard.getCardType(), currentCard.getComment());
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method SetCurrentCard", e);
+        if (observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showCurrentCardUpdate(currentCard.getImagePath(), currentCard.getStateCard(), currentCard.getCardType(), currentCard.getComment());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method SetCurrentCard", e);
+                }
             }
         }
+
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
-        for (String nick: observers.keySet()){
-            try {
-                observers.get(nick).showCurrentPlayerUpdate(currentPlayer.getNickname());
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method setCurrentPlayer", e);
+        if (observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showCurrentPlayerUpdate(currentPlayer.getNickname());
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method setCurrentPlayer", e);
+                }
             }
         }
+
     }
 
     public void setPhase(StateGameType phase) {
         this.phase = phase;
-        for (String nick: observers.keySet()){
-            try {
-                if(phase == StateGameType.TAKE_CARD){
-                    observers.get(nick).showCurrentPlayerUpdate(game.getGameboard().getRanking().getFirst().getNickname());
+        if (observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    if (phase == StateGameType.TAKE_CARD) {
+                        observers.get(nick).showCurrentPlayerUpdate(game.getGameboard().getRanking().getFirst().getNickname());
+                    }
+                    observers.get(nick).showGameStateUpdate(phase);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
                 }
-                observers.get(nick).showGameStateUpdate(phase);
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
             }
         }
     }
