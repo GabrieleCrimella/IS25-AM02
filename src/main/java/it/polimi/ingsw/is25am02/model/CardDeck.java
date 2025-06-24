@@ -110,12 +110,12 @@ public class CardDeck {
         int cannonPower;
         int boxesLost;
         boolean testFlight;
-        LinkedList<Box> boxesWon = new LinkedList<>();
-        LinkedList<BoxType> boxesWonType = new LinkedList<>();
-        ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
-        ArrayList<Pair<Integer, RotationType>> meteorites = new ArrayList<>();
-        ArrayList<LinkedList<Box>> planetOffers = new ArrayList<>();
-        ArrayList<LinkedList<BoxType>> planetOffersTypes = new ArrayList<>();
+        //LinkedList<Box> boxesWon = new LinkedList<>();
+        //LinkedList<BoxType> boxesWonType = new LinkedList<>();
+        //ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
+        //ArrayList<Pair<Integer, RotationType>> meteorites = new ArrayList<>();
+        //ArrayList<LinkedList<Box>> planetOffers = new ArrayList<>();
+        //ArrayList<LinkedList<BoxType>> planetOffersTypes = new ArrayList<>();
 
 
         if(rootNode != null) {
@@ -135,7 +135,9 @@ public class CardDeck {
                     case "ABANDONED_STATION":
                         aliveNeeded = levelNode.get("aliveNeeded").asInt();
                         daysLost = levelNode.get("daysLost").asInt();
-                        boxesWonType.clear();
+                        LinkedList<BoxType> currentBoxesWonType = new LinkedList<BoxType>();
+                        //boxesWonType.clear();
+                        LinkedList<Box> currentBoxesWon = new LinkedList<>();
                         for (JsonNode node : levelNode.get("box")) {
                             BoxType box;
                             if (node.asText().equals("RED")) {
@@ -147,16 +149,17 @@ public class CardDeck {
                             } else if (node.asText().equals("GREEN")) {
                                 box = BoxType.GREEN;
                             } else throw new IllegalArgumentException("I cannot add a box");
-                            boxesWonType.add(box);
+                            currentBoxesWonType.add(box);
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, new LinkedList<>(boxesWon), new LinkedList<>(boxesWonType), imagepath, comment,testFlight));
+                        initialDeck.add(new AbbandonedStation(level, store, aliveNeeded, daysLost, new LinkedList<>(currentBoxesWon), new LinkedList<>(currentBoxesWonType), imagepath, comment,testFlight));
                         break;
                     case "PIRATE":
                         cannonPower = levelNode.get("cannonPower").asInt();
                         creditWin = levelNode.get("creditWin").asInt();
                         daysLost = levelNode.get("daysLost").asInt();
-                        shots.clear();
+                        ArrayList<Pair<Integer, RotationType>> currentShotsP = new ArrayList<Pair<Integer, RotationType>>();
+                        //shots.clear();
                         for (JsonNode shotNode : levelNode.get("shots")) {
                             int smallOrBig = shotNode.get(0).asInt();
                             RotationType rotation;
@@ -169,16 +172,18 @@ public class CardDeck {
                             } else if (shotNode.get(1).asText().equals("west")) {
                                 rotation = RotationType.WEST;
                             } else throw new IllegalArgumentException("I cannot add a shot from JSON");
-                            shots.add(new Pair<>(smallOrBig, rotation));
+                           currentShotsP.add(new Pair<>(smallOrBig, rotation));
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Pirate(level, cannonPower, daysLost, creditWin, shots, imagepath, comment,testFlight));
+                        initialDeck.add(new Pirate(level, cannonPower, daysLost, creditWin, currentShotsP, imagepath, comment,testFlight));
                         break;
                     case "TRAFFICKER":
                         cannonPower = levelNode.get("cannonPower").asInt();
                         daysLost = levelNode.get("daysLost").asInt();
                         boxesLost = levelNode.get("boxesLost").asInt();
-                        boxesWonType.clear();
+                        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+                        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+                        //boxesWonType.clear();
                         for (JsonNode node : levelNode.get("box")) {
                             BoxType box;
                             if (node.asText().equals("RED")) {
@@ -190,10 +195,10 @@ public class CardDeck {
                             } else if (node.asText().equals("GREEN")) {
                                 box = BoxType.GREEN;
                             } else throw new IllegalArgumentException("I cannot add a box");
-                            boxesWonType.add(box);
+                            currentBoxesWonTypeT.add(box);
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, new LinkedList<>(boxesWon), new LinkedList<>(boxesWonType), imagepath,comment,testFlight));
+                        initialDeck.add(new Trafficker(level, store, cannonPower, daysLost, boxesLost, new LinkedList<>(currentBoxesWonT), new LinkedList<>(currentBoxesWonTypeT), imagepath,comment,testFlight));
                         break;
                     case "SLAVEOWNER":
                         cannonPower = levelNode.get("cannonPower").asInt();
@@ -216,7 +221,7 @@ public class CardDeck {
                         initialDeck.add(new Epidemy(level, imagepath,comment,testFlight));
                         break;
                     case "METEORITES":
-                        meteorites.clear();
+                        //meteorites.clear();
                         ArrayList<Pair<Integer, RotationType>> currentMeteorites = new ArrayList<>();
                         for (JsonNode node : levelNode.get("meteorites")) {
                             int smallOrBig = node.get(0).asInt();
@@ -237,7 +242,7 @@ public class CardDeck {
                         break;
                     case "PLANETS":
                         daysLost = levelNode.get("daysLost").asInt();
-                        planetOffersTypes.clear();
+                        //planetOffersTypes.clear();
                         ArrayList<LinkedList<Box>> currentPlanetOffers = new ArrayList<>();
                         ArrayList<LinkedList<BoxType>> currentPlanetOffersTypes = new ArrayList<>();
                         for (JsonNode boxListNode : levelNode.get("boxes")) {
@@ -260,13 +265,13 @@ public class CardDeck {
                             currentPlanetOffersTypes.add(boxList); // Aggiungi la lista alla lista principale
                         }
                         imagepath = levelNode.get("image").asText();
-                        initialDeck.add(new Planet(level, store, daysLost, planetOffers, currentPlanetOffersTypes, imagepath,comment,testFlight));
+                        initialDeck.add(new Planet(level, store, daysLost, currentPlanetOffers, currentPlanetOffersTypes, imagepath,comment,testFlight));
                         break;
                     case "WARZONE1":
                         daysLost = levelNode.get("daysLost").asInt();
                         aliveLost = levelNode.get("aliveLost").asInt();
                         ArrayList<Pair<Integer, RotationType>> currentShots = new ArrayList<Pair<Integer, RotationType>>();
-                        shots.clear();
+                        //shots.clear();
                         for (JsonNode shotNode : levelNode.get("shots")) {
                             int smallOrBig = shotNode.get(0).asInt();
                             RotationType rotation;
@@ -288,7 +293,7 @@ public class CardDeck {
                         daysLost = levelNode.get("daysLost").asInt();
                         boxesLost = levelNode.get("boxesLost").asInt();
                         ArrayList<Pair<Integer, RotationType>> currentShots2 = new ArrayList<Pair<Integer, RotationType>>();
-                        shots.clear();
+                        //shots.clear();
                         for (JsonNode shotNode : levelNode.get("shots")) {
                             int smallOrBig = shotNode.get(0).asInt();
                             RotationType rotation;

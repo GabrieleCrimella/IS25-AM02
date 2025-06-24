@@ -57,7 +57,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+/*
     @Override
     public void onRemoveTileUpdate(Coordinate coordinate) {
         if(observer != null) {
@@ -68,7 +68,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
     @Override
     public void onRemoveBatteryUpdate(int battery, Coordinate coordinate) {
         if(observer != null) {
@@ -80,7 +80,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+/*
     @Override
     public void onRemoveCrewUpdate(String nickname, Coordinate coordinate) {
         if(observer != null) {
@@ -90,7 +90,7 @@ public class Player implements UpdateListener {
                 ServerController.logger.log(Level.SEVERE, "error in method show crew removal", e);
             }
         }
-    }
+    }*/
 
     @Override
     public void onPositionUpdate(String nickname, int position) {
@@ -107,7 +107,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+/*
     @Override
     public void onHourglassUpdate() {
         if(observer != null) {
@@ -142,7 +142,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
 
     @Override
     public void onUpdateEverything(int level, List<Player> players, Gameboard gameboard, Card currentcard, State state, boolean[][] mask, int[] positions, HashMap<Integer, Pair<List<Card>, Boolean>> deck) {
@@ -178,7 +178,7 @@ public class Player implements UpdateListener {
         }
     }
 
-
+/*
     @Override
     public void onBoxUpdate(Coordinate coordinate, List<BoxType> box) {
         if(observer != null) {
@@ -188,8 +188,8 @@ public class Player implements UpdateListener {
                 ServerController.logger.log(Level.SEVERE, "error in method show box addition update", e);
             }
         }
-    }
-
+    }*/
+/*
     @Override
     public void onMiniDeckUpdate(int deck) {
         if(observer != null) {
@@ -200,7 +200,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
     @Override
     public void onCurrentCardUpdate(String imagepath, StateCardType statecard, CardType type, String comment) {
         if(observer != null) {
@@ -211,7 +211,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+/*
     @Override
     public void onCurrentTileUpdate(String nickname, Tile tile) {
         if(observer != null) {
@@ -222,7 +222,8 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
+    /*
     @Override
     public void onCurrentTileNullityUpdate(String nickname) {
         if(observer != null) {
@@ -233,7 +234,8 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
+    /*
     @Override
     public void onVsibilityUpdate(String nickname, Tile tile) {
         if(observer != null) {
@@ -243,8 +245,8 @@ public class Player implements UpdateListener {
                 ServerController.logger.log(Level.SEVERE, "error in method show visibility update", e);
             }
         }
-    }
-
+    }*/
+/*
     @Override
     public void onTileRemovalFromHTUpdate(String imagepath) {
         if(observer != null) {
@@ -255,7 +257,8 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
+    /*
     @Override
     public void onDeckAllowedUpdate() {
         if(observer != null) {
@@ -266,7 +269,8 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
+    /*
     @Override
     public void onGameStateUpdate(StateGameType stateGameType) {
         if(observer != null) {
@@ -277,7 +281,8 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
+    /*
     @Override
     public void onCardStateUpdate(StateCardType stateCardType) {
         if(observer != null) {
@@ -288,7 +293,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
     @Override
     public void onPlayerStateUpdate(String nickname, StatePlayerType statePlayerType) {
         if(observer != null) {
@@ -299,7 +304,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+/*
     @Override
     public void onBookTileUpdate(String nickname) {
         if(observer != null) {
@@ -310,7 +315,8 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
+    /*
     @Override
     public void onCurrentPlayerUpdate(String nickname) {
         if(observer != null) {
@@ -321,7 +327,7 @@ public class Player implements UpdateListener {
             }
         }
     }
-
+*/
     public Spaceship getSpaceship() {
         return spaceship;
     }

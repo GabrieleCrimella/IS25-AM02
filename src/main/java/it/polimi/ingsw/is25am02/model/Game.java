@@ -40,6 +40,7 @@ public class Game implements Game_Interface {
     private int readyPlayer = 0;
     private List<Player> winners = new ArrayList<>();
 
+
     public Game(List<Player> players, int level) {
         this.playersInGame = players.size();
         this.players = players;
@@ -76,7 +77,7 @@ public class Game implements Game_Interface {
             card.setObservers(observers);
         }
     }
-
+/*
     //for testing
     public void tilesSituation() {
         System.out.println("Visible Tiles:");
@@ -115,7 +116,7 @@ public class Game implements Game_Interface {
         }
         System.out.println();
     }
-
+*/
     public CardDeck getDeck() {
         return deck;
     }
@@ -166,11 +167,13 @@ public class Game implements Game_Interface {
     public void setDiceResultManually(int diceResult) {
         this.diceResult = diceResult;
         globalBoard.getDice().setManuallyResult(diceResult);
-        for (String nick : observers.keySet()) {
-            try {
-                observers.get(nick).showDiceUpdate(nick, diceResult);
-            } catch (RemoteException e) {
-                ServerController.logger.log(Level.SEVERE, "error in method setdiceresultmanually", e);
+        if (observers != null) {
+            for (String nick : observers.keySet()) {
+                try {
+                    observers.get(nick).showDiceUpdate(nick, diceResult);
+                } catch (RemoteException e) {
+                    ServerController.logger.log(Level.SEVERE, "error in method setdiceresultmanually", e);
+                }
             }
         }
     }
@@ -661,12 +664,14 @@ public class Game implements Game_Interface {
             player.setStatePlayer(StatePlayerType.FINISHED);
 
             getGameboard().getPositions().put(player, getGameboard().getStartingPosition()[3 - alreadyFinished]);
-            for (String nick : observers.keySet()) {
-                try {
-                    observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[3 - alreadyFinished]);
-                    observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(getGameboard().getStartingPosition()[3 - alreadyFinished])));
-                } catch (Exception e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+            if (observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[3 - alreadyFinished]);
+                        observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(getGameboard().getStartingPosition()[3 - alreadyFinished])));
+                    } catch (Exception e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                    }
                 }
             }
             alreadyFinished++;
@@ -692,7 +697,9 @@ public class Game implements Game_Interface {
                     deck.createFinalDeck(); //mischio i mazzetti e creo il deck finale
                 }
             }
-            player.getObserver().displayMessage("info.finished", null);
+            if (player.getObserver() != null) {
+                player.getObserver().displayMessage("info.finished", null);
+            }
 
         } catch (IllegalStateException e) {
             try {
@@ -717,12 +724,16 @@ public class Game implements Game_Interface {
 
             if (player.getSpaceship().checkSpaceship()) {
                 player.setStatePlayer(StatePlayerType.CORRECT_SHIP);
-                player.getObserver().displayMessage("info.spaceship.right", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().displayMessage("info.spaceship.right", null);
+                }
                 alreadyChecked++;
             } else {
                 player.setStatePlayer(StatePlayerType.WRONG_SHIP);
                 currentState.setPhase(StateGameType.CORRECTION);
-                player.getObserver().reportError("info.spaceship.wrong", null);
+                if (observers != null) {
+                    player.getObserver().reportError("info.spaceship.wrong", null);
+                }
             }
             //alreadyChecked++;
 
@@ -733,10 +744,13 @@ public class Game implements Game_Interface {
                     }
                 }*/
                 if (alreadyChecked == players.size()) {
-                    this.currentState.setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-                    for (Player p : players) {
-                        p.getObserver().displayMessage("info.gameState", Map.of("state", "INITIALIZATION_SPACESHIP"));
+                    this.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+                    if (observers != null) {
+                        for (Player p : players) {
+                            p.getObserver().displayMessage("info.gameState", Map.of("state", "INITIALIZATION_SPACESHIP"));
+                        }
                     }
+
                 } else {
                     this.currentState.setPhase(StateGameType.CORRECTION);
                 }
@@ -781,7 +795,9 @@ public class Game implements Game_Interface {
             if (player.getSpaceship().checkSpaceship()) {
                 player.setStatePlayer(StatePlayerType.CORRECT_SHIP);
                 this.currentState.setPhase(StateGameType.CHECK);
-                player.getObserver().displayMessage("info.spaceship.right", null);
+                if (observers != null) {
+                    player.getObserver().displayMessage("info.spaceship.right", null);
+                }
                 alreadyChecked++;
             } else {
                 player.getObserver().reportError("info.spaceship.wrong", null);
@@ -898,12 +914,14 @@ public class Game implements Game_Interface {
                 if (c.getCrew().isEmpty()) {
                     c.addCrew(player.getNickname(), AliveType.HUMAN);
                     c.addCrew(player.getNickname(), AliveType.HUMAN);
-                    for (String nick : observers.keySet()) {
-                        try {
-                            Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getY(c));
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                    if (observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                Coordinate pos = new Coordinate(player.getSpaceship().getSpaceshipIterator().getX(c), player.getSpaceship().getSpaceshipIterator().getY(c));
+                                observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, AliveType.HUMAN, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                            }
                         }
                     }
                 }
@@ -1237,7 +1255,9 @@ public class Game implements Game_Interface {
 
             getCurrentCard().choiceDoubleMotor(this, player, motors, batteries);
             try {
-                player.getObserver().displayMessage("ingame.hidefinishmotor", Map.of("number", String.valueOf(motors.size())));
+                if (player.getObserver() != null) {
+                    player.getObserver().displayMessage("ingame.hidefinishmotor", Map.of("number", String.valueOf(motors.size())));
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -1283,7 +1303,10 @@ public class Game implements Game_Interface {
 
             getCurrentCard().choiceDoubleCannon(this, player, cannons, batteries);
             try {
-                player.getObserver().displayMessage("ingame.hidefinishcannon", Map.of("number", String.valueOf(cannons.size())));
+                if (player.getObserver() != null) {
+                    player.getObserver().displayMessage("ingame.hidefinishcannon", Map.of("number", String.valueOf(cannons.size())));
+
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -1436,8 +1459,8 @@ public class Game implements Game_Interface {
             stateControl(EFFECT_ON_PLAYER, IN_GAME, StateCardType.ROLL, player);
             currentPlayerControl(player);
 
-            setDiceResult();
-            //setDiceResultManually(8);
+            //setDiceResult();
+            setDiceResultManually(8);
             getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
             /*
             for (Player p : players) {

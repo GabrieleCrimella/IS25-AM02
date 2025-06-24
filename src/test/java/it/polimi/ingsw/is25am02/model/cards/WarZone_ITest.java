@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.model.cards;
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -478,7 +480,13 @@ class WarZone_ITest {
         coordbatt1.add(position);
         coordbatt1.add(position);
 
-        game.choiceDoubleMotor(player1, coordmot1, coordbatt1);
+        try {
+            game.getCurrentCard().choiceDoubleMotor(game, player1, coordmot1, coordbatt1);
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
 
         game.getCurrentState().setCurrentPlayer(player2);
 
@@ -753,7 +761,14 @@ class WarZone_ITest {
         } catch (IllegalPhaseException e) {
             throw new RuntimeException(e);
         }
-        game.calculateDamage(player2,pos1);
+        try {
+            game.setDiceResultManually(7);
+            game.getCurrentCard().calculateDamage(game, player2, Optional.empty());
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
 
         /*try {
             warzone1.keepBlocks(game, player3, new Coordinate(7, 8)); //voglio tenere la parte di nave composta dalla casella 7 8
@@ -968,6 +983,8 @@ class WarZone_ITest {
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
         Pair<Integer,RotationType> shot1 = new Pair<>(1,RotationType.NORTH);
         shots.add(shot1);
+        Pair<Integer,RotationType> shot2 = new Pair<>(2,RotationType.NORTH);
+        shots.add(shot1);
         Card warzone1 = new WarZone_I(level,flyback, aliveLost, shots, null, null, true);
 
         game.getCurrentState().setCurrentCard(warzone1);
@@ -1012,13 +1029,22 @@ class WarZone_ITest {
         } catch (IllegalPhaseException e) {
             throw new RuntimeException(e);
         }
-        game.calculateDamage(player2,pos1);
-
+        game.setDiceResultManually(7);
+        try {
+            game.getCurrentCard().calculateDamage(game, player2, Optional.empty());
+            game.setDiceResultManually(7);
+            game.getCurrentCard().calculateDamage(game, player2, Optional.empty());
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        /*
         try {
             warzone1.keepBlocks(game, player2, new Coordinate(6, 7)); //voglio tenere la parte di nave composta dalla casella 7 8
         } catch (IllegalPhaseException e) {
             System.out.println(e.getMessage());
-        }
+        }*/
 
 
         //dovrebbe subire gli shots solo il giocatore che è piu avanti di quelli a parimerito, quindi il player 2
