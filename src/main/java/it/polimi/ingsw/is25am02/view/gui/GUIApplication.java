@@ -246,7 +246,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     @Override
     public void updateDice(int result) {
         Platform.runLater(()->{
-        GUIController.getInstance().updateDice(result);
+            GUIController.getInstance().updateDice(result);
         });
     }
 

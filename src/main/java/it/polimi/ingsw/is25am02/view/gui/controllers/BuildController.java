@@ -694,6 +694,9 @@ public class BuildController extends GeneralController {
             imageView.setFitHeight(149);
             imageView.setPreserveRatio(true);
             imageView.setStyle("-fx-cursor: hand;");
+            if(tile.getImagePath()==null||getClass().getResourceAsStream(tile.getImagePath())==null){
+                continue;
+            }
             imageView.setImage(new Image(getClass().getResourceAsStream(tile.getImagePath())));
             imageView.setOnMouseClicked(e -> {
                 // Quando clicco su una tile nell'heap, la uso come nuova tile centrale

@@ -624,6 +624,7 @@ public class InGameController extends GeneralController {
         imageView.setLayoutX(10);
         imageView.setLayoutY(10);
         imageView.setPreserveRatio(true);
+        diceResult.setVisible(false);
 
         imageView.setImage(new Image(getClass().getResourceAsStream(newCard.getImagePath())));
         cardPane.getChildren().clear();
@@ -857,6 +858,7 @@ public class InGameController extends GeneralController {
 
     public void updateDice(int result) {
         diceResult.setText("Result: " + result);
+        diceResult.setVisible(true);
     }
 
     @FXML
