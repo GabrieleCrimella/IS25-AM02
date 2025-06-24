@@ -1325,6 +1325,11 @@ public class Game implements Game_Interface {
             currentPlayerControl(player);
 
             getCurrentCard().choiceCrew(this, player);
+            try {
+                player.getObserver().displayMessage("ingame.afterchoicecrew", null);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.state", null);

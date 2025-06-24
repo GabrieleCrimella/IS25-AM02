@@ -700,7 +700,7 @@ public class InGameController extends GeneralController {
                 Pane planetPane = new Pane();
                 planetPane.setPrefSize(200, 50);
                 planetPane.setLayoutX(34);
-                planetPane.setLayoutY(80 + (i * 90)); // Spaziatura tra i pane
+                planetPane.setLayoutY(100 + (i * 100)); // Spaziatura tra i pane
                 planetPane.getStyleClass().add("planet-pane");
 
                 final int index = i;
@@ -1034,15 +1034,6 @@ public class InGameController extends GeneralController {
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
-            finishcannon.setVisible(true);
-            finishcannon.setDisable(false);
-            if (isLeader()) {
-                rollDice.setVisible(true);
-                rollDice.setDisable(false);
-            }
-            diceResult.setVisible(true);
-            calculatedamage.setVisible(true);
-            calculatedamage.setDisable(false);
         }
     }
 
