@@ -268,3 +268,14 @@
 .planet-pane:hover {
     -fx-border-color: yellow;
 }
+
+.exit-message {
+    -fx-text-fill: red;
+    -fx-background-color: #fff8b3; /* giallino */
+    -fx-padding: 20px;
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}

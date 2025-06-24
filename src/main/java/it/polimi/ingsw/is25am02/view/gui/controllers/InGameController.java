@@ -1075,5 +1075,28 @@ public class InGameController extends GeneralController {
         }
         return isMe;
     }
+
+    public void onOutOfGame() {
+        Platform.runLater(() -> {
+            // Mostra un messaggio di notifica
+            showNotification("You are out of the game", NotificationType.INFO, 5000);
+
+            // Disabilita i pulsanti e le interazioni
+            for (Node node : root.getChildren()) {
+                if (node instanceof Button button) {
+                    button.setDisable(true);
+                } else if (node instanceof ChoiceBox<?> choiceBox) {
+                    choiceBox.setDisable(true);
+                }
+            }
+
+            // Mostra un messaggio di uscita
+            Label exitMessage = new Label("You have been removed from the game.");
+            exitMessage.getStyleClass().add("exit-message");
+            exitMessage.setLayoutX((root.getWidth() - exitMessage.prefWidth(-1)) / 2);
+            exitMessage.setLayoutY((root.getHeight() - exitMessage.prefHeight(-1)) / 2);
+            root.getChildren().add(exitMessage);
+        });
+    }
 }
 

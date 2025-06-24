@@ -1789,7 +1789,7 @@ public class Game implements Game_Interface {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
                 try {
-                    p.getObserver().displayMessage("You are out of the game", null);
+                    p.getObserver().displayMessage("info.outOfGame", null);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

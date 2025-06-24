@@ -306,6 +306,13 @@ public class GUIController implements Runnable {
                     return;
                 }
             }
+            case "info.outOfGame"->{
+                if(inUse.equals("InGame")){
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.onOutOfGame();
+                    return;
+                }
+            }
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
@@ -325,6 +332,13 @@ public class GUIController implements Runnable {
         if(inUse.equals("InGame")){
             InGameController inGameCtrl = (InGameController) controllers.get(inUse);
             inGameCtrl.newCard(card);
+        }
+    }
+
+    public void onUpdateStats() {
+        if (inUse.equals("InGame")) {
+            InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+            inGameCtrl.updateStats();
         }
     }
 }

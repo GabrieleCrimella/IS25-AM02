@@ -248,11 +248,7 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void updateStats() {
-        Platform.runLater(() -> {
-            GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
-                controller.updateStats();
-            });
-        });
+        GUIController.getInstance().onUpdateStats();
     }
 
     @Override
