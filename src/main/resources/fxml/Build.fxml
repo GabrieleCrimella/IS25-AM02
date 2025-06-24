@@ -104,7 +104,7 @@
             <HBox fx:id="miniDeckCardsContainer" alignment="CENTER" spacing="10">
                 <!-- Le carte verranno aggiunte qui dinamicamente -->
             </HBox>
-            <Button onAction="#closeMiniDeckPopup" styleClass="main-button" text="Chiudi" />
+            <Button onAction="#closeMiniDeckPopup" styleClass="main-button" text="Close" />
         </VBox>
     </StackPane>
 
