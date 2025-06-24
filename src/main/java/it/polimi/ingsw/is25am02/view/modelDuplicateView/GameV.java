@@ -134,7 +134,7 @@ public class GameV {
                 HashMap<String,String> params = new HashMap<>();
                 params.put("correctstate",stateCard.toString());
                 params.put("wrongstate", getCurrentCard().getStateCard().toString());
-                console.reportError("error.stateCard", null);
+                console.reportError("error.stateCard", params);
                 //todo maybe we have to insert params instead of null?!??!?!?
                 return false;
             }

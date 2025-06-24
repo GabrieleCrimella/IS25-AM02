@@ -1058,11 +1058,10 @@ public class InGameController extends GeneralController {
             Label commentLabel = new Label(comment);
             commentLabel.setWrapText(true);
             commentLabel.setStyle(
-                    "-fx-padding: 10;" +
+                    "-fx-padding: 5;" +
                             "-fx-background-radius: 5;" +
                             "-fx-text-fill: blue;" +             // Colore del testo
-                            "-fx-font-size: 14pt;" +             // Grandezza font
-                            "-fx-font-weight: bold;"             // Grassetto
+                            "-fx-font-size: 12pt;"               // Grandezza font
             );
 
             HBox container = new HBox(commentLabel);
