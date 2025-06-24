@@ -101,8 +101,8 @@
     "hidecalculatedamage": "Damage finished",
     "afterchoicecrew": "You have finished choice crew",
     "diceupdate": "Dice updated",
-    "moveongameboard": "Player moved to position {pos}",
-    "winners": "winners {winners}"
+    "moveongameboard": "Player {nick} moved to position {pos}",
+    "winners": "Winners {winners}"
   },
   "hourglass": {
     "time": "Time left: {tim}",

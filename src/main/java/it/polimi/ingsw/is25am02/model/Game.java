@@ -662,6 +662,7 @@ public class Game implements Game_Interface {
             for (String nick : observers.keySet()) {
                 try {
                     observers.get(nick).showPositionUpdate(player.getNickname(), getGameboard().getStartingPosition()[3 - alreadyFinished]);
+                    observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(getGameboard().getStartingPosition()[3 - alreadyFinished])));
                 } catch (Exception e) {
                     ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
                 }

@@ -223,7 +223,7 @@ public class InGameController extends GeneralController {
         currentPlayerNameLabel.setText(GUIController.getInstance().getController().getGameV().getCurrentState().getCurrentPlayer().getNickname());
         diceTitleLabel.setVisible(false);
         try {
-            movePlayerToPosition(GUIController.getInstance().getController().getGameV().getGlobalBoard().getPositions().get(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname())));
+            movePlayerToPosition(GUIController.getInstance().getNickname(), GUIController.getInstance().getController().getGameV().getGlobalBoard().getPositions().get(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname())));
         } catch (RemoteException e) {
             showNotification("Fail to update initial positions", NotificationType.ERROR, 5000);
         }
@@ -719,7 +719,7 @@ public class InGameController extends GeneralController {
         }
     }
 
-    public void movePlayerToPosition(int cellId) {
+    public void movePlayerToPosition(String nick, int cellId) {
         int numStep = GUIController.getInstance().getController().getGameV().getGlobalBoard().getNumstep();
 
         Map<PlayerColor, ImageView> pieceMap = Map.of(
@@ -730,7 +730,7 @@ public class InGameController extends GeneralController {
         );
         PlayerColor mycolor = null;
         try {
-            mycolor = GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getColor();
+            mycolor = GUIController.getInstance().getController().getPlayerVFromNickname(nick).getColor();
         } catch (RemoteException e) {
             showNotification("Error taking player color", NotificationType.ERROR, 5000);
         }
@@ -774,6 +774,7 @@ public class InGameController extends GeneralController {
                 }
             }
         }
+
     }
 
     @FXML
@@ -1086,7 +1087,6 @@ public class InGameController extends GeneralController {
             isMe = topPlayerNickname.equals(GUIController.getInstance().getNickname());
         }
         return isMe;
-        //todo controlla
     }
 
     public void onOutOfGame() {

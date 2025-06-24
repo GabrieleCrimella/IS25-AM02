@@ -221,10 +221,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         for (PlayerV playerv : gameV.getPlayers()) {
             if (playerv.getNickname().equals(nickname)) {
                 gameV.getGlobalBoard().setPosition(playerv, position);
-                if(gameV.getCurrentState().getPhase().equals(StateGameType.TAKE_CARD)||
-                        gameV.getCurrentState().getPhase().equals(StateGameType.EFFECT_ON_PLAYER)) {
-                    console.moveOnGameboard(position);
-                }
             }
         }
     }

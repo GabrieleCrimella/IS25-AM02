@@ -68,6 +68,11 @@ public class Trafficker extends Card {
                     try {
                         Coordinate pos = new Coordinate(battery.x(), battery.y());
                         observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
+                        try {
+                            observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(player))));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
                     }

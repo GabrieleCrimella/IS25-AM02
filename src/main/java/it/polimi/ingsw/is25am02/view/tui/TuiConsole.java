@@ -657,10 +657,6 @@ public class TuiConsole implements Runnable, ConsoleClient {
 
     }
 
-    @Override
-    public void moveOnGameboard( int pos) {
-
-    }
 
     @Override
     public void setBuildView(int level, PlayerColor color) {

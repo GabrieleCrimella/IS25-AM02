@@ -25,7 +25,6 @@ public interface ConsoleClient {
     void setLobbiesView(Map<Integer, LobbyView> lobbies);
     void newTile(TileV newTile);
     void newCard(CardV card);
-    void moveOnGameboard(int pos);
     void setBuildView(int level, PlayerColor color);
     void setGameView(int level, PlayerColor color);
     void updateStats();

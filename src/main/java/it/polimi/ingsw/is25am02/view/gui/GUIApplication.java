@@ -207,12 +207,6 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     }
 
-    @Override
-    public void moveOnGameboard(int pos) {
-        Platform.runLater(()->{
-        GUIController.getInstance().moveOnGameboard(pos);
-        });
-    }
 
     @Override
     public void setBuildView(int level, PlayerColor color) {

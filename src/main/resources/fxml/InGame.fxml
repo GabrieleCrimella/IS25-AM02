@@ -26,8 +26,8 @@
 
 
         <Label layoutX="1421.0" layoutY="642.0" styleClass="white-context-label" text="My score" />
-        <Label fx:id="doubleLabel" layoutX="50.0" layoutY="400.0" styleClass="white-context-label" text="Double cannon activated: " visible="false" />
-        <Label fx:id="batteryLabel" layoutX="50.0" layoutY="450.0" styleClass="white-context-label" text="Batteries selected: " visible="false" />
+        <Label fx:id="doubleLabel" layoutX="530.0" layoutY="475.0" styleClass="white-context-label" text="Double cannon activated: " visible="false" />
+        <Label fx:id="batteryLabel" layoutX="895.0" layoutY="475.0" styleClass="white-context-label" text="Batteries selected: " visible="false" />
 
         <VBox layoutX="1298.0" layoutY="700.0" prefHeight="300" prefWidth="600.0" spacing="10" styleClass="info-box">
             <HBox VBox.vgrow="ALWAYS">

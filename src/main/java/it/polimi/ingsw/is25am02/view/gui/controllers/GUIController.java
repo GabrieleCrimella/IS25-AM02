@@ -162,7 +162,7 @@ public class GUIController implements Runnable {
 
     public void showMessage(String keys, Map<String, String> params) {
         switch (keys) {
-            case "build.bookedTile"->{
+            case "build.bookedTile" -> {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
                     bldCtrl.onBookedTileSuccess();
@@ -219,7 +219,7 @@ public class GUIController implements Runnable {
                 }
                 //controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
             }
-            case "hourglass.flipped"->{
+            case "hourglass.flipped" -> {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
                     bldCtrl.onHourglassFlipped();
@@ -231,90 +231,90 @@ public class GUIController implements Runnable {
                 BuildController bldCtrl = (BuildController) controllers.get(inUse);
                 bldCtrl.seeHourglass(timeleft);
             }
-            case "minideck.view"->{
+            case "minideck.view" -> {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
                     bldCtrl.onViewMiniDeck(params.get("index"));
                 }
             }
-            case "minideck.return"->{
+            case "minideck.return" -> {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
                     bldCtrl.onReturnMiniDeck();
                 }
             }
-            case "ingame.hidechoicebox"->{
+            case "ingame.hidechoicebox" -> {
                 boolean visible = Boolean.parseBoolean(params.get("visible"));
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.hideChoiceBox(visible);
                 }
             }
-            case "ingame.hidechoice"->{
+            case "ingame.hidechoice" -> {
                 boolean choice = Boolean.parseBoolean(params.get("choice"));
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.hideChoice(choice);
                 }
             }
-            case "ingame.hidefinishcannon"->{
+            case "ingame.hidefinishcannon" -> {
                 int number = Integer.parseInt(params.get("number"));
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.hideFinishCannon(number);
                 }
             }
-            case "ingame.hidefinishmotor"->{
+            case "ingame.hidefinishmotor" -> {
                 int number = Integer.parseInt(params.get("number"));
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.hideFinishMotor(number);
                 }
             }
-            case "ingame.hidemovebox"->{
+            case "ingame.hidemovebox" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.hideMoveBox();
                 }
             }
-            case "ingame.hidechoiceplanet"->{
+            case "ingame.hidechoiceplanet" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.hideChoicePlanet();
                 }
             }
-            case "ingame.hidecalculatedamage"->{
+            case "ingame.hidecalculatedamage" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.hideCalculateDamage();
                 }
             }
-            case "ingame.afterchoicecrew"->{
+            case "ingame.afterchoicecrew" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.afterChoiceCrew();
                 }
             }
-            case "ingame.diceupdate"->{
+            case "ingame.diceupdate" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.showdiceresult();
                 }
             }
-            case "build.addCrew"->{
+            case "build.addCrew" -> {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
                     bldCtrl.onAddCrewSuccess();
                     return;
                 }
             }
-            case "ingame.moveongameboard"->{
+            case "ingame.moveongameboard" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
-                    inGameCtrl.movePlayerToPosition(Integer.parseInt(params.get("pos")));
+                    inGameCtrl.movePlayerToPosition(params.get("nick"), Integer.parseInt(params.get("pos")));
                 }
             }
-            case "ingame.winners"->{
+            case "ingame.winners" -> {
                 String winners = (params.get("winners"));
                 HashMap<String, Integer> winnersMap = parseWinnersMap(winners);
                 if (inUse.equals("Result")) {
@@ -361,14 +361,14 @@ public class GUIController implements Runnable {
         if (inUse.equals("Build")) {
             BuildController bldCtrl = (BuildController) controllers.get(inUse);
             bldCtrl.onRemoveTile(coordinate);
-        } else if(inUse.equals("InGame")){
+        } else if (inUse.equals("InGame")) {
             InGameController inGameCtrl = (InGameController) controllers.get(inUse);
             inGameCtrl.onRemoveTile(coordinate);
         }
     }
 
     public void newCard(CardV card) {
-        if(inUse.equals("InGame")){
+        if (inUse.equals("InGame")) {
             InGameController inGameCtrl = (InGameController) controllers.get(inUse);
             inGameCtrl.newCard(card);
         }
@@ -395,13 +395,6 @@ public class GUIController implements Runnable {
         }
     }
 
-
-    public void moveOnGameboard(int pos) {
-    if (inUse.equals("InGame")) {
-            InGameController inGameCtrl = (InGameController) controllers.get(inUse);
-            inGameCtrl.movePlayerToPosition(pos);
-        }
-    }
 
 
     public void newTile(TileV newTile) {

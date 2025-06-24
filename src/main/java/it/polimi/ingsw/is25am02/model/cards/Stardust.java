@@ -12,6 +12,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class Stardust extends Card {
@@ -43,6 +44,11 @@ public class Stardust extends Card {
                 for (String nick : observers.keySet()) {
                     try {
                         observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                        try {
+                            observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(player))));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
                     }

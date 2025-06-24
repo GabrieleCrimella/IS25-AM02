@@ -73,6 +73,11 @@ public class WarZone_I extends Card {
                     for (String nick : observers.keySet()) {
                         try {
                             observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                            try {
+                                observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(player))));
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
                         } catch (RemoteException e) {
                             ServerController.logger.log(Level.SEVERE, "error in method choicecrew", e);
                         }
