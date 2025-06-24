@@ -244,31 +244,35 @@ public class Game implements Game_Interface {
         try {
             levelControl();
             buildControl();
+            System.out.println(globalBoard.getHourGlassFlip());
             if (!hourglass.getRunning()) {
-                if (globalBoard.getHourGlassFlip() > 1) {
-                    stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
-                    hourglass.flip(this);
-                    globalBoard.decreaseHourGlassFlip();
+                int currentFlip = globalBoard.getHourGlassFlip();
+                System.out.println("Hourglass flips left: " + currentFlip);
 
-                } else if (globalBoard.getHourGlassFlip() == 1) {
-                    stateControl(StateGameType.BUILD, StatePlayerType.FINISHED, StateCardType.FINISH, player);
-                    hourglass.flip(this);
-                    globalBoard.decreaseHourGlassFlip();
+                if (currentFlip == 2) {
+                    stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
+                    globalBoard.decreaseHourGlassFlip();  // ora vale 1
+                    hourglass.flip(this); // parte il primo timer
+                } else if (currentFlip == 1) {
+                    stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
+                    globalBoard.decreaseHourGlassFlip();  // ora vale 0
+                    hourglass.flip(this); // parte il secondo timer
+                } else {
+                    throw new IllegalStateException("Hourglass already used twice");
                 }
-                //player.onHourglassUpdate();
+
                 for (String nick : observers.keySet()) {
                     try {
                         observers.get(nick).displayMessage("hourglass.flipped", null);
-                    } catch (RemoteException e) {
-                        ServerController.logger.log(Level.SEVERE, "error in method flipHourglass", e);
                     } catch (Exception e) {
                         ServerController.logger.log(Level.SEVERE, "error in method flipHourglass", e);
                         reportErrorOnServer("connection problem in method flipHourglass");
                     }
                 }
             } else {
-                throw new IllegalStateException("");
+                throw new IllegalStateException("Hourglass already running");
             }
+
         } catch (IllegalStateException e) {
             try {
                 player.getObserver().reportError("error.hourglass", null);

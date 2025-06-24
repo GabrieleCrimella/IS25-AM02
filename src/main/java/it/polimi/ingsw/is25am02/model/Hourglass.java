@@ -32,7 +32,9 @@ public class Hourglass {
     public void flip(Game game) {
         if (running) {
             timer.cancel();
+            running = false;
         }
+
         timer = new Timer();
         timeLeft = durata;
         running = true;
@@ -41,30 +43,35 @@ public class Hourglass {
             @Override
             public void run() {
                 timeLeft--;
+
                 if (timeLeft <= 0) {
                     timer.cancel();
                     running = false;
-                    if (game.getGameboard().getHourGlassFlip() == 1) {
+
+                    System.out.println("Timer scaduto, stato clessidra: " + game.getGameboard().getHourGlassFlip());
+
+                    // SOLO al secondo giro (quando flip == 0)
+                    if (game.getGameboard().getHourGlassFlip() == 0) {
                         game.setBuildTimeIsOver();
                         for (Player p : game.getPlayers()) {
                             try {
-                                if (p.getStatePlayer().equals(StatePlayerType.NOT_FINISHED)){
+                                if (p.getStatePlayer().equals(StatePlayerType.NOT_FINISHED)) {
                                     game.shipFinished(p);
-                                    //p.setStatePlayer(StatePlayerType.FINISHED);
                                 }
-                                //p.onPlayerStateUpdate(p.getNickname(), p.getStatePlayer());
-                                //p.getObserver().showBuildTimeIsOverUpdate();
-                                //p.getObserver().displayMessage("hourglass.finished",null);
                             } catch (Exception e) {
-                                ServerController.logger.log(Level.SEVERE, "error in fliphourglass", e);
+                                ServerController.logger.log(Level.SEVERE, "Errore in shipFinished", e);
                             }
                         }
                     }
                 }
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 1000);
+
+        // Avvia il timer ogni secondo
+        timer.scheduleAtFixedRate(task, 1000, 1000);  // saltiamo il primo tick a 0
     }
+
 }
+
 
 

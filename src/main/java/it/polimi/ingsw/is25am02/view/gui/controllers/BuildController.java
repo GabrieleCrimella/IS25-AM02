@@ -1039,11 +1039,12 @@ public class BuildController extends GeneralController {
                     // Questo blocco di codice viene eseguito ogni secondo
                     secondsLeft--;
 
-                    if (secondsLeft >= 0) {
+                    if (secondsLeft > 0) {
                         labelHourglass.setText(secondsLeft + "s left!");
                     } else {
                         timeline.stop();
-                        System.out.println("Tempo scaduto!");
+                        labelHourglass.setVisible(false);
+                        flipHourglassButton.setVisible(true);
                     }
                 })
         );
