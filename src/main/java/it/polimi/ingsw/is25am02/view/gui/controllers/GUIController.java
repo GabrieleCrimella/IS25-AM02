@@ -306,6 +306,20 @@ public class GUIController implements Runnable {
                     return;
                 }
             }
+            case "ingame.moveongameboard"->{
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.movePlayerToPosition(Integer.parseInt(params.get("pos")));
+                }
+            }
+            case "ingame.winners"->{
+                String winners = (params.get("winners"));
+                HashMap<String, Integer> winnersMap = parseWinnersMap(winners);
+                if (inUse.equals("Result")) {
+                    ResultController resultController = (ResultController) controllers.get(inUse);
+                    resultController.showWinners(winnersMap);
+                }
+            }
             case "info.outOfGame"->{
                 if(inUse.equals("InGame")){
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
@@ -316,6 +330,29 @@ public class GUIController implements Runnable {
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
+    }
+
+    public HashMap<String, Integer> parseWinnersMap(String mapStr) {
+        HashMap<String, Integer> result = new HashMap<>();
+        mapStr = mapStr.replaceAll("[{}]", "").trim();
+
+        if (mapStr.isEmpty()) return result;
+
+        // Split delle entry: es "Alice=3, Bob=2"
+        String[] entries = mapStr.split(",\\s*");
+        for (String entry : entries) {
+            String[] kv = entry.split("=");
+            if (kv.length == 2) {
+                String key = kv[0].trim();
+                try {
+                    Integer value = Integer.parseInt(kv[1].trim());
+                    result.put(key, value);
+                } catch (NumberFormatException e) {
+                    // log, ignora o gestisci errori di parsing
+                }
+            }
+        }
+        return result;
     }
 
     public void onRemoveTile(Coordinate coordinate) {

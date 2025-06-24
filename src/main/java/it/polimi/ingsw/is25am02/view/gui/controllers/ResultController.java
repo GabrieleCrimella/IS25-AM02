@@ -7,7 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResultController extends GeneralController{
 
@@ -33,12 +35,16 @@ public class ResultController extends GeneralController{
         });
     }
 
-    public void showWinners(List<String> winners) {
+    public void showWinners(HashMap<String, Integer> winners) {
         StringBuilder winnersText = new StringBuilder("Winners: ");
-        for (String winner : winners) {
-            winnersText.append(winner).append(" ");
+        for (Map.Entry<String, Integer> entry : winners.entrySet()) {
+            winnersText.append(entry.getKey())
+                    .append(" (")
+                    .append(entry.getValue())
+                    .append(") ")
+                    .append("  ");
         }
-        winnersLabel.setText(winnersText.toString());
+        winnersLabel.setText(winnersText.toString().trim());
     }
 
 

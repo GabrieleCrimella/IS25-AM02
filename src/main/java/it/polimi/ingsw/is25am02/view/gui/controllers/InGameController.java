@@ -641,7 +641,7 @@ public class InGameController extends GeneralController {
             finishcannon.setDisable(false);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
-            if(isLeader()){
+            if (isLeader()) {
                 rollDice.setVisible(true);
                 rollDice.setDisable(false);
             }
@@ -670,9 +670,9 @@ public class InGameController extends GeneralController {
             }
             loadComments("War Zone 1: Phase 1, the player with fewer humans automatically loses flight days. Phase 2, you can choose to activate motors using batteries; the player with fewer motors must choose where to remove alive crew members by clicking on the cabins. Phase 3, you can choose to activate cannons using batteries; the player with fewer cannons must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)) {
-            if(isLeader()){
-                rollDice.setVisible(false);
-                rollDice.setDisable(true);
+            if (isLeader()) {
+                rollDice.setVisible(true);
+                rollDice.setDisable(false);
             }
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
@@ -686,7 +686,7 @@ public class InGameController extends GeneralController {
                 Pane planetPane = new Pane();
                 planetPane.setPrefSize(200, 50);
                 planetPane.setLayoutX(34);
-                planetPane.setLayoutY(69 + (i * 90)); // Spaziatura tra i pane
+                planetPane.setLayoutY(80 + (i * 90)); // Spaziatura tra i pane
                 planetPane.getStyleClass().add("planet-pane");
 
                 final int index = i;
@@ -986,7 +986,7 @@ public class InGameController extends GeneralController {
             } catch (RemoteException e) {
                 showNotification("Error with choice crew", NotificationType.ERROR, 5000);
             }
-            if( isLeader()) {
+            if (isLeader()) {
                 rollDice.setVisible(true);
                 rollDice.setDisable(false);
             }
@@ -1020,7 +1020,7 @@ public class InGameController extends GeneralController {
             finishmotor.setDisable(false);
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
-            if(isLeader()){
+            if (isLeader()) {
                 rollDice.setVisible(true);
                 rollDice.setDisable(false);
             }
@@ -1050,7 +1050,13 @@ public class InGameController extends GeneralController {
         for (String comment : commentList) {
             Label commentLabel = new Label(comment);
             commentLabel.setWrapText(true);
-            commentLabel.setStyle("-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-border-color: #ccc; -fx-background-radius: 5;");
+            commentLabel.setStyle(
+                    "-fx-padding: 10;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-text-fill: blue;" +             // Colore del testo
+                            "-fx-font-size: 14pt;" +             // Grandezza font
+                            "-fx-font-weight: bold;"             // Grassetto
+            );
 
             HBox container = new HBox(commentLabel);
             container.setStyle("-fx-padding: 5;");
@@ -1074,6 +1080,7 @@ public class InGameController extends GeneralController {
             isMe = topPlayerNickname.equals(GUIController.getInstance().getNickname());
         }
         return isMe;
+        //todo controlla
     }
 
     public void onOutOfGame() {
