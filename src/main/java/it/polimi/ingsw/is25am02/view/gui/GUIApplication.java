@@ -182,25 +182,16 @@ public class GUIApplication extends Application implements ConsoleClient {
     @Override
     public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
         this.lobbies = lobbies;
-
-        // Richiama il controller della GUI
-        Platform.runLater(() -> {
-            GUIController gui = GUIController.getInstance();
-            gui.<LobbyController>switchScene("lobby", "Lobby", controller -> {
-                controller.setLobbyListFromMap(lobbies);
-            });
+        Platform.runLater(()->{
+            GUIController.getInstance().setLobbiesView(lobbies);
         });
-
     }
 
     @Override
     public void newTile(TileV newTile) {
-        Platform.runLater(() -> {
-            GUIController.getInstance().<BuildController>switchScene("Build", "build spaceship", controller -> {
-                controller.newTile(newTile);
-            });
+        Platform.runLater(()-> {
+            GUIController.getInstance().newTile(newTile);
         });
-
     }
 
     @Override
@@ -218,10 +209,8 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void moveOnGameboard(int pos) {
-        Platform.runLater(() -> {
-            GUIController.getInstance().<InGameController>switchScene("InGame", "in game", controller -> {
-                controller.movePlayerToPosition(pos);
-            });
+        Platform.runLater(()->{
+        GUIController.getInstance().moveOnGameboard(pos);
         });
     }
 
@@ -248,25 +237,22 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void updateStats() {
+        Platform.runLater(()->{
         GUIController.getInstance().onUpdateStats();
+        });
     }
 
     @Override
     public void updateCurrentPlayer() {
-        Platform.runLater(() -> {
-            GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
-                controller.updateCurrentPlayerName();
-            });
+        Platform.runLater(()->{
+        GUIController.getInstance().updateCurrentPlayer();
         });
-
     }
 
     @Override
     public void updateDice(int result) {
-        Platform.runLater(() -> {
-            GUIController.getInstance().<InGameController>switchScene("InGame", "InGame", controller -> {
-                controller.updateDice(result);
-            });
+        Platform.runLater(()->{
+        GUIController.getInstance().updateDice(result);
         });
     }
 
@@ -296,7 +282,9 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void removedTile(Coordinate coordinate) {
+        Platform.runLater(()->{
         GUIController.getInstance().onRemoveTile(coordinate);
+        });
     }
 
     //todo si potrebbe aggiugnere anche il caricamento dei fonts

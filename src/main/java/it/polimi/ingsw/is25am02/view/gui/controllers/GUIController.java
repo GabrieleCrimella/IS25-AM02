@@ -3,7 +3,9 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
 import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
+import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
+import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -376,6 +378,43 @@ public class GUIController implements Runnable {
         if (inUse.equals("InGame")) {
             InGameController inGameCtrl = (InGameController) controllers.get(inUse);
             inGameCtrl.updateStats();
+        }
+    }
+
+    public void updateDice(int result) {
+        if( inUse.equals("InGame")) {
+            InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+            inGameCtrl.updateDice(result);
+        }
+    }
+
+    public void updateCurrentPlayer() {
+    if (inUse.equals("InGame")) {
+            InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+            inGameCtrl.updateCurrentPlayerName();
+        }
+    }
+
+
+    public void moveOnGameboard(int pos) {
+    if (inUse.equals("InGame")) {
+            InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+            inGameCtrl.movePlayerToPosition(pos);
+        }
+    }
+
+
+    public void newTile(TileV newTile) {
+    if (inUse.equals("Build")) {
+            BuildController bldCtrl = (BuildController) controllers.get(inUse);
+            bldCtrl.newTile(newTile);
+        }
+    }
+
+    public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
+    if (inUse.equals("lobby")) {
+            LobbyController lobbyCtrl = (LobbyController) controllers.get(inUse);
+            lobbyCtrl.setLobbyListFromMap(lobbies);
         }
     }
 }
