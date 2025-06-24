@@ -192,6 +192,8 @@
         <Button fx:id="noChoicePlanet" layoutX="50.0" layoutY="270.0" onAction="#onNoChoicePlanet" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="I don't want to land" visible="false" />
         <Button fx:id="choiceYes" layoutX="50.0" layoutY="270.0" onAction="#onChoiceYes" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice yes" visible="false" />
         <Button fx:id="choiceNo" layoutX="50.0" layoutY="340.0" onAction="#onChoiceNo" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice no" visible="false" />
+        <Button fx:id="earlyLandingButton" layoutX="1100.0" layoutY="25.0" onAction="#onEarlyLanding" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Early Landing" />
+
 
         <Label layoutX="66.0" layoutY="231.0" styleClass="white-context-label" text="Current player:" />
         <Label fx:id="currentPlayerNameLabel" layoutX="240.0" layoutY="231.0" styleClass="white-context-label" text="..." />
@@ -246,7 +248,6 @@
                 <Button onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
             </VBox>
         </StackPane>
-      <Button fx:id="earlyLandingButton" layoutX="1100.0" layoutY="25.0" onAction="#onEarlyLanding" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Early Landing" />
 
     </Pane>
 
