@@ -101,16 +101,16 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
     public void pingFromServer() {
         Thread pingClients = new Thread(() -> {
             while (running) {
-                try {
-                    for(String client : registeredClients.keySet()) {
+                for(String client : registeredClients.keySet()) {
+                    try {
                         registeredClients.get(client).pingFromServer();
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    } catch (RemoteException e) {
+                        disconnectClient(client);
                     }
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                } catch (RemoteException e) {
-                    //go on
                 }
             }
         });

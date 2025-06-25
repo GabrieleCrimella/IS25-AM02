@@ -778,8 +778,10 @@ public class ClientHandler implements Runnable, VirtualView {
             //Sending
             out.writeObject(gson.toJson(cmd));
             out.flush();
-        } catch (IOException | NullPointerException e) {
+        } catch (IOException e) {
             System.err.println("Errore durante l'invio del metodo pingFromServer: " + e.getMessage());
+        } catch ( NullPointerException d) {
+            throw new RemoteException();
         }
     }
 
