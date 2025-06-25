@@ -35,10 +35,6 @@
                 <Label fx:id="creditsValue" styleClass="info-value" text="0" />
             </HBox>
             <HBox VBox.vgrow="ALWAYS">
-                <Label styleClass="info-label" text="Lost tiles:" />
-                <Label fx:id="lostTilesValue" styleClass="info-value" text="0" />
-            </HBox>
-            <HBox VBox.vgrow="ALWAYS">
                 <Label styleClass="info-label" text="Number of alive  " />
                 <Label styleClass="info-label" text=" Human: " />
                 <Label fx:id="humansValue" styleClass="info-value" text="0" />

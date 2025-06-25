@@ -57,8 +57,6 @@ public class InGameController extends GeneralController {
     @FXML
     private Label creditsValue;
     @FXML
-    private Label lostTilesValue;
-    @FXML
     private Label batteriesValue;
     @FXML
     private Label RedValue;
@@ -241,7 +239,6 @@ public class InGameController extends GeneralController {
     public void updateStats() {
         try {
             creditsValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getCredits()));
-            lostTilesValue.setText(String.valueOf(0));
             batteriesValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumBatteries()));
             RedValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalRedBoxes()));
             GreenValue.setText(String.valueOf(GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumFinalGreenBoxes()));
@@ -621,6 +618,7 @@ public class InGameController extends GeneralController {
         finishcannon.setDisable(true);
         finishmotor.setVisible(false);
         finishmotor.setDisable(true);
+        meteoritesIndex.setVisible(false);
         finishmoveboxes.setVisible(false);
         finishmoveboxes.setDisable(true);
         diceTitleLabel.setVisible(false);
@@ -881,7 +879,7 @@ public class InGameController extends GeneralController {
     @FXML
     public void onCalculateDamage() {
         try {
-            GUIController.getInstance().getController().calculateDamage(GUIController.getInstance().getNickname(), new Coordinate(-1, -1));
+            GUIController.getInstance().getController().calculateDamage(GUIController.getInstance().getNickname(), new Coordinate(0, 0));
         } catch (RemoteException e) {
             showNotification("Error with calculate damage", NotificationType.ERROR, 5000);
         }
