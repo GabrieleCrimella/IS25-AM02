@@ -815,7 +815,6 @@ public class BuildController extends GeneralController {
 
     public void onShipFinished() {
         Platform.runLater(() -> {
-            currentTileImage = null;
             postoInizialeTile.setVisible(false);
             posizioneAttuale.setVisible(false);
             posizioneNuovaTile.setVisible(false);
@@ -834,6 +833,15 @@ public class BuildController extends GeneralController {
             finishButton.setVisible(false);
             viewOtherSpaceshipLabel.setText("Fase di check!");
             checkButton.setVisible(true);
+
+            if(currentTileImage!=null){
+                Parent parent = currentTileImage.getParent();
+                if (currentTileImage.getParent() instanceof Pane parentPane) {
+                    parentPane.getChildren().remove(currentTileImage);
+                }
+                //postoInizialeTile.getChildren().remove(currentTileImage);
+                currentTileImage = null;
+            }
         });
 
     }
