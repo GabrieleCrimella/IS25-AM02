@@ -333,36 +333,47 @@ public class Game implements Game_Interface {
 
             player.setNumDeck(index);
             deck.giveDeck(index);
-            player.getObserver().displayMessage("minideck.view", Map.of("index", String.valueOf(index)));
-            for (String nick : observers.keySet()) {
-                try {
-                    observers.get(nick).showMinideckUpdate(nick, index);
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+            if(player.getObserver() != null) {
+                player.getObserver().displayMessage("minideck.view", Map.of("index", String.valueOf(index)));
+            }
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showMinideckUpdate(nick, index);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method returnTile", e);
+                    }
                 }
             }
-
         } catch (LevelException e) {
             try {
-                player.getObserver().reportError("error.level", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.level", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeminideck");
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeminideck");
             }
         } catch (IllegalPhaseException e) {
             try {
-                player.getObserver().reportError("error.phase", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.phase", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeminideck");
             }
         } catch (AlreadyViewingException e) {
             try {
-                player.getObserver().reportError("minideck.viewing", Map.of("index", String.valueOf(index)));
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("minideck.viewing", Map.of("index", String.valueOf(index)));
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeminideck");
             }
@@ -383,37 +394,47 @@ public class Game implements Game_Interface {
             deck.returnDeck(player.getNumDeck());
             player.setNumDeck(-1);
 
-            player.getObserver().displayMessage("minideck.return", null);
-            for (String nick : observers.keySet()) {
-                try {
-                    observers.get(nick).showMinideckUpdate(nick, -1);
-                } catch (RemoteException e) {
-                    ServerController.logger.log(Level.SEVERE, "error in method return mini deck update", e);
+            if(player.getObserver() != null) {
+                player.getObserver().displayMessage("minideck.return", null);
+            }
+            if(observers != null) {
+                for (String nick : observers.keySet()) {
+                    try {
+                        observers.get(nick).showMinideckUpdate(nick, -1);
+                    } catch (RemoteException e) {
+                        ServerController.logger.log(Level.SEVERE, "error in method return mini deck update", e);
+                    }
                 }
             }
-
-
         } catch (LevelException e) {
             try {
-                player.getObserver().reportError("error.level", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.level", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnminideck");
             }
         } catch (AlreadyViewingException e) {
             try {
-                player.getObserver().reportError("error.viewing", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.viewing", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnminideck");
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnminideck");
             }
         } catch (IllegalPhaseException e) {
             try {
-                player.getObserver().reportError("error.phase", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.phase", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnminideck");
             }
@@ -524,16 +545,22 @@ public class Game implements Game_Interface {
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile(player.getNickname());
-            player.getObserver().displayMessage("build.returnTile", null);
+            if(player.getObserver() != null) {
+                player.getObserver().displayMessage("build.returnTile", null);
+            }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnTile");
             }
         } catch (IllegalPhaseException e) {
             try {
-                player.getObserver().reportError("error.phase", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.phase", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method returnTile");
             }
@@ -783,7 +810,9 @@ public class Game implements Game_Interface {
             }
         } catch (Exception e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method checkspaceship");
             }
