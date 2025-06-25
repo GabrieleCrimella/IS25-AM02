@@ -247,7 +247,6 @@ public class ServerHandler implements Runnable, VirtualServer{
                     break;
                 case "showTileAdditionUpdate":
                     String additionImagepath = gson.fromJson(params.get("imagepath"), String.class);
-                    // Per gli array di enum, bisogna gestirli diversamente
                     JsonArray additionConnectorsArray = params.get("connectors").getAsJsonArray();
                     ConnectorType[] additionConnectors = new ConnectorType[additionConnectorsArray.size()];
                     for (int i = 0; i < additionConnectorsArray.size(); i++) {

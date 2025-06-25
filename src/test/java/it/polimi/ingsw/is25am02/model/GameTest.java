@@ -123,7 +123,6 @@ class GameTest {
         TileType t1 = TileType.CABIN;
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
-        int id1 = 1;
         Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
             spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
@@ -137,7 +136,6 @@ class GameTest {
         TileType t2 = TileType.SPECIAL_STORAGE;
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType2 = RotationType.NORTH;
-        int id2 = 1;
         int maxNum = 2;
         Tile storage1 = new SpecialStorage(t2, connectors2, rotationType2, "", maxNum);
         try {
@@ -162,7 +160,6 @@ class GameTest {
         TileType t3 = TileType.BATTERY;
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
         RotationType rotationType3 = RotationType.NORTH;
-        int id3 = 1;
         int maxNum3 = 2;
         Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
@@ -175,7 +172,6 @@ class GameTest {
         TileType t4 = TileType.CANNON;
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
-        int id4 = 1;
         Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
             spaceship1.addTile(player1.getNickname(),7,5, cannon1);
@@ -187,7 +183,6 @@ class GameTest {
         TileType t5 = TileType.D_CANNON;
         ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
-        int id5 = 1;
         Tile dcannon1= new DoubleCannon(t5, connectors5, rotationType5, null);
         try {
             spaceship1.addTile(player1.getNickname(),8,6, dcannon1);
@@ -199,7 +194,6 @@ class GameTest {
         TileType t6 = TileType.D_CANNON;
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
-        int id6 = 1;
         Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
             spaceship1.addTile(player1.getNickname(),6,6, dcannon2);
@@ -212,7 +206,6 @@ class GameTest {
         TileType t21 = TileType.CABIN;
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
-        int id21 = 1;
         Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
             spaceship2.addTile(player2.getNickname(),7,7, cabin21);
@@ -228,7 +221,6 @@ class GameTest {
         TileType t31 = TileType.CABIN;
         ConnectorType[] connectors31 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType31 = RotationType.NORTH;
-        int id31 = 1;
         Tile cabin31 = new Cabin(t31, connectors31, rotationType31, null);
         try {
             spaceship3.addTile(player3.getNickname(),7,7, cabin31);
@@ -244,7 +236,6 @@ class GameTest {
         TileType t41 = TileType.CABIN;
         ConnectorType[] connectors41 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType41 = RotationType.NORTH;
-        int id41 = 1;
         Tile cabin41 = new Cabin(t41, connectors41, rotationType41, null);
         try {
             spaceship4.addTile(player4.getNickname(),7,7, cabin41);
@@ -259,7 +250,7 @@ class GameTest {
         game.getPlayers().getFirst().getSpaceship().addNumOfWastedTiles(2);
 
         //Classifica = Red, Blue, Green, Yellow
-        //Nave più bella = RED
+        //Nave più bella = Tutti tranne red
         //Vendita merci = RED (4+1)
         //Perdite = Red(2)
         game.Winners();
@@ -403,12 +394,11 @@ class GameTest {
         TileType t1 = TileType.CABIN;
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
-        int id1 = 1;
         Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
             spaceship1.addTile(player1.getNickname(),7,7, cabin1);
         } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " 1");
         }
 
 
@@ -416,38 +406,35 @@ class GameTest {
         TileType t2 = TileType.STORAGE;
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType2 = RotationType.NORTH;
-        int id2 = 1;
         int maxNum = 2;
         Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
         try {
             spaceship1.addTile(player1.getNickname(),7,6, storage1);
         } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " 2");
         }
 
         //tile 3 - battery 8 7
         TileType t3 = TileType.BATTERY;
         ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
         RotationType rotationType3 = RotationType.NORTH;
-        int id3 = 1;
         int maxNum3 = 2;
         Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
             spaceship1.addTile(player1.getNickname(),8,7, battery3);
         } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " 3");
         }
 
         //tile 4 - cannon 7 5
         TileType t4 = TileType.CANNON;
         ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.NONE};
         RotationType rotationType4 = RotationType.NORTH;
-        int id4 = 1;
         Tile cannon1= new Cannon(t4, connectors4, rotationType4, null);
         try {
             spaceship1.addTile(player1.getNickname(),7,5, cannon1);
         } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " 4");
         }
 
         //tile 5 - dcannon 8 6
@@ -459,34 +446,32 @@ class GameTest {
         try {
             spaceship1.addTile(player1.getNickname(),8,6, dcannon1);
         } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " 5");
         }
 
         //tile 6 - dcannon 6 6
         TileType t6 = TileType.D_CANNON;
         ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
-        int id6 = 1;
         Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
         try {
             spaceship1.addTile(player1.getNickname(),6,6, dcannon2);
         } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " 6");
         }
+
         player1.setStatePlayer(StatePlayerType.WRONG_SHIP);
         player2.setStatePlayer(StatePlayerType.WRONG_SHIP);
         player3.setStatePlayer(StatePlayerType.WRONG_SHIP);
         player4.setStatePlayer(StatePlayerType.WRONG_SHIP);
         game.getCurrentState().setPhase(StateGameType.CORRECTION);
 
-        Coordinate pos = new Coordinate(7,5);
 
-        /*Optional<List<boolean [][]>> resultGame = game.removeTile(player1,pos);
-        game.keepBlock(player1,resultGame.get().get(0));*/
+        game.removeTile(player1, new Coordinate( 7, 5));
 
 
         assertEquals(true, spaceship1.getTile(7,5).isEmpty());
-        assertEquals(false, spaceship1.getTile(7,6).isEmpty());
+        assertEquals(TileType.STORAGE, spaceship1.getTile(7,6).get().getType());
 
     }
 

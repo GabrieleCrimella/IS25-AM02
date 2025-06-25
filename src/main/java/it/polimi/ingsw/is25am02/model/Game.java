@@ -39,7 +39,7 @@ public class Game implements Game_Interface {
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
-    private Map<String, Integer>  winners = new HashMap<>();
+    private Map<String, Integer>  winners = new LinkedHashMap<>();
 
 
     public Game(List<Player> players, int level) {
@@ -434,19 +434,25 @@ public class Game implements Game_Interface {
 
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeTile (player)");
             }
         } catch (AlreadyViewingException e) {
             try {
-                player.getObserver().reportError("error.viewing", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.viewing", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeTile (player)");
             }
         } catch (IllegalPhaseException e) {
             try {
-                player.getObserver().reportError("error.phase", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.phase", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method takeTile (player)");
             }
@@ -469,31 +475,41 @@ public class Game implements Game_Interface {
             heapTile.removeVisibleTile(tile.get());
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method taketile (player,tile)");
             }
         } catch (AlreadyViewingException e) {
             try {
-                player.getObserver().reportError("error.viewing", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.viewing", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method taketile (player,tile)");
             }
         } catch (IllegalRemoveException e) {
             try {
-                player.getObserver().reportError("error.remove", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.remove", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method taketile (player,tile)");
             }
         } catch (IllegalPhaseException e) {
             try {
-                player.getObserver().reportError("error.phase", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.phase", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method taketile (player,tile)");
             }
         } catch (TileException e) {
             try {
-                player.getObserver().reportError("error.tile", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.tile", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method taketile (player,tile)");
             }
@@ -535,7 +551,6 @@ public class Game implements Game_Interface {
             if (player.getSpaceship().getCurrentTile() != null) { //todo servirebbe un exception
                 Tile currentTile = player.getSpaceship().getCurrentTile();
 
-
                 currentTile.setRotationType(rotation);
 
                 player.getSpaceship().addTile(player.getNickname(), pos.x(), pos.y(), currentTile);
@@ -558,19 +573,25 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addtile");
             }
         } catch (IllegalAddException e) {
             try {
-                player.getObserver().reportError("error.add", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.add", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addtile");
             }
         } catch (IllegalPhaseException e) {
             try {
-                player.getObserver().reportError("error.phase", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().reportError("error.phase", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addtile");
             }
@@ -1645,18 +1666,15 @@ public class Game implements Game_Interface {
                     p.getSpaceship().addCosmicCredits(getGameboard().getBestShip());
                 }
             }
-            /*
-            for (Player p : getPlayers()) {
-                if (p.getSpaceship().getCosmicCredits() > 0) {
-                    winners.add(p);
-                }
-            }*/
+
+            //Add all player in winnerMap
             winnersMap = getPlayers().stream()
                     .collect(Collectors.toMap(
                             p -> p.getNickname(),
                             p -> p.getSpaceship().getCosmicCredits()
                     ));
 
+            //Sorting for points
             winnersMap = winnersMap.entrySet().stream()
                     .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                     .collect(Collectors.toMap(
@@ -1666,9 +1684,7 @@ public class Game implements Game_Interface {
                             LinkedHashMap::new
                     ));
 
-            winnersMap = winners;
-
-            //winners.sort(Comparator.comparingInt(p -> p.getSpaceship().getCosmicCredits()));
+            winners = winnersMap;
 
             if (observers != null) {
                 for (Player p : players) {

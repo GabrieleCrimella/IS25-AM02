@@ -756,8 +756,6 @@ public class ClientHandler implements Runnable, VirtualView {
                     }
                     goodRequest = true;
                     break;
-
-
             }
         } catch (JsonSyntaxException | IllegalStateException e) {
             System.err.println("Errore nel parsing JSON: " + e.getMessage());
