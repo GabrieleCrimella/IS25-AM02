@@ -5,7 +5,7 @@ import java.util.concurrent.*;
 
 public class PingManager {
     private final Map<String, Integer> pingMap = new ConcurrentHashMap<>();
-    private final int TIMEOUT_SECONDS = 7;
+    private final int TIMEOUT_SECONDS = 10;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     //Create a thread that periodically decreases client alive times
