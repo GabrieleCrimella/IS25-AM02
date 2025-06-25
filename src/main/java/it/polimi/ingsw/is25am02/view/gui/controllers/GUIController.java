@@ -398,8 +398,6 @@ public class GUIController implements Runnable {
         }
     }
 
-
-
     public void newTile(TileV newTile) {
     if (inUse.equals("Build")) {
             BuildController bldCtrl = (BuildController) controllers.get(inUse);

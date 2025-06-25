@@ -982,7 +982,9 @@ public class Game implements Game_Interface {
                 }
             }
             player.setStatePlayer(StatePlayerType.OUT_GAME);
-            getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
+            if(!getGameboard().getRanking().isEmpty()) {
+                getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
+            }
             player.getObserver().displayMessage("info.outOfGame", null);
             decrementPlayerCount();
         } catch (IllegalStateException e) {
