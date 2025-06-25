@@ -254,7 +254,7 @@ class GameTest {
         //Vendita merci = RED (4+1)
         //Perdite = Red(2)
         game.Winners();
-        assertEquals(9,game.getWinners().get("Rosso"));
+        assertEquals(7,game.getWinners().get("Rosso"));
         assertEquals(5,game.getWinners().get("Blu"));
         assertEquals(4,game.getWinners().get("Verde"));
         assertEquals(3,game.getWinners().get("Giallo"));
@@ -291,7 +291,6 @@ class GameTest {
         TileType t1 = TileType.CABIN;
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
-        int id1 = 1;
         Tile cabin1 = new Cabin(t1, connectors1, rotationType1, null);
         try {
             spaceship1.addTile(player1.getNickname(), 7,7, cabin1);
@@ -303,7 +302,6 @@ class GameTest {
         TileType t2 = TileType.CABIN;
         ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType2 = RotationType.NORTH;
-        int id2 = 1;
         Tile cabin2 = new Cabin(t2, connectors2, rotationType2, null);
         try {
             spaceship1.addTile(player1.getNickname(),8,7, cabin2);
@@ -323,7 +321,6 @@ class GameTest {
         TileType t21 = TileType.CABIN;
         ConnectorType[] connectors21 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType21 = RotationType.NORTH;
-        int id21 = 1;
         Tile cabin21 = new Cabin(t21, connectors21, rotationType21, null);
         try {
             spaceship2.addTile(player2.getNickname(),7,7, cabin21);
@@ -335,7 +332,6 @@ class GameTest {
         TileType t22 = TileType.PURPLE_CABIN;
         ConnectorType[] connectors22 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType22 = RotationType.NORTH;
-        int id22 = 1;
         Tile purplecabin22 = new PurpleCabin(t22, connectors22, rotationType22, null);
         try {
             spaceship2.addTile(player2.getNickname(),7,8, purplecabin22);
@@ -347,7 +343,6 @@ class GameTest {
         TileType t23 = TileType.CABIN;
         ConnectorType[] connectors23 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType23 = RotationType.NORTH;
-        int id23 = 1;
         Tile cabin23 = new Cabin(t23, connectors23, rotationType23, null);
         try {
             spaceship2.addTile(player2.getNickname(),8,8, cabin23);

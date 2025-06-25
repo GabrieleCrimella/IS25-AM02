@@ -70,7 +70,7 @@ public class ClientController implements VirtualServer {
     }
 
     public TileV getTileFromID(int id) throws IllegalArgumentException {
-        if(id < gameV.getHeapTilesV().getListTileV().size() - 1)
+        if(id < gameV.getHeapTilesV().getListTileV().size())
             return gameV.getHeapTilesV().getListTileV().get(id);
         else
             throw new IllegalArgumentException();
