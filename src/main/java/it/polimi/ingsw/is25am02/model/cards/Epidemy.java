@@ -5,6 +5,7 @@ import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
+import it.polimi.ingsw.is25am02.utils.enumerations.StateGameType;
 
 import java.util.logging.Level;
 
@@ -32,5 +33,7 @@ public class Epidemy extends Card {
                 ServerController.logger.log(Level.SEVERE, "error in method effect for epidemy: ", e);
             }
         }
+        setStateCard(StateCardType.FINISH);
+        game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
     }
 }

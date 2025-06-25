@@ -24,7 +24,8 @@ import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.CHOICE_A
 
 public class Pirate extends Enemies {
     private ArrayList<Pair<Integer, RotationType>> shots;
-    private int currentIndex;
+    private int currentIndexMeteor;
+    private int currentIndexLosers;
     private ArrayList<Player> losers;
     private int phase;
     private final CardType cardType;
@@ -33,7 +34,8 @@ public class Pirate extends Enemies {
         super(level, cannonPowers, daysLost, credit, CHOICE_ATTRIBUTES, imagepath,comment,testFlight);
         this.shots = shots;
         this.losers = new ArrayList<>();
-        this.currentIndex = 0;
+        this.currentIndexMeteor = 0;
+        this.currentIndexLosers = 0;
         this.phase = 1;
         this.cardType = CardType.PIRATE;
     }
@@ -80,17 +82,25 @@ public class Pirate extends Enemies {
                 if (player.getNickname().equals(getCurrentOrder().getLast()) && !losers.isEmpty()){
                     game.setDiceResultManually(0);
                     game.getCurrentCard().setStateCard(StateCardType.ROLL);
+                    game.getCurrentState().setCurrentPlayer(losers.getFirst());
                     phase++;
-                } else {
+                } else if (player.getNickname().equals(getCurrentOrder().getLast()) && losers.isEmpty()){
+                    game.nextPlayer();
+                }
+                else {
                     game.nextPlayer();
                 }
             } else {
                 losers.add(player);
                 //if (player.equals(game.getGameboard().getRanking().getLast())) {
-                if (player.getNickname().equals(getCurrentOrder().getLast()) && !losers.isEmpty()){
+                if (player.getNickname().equals(getCurrentOrder().getLast())){
                     game.setDiceResultManually(0);
+                    game.getCurrentState().setCurrentPlayer(losers.getFirst());
                     game.getCurrentCard().setStateCard(StateCardType.ROLL);
                     phase++;
+                }
+                else {
+                    game.nextPlayer();
                 }
             }
         } else throw new IllegalPhaseException("Should be phase 1, instead is " + phase);
@@ -140,20 +150,24 @@ public class Pirate extends Enemies {
     @Override
     public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException, IllegalPhaseException {
         if (losers.contains(player) && phase == 2) {
-            boolean res = player.getSpaceship().shotDamage(player.getNickname(), shots.get(currentIndex).getKey(), shots.get(currentIndex).getValue(), game.getDiceResult(), storage);
+            boolean res = player.getSpaceship().shotDamage(player.getNickname(), shots.get(currentIndexMeteor).getKey(), shots.get(currentIndexMeteor).getValue(), game.getDiceResult(), storage);
 
             if (res) {
                 game.getCurrentCard().setStateCard(StateCardType.DECISION);
             } else {
-                if (player.equals(losers.getLast()) && currentIndex < shots.size() - 1) {
-                    currentIndex++;
+                if (player.equals(losers.getLast()) && currentIndexMeteor < shots.size() - 1) {
+                    currentIndexMeteor++;
+                    currentIndexLosers = 0;
                     game.setDiceResultManually(0);
                     game.getCurrentCard().setStateCard(StateCardType.ROLL);
-                    game.getCurrentState().setCurrentPlayer(losers.getFirst());
-                } else if (player.equals(losers.getLast()) && currentIndex == shots.size() - 1) {
-                    game.nextPlayer();
+                    game.getCurrentState().setCurrentPlayer(losers.get(currentIndexLosers));
+                } else if (player.equals(losers.getLast()) && currentIndexMeteor == shots.size() - 1) {
+                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    game.getCurrentCard().setStateCard(StateCardType.FINISH);
+                    game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
                 } else {
-                    game.nextPlayer();
+                    currentIndexLosers++;
+                    game.getCurrentState().setCurrentPlayer(losers.get(currentIndexLosers));
                 }
             }
         } else throw new IllegalPhaseException("Should be phase 2, instead is " + phase);
@@ -164,15 +178,19 @@ public class Pirate extends Enemies {
         if (losers.contains(player) && phase == 2) {
             player.getSpaceship().keepBlock(player.getNickname(), pos);
 
-            if (player.equals(losers.getLast()) && currentIndex < losers.size() - 1) {
-                currentIndex++;
+            if (player.equals(losers.getLast()) && currentIndexMeteor < shots.size() - 1) {
+                currentIndexMeteor++;
+                currentIndexLosers = 0;
+                game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
-                game.getCurrentState().setCurrentPlayer(losers.getFirst());
-            } else if (player.equals(losers.getLast()) && currentIndex == shots.size() - 1) {
-                game.nextPlayer();
+                game.getCurrentState().setCurrentPlayer(losers.get(currentIndexLosers));
+            } else if (player.equals(losers.getLast()) && currentIndexMeteor == shots.size() - 1) {
+                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                game.getCurrentCard().setStateCard(StateCardType.FINISH);
+                game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
             } else {
-                game.nextPlayer();
-                game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                currentIndexLosers++;
+                game.getCurrentState().setCurrentPlayer(losers.get(currentIndexLosers));
             }
         } else throw new IllegalPhaseException("Should be phase 2, instead is " + phase);
     }

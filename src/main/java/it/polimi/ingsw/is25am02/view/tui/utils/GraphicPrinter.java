@@ -126,7 +126,7 @@ public class GraphicPrinter {
 
     public void printCardComment() {
         System.out.println("Card Comment | Comment: " + game.getCurrentState().getCurrentCard().getComment());
-        if (game.getCurrentState().getCurrentCard().getCardType() == CardType.METEORITES_STORM || (game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE1) || game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE2) { //todo mettere le altre carte
+        if (game.getCurrentState().getCurrentCard().getCardType() == CardType.METEORITES_STORM || (game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE1) || game.getCurrentState().getCurrentCard().getCardType() == CardType.WARZONE2 || game.getCurrentState().getCurrentCard().getCardType() == CardType.PIRATE) { //todo mettere le altre carte
             if (game.getDiceV().getResult() != 0) {
                 System.out.println("Dice result: " + game.getDiceV().getResult());
             } else {
