@@ -1929,7 +1929,7 @@ public class Game implements Game_Interface {
             }
 
             //lapped
-            if (positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()) {
+            if (getCurrentPlayer().getStatePlayer() != OUT_GAME && positions.get(getCurrentPlayer()) - positions.get(p) > getGameboard().getNumStep()) {
                 getGameboard().getPositions().remove(p);
                 p.setStatePlayer(StatePlayerType.OUT_GAME);
                 decrementPlayerCount();
@@ -1947,7 +1947,7 @@ public class Game implements Game_Interface {
                 break;
             }
         }
-        //getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
+        getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
     }
 
     private void decrementPlayerCount() {

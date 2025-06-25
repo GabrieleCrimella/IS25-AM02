@@ -23,7 +23,7 @@ public class SlaveOwner extends Enemies{
     private final CardType cardType;
 
     public SlaveOwner(int level, int cannonPowers, int daysLost, int credit, int humanLost, String imagepath,String comment,boolean testFlight) {
-        super(level, cannonPowers, daysLost, credit, StateCardType.DECISION, imagepath,comment,testFlight);
+        super(level, cannonPowers, daysLost, credit, StateCardType.CHOICE_ATTRIBUTES, imagepath,comment,testFlight);
         this.AliveLost = humanLost;
         this.AliveRemoved = 0;
         this.cardType = CardType.SLAVE_OWNER;
