@@ -396,7 +396,7 @@ public class InGameController extends GeneralController {
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE))) {
                 //todo aggiungere controllo per non sforare il numero di batterie
                 try {
-                    if(batteryCount < GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumBatteries()) {
+                    if (batteryCount < GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumBatteries()) {
                         batteryCount++;
                         batteryLabel.setText("Number of batteries used: " + batteryCount);
                         batteryLabel.setVisible(true);
@@ -850,7 +850,7 @@ public class InGameController extends GeneralController {
     }
 
     public void updateDice(int result) {
-        if(result >=2 && result <= 12) {
+        if (result >= 2 && result <= 12) {
 
             diceResult.setVisible(false);
             diceAnimation.setVisible(true);
@@ -982,10 +982,8 @@ public class InGameController extends GeneralController {
         doubleLabel.setVisible(false);
         batteryLabel.setVisible(false);
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
-            if (isLeader()) {
-                rollDice.setVisible(true);
-                rollDice.setDisable(false);
-            }
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
@@ -1009,10 +1007,8 @@ public class InGameController extends GeneralController {
             } catch (RemoteException e) {
                 showNotification("Error with choice crew", NotificationType.ERROR, 5000);
             }
-            if (isLeader()) {
-                rollDice.setVisible(true);
-                rollDice.setDisable(false);
-            }
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
