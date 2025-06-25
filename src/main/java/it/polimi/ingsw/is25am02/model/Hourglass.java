@@ -22,7 +22,6 @@ public class Hourglass {
 
     public long getTimeLeft() {
         return timeLeft;
-
     }
 
     public boolean getRunning() {

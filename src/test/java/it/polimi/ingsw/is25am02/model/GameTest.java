@@ -263,10 +263,10 @@ class GameTest {
         //Vendita merci = RED (4+1)
         //Perdite = Red(2)
         game.Winners();
-        assertEquals(9,game.getWinners().get(0).getSpaceship().getCosmicCredits());
-        assertEquals(5,game.getWinners().get(1).getSpaceship().getCosmicCredits());
-        assertEquals(4,game.getWinners().get(2).getSpaceship().getCosmicCredits());
-        assertEquals(3,game.getWinners().get(3).getSpaceship().getCosmicCredits());
+        assertEquals(9,game.getWinners().get("Rosso"));
+        assertEquals(5,game.getWinners().get("Blu"));
+        assertEquals(4,game.getWinners().get("Verde"));
+        assertEquals(3,game.getWinners().get("Giallo"));
     }
 
 

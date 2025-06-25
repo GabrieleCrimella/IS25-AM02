@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.DECISION;
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.EFFECT_ON_PLAYER;
 import static it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType.IN_GAME;
+import static it.polimi.ingsw.is25am02.utils.enumerations.StatePlayerType.OUT_GAME;
 
 @SuppressWarnings("all")
 public class Game implements Game_Interface {
@@ -1679,7 +1680,6 @@ public class Game implements Game_Interface {
                     }
                 }
             }
-            //todo chiama un metodo della view per mostrare la classifica
 
         } catch (IllegalStateException e) {
             for (Player p : players) {
