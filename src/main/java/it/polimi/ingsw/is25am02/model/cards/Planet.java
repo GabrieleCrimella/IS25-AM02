@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
+import it.polimi.ingsw.is25am02.controller.server.ServerController;
 import it.polimi.ingsw.is25am02.model.Card;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
@@ -8,10 +9,9 @@ import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
 import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
 import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.rmi.RemoteException;
+import java.util.*;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateCardType.DECISION;
 
@@ -137,6 +137,20 @@ public class Planet extends Card {
             while(it.hasNext()) {
                 Player temp = it.next();
                 game.getGameboard().move((-1)*daysLost, temp);
+                if(observers != null) {
+                    for (String nick : observers.keySet()) {
+                        try {
+                            observers.get(nick).showPositionUpdate(temp.getNickname(), game.getGameboard().getPositions().get(temp));
+                            try {
+                                observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", temp.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(temp))));
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        } catch (RemoteException e) {
+                            ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                        }
+                    }
+                }
             }
             game.getCurrentCard().setStateCard(DECISION);
             game.nextPlayer();
@@ -170,6 +184,20 @@ public class Planet extends Card {
                 while(it.hasNext()) {
                     Player temp = it.next();
                     game.getGameboard().move((-1)*daysLost, temp);
+                    if(observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showPositionUpdate(temp.getNickname(), game.getGameboard().getPositions().get(temp));
+                                try {
+                                    observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", temp.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(temp))));
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method removeCrew", e);
+                            }
+                        }
+                    }
                 }
             }
             boxesWon = null;
