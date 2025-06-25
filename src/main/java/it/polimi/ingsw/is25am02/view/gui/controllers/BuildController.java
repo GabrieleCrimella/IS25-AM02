@@ -815,7 +815,6 @@ public class BuildController extends GeneralController {
 
     public void onShipFinished() {
         Platform.runLater(() -> {
-            labelHourglass.setVisible(false);
             currentTileImage = null;
             postoInizialeTile.setVisible(false);
             posizioneAttuale.setVisible(false);
@@ -824,6 +823,7 @@ public class BuildController extends GeneralController {
             returnTileButton.setVisible(false);
             flipHourglassButton.setDisable(true);
             flipHourglassButton.setVisible(false);
+            labelHourglass.setVisible(false);
             miniDeck1.setVisible(false);
             miniDeck2.setVisible(false);
             miniDeck3.setVisible(false);
