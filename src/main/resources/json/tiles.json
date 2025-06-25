@@ -353,7 +353,7 @@
   {
     "type": "BATTERY",
     "connectors": {
-      "NORTH": 1,
+      "NORTH": 2,
       "EAST": 0,
       "SOUTH": 0,
       "WEST": 0
