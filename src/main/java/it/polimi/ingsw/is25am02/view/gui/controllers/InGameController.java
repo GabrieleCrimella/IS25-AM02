@@ -187,7 +187,7 @@ public class InGameController extends GeneralController {
             level2Gameboard.setVisible(false);
             level2Gameboard.setManaged(false);
             level2Gameboard.setDisable(true);
-            earlyLandingButton.setVisible(true);
+            earlyLandingButton.setVisible(false);
         }
 
         backgroundImageView.setImage(new Image(getClass().getResourceAsStream(imagePath)));
