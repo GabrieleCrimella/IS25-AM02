@@ -19,53 +19,51 @@
     <Label fx:id="loadingLabel" styleClass="loading-label" visible="false" />
 
     <!-- Main layout over the background -->
-    <VBox spacing="30" alignment="CENTER" styleClass="main-container">
-        <!-- Error label -->
-        <Label fx:id="errorLabel" styleClass="error-label" />
+    <HBox spacing="60" alignment="CENTER" styleClass="main-container">
+        <!-- Colonna sinistra: Lista lobby -->
+        <VBox spacing="20" alignment="TOP_LEFT">
+            <Label fx:id="errorLabel" styleClass="error-label" />
+            <ListView fx:id="lobbyList" prefHeight="600" prefWidth="600" visible="false"/>
+            <Button fx:id="refreshButton" text="Refresh Lobbies" onMouseClicked="#onRefreshLobbies"
+                    prefWidth="200" prefHeight="40" styleClass="main-button" />
+        </VBox>
 
-
-
-        <ListView fx:id="lobbyList" prefHeight="200" prefWidth="300" visible="false"/>
-
-        <!-- Big buttons -->
-        <VBox spacing="20" alignment="CENTER">
+        <!-- Colonna destra: Pulsanti e form -->
+        <VBox spacing="30" alignment="TOP_CENTER">
             <Button fx:id="joinButton" text="Join Lobby" onMouseClicked="#onJoinLobby"
                     prefWidth="300" prefHeight="80" styleClass="main-button" />
             <Button fx:id="createButton" text="Create Lobby" onMouseClicked="#onCreateLobby"
                     prefWidth="300" prefHeight="80" styleClass="main-button" />
+
+            <VBox spacing="10" alignment="CENTER" fx:id="createForm" visible="false">
+                <Label text="Max Players:"  styleClass="white-label"/>
+                <Spinner fx:id="maxPlayersSpinner" min="2" max="4" initialValue="2" />
+
+                <Label text="Level:" styleClass="white-label" />
+                <ChoiceBox fx:id="levelChoiceBox">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <Integer fx:value="0"/>
+                            <Integer fx:value="2"/>
+                        </FXCollections>
+                    </items>
+                </ChoiceBox>
+
+                <Label text="Color:" styleClass="white-label" />
+                <ChoiceBox fx:id="colorChoiceBox">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="RED"/>
+                            <String fx:value="GREEN"/>
+                            <String fx:value="BLUE"/>
+                            <String fx:value="YELLOW"/>
+                        </FXCollections>
+                    </items>
+                </ChoiceBox>
+
+                <Button text="Confirm Create" onMouseClicked="#onConfirmCreateLobby" styleClass="main-button" />
+            </VBox>
         </VBox>
+    </HBox>
 
-        <VBox spacing="10" alignment="CENTER" fx:id="createForm" visible="false">
-            <Label text="Max Players:"  styleClass="white-label"/>
-            <Spinner fx:id="maxPlayersSpinner" min="2" max="4" initialValue="2" />
-
-            <Label text="Level:" styleClass="white-label" />
-            <ChoiceBox fx:id="levelChoiceBox">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <Integer fx:value="0"/>
-                        <Integer fx:value="2"/>
-                    </FXCollections>
-                </items>
-            </ChoiceBox>
-
-            <Label text="Color:" styleClass="white-label" />
-            <ChoiceBox fx:id="colorChoiceBox">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="RED"/>
-                        <String fx:value="GREEN"/>
-                        <String fx:value="BLUE"/>
-                        <String fx:value="YELLOW"/>
-                    </FXCollections>
-                </items>
-            </ChoiceBox>
-
-            <Button text="Confirm Create" onMouseClicked="#onConfirmCreateLobby" styleClass="main-button" />
-        </VBox>
-
-        <!-- Small refresh button -->
-        <Button fx:id="refreshButton" text="Refresh Lobbies" onMouseClicked="#onRefreshLobbies"
-                prefWidth="300" prefHeight="40" styleClass="main-button" />
-    </VBox>
 </StackPane>

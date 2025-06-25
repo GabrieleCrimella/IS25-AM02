@@ -15,16 +15,14 @@ import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class LobbyController extends GeneralController{
+public class LobbyController extends GeneralController {
     @FXML
     public Button createButton;
 
@@ -36,7 +34,8 @@ public class LobbyController extends GeneralController{
     @FXML
     private ListView<LobbyView> lobbyList;
 
-    @FXML private ImageView backgroundImage;
+    @FXML
+    private ImageView backgroundImage;
 
 
     @FXML
@@ -66,38 +65,7 @@ public class LobbyController extends GeneralController{
     @FXML
     private Label errorLabel;
 
-    private ClientController clientController;
-
-    private GUIController controller;
-
-    public void initialize(ClientController clientController) {
-        controller = GUIController.getInstance();
-        this.clientController = clientController;
-        controller.setLobbyController(this);
-        try {
-            clientController.getLobbies(clientController.getVirtualView());
-        } catch (RemoteException e) {
-            errorLabel.setText("get lobbies non funziona");
-        }
-
-        lobbyList.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(LobbyView lobby, boolean empty) {
-                super.updateItem(lobby, empty);
-                if (empty || lobby == null) {
-                    setText(null);
-                } else {
-                    String lobbyDescription = String.format(
-                            "Lobby ID: %d | Giocatori: %d/%d | Livello: %d",
-                            lobby.getId(),
-                            lobby.getNicknames().size(),
-                            lobby.getMaxPlayers(),
-                            lobby.getLevel()
-                    );
-                    setText(lobbyDescription);
-                }
-            }
-        });
+    public void initialize() {
 
         Button closeButton = new Button("x");
         closeButton.setOnAction(e -> {
@@ -121,6 +89,37 @@ public class LobbyController extends GeneralController{
         root.getChildren().add(temp);
         StackPane.setAlignment(temp, Pos.TOP_RIGHT);
         backgroundImage.setEffect(new GaussianBlur(30));
+
+
+        try {
+            GUIController.getInstance().getController().getLobbies(GUIController.getInstance().getController().getVirtualView());
+        } catch (RemoteException e) {
+            errorLabel.setText("get lobbies non funziona");
+        }
+
+        /*
+        lobbyList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(LobbyView lobby, boolean empty) {
+                super.updateItem(lobby, empty);
+                if (empty || lobby == null) {
+                    setText(null);
+                } else {
+                    String lobbyDescription = String.format(
+                            "Lobby ID: %d | Giocatori: %d/%d | Livello: %d",
+                            lobby.getId(),
+                            lobby.getNicknames().size(),
+                            lobby.getMaxPlayers(),
+                            lobby.getLevel()
+                    );
+                    setText(lobbyDescription);
+                }
+            }
+        });
+
+         */
+
+
 
     }
 
@@ -149,24 +148,48 @@ public class LobbyController extends GeneralController{
                 } else {
                     // Descrizione lobby
                     String lobbyDescription = String.format(
-                            "Lobby ID: %d | Giocatori: %d/%d | Livello: %d",
+                            "Lobby ID: %d\nOwner: %s\nPlayers: %d/%d\nLevel: %d",
                             lobby.getId(),
+                            lobby.getNicknames().getFirst(),
                             lobby.getNicknames().size(),
                             lobby.getMaxPlayers(),
                             lobby.getLevel()
                     );
+
                     Label lobbyLabel = new Label(lobbyDescription);
-                    lobbyLabel.setStyle("-fx-font-size: 14px;");
+                    lobbyLabel.setStyle("""
+                                    -fx-font-size: 16px;
+                                    -fx-font-weight: normal;
+                                    -fx-line-spacing: 4px;
+                                    -fx-text-fill: #333;
+                            """);
+                    lobbyLabel.setWrapText(true);
 
-                    // Bottone Join
                     Button joinButton = new Button("Join");
-                    joinButton.setStyle("-fx-background-color: lightgreen; -fx-font-weight: bold;");
-                    joinButton.setOnAction(e -> {
-                        showJoinDialog(lobby);
-                    });
+                    joinButton.setStyle("""
+                                    -fx-background-color: linear-gradient(to bottom, #9be79b, #5ccc5c);
+                                    -fx-text-fill: black;
+                                    -fx-font-size: 14px;
+                                    -fx-font-weight: bold;
+                                    -fx-background-radius: 6;
+                                    -fx-padding: 6 12;
+                                    -fx-cursor: hand;
+                            """);
+                    joinButton.setOnAction(e -> showJoinDialog(lobby));
 
-                    HBox cellContent = new HBox(10, lobbyLabel, joinButton);
-                    cellContent.setPadding(new Insets(5));
+                    VBox descriptionBox = new VBox(lobbyLabel);
+                    descriptionBox.setAlignment(Pos.CENTER_LEFT);
+                    descriptionBox.setSpacing(5);
+
+                    Region spacer = new Region();
+                    HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                    HBox cellContent = new HBox(20, descriptionBox, spacer, joinButton);
+                    cellContent.setAlignment(Pos.CENTER_LEFT);
+
+                    cellContent.setPadding(new Insets(10));
+                    cellContent.setStyle("-fx-border-color: #ccc; -fx-border-width: 0 0 1px 0; -fx-background-color: rgba(255, 255, 255, 0.8); -fx-background-radius: 8;");
+
                     setGraphic(cellContent);
                 }
             }
@@ -201,7 +224,7 @@ public class LobbyController extends GeneralController{
             }
 
             try {
-                clientController.joinLobby(clientController.getVirtualView(), lobby.getId(), controller.getNickname(), selectedColor);
+                GUIController.getInstance().getController().joinLobby(GUIController.getInstance().getController().getVirtualView(), lobby.getId(), GUIController.getInstance().getNickname(), selectedColor);
             } catch (RemoteException ex) {
                 errorLabel.setText("Errore durante il join: " + ex.getMessage());
             }
@@ -247,7 +270,7 @@ public class LobbyController extends GeneralController{
 
             try {
                 int lobbyId = selectedLobby.getId();
-                clientController.joinLobby(clientController.getVirtualView(), lobbyId, controller.getNickname(), color);
+                GUIController.getInstance().getController().joinLobby(GUIController.getInstance().getController().getVirtualView(), lobbyId, GUIController.getInstance().getNickname(), color);
                 errorLabel.setText("");  // Pulisce eventuali errori precedenti
                 hideButtonShowLoading();
             } catch (RemoteException e) {
@@ -275,13 +298,17 @@ public class LobbyController extends GeneralController{
         }
 
         try {
-            clientController.createLobby(clientController.getVirtualView(), controller.getNickname(), maxplayers, color, level);
-            System.out.println("lobby creata");
-            createForm.setVisible(false);
-            hideButtonShowLoading();
+            GUIController.getInstance().getController().createLobby(GUIController.getInstance().getController().getVirtualView(), GUIController.getInstance().getNickname(), maxplayers, color, level);
+            onLobbyCreatedCorrectly();
         } catch (RemoteException e) {
             errorLabel.setText("Error " + e.getMessage());
         }
+    }
+
+    public void onLobbyCreatedCorrectly() {
+        System.out.println("lobby creata");
+        createForm.setVisible(false);
+        hideButtonShowLoading();
     }
 
 
@@ -293,7 +320,7 @@ public class LobbyController extends GeneralController{
 
     private void refreshLobbyList() {
         try {
-            clientController.getLobbies(clientController.getVirtualView());
+            GUIController.getInstance().getController().getLobbies(GUIController.getInstance().getController().getVirtualView());
 
         } catch (RemoteException e) {
             displayError("Errore nel recupero delle lobby.");

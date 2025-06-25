@@ -174,6 +174,22 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void displayMessage(String keys, Map<String, String> params) {
+        if (keys.equals("disconnect.game")) {
+            System.out.println("PORCA VACCA DEVI CAMBIARE SCHERMATA");
+            Platform.runLater(() -> {
+                try {
+                    System.out.println("Tentativo di switchScene...");
+                    GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
+                        g.initialize();
+                    });
+                    System.out.println("switchScene completato!");
+                } catch (Exception e) {
+                    System.err.println("Errore durante switchScene: ");
+                    e.printStackTrace();
+                }
+            });
+        }
+
         Platform.runLater(() -> {
             GUIController.getInstance().showMessage(keys, params);
         });
@@ -182,14 +198,14 @@ public class GUIApplication extends Application implements ConsoleClient {
     @Override
     public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
         this.lobbies = lobbies;
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             GUIController.getInstance().setLobbiesView(lobbies);
         });
     }
 
     @Override
     public void newTile(TileV newTile) {
-        Platform.runLater(()-> {
+        Platform.runLater(() -> {
             GUIController.getInstance().newTile(newTile);
         });
     }
@@ -231,21 +247,21 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void updateStats() {
-        Platform.runLater(()->{
-        GUIController.getInstance().onUpdateStats();
+        Platform.runLater(() -> {
+            GUIController.getInstance().onUpdateStats();
         });
     }
 
     @Override
     public void updateCurrentPlayer() {
-        Platform.runLater(()->{
-        GUIController.getInstance().updateCurrentPlayer();
+        Platform.runLater(() -> {
+            GUIController.getInstance().updateCurrentPlayer();
         });
     }
 
     @Override
     public void updateDice(int result) {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             GUIController.getInstance().updateDice(result);
         });
     }
@@ -276,10 +292,10 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void removedTile(Coordinate coordinate) {
-        Platform.runLater(()->{
-        GUIController.getInstance().onRemoveTile(coordinate);
+        Platform.runLater(() -> {
+            GUIController.getInstance().onRemoveTile(coordinate);
         });
     }
 
-    //todo si potrebbe aggiugnere anche il caricamento dei fonts
+//todo si potrebbe aggiugnere anche il caricamento dei fonts
 }

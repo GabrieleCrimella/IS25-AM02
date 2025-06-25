@@ -7,6 +7,7 @@ import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.JsonMessageManager;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -115,18 +116,7 @@ public class GUIController implements Runnable {
 
     public <GeneralController> GeneralController switchScene(String fxmlName, String title, Consumer<GeneralController> initializer) {
         try {
-            // Se il controller è già presente, non ricaricare la scena ma aggiorna solo i dati
-            if (controllers.containsKey(fxmlName)) {
-                //System.out.println("La scena '" + fxmlName + "' è già caricata. Riutilizzo il controller.");
-                GeneralController controller = (GeneralController) controllers.get(fxmlName);
-                if (initializer != null) {
-                    initializer.accept(controller);
-                }
-                return controller;
-            }
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlName + ".fxml"));
-
             Parent root = loader.load();
             GeneralController controller = loader.getController();
 
@@ -145,7 +135,6 @@ public class GUIController implements Runnable {
 
             return controller;
         } catch (IOException e) {
-            //todo
             e.printStackTrace();
             return null;
         }
@@ -170,6 +159,13 @@ public class GUIController implements Runnable {
                     return;
                 }
             }
+            case "lobby.creation"->{
+                if(inUse.equals("lobby")) {
+                    LobbyController lobbyCtrl = (LobbyController) controllers.get(inUse);
+                    lobbyCtrl.onLobbyCreatedCorrectly();
+                    return;
+                }
+            }
             case "lobby.join" -> {
                 if (inUse.equals("lobby")) {
                     LobbyController lobbyCtrl = (LobbyController) controllers.get(inUse);
@@ -184,7 +180,7 @@ public class GUIController implements Runnable {
                     return;
                 }
             }
-            case "lobby.id"->{
+            case "lobby.id" -> {
                 GUIController.getInstance().setLobbyId(Integer.parseInt(params.get("num")));
             }
             case "build.addTile" -> {
@@ -329,26 +325,27 @@ public class GUIController implements Runnable {
                     resultController.showWinners(winnersMap);
                 }
             }
-            case "ingame.meteoritesIndex"->{
+            case "ingame.meteoritesIndex" -> {
                 if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.onMeteoritesIndex(Integer.parseInt(params.get("index")));
                 }
             }
-            case "info.outOfGame"->{
-                if(inUse.equals("InGame")){
+            case "info.outOfGame" -> {
+                if (inUse.equals("InGame")) {
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);
                     inGameCtrl.onOutOfGame();
                     return;
                 }
             }
+
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
     }
 
     public void setLobbyId(int num) {
-        this.lobbyId=num;
+        this.lobbyId = num;
     }
 
     public int getLobbyId() {
@@ -403,28 +400,28 @@ public class GUIController implements Runnable {
     }
 
     public void updateDice(int result) {
-        if( inUse.equals("InGame")) {
+        if (inUse.equals("InGame")) {
             InGameController inGameCtrl = (InGameController) controllers.get(inUse);
             inGameCtrl.updateDice(result);
         }
     }
 
     public void updateCurrentPlayer() {
-    if (inUse.equals("InGame")) {
+        if (inUse.equals("InGame")) {
             InGameController inGameCtrl = (InGameController) controllers.get(inUse);
             inGameCtrl.updateCurrentPlayerName();
         }
     }
 
     public void newTile(TileV newTile) {
-    if (inUse.equals("Build")) {
+        if (inUse.equals("Build")) {
             BuildController bldCtrl = (BuildController) controllers.get(inUse);
             bldCtrl.newTile(newTile);
         }
     }
 
     public void setLobbiesView(Map<Integer, LobbyView> lobbies) {
-    if (inUse.equals("lobby")) {
+        if (inUse.equals("lobby")) {
             LobbyController lobbyCtrl = (LobbyController) controllers.get(inUse);
             lobbyCtrl.setLobbyListFromMap(lobbies);
         }
