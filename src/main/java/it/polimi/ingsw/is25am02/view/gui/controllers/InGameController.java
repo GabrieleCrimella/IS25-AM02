@@ -394,10 +394,17 @@ public class InGameController extends GeneralController {
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER) ||
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE))) {
-                batteryCount++;
-                batteryLabel.setText("Number of batteries used: " + batteryCount);
-                batteryLabel.setVisible(true);
-                batteries.add(coordinate);
+                //todo aggiungere controllo per non sforare il numero di batterie
+                try {
+                    if(batteryCount < GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumBatteries()) {
+                        batteryCount++;
+                        batteryLabel.setText("Number of batteries used: " + batteryCount);
+                        batteryLabel.setVisible(true);
+                        batteries.add(coordinate);
+                    }
+                } catch (RemoteException e) {
+                    showNotification("Error using battery", NotificationType.ERROR, 5000);
+                }
             } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.REMOVE) &&
                     (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER))) {

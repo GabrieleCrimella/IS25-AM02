@@ -1873,7 +1873,13 @@ public class Game implements Game_Interface {
                 //p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
             }
         }
-        getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
+        for(Player p : getGameboard().getRanking()){
+            if(p.getStatePlayer() != StatePlayerType.OUT_GAME){
+                getCurrentState().setCurrentPlayer(p);
+                break;
+            }
+        }
+        //getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
     }
 
     private void decrementPlayerCount() {
