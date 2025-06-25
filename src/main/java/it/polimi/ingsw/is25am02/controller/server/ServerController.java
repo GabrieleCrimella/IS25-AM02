@@ -5,7 +5,6 @@ import it.polimi.ingsw.is25am02.controller.server.exception.PlayerNotFoundExcept
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.Spaceship;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
-import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;

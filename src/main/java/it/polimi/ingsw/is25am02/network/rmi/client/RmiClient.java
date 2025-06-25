@@ -1,7 +1,6 @@
 package it.polimi.ingsw.is25am02.network.rmi.client;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
@@ -227,10 +226,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void showWinnersUpdate(Map<String, Integer> winners) {
-        for (PlayerV playerv : gameV.getPlayers()) {
-            gameV.setWinners(winners);
-            console.getPrinter().printWinners(playerv.getNickname());
-        }
+        gameV.setWinners(winners);
+        console.getPrinter().printWinners(winners);
     }
 
     //viene chiamato quando viene girata la clessidra

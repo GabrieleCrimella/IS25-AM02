@@ -1,7 +1,7 @@
 package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.model.Lobby;
+import it.polimi.ingsw.is25am02.controller.server.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;

@@ -84,7 +84,6 @@ class PlanetTest {
         //Nel pianeta 2 c'è un box blu
         Planet planet = new Planet(level, store, daysLost, planetOffers, planetOffersTypes, null, null, true);
 
-        //todo qui ho cambiato il box con boxtype
         planet.moveBox(game, player1, planetOffers.getFirst(), storage1.getOccupation(), BoxType.RED, true );
 
         //correct start
@@ -96,7 +95,7 @@ class PlanetTest {
         correctStorage.add(planet1redbox1);
 
         assertEquals(true, storage1.getOccupation().equals(correctStorage));
-        assertEquals(true, planet.getPlanetOffers().get(0).equals(correctPlanet1boxes));
+        assertEquals(true, planet.getPlanetOffers().getFirst().equals(correctPlanet1boxes));
     }
 
     @Test

@@ -84,7 +84,12 @@ public class GraphicPrinter {
         System.out.println();
     }
 
-    public void printWinners(String myName) {
+    public void printWinners(Map<String, Integer> winners) {
+        System.out.println("Ranking:");
+        for(Map.Entry<String, Integer> pos : winners.entrySet()){
+            System.out.println(pos.getKey() + " has " + pos.getValue() + " points");
+        }
+        /*
         for (PlayerV p : game.getPlayers()) {
             if (p.getNickname().equals(myName)) {
                 System.out.print("Position: \n");
@@ -94,7 +99,7 @@ public class GraphicPrinter {
                 }
                 return;
             }
-        }
+        }*/
     }
 
     public void printMyState(String name) {

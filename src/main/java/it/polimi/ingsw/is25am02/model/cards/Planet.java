@@ -35,7 +35,9 @@ public class Planet extends Card {
         this.planetOffersTypes = planetOffersTypes;
         this.cardType = CardType.PLANET;
         this.boxesWon = null;
-        initializeOccupied();
+        //if(imagepath != null) {
+            initializeOccupied();
+        //}
     }
 
     private void initializeOccupied(){

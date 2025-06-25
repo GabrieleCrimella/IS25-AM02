@@ -1,8 +1,6 @@
 package it.polimi.ingsw.is25am02.view;
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
@@ -10,8 +8,6 @@ import it.polimi.ingsw.is25am02.view.modelDuplicateView.CardV;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.tile.TileV;
 import it.polimi.ingsw.is25am02.view.tui.utils.GraphicPrinter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public interface ConsoleClient {

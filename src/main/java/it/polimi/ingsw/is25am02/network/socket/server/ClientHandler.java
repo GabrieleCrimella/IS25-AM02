@@ -1465,6 +1465,19 @@ public class ClientHandler implements Runnable, VirtualView {
 
     @Override
     public void showWinnersUpdate(Map<String, Integer> winners) throws RemoteException{
-        //todo davide bisgona aggiungere questo metodo
+        try {
+            // Creazione JSON dei parametri
+            JsonObject params = new JsonObject();
+            params.add("winners", gson.toJsonTree(winners));
+
+            // Creazione del comando
+            Command cmd = new Command("showWinnersUpdate", params);
+
+            // Invio
+            out.writeObject(gson.toJson(cmd));
+            out.flush();
+        } catch (IOException e) {
+            System.err.println("Errore durante l'invio del metodo showWinnersUpdate: " + e.getMessage());
+        }
     }
 }

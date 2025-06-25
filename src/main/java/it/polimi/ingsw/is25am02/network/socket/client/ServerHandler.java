@@ -303,6 +303,11 @@ public class ServerHandler implements Runnable, VirtualServer{
                 case "showBuildTimeIsOverUpdate":
                     rmi.showBuildTimeIsOverUpdate();
                     break;
+                case "showWinnersUpdate":
+                    Type winnersType = new TypeToken<Map<String, Integer>>() {}.getType();
+                    Map<String, Integer> winners = gson.fromJson(params.get("winners"), winnersType);
+                    rmi.showWinnersUpdate(winners);
+                    break;
                 default:
                     System.err.println("Comando non riconosciuto: " + cmd.getCommand());
                     break;

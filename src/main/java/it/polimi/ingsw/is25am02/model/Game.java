@@ -38,7 +38,7 @@ public class Game implements Game_Interface {
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
-    private List<Player> winners = new ArrayList<>();
+    private Map<String, Integer>  winners = new HashMap<>();
 
 
     public Game(List<Player> players, int level) {
@@ -194,7 +194,7 @@ public class Game implements Game_Interface {
         return currentState.getCurrentCard();
     }
 
-    public List<Player> getWinners() {
+    public Map getWinners() {
         return winners;
     }
 
@@ -850,48 +850,62 @@ public class Game implements Game_Interface {
             } else if (type.equals(AliveType.BROWN_ALIEN)) { // se type è brown_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
                 if (checkTileNear(player, pos, TileType.BROWN_CABIN)) {
                     giveTile(player, pos).addCrew(player.getNickname(), type);
-                    for (String nick : observers.keySet()) {
-                        try {
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                    if(observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                            }
                         }
                     }
                 }
             } else if (type.equals(AliveType.PURPLE_ALIEN)) { // se type è purple_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
                 if (checkTileNear(player, pos, TileType.PURPLE_CABIN)) {
                     giveTile(player, pos).addCrew(player.getNickname(), type);
-                    for (String nick : observers.keySet()) {
-                        try {
-                            observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                    if(observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in addCrew", e);
+                            }
                         }
                     }
                 }
             }
-            player.getObserver().displayMessage("build.addCrew", null);
+            if(player.getObserver() != null) {
+                player.getObserver().displayMessage("build.addCrew", null);
+            }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addCrew");
             }
         } catch (TileException e) {
             try {
-                player.getObserver().reportError("error.tile", Map.of("tType", "Cabin"));
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.tile", Map.of("tType", "Cabin"));
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addCrew");
             }
         } catch (IllegalAddException e) {
             try {
-                player.getObserver().reportError("error.add", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.add", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addCrew");
             }
         } catch (LevelException e) {
             try {
-                player.getObserver().reportError("error.level", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.level", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method addCrew");
             }
@@ -1031,8 +1045,11 @@ public class Game implements Game_Interface {
 
             getCurrentCard().choice(this, player, choice);
             try {
-                player.getObserver().displayMessage("ingame.hidechoice", Map.of("choice", String.valueOf(choice)));
+                if(player.getObserver() != null){
+                    player.getObserver().displayMessage("ingame.hidechoice", Map.of("choice", String.valueOf(choice)));
+                }
             } catch (Exception e) {
+                //todo logger
                 throw new RuntimeException(e);
             }
         } catch (IllegalStateException e) {
@@ -1646,6 +1663,8 @@ public class Game implements Game_Interface {
                             LinkedHashMap::new
                     ));
 
+            winnersMap = winners;
+
             //winners.sort(Comparator.comparingInt(p -> p.getSpaceship().getCosmicCredits()));
 
             if (observers != null) {
@@ -1663,7 +1682,9 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException e) {
             for (Player p : players) {
                 try {
-                    p.getObserver().reportError("error.state", null);
+                    if(p.getObserver() != null) {
+                        p.getObserver().reportError("error.state", null);
+                    }
                 } catch (Exception ex) {
                     reportErrorOnServer("connection problem in method Winners");
                 }

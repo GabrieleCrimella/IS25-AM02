@@ -2,7 +2,6 @@ package it.polimi.ingsw.is25am02.view.gui.controllers;
 
 
 import it.polimi.ingsw.is25am02.controller.client.ClientController;
-import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.PlayerColor;
 import it.polimi.ingsw.is25am02.view.modelDuplicateView.PlayerV;
@@ -12,7 +11,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
@@ -20,8 +18,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

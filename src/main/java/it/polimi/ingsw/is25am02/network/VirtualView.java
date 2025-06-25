@@ -1,7 +1,6 @@
 package it.polimi.ingsw.is25am02.network;
 
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.model.Lobby;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
