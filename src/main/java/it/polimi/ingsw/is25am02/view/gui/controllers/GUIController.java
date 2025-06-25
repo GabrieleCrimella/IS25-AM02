@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class GUIController implements Runnable {
+    private int lobbyId;
     private String nickname;
     private ClientController controller;
     private static GUIController instance;
@@ -183,6 +184,9 @@ public class GUIController implements Runnable {
                     return;
                 }
             }
+            case "lobby.id"->{
+                GUIController.getInstance().setLobbyId(Integer.parseInt(params.get("num")));
+            }
             case "build.addTile" -> {
                 if (inUse.equals("Build")) {
                     BuildController bldCtrl = (BuildController) controllers.get(inUse);
@@ -341,6 +345,14 @@ public class GUIController implements Runnable {
             default ->
                     controllers.get(inUse).showNotification(messManager.getMessageWithParams(keys, params), GeneralController.NotificationType.SUCCESS, 5000);
         }
+    }
+
+    public void setLobbyId(int num) {
+        this.lobbyId=num;
+    }
+
+    public int getLobbyId() {
+        return lobbyId;
     }
 
     public HashMap<String, Integer> parseWinnersMap(String mapStr) {

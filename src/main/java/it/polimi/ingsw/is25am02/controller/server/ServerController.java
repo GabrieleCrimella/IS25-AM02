@@ -295,6 +295,7 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
                                 lobbies.remove(lobbyId);
 
                                 for (Player player : lobby.getPlayers()) {
+                                    player.getObserver().displayMessage("lobby.id", Map.of("num", String.valueOf(lobby.getId())));
                                     player.getObserver().setMenuState(MenuState.GAME);
                                     player.getObserver().setBuildView(lobby.getLevel(), player.getColor());
                                 }

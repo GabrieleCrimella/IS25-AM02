@@ -83,7 +83,8 @@
     "join": "> You have been added to the lobby {num}",
     "available": "> Lobbies available:",
     "show": "id: {num},\t owner: {owner},\t players: {att}/{max}",
-    "state": "> LobbyId {num} {state}"
+    "state": "> LobbyId {num} {state}",
+    "id": "> The id of your game is {num}"
   },
   "build": {
     "addTile": "Tile added to your ship",
