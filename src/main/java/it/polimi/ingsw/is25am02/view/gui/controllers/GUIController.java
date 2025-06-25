@@ -325,6 +325,12 @@ public class GUIController implements Runnable {
                     resultController.showWinners(winnersMap);
                 }
             }
+            case "ingame.meteoritesIndex"->{
+                if (inUse.equals("InGame")) {
+                    InGameController inGameCtrl = (InGameController) controllers.get(inUse);
+                    inGameCtrl.onMeteoritesIndex(Integer.parseInt(params.get("index")));
+                }
+            }
             case "info.outOfGame"->{
                 if(inUse.equals("InGame")){
                     InGameController inGameCtrl = (InGameController) controllers.get(inUse);

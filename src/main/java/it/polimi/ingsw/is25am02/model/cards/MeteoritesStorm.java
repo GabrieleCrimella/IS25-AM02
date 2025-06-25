@@ -10,6 +10,7 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 public class MeteoritesStorm extends Card {
@@ -33,9 +34,15 @@ public class MeteoritesStorm extends Card {
     @Override
     public void keepBlocks(Game game, Player player, Coordinate pos){
         player.getSpaceship().keepBlock(player.getNickname(), pos);
+        try {
+            player.getObserver().displayMessage("ingame.meteoritesIndex", Map.of("index", String.valueOf(currentIndex)));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
             currentIndex++;
+
             game.setDiceResultManually(0);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
             game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
@@ -59,7 +66,7 @@ public class MeteoritesStorm extends Card {
         else{
             if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
                 currentIndex++;
-                game.setDiceResultManually(0);
+                //game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
             }

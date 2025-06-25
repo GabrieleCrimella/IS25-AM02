@@ -120,6 +120,8 @@ public class InGameController extends GeneralController {
     private Button choiceNo;
     @FXML
     private VBox commentBox;
+    @FXML
+    private Label meteoritesIndex;
 
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
@@ -695,6 +697,7 @@ public class InGameController extends GeneralController {
                 rollDice.setDisable(false);
                 diceTitleLabel.setVisible(true);
             }
+            meteoritesIndex.setVisible(true);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
             loadComments("Meterites Storm: the leader will roll the dice, and you can calculate damage by clicking on the battery if you want to use it, or by clicking on Calculate Damage, for all the meteorites shown on the card. If your ship breaks apart, you'll be able to choose which part to keep by clicking on a tile from that section.");
@@ -1106,6 +1109,10 @@ public class InGameController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Error during early landing", NotificationType.ERROR, 5000);
         }
+    }
+
+    public void onMeteoritesIndex(int index){
+        meteoritesIndex.setText("Meteorites index: " + index);
     }
 }
 

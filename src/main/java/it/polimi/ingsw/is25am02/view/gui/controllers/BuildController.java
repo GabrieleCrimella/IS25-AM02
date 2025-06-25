@@ -822,6 +822,7 @@ public class BuildController extends GeneralController {
             posizioneNuovaTile.setVisible(false);
             addTileButton.setVisible(false);
             returnTileButton.setVisible(false);
+            flipHourglassButton.setDisable(true);
             flipHourglassButton.setVisible(false);
             miniDeck1.setVisible(false);
             miniDeck2.setVisible(false);
@@ -846,7 +847,6 @@ public class BuildController extends GeneralController {
             }
         }
 
-        //todo perchè non mi esegue il codice successivo???
         Platform.runLater(() -> {
             // Mostra un messaggio di successo
             showNotification("Tile removed successfully", NotificationType.SUCCESS, 5000);

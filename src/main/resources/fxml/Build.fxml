@@ -49,7 +49,7 @@
                     <Pane id="cell_6_6" layoutX="417.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
                     <Pane id="cell_6_7" layoutX="594.0" layoutY="232.0" prefHeight="149.0" prefWidth="149.0" />
                     <Group fx:id="livello2Group">
-                        <Pane id="cell_5_6" layoutX="406.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
+                        <Pane id="cell_5_6" layoutX="415.0" layoutY="56.0" prefHeight="149.0" prefWidth="149.0" />
                         <Pane id="cell_6_5" layoutX="242.0" layoutY="233.0" prefHeight="149.0" prefWidth="149.0" />
                         <Pane id="cell_7_4" layoutX="69.0" layoutY="409.0" prefHeight="149.0" prefWidth="149.0" />
                         <Pane id="cell_8_4" layoutX="69.0" layoutY="585.0" prefHeight="149.0" prefWidth="149.0" />
@@ -108,19 +108,17 @@
         </VBox>
     </StackPane>
 
-    <StackPane fx:id="addCrewPopup" style="-fx-background-color: rgba(0, 0, 0, 0.6);" visible="false"
-               xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
-        <VBox alignment="TOP_CENTER" maxHeight="300" maxWidth="400" spacing="20"
-              style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;">
+    <StackPane fx:id="addCrewPopup" style="-fx-background-color: rgba(0, 0, 0, 0.6);" visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml">
+        <VBox alignment="TOP_CENTER" maxHeight="300" maxWidth="400" spacing="20" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;">
 
-            <Label fx:id="addCrewTitle" text="Add crew to tile (x,y)" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Label fx:id="addCrewTitle" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Add crew to tile (x,y)" />
 
             <!-- Contenitore dinamico per le opzioni -->
             <VBox fx:id="aliveTypeContainer" alignment="CENTER" spacing="10" />
 
             <HBox alignment="CENTER" spacing="20">
-                <Button text="Confirm" onAction="#onConfirmAddCrew" styleClass="main-button" />
-                <Button text="Close" onAction="#onCancelAddCrew" styleClass="main-button" />
+                <Button onAction="#onConfirmAddCrew" styleClass="main-button" text="Confirm" />
+                <Button onAction="#onCancelAddCrew" styleClass="main-button" text="Close" />
             </HBox>
         </VBox>
     </StackPane>
