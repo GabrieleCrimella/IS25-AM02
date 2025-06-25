@@ -778,7 +778,7 @@ public class ClientHandler implements Runnable, VirtualView {
             //Sending
             out.writeObject(gson.toJson(cmd));
             out.flush();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             System.err.println("Errore durante l'invio del metodo pingFromServer: " + e.getMessage());
         }
     }
