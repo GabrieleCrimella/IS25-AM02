@@ -34,7 +34,7 @@ public class ClientController implements VirtualServer {
     private MenuState menuState;
     private boolean running;
     private GameV gameV;
-    private int timeLeft = 2000000000;
+    private int timeLeft = 10;
     //todo devo definire gameV una volta che so in che game sono
 
 
@@ -69,8 +69,11 @@ public class ClientController implements VirtualServer {
         System.exit(0);
     }
 
-    public TileV getTileFromID(int id) {
-        return gameV.getHeapTilesV().getListTileV().get(id);
+    public TileV getTileFromID(int id) throws IllegalArgumentException {
+        if(id > gameV.getHeapTilesV().getListTileV().size() - 1)
+            return gameV.getHeapTilesV().getListTileV().get(id);
+        else
+            throw new IllegalArgumentException();
     }
 
     public List<String> getPlayers() {
@@ -141,7 +144,7 @@ public class ClientController implements VirtualServer {
 
     //Reset server ping
     public void heartbeat(){
-        timeLeft = 2000000000;
+        timeLeft = 10;
     }
 
 

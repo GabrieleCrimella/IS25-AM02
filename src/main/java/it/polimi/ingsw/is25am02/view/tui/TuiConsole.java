@@ -267,9 +267,14 @@ public class TuiConsole implements Runnable, ConsoleClient {
                         break;
                     }
                     int tileId = Integer.parseInt(tokenizer.nextToken());
-                    TileV tile = getTileById(tileId);
-                    controller.takeTile(nickname, tile.getImagePath());
-                    break;
+                    try {
+                        TileV tile = getTileById(tileId);
+                        controller.takeTile(nickname, tile.getImagePath());
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Update heap, it's changed");
+                        break;
+                    }
 
                 case "takeMiniDeck":
                     if (!tokenizer.hasMoreTokens()) {
