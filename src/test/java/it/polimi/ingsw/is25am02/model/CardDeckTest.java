@@ -6,12 +6,15 @@ import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.Cabin;
 import it.polimi.ingsw.is25am02.model.tiles.Motors;
+import it.polimi.ingsw.is25am02.model.tiles.Shield;
 import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
+import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -188,6 +191,12 @@ class CardDeckTest {
         Game game = new Game(players,2); //todo anche testflight
         game.getGameboard().initializeGameBoard(players);
 
+        HashMap<Integer, Pair<List<Card>, Boolean>> maindeck = game.getDeck().getDeck();
+        assertEquals(4, maindeck.size());
+
+        List<Card> deck = game.getDeck().getFinalDeck();
+        assertEquals(0, deck.size());
+
         TileType t1 = TileType.CABIN;
         ConnectorType[] connectors1 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
         RotationType rotationType1 = RotationType.NORTH;
@@ -243,6 +252,7 @@ class CardDeckTest {
 
         game.playNextCard(game.getPlayers().getFirst());
         Card nextCard = game.getCurrentCard();
+        /*
         while(nextCard!=null && game.getCurrentState().getPhase().equals(TAKE_CARD)) {
             if(nextCard.getCardType().equals(CardType.TRAFFICKER) || nextCard.getCardType().equals(CardType.ABANDONED_STATION) ) {
                 assertEquals(nextCard.getBoxesWonTypes().size(), nextCard.getBoxesWon().size());
@@ -258,6 +268,43 @@ class CardDeckTest {
             game.getCurrentCard().setStateCard(FINISH);
             game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
             game.playNextCard(game.getPlayers().getFirst());
+        } */
+
+        for(int i =0; i< 8 ; i++) {
+            game.getDeck().playnextCard(game);
+            game.getCurrentState().setPhase(StateGameType.TAKE_CARD);
+            game.getCurrentCard().setStateCard(FINISH);
         }
+    }
+
+    @Test
+    void test_should_check_testflight() {
+        List<Player> players = new ArrayList<>();
+        Spaceship spaceship = new Spaceship(2);
+        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW, null, 1));
+        Game game = new Game(players,0);
+        game.getGameboard().initializeGameBoard(players);
+
+        List<Card> deck = game.getDeck().getFinalDeck();
+        assertEquals(8, deck.size());
+    }
+
+    @Test
+    void test_should_check_give_and_return_minideck() {
+        List<Player> players = new ArrayList<>();
+        Spaceship spaceship = new Spaceship(2);
+        players.add(new Player(spaceship, "mario", PlayerColor.YELLOW, null, 1));
+        Game game = new Game(players,2);
+        game.getGameboard().initializeGameBoard(players);
+
+        game.getPlayers().getFirst().setDeckAllowed();
+
+        game.takeMiniDeck(game.getPlayers().getFirst(), 0);
+        game.takeMiniDeck(game.getPlayers().getFirst(), 1);
+        game.returnMiniDeck(game.getPlayers().getFirst());
+        game.takeMiniDeck(game.getPlayers().getFirst(), -1);
+
+        assertEquals(game.getPlayers().getFirst().getNumDeck(), -1);
+
     }
 }

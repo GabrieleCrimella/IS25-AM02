@@ -120,6 +120,8 @@ public class InGameController extends GeneralController {
     private VBox commentBox;
     @FXML
     private Label meteoritesIndex;
+    @FXML
+    private Button choiceCrewButton;
 
 
     private Map<Integer, Pane> GameboardCells = new HashMap<>();
@@ -695,11 +697,8 @@ public class InGameController extends GeneralController {
             loadComments("Open space: you can choose to activate motors using batteries by clicking on them.");
             showNotification("Choose how many motors you want to activate with which batteries", NotificationType.INFO, 15000);
         } else if (newCard.getCardType().equals(CardType.WARZONE1)) {
-            try {
-                GUIController.getInstance().getController().choiceCrew(GUIController.getInstance().getNickname());
-            } catch (RemoteException e) {
-                showNotification("Error in choice crew", NotificationType.ERROR, 5000);
-            }
+            choiceCrewButton.setVisible(true);
+            choiceCrewButton.setDisable(false);
             commentBox.setVisible(true);
             loadComments("War Zone 1: Phase 1, the player with fewer humans automatically loses flight days. Phase 2, you can choose to activate motors using batteries; the player with fewer motors must choose where to remove alive crew members by clicking on the cabins. Phase 3, you can choose to activate cannons using batteries; the player with fewer cannons must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)) {
@@ -1026,6 +1025,15 @@ public class InGameController extends GeneralController {
             rollDice.setVisible(true);
             rollDice.setDisable(false);
             diceTitleLabel.setVisible(true);
+            choiceYes.setVisible(true);
+            choiceYes.setDisable(false);
+            choiceNo.setVisible(true);
+            choiceNo.setDisable(false);
+        } else if( GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER)) {
+            choiceYes.setVisible(true);
+            choiceYes.setDisable(false);
+            choiceNo.setVisible(true);
+            choiceNo.setDisable(false);
         }
     }
 
@@ -1040,11 +1048,8 @@ public class InGameController extends GeneralController {
         doubleLabel.setVisible(false);
         batteryLabel.setVisible(false);
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
-            try {
-                GUIController.getInstance().getController().choiceCrew(GUIController.getInstance().getNickname());
-            } catch (RemoteException e) {
-                showNotification("Error with choice crew", NotificationType.ERROR, 5000);
-            }
+            choiceCrewButton.setVisible(true);
+            choiceCrewButton.setDisable(false);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
@@ -1068,6 +1073,8 @@ public class InGameController extends GeneralController {
     }
 
     public void afterChoiceCrew() {
+        choiceCrewButton.setVisible(false);
+        choiceCrewButton.setDisable(true);
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
@@ -1150,6 +1157,14 @@ public class InGameController extends GeneralController {
 
     public void onMeteoritesIndex(int index) {
         meteoritesIndex.setText("Meteorites index: " + index);
+    }
+
+    public void onChoiceCrew(){
+        try {
+            GUIController.getInstance().getController().choiceCrew(GUIController.getInstance().getNickname());
+        } catch (RemoteException e) {
+            showNotification("Error in choice crew", NotificationType.ERROR, 5000);
+        }
     }
 }
 
