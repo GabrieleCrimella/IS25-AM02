@@ -39,6 +39,8 @@ public class InGameController extends GeneralController {
     @FXML
     public StackPane outGamePopup;
     @FXML
+    public Button resetButton;
+    @FXML
     private StackPane root;
     @FXML
     private Group level1Gameboard;
@@ -384,10 +386,17 @@ public class InGameController extends GeneralController {
                         GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
                         GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER) ||
                         GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER))) {
-            doubleCount++;
-            doubleLabel.setText("Number of double cannon activated: " + doubleCount);
-            doubleLabel.setVisible(true);
-            doubles.add(coordinate);
+            resetButton.setVisible(true);
+            try {
+                if (doubleCount < GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumDoubleCannon()){
+                    doubleCount++;
+                    doubleLabel.setText("Double cannon activated: " + doubleCount);
+                    doubleLabel.setVisible(true);
+                    doubles.add(coordinate);
+                }
+            } catch (RemoteException e) {
+                showNotification("Error using double cannon", NotificationType.ERROR, 5000);
+            }
         } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.BATTERY))) {
             if (GUIController.getInstance().getController().getGameV().getCurrentCard().getStateCard().equals(StateCardType.CHOICE_ATTRIBUTES) && (
                     GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER) ||
@@ -396,11 +405,11 @@ public class InGameController extends GeneralController {
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2) ||
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER) ||
                             GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE))) {
-                //todo aggiungere controllo per non sforare il numero di batterie
                 try {
+                    resetButton.setVisible(true);
                     if (batteryCount < GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumBatteries()) {
                         batteryCount++;
-                        batteryLabel.setText("Number of batteries used: " + batteryCount);
+                        batteryLabel.setText("Batteries used: " + batteryCount);
                         batteryLabel.setVisible(true);
                         batteries.add(coordinate);
                     }
@@ -426,10 +435,18 @@ public class InGameController extends GeneralController {
                 (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE) ||
                         GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1) ||
                         GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2))) {
-            doubleCount++;
-            doubleLabel.setText("Number of double motor activated: " + doubleCount);
-            doubleLabel.setVisible(true);
-            doubles.add(coordinate);
+            resetButton.setVisible(true);
+            try {
+                if (doubleCount < GUIController.getInstance().getController().getPlayerVFromNickname(GUIController.getInstance().getNickname()).getNumDoubleMotor()) {
+                    doubleCount++;
+                    doubleLabel.setText("Double motor activated: " + doubleCount);
+                    doubleLabel.setVisible(true);
+                    doubles.add(coordinate);
+                }
+            } catch (RemoteException e) {
+                showNotification("Error using double motor", NotificationType.ERROR, 5000);
+            }
+
         } else if (spaceshipBoard[coordinate.x()][coordinate.y()].isPresent() && (spaceshipBoard[coordinate.x()][coordinate.y()].get().getType().equals(TileType.CABIN))
                 && (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER) ||
                 GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1) ||
@@ -636,6 +653,7 @@ public class InGameController extends GeneralController {
         noChoicePlanet.setDisable(true);
         batteryLabel.setVisible(false);
         doubleLabel.setVisible(false);
+        resetButton.setVisible(false);
         doubles = new ArrayList<>();
         batteries = new ArrayList<>();
         batteryCount = 0;
@@ -1013,6 +1031,7 @@ public class InGameController extends GeneralController {
         doubleCount = 0;
         batteryCount = 0;
         doubleLabel.setVisible(false);
+        resetButton.setVisible(false);
         batteryLabel.setVisible(false);
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             rollDice.setVisible(true);
@@ -1065,6 +1084,7 @@ public class InGameController extends GeneralController {
         doubleCount = 0;
         batteryCount = 0;
         doubleLabel.setVisible(false);
+        resetButton.setVisible(false);
         batteryLabel.setVisible(false);
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             choiceCrewButton.setVisible(true);
@@ -1191,6 +1211,16 @@ public class InGameController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Error in choice crew", NotificationType.ERROR, 5000);
         }
+    }
+
+    public void onResetButton(ActionEvent actionEvent) {
+        doubles = new ArrayList<>();
+        batteries = new ArrayList<>();
+        doubleCount = 0;
+        batteryCount = 0;
+        doubleLabel.setVisible(false);
+        resetButton.setVisible(false);
+        batteryLabel.setVisible(false);
     }
 }
 

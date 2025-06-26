@@ -192,6 +192,21 @@ public class PlayerV {
         return num;
     }
 
+    public int getNumDoubleCannon(){
+        int num = 0;
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (spaceshipBoard[i][j].isPresent()) {
+                    TileV tile = spaceshipBoard[i][j].get();
+                    if(tile.getType().equals(TileType.D_CANNON)){
+                        num++;
+                    }
+                }
+            }
+        }
+        return num;
+    }
+
     public List<AliveType> getAlive(){
         ArrayList<AliveType> aliveList = new ArrayList<>();
         for(int i = 0; i < 12; i++) {
@@ -245,6 +260,19 @@ public class PlayerV {
     }
 
 
-
+    public int getNumDoubleMotor() {
+        int num = 0;
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                if (spaceshipBoard[i][j].isPresent()) {
+                    TileV tile = spaceshipBoard[i][j].get();
+                    if(tile.getType().equals(TileType.D_MOTOR)){
+                        num++;
+                    }
+                }
+            }
+        }
+        return num;
+    }
 }
 

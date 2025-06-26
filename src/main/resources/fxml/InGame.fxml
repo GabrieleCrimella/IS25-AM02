@@ -245,7 +245,8 @@
                 <Button onAction="#closeSpacePopup" style="-fx-text-fill: red; -fx-font-size: 18px; -fx-background-color: transparent; -fx-cursor: hand;" text="✕" />
             </VBox>
         </StackPane>
-      <Label fx:id="meteoritesIndex" layoutX="245.0" layoutY="1008.0" prefHeight="35.0" prefWidth="258.0" styleClass="white-context-label" visible="false"/>
+      <Label fx:id="meteoritesIndex" layoutX="245.0" layoutY="1008.0" prefHeight="35.0" prefWidth="258.0" styleClass="white-context-label" visible="false" />
+      <Button fx:id="resetButton" layoutX="758.0" layoutY="1018.0" onAction="#onResetButton" prefHeight="51.0" prefWidth="224.0" styleClass="main-button" text="Reset selection" visible="false"/>
 
     </Pane>
 
