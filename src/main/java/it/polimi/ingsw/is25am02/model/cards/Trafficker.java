@@ -68,11 +68,6 @@ public class Trafficker extends Card {
                     try {
                         Coordinate pos = new Coordinate(battery.x(), battery.y());
                         observers.get(nick).showBatteryRemoval(pos, player.getNickname(), player.getSpaceship().getSpaceshipIterator().getTile(battery.x(), battery.y()).get().getNumBattery());
-                        try {
-                            observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(player))));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method choicedoublecannon", e);
                     }
@@ -117,6 +112,11 @@ public class Trafficker extends Card {
                 for (String nick : observers.keySet()) {
                     try {
                         observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                        try {
+                            observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(player))));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method choicebox", e);
                     }

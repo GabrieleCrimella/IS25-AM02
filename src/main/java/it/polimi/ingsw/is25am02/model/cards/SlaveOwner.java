@@ -13,6 +13,7 @@ import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.is25am02.utils.enumerations.StateGameType.TAKE_CARD;
@@ -78,6 +79,11 @@ public class SlaveOwner extends Enemies{
                     try {
                         observers.get(nick).showCreditUpdate(player.getNickname(), player.getSpaceship().getCosmicCredits());
                         observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                        try {
+                            observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(player))));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     } catch (RemoteException e) {
                         ServerController.logger.log(Level.SEVERE, "error in method choice", e);
                     }

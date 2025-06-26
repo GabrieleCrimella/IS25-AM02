@@ -34,14 +34,24 @@ public class MeteoritesStorm extends Card {
     @Override
     public void keepBlocks(Game game, Player player, Coordinate pos){
         player.getSpaceship().keepBlock(player.getNickname(), pos);
-        try {
-            player.getObserver().displayMessage("ingame.meteoritesIndex", Map.of("index", String.valueOf(currentIndex)));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+
+        for(Player p: game.getPlayers()) {
+            try {
+                p.getObserver().displayMessage("ingame.meteoritesIndex", Map.of("index", String.valueOf(currentIndex)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
         if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
             currentIndex++;
+            for(Player p: game.getPlayers()) {
+                try {
+                    p.getObserver().displayMessage("ingame.meteoritesIndex", Map.of("index", String.valueOf(currentIndex)));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
             game.setDiceResultManually(0);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
@@ -60,12 +70,30 @@ public class MeteoritesStorm extends Card {
     public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException {
         boolean res = player.getSpaceship().meteoriteDamage(player.getNickname(), meteorites.get(currentIndex).getKey(), meteorites.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
+        if(!storage.isPresent()){
+            res=false;
+        }
+        for(Player p: game.getPlayers()) {
+            try {
+                p.getObserver().displayMessage("ingame.meteoritesIndex", Map.of("index", String.valueOf(currentIndex)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         if(res){
             game.getCurrentCard().setStateCard(StateCardType.DECISION);
         }
         else{
             if(player.equals(game.getGameboard().getRanking().getLast()) && currentIndex < meteorites.size()-1){
                 currentIndex++;
+                for(Player p: game.getPlayers()) {
+                    try {
+                        p.getObserver().displayMessage("ingame.meteoritesIndex", Map.of("index", String.valueOf(currentIndex)));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 //game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());

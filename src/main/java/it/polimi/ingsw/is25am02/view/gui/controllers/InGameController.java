@@ -664,13 +664,6 @@ public class InGameController extends GeneralController {
         } else if (newCard.getCardType().equals(CardType.PIRATE)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
-            calculatedamage.setVisible(true);
-            calculatedamage.setDisable(false);
-            if (isLeader()) {
-                rollDice.setVisible(true);
-                rollDice.setDisable(false);
-            }
-            diceTitleLabel.setVisible(true);
             commentBox.setVisible(true);
             loadComments("Pirate: you can choose to activate cannons using batteries by clicking on them. If you win, you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must roll the dice to find out where you'll be hit and activate Calculate Damage by clicking on a battery or directly on Calculate Damage");
         } else if (newCard.getCardType().equals(CardType.SLAVE_OWNER)) {
@@ -1004,11 +997,17 @@ public class InGameController extends GeneralController {
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
-        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER)){
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER)) {
             choiceboxtrue.setVisible(true);
             choiceboxtrue.setDisable(false);
             choiceboxfalse.setVisible(true);
             choiceboxfalse.setDisable(false);
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE)) {
+            calculatedamage.setVisible(true);
+            calculatedamage.setDisable(false);
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
+            diceTitleLabel.setVisible(true);
         }
     }
 
@@ -1027,10 +1026,6 @@ public class InGameController extends GeneralController {
             } catch (RemoteException e) {
                 showNotification("Error with choice crew", NotificationType.ERROR, 5000);
             }
-            rollDice.setVisible(true);
-            rollDice.setDisable(false);
-            calculatedamage.setVisible(true);
-            calculatedamage.setDisable(false);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
@@ -1057,6 +1052,11 @@ public class InGameController extends GeneralController {
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
+        } else if( GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
+            rollDice.setVisible(true);
+            rollDice.setDisable(false);
+            calculatedamage.setVisible(true);
+            calculatedamage.setDisable(false);
         }
     }
 
@@ -1128,7 +1128,7 @@ public class InGameController extends GeneralController {
         }
     }
 
-    public void onMeteoritesIndex(int index){
+    public void onMeteoritesIndex(int index) {
         meteoritesIndex.setText("Meteorites index: " + index);
     }
 }
