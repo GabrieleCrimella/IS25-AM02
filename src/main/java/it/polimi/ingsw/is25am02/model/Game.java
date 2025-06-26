@@ -1083,9 +1083,9 @@ public class Game implements Game_Interface {
             getCurrentState().getCurrentCard().setCurrentOrder(order);
             this.getCurrentState().setPhase(EFFECT_ON_PLAYER);
 
-            for (Player p : players) {
-                p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
-            }
+//            for (Player p : players) {
+//                p.onCurrentCardUpdate(getCurrentCard().getImagePath(), getCurrentCard().getStateCard(), getCurrentCard().getCardType(), getCurrentCard().getComment());
+//            }
             if (getCurrentCard().getCardType().equals(CardType.STARDUST) || getCurrentCard().getCardType().equals(CardType.EPIDEMY)) {
                 getCurrentCard().effect(this);
             }
