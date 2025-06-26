@@ -39,7 +39,7 @@ public class Game implements Game_Interface {
     private int alreadyFinished = 0; //tiene conto di quanti giocatori hanno già finito
     private int alreadyChecked = 0;  //tiene conto dei giocatori che hanno la nave già controllata
     private int readyPlayer = 0;
-    private Map<String, Integer>  winners = new LinkedHashMap<>();
+    private Map<String, Integer> winners = new LinkedHashMap<>();
 
 
     public Game(List<Player> players, int level) {
@@ -78,46 +78,47 @@ public class Game implements Game_Interface {
             card.setObservers(observers);
         }
     }
-/*
-    //for testing
-    public void tilesSituation() {
-        System.out.println("Visible Tiles:");
-        Set<Tile> visibleTiles;
-        visibleTiles = getVisibleTiles();
-        for (Tile tile : visibleTiles) {
-            if (tile == null) {
-                System.out.print("|    |");
-            } else if (tile.getType().equals(TileType.BATTERY)) {
-                System.out.print("| B  |");
-            } else if (tile.getType().equals(TileType.BROWN_CABIN)) {
-                System.out.print("| BC |");
-            } else if (tile.getType().equals(TileType.CABIN)) {
-                System.out.print("| CB |");
-            } else if (tile.getType().equals(TileType.CANNON)) {
-                System.out.print("| CN |");
-            } else if (tile.getType().equals(TileType.D_CANNON)) {
-                System.out.print("|DCN |");
-            } else if (tile.getType().equals(TileType.D_MOTOR)) {
-                System.out.print("| DM |");
-            } else if (tile.getType().equals(TileType.MOTOR)) {
-                System.out.print("| M  |");
-            } else if (tile.getType().equals(TileType.PURPLE_CABIN)) {
-                System.out.print("| PC |");
-            } else if (tile.getType().equals(TileType.SHIELD)) {
-                System.out.print("| SH |");
-            } else if (tile.getType().equals(TileType.SPECIAL_STORAGE)) {
-                System.out.print("| SS |");
-            } else if (tile.getType().equals(TileType.STORAGE)) {
-                System.out.print("| S  |");
-            } else if (tile.getType().equals(TileType.STRUCTURAL)) {
-                System.out.print("| ST |");
-            } else {
-                System.out.print("| Z |");
+
+    /*
+        //for testing
+        public void tilesSituation() {
+            System.out.println("Visible Tiles:");
+            Set<Tile> visibleTiles;
+            visibleTiles = getVisibleTiles();
+            for (Tile tile : visibleTiles) {
+                if (tile == null) {
+                    System.out.print("|    |");
+                } else if (tile.getType().equals(TileType.BATTERY)) {
+                    System.out.print("| B  |");
+                } else if (tile.getType().equals(TileType.BROWN_CABIN)) {
+                    System.out.print("| BC |");
+                } else if (tile.getType().equals(TileType.CABIN)) {
+                    System.out.print("| CB |");
+                } else if (tile.getType().equals(TileType.CANNON)) {
+                    System.out.print("| CN |");
+                } else if (tile.getType().equals(TileType.D_CANNON)) {
+                    System.out.print("|DCN |");
+                } else if (tile.getType().equals(TileType.D_MOTOR)) {
+                    System.out.print("| DM |");
+                } else if (tile.getType().equals(TileType.MOTOR)) {
+                    System.out.print("| M  |");
+                } else if (tile.getType().equals(TileType.PURPLE_CABIN)) {
+                    System.out.print("| PC |");
+                } else if (tile.getType().equals(TileType.SHIELD)) {
+                    System.out.print("| SH |");
+                } else if (tile.getType().equals(TileType.SPECIAL_STORAGE)) {
+                    System.out.print("| SS |");
+                } else if (tile.getType().equals(TileType.STORAGE)) {
+                    System.out.print("| S  |");
+                } else if (tile.getType().equals(TileType.STRUCTURAL)) {
+                    System.out.print("| ST |");
+                } else {
+                    System.out.print("| Z |");
+                }
             }
+            System.out.println();
         }
-        System.out.println();
-    }
-*/
+    */
     public CardDeck getDeck() {
         return deck;
     }
@@ -335,10 +336,10 @@ public class Game implements Game_Interface {
 
             player.setNumDeck(index);
             deck.giveDeck(index);
-            if(player.getObserver() != null) {
+            if (player.getObserver() != null) {
                 player.getObserver().displayMessage("minideck.view", Map.of("index", String.valueOf(index)));
             }
-            if(observers != null) {
+            if (observers != null) {
                 for (String nick : observers.keySet()) {
                     try {
                         observers.get(nick).showMinideckUpdate(nick, index);
@@ -349,7 +350,7 @@ public class Game implements Game_Interface {
             }
         } catch (LevelException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.level", null);
                 }
             } catch (Exception ex) {
@@ -357,7 +358,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -365,7 +366,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalPhaseException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.phase", null);
                 }
             } catch (Exception ex) {
@@ -373,7 +374,7 @@ public class Game implements Game_Interface {
             }
         } catch (AlreadyViewingException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("minideck.viewing", Map.of("index", String.valueOf(index)));
                 }
             } catch (Exception ex) {
@@ -396,10 +397,10 @@ public class Game implements Game_Interface {
             deck.returnDeck(player.getNumDeck());
             player.setNumDeck(-1);
 
-            if(player.getObserver() != null) {
+            if (player.getObserver() != null) {
                 player.getObserver().displayMessage("minideck.return", null);
             }
-            if(observers != null) {
+            if (observers != null) {
                 for (String nick : observers.keySet()) {
                     try {
                         observers.get(nick).showMinideckUpdate(nick, -1);
@@ -410,7 +411,7 @@ public class Game implements Game_Interface {
             }
         } catch (LevelException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.level", null);
                 }
             } catch (Exception ex) {
@@ -418,7 +419,7 @@ public class Game implements Game_Interface {
             }
         } catch (AlreadyViewingException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.viewing", null);
                 }
             } catch (Exception ex) {
@@ -426,7 +427,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -434,7 +435,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalPhaseException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.phase", null);
                 }
             } catch (Exception ex) {
@@ -547,12 +548,12 @@ public class Game implements Game_Interface {
 
             heapTile.addTile(player.getSpaceship().getCurrentTile(), true);
             player.getSpaceship().returnTile(player.getNickname());
-            if(player.getObserver() != null) {
+            if (player.getObserver() != null) {
                 player.getObserver().displayMessage("build.returnTile", null);
             }
         } catch (IllegalStateException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -560,7 +561,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalPhaseException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.phase", null);
                 }
             } catch (Exception ex) {
@@ -577,7 +578,7 @@ public class Game implements Game_Interface {
             buildControl();
             stateControl(StateGameType.BUILD, StatePlayerType.NOT_FINISHED, StateCardType.FINISH, player);
 
-            if (player.getSpaceship().getCurrentTile() != null) { //todo servirebbe un exception
+            if (player.getSpaceship().getCurrentTile() != null) {
                 Tile currentTile = player.getSpaceship().getCurrentTile();
 
                 currentTile.setRotationType(rotation);
@@ -812,7 +813,7 @@ public class Game implements Game_Interface {
             }
         } catch (Exception e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -903,7 +904,7 @@ public class Game implements Game_Interface {
             } else if (type.equals(AliveType.BROWN_ALIEN)) { // se type è brown_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
                 if (checkTileNear(player, pos, TileType.BROWN_CABIN)) {
                     giveTile(player, pos).addCrew(player.getNickname(), type);
-                    if(observers != null) {
+                    if (observers != null) {
                         for (String nick : observers.keySet()) {
                             try {
                                 observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
@@ -916,7 +917,7 @@ public class Game implements Game_Interface {
             } else if (type.equals(AliveType.PURPLE_ALIEN)) { // se type è purple_alien controllo che ci sia il supportovitale vicino e nel caso aggiungo l'alieno
                 if (checkTileNear(player, pos, TileType.PURPLE_CABIN)) {
                     giveTile(player, pos).addCrew(player.getNickname(), type);
-                    if(observers != null) {
+                    if (observers != null) {
                         for (String nick : observers.keySet()) {
                             try {
                                 observers.get(nick).showAddCrewUpdate(player.getNickname(), pos, type, player.getSpaceship().getTile(pos.x(), pos.y()).get().getCrew().size());
@@ -927,12 +928,12 @@ public class Game implements Game_Interface {
                     }
                 }
             }
-            if(player.getObserver() != null) {
+            if (player.getObserver() != null) {
                 player.getObserver().displayMessage("build.addCrew", null);
             }
         } catch (IllegalStateException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -940,7 +941,7 @@ public class Game implements Game_Interface {
             }
         } catch (TileException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.tile", Map.of("tType", "Cabin"));
                 }
             } catch (Exception ex) {
@@ -948,7 +949,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalAddException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.add", null);
                 }
             } catch (Exception ex) {
@@ -956,7 +957,7 @@ public class Game implements Game_Interface {
             }
         } catch (LevelException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.level", null);
                 }
             } catch (Exception ex) {
@@ -1001,7 +1002,7 @@ public class Game implements Game_Interface {
             if (readyPlayer == players.size()) {
                 currentState.setCurrentPlayer(globalBoard.getRanking().getFirst());
                 getCurrentState().setPhase(StateGameType.TAKE_CARD);
-                if(observers != null) {
+                if (observers != null) {
                     for (Player p : players) {
                         p.getObserver().setGameView(level, p.getColor());
 
@@ -1009,14 +1010,14 @@ public class Game implements Game_Interface {
                 }
                 ServerController.logger.log(Level.INFO, "All players are ready, starting the game.");
             } else {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().displayMessage("info.ready", null);
                 }
             }
 
         } catch (Exception e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -1033,7 +1034,7 @@ public class Game implements Game_Interface {
 
             getGameboard().getPositions().remove(player);
 
-            if(observers != null) {
+            if (observers != null) {
                 for (String nick : observers.keySet()) {
                     try {
                         observers.get(nick).showEarlyLandingUpdate(player.getNickname());
@@ -1043,10 +1044,10 @@ public class Game implements Game_Interface {
                 }
             }
             player.setStatePlayer(StatePlayerType.OUT_GAME);
-            if(!getGameboard().getRanking().isEmpty()) {
+            if (!getGameboard().getRanking().isEmpty()) {
                 getCurrentState().setCurrentPlayer(getGameboard().getRanking().getFirst());
             }
-            if(player.getObserver() != null) {
+            if (player.getObserver() != null) {
                 player.getObserver().displayMessage("info.outOfGame", null);
             }
             decrementPlayerCount();
@@ -1110,12 +1111,11 @@ public class Game implements Game_Interface {
 
             getCurrentCard().choice(this, player, choice);
             try {
-                if(player.getObserver() != null){
+                if (player.getObserver() != null) {
                     player.getObserver().displayMessage("ingame.hidechoice", Map.of("choice", String.valueOf(choice)));
                 }
             } catch (Exception e) {
-                //todo logger
-                throw new RuntimeException(e);
+                ServerController.logger.log(Level.SEVERE, "error in method choice in method playNextCard", e);
             }
         } catch (IllegalStateException e) {
             try {
@@ -1195,7 +1195,7 @@ public class Game implements Game_Interface {
 
             getCurrentCard().choiceBox(this, player, choice);
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().displayMessage("ingame.hidechoicebox", Map.of("visible", String.valueOf(choice)));
                 }
             } catch (Exception e) {
@@ -1203,7 +1203,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -1211,7 +1211,7 @@ public class Game implements Game_Interface {
             }
         } catch (UnsupportedOperationException e) {
             try {
-                if(player.getObserver() != null) {
+                if (player.getObserver() != null) {
                     player.getObserver().reportError("error.command", null);
                 }
             } catch (Exception ex) {
@@ -1220,7 +1220,6 @@ public class Game implements Game_Interface {
         }
     }
 
-    //todo qui mancano gli update perchè odio i box
     @Override
     public void moveBox(Player player, Coordinate start, Coordinate end, BoxType boxType, boolean on) {
         try {
@@ -1234,7 +1233,7 @@ public class Game implements Game_Interface {
             if (start.x() == -1 && start.y() == -1) { //Start equals Planet
                 if (on) {
                     getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
-                    if(observers != null) {
+                    if (observers != null) {
                         for (String nick : observers.keySet()) {
                             try {
                                 observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
@@ -1250,7 +1249,7 @@ public class Game implements Game_Interface {
             } else if (end.x() == -1 && end.y() == -1) { //End equals Planet
                 if (on) {
                     getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), getCurrentCard().getBoxesWon(), boxType, on);
-                    if(observers != null) {
+                    if (observers != null) {
                         for (String nick : observers.keySet()) {
                             try {
                                 observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
@@ -1266,7 +1265,7 @@ public class Game implements Game_Interface {
             } else { //Start and End are types of storage
                 if (on) {
                     getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
-                    if(observers != null) {
+                    if (observers != null) {
                         for (String nick : observers.keySet()) {
                             try {
                                 observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
@@ -1284,7 +1283,7 @@ public class Game implements Game_Interface {
             }
             if (!on) {
                 try {
-                    if(player.getObserver() != null) {
+                    if (player.getObserver() != null) {
                         player.getObserver().displayMessage("ingame.hidemovebox", null);
                     }
                 } catch (Exception e) {
@@ -1293,7 +1292,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalStateException e) {
             try {
-                if(observers != null) {
+                if (observers != null) {
                     player.getObserver().reportError("error.state", null);
                 }
             } catch (Exception ex) {
@@ -1301,7 +1300,7 @@ public class Game implements Game_Interface {
             }
         } catch (IllegalAddException e) {
             try {
-                if(observers != null) {
+                if (observers != null) {
                     player.getObserver().reportError("error.add", null);
                 }
             } catch (Exception ex) {
@@ -1309,7 +1308,7 @@ public class Game implements Game_Interface {
             }
         } catch (TileException e) {
             try {
-                if(observers != null) {
+                if (observers != null) {
                     player.getObserver().reportError("error.tile", Map.of("tType", "storage / card"));
                 }
             } catch (Exception ex) {
@@ -1493,8 +1492,6 @@ public class Game implements Game_Interface {
                     player.getSpaceship().getTile(pos.x(), pos.y()).get().getType().equals(TileType.SPECIAL_STORAGE) ||
                             player.getSpaceship().getTile(pos.x(), pos.y()).get().getType().equals(TileType.STORAGE))) {
                 getCurrentCard().removeBox(this, player, player.getSpaceship().getTile(pos.x(), pos.y()).get(), type);
-                //player.onBoxUpdate(pos,player.getSpaceship().getTile(pos.x(),pos.y()).get().getOccupationTypes());
-                //todo metti questo update nella carta
             } else {
                 throw new TileException("Tile is not a storage or doesn't exits");
             }
@@ -1762,7 +1759,7 @@ public class Game implements Game_Interface {
         } catch (IllegalStateException e) {
             for (Player p : players) {
                 try {
-                    if(p.getObserver() != null) {
+                    if (p.getObserver() != null) {
                         p.getObserver().reportError("error.state", null);
                     }
                 } catch (Exception ex) {
@@ -1926,7 +1923,7 @@ public class Game implements Game_Interface {
     private void outOfGame() {
         HashMap<Player, Integer> positions = getGameboard().getPositions();
         for (Player p : getPlayers()) {
-            if(p.getStatePlayer()==StatePlayerType.OUT_GAME)
+            if (p.getStatePlayer() == StatePlayerType.OUT_GAME)
                 continue; //already out of game
 
             //0 Human on my spaceship
@@ -1974,8 +1971,8 @@ public class Game implements Game_Interface {
                 //p.onPlayerStateUpdate(p.getNickname(), StatePlayerType.OUT_GAME);
             }
         }
-        for(Player p : getGameboard().getRanking()){
-            if(p.getStatePlayer() != StatePlayerType.OUT_GAME){
+        for (Player p : getGameboard().getRanking()) {
+            if (p.getStatePlayer() != StatePlayerType.OUT_GAME) {
                 getCurrentState().setCurrentPlayer(p);
                 break;
             }

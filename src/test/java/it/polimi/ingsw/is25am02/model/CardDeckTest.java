@@ -188,7 +188,7 @@ class CardDeckTest {
         List<Player> players = new ArrayList<>();
         Spaceship spaceship = new Spaceship(2);
         players.add(new Player(spaceship, "mario", PlayerColor.YELLOW, null, 1));
-        Game game = new Game(players,2); //todo anche testflight
+        Game game = new Game(players,2);
         game.getGameboard().initializeGameBoard(players);
 
         HashMap<Integer, Pair<List<Card>, Boolean>> maindeck = game.getDeck().getDeck();

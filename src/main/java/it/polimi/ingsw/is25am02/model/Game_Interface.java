@@ -11,7 +11,7 @@ import java.util.List;
 public interface Game_Interface {
 
     //Phase BUILD
-    void flipHourglass(Player player) throws Exception; //todo testare
+    void flipHourglass(Player player) throws Exception;
     void hourglass(Player player) throws Exception;
     void takeTile(Player player);
     void takeTile(Player player, String tile_imagePath);
@@ -31,14 +31,13 @@ public interface Game_Interface {
     void checkWrongSpaceship(Player player);
 
     //Phase INITIALIZATION_SPACESHIP (Automatica se nessun player ha supporti vitali per alieni sulla nave)
-    void addCrew(Player player, Coordinate pos, AliveType type); //todo da testare
+    void addCrew(Player player, Coordinate pos, AliveType type);
     void ready(Player player);
 
     //Phase TAKE_CARD
     void playNextCard(Player player);
-    void earlyLanding(Player player); //todo da testare
+    void earlyLanding(Player player);
 
-    //todo mi viene mal di testa solo a pensare come testarli
     //Phase EFFECT_ON_PLAYERS
     void choice(Player player, boolean choice);
     void removeCrew(Player player, Coordinate pos);

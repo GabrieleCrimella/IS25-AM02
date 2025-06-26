@@ -13,7 +13,9 @@ import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,12 +52,27 @@ public class HeapTiles {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
-            String JSON_FILE_PATH = "src/main/resources/json/tiles.json";
-            rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+            String JSON_FILE_PATH = "json/tiles.json";
+
+            // Caricamento robusto della risorsa
+            InputStream inputStream = getClass().getResourceAsStream("/" + JSON_FILE_PATH);
+
+            if (inputStream == null) {
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(JSON_FILE_PATH);
+            }
+
+            if (inputStream == null) {
+                inputStream = getClass().getClassLoader().getResourceAsStream(JSON_FILE_PATH);
+            }
+
+            if (inputStream == null) {
+                throw new FileNotFoundException("Risorsa non trovata: " + JSON_FILE_PATH);
+            }
+
+            rootNode = objectMapper.readTree(inputStream);
+
         } catch (IOException e) {
-            //todo logger
-            System.out.println("Error in reading JSON file");
-            e.printStackTrace();
+            ServerController.logger.log(Level.SEVERE,"Error in reading JSON file", e);
         }
 
         ConnectorType[] pos = new ConnectorType[4];

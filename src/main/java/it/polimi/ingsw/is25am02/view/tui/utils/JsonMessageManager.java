@@ -11,8 +11,18 @@ public class JsonMessageManager {
     public JsonMessageManager(String resourcePath) throws Exception {
         Gson gson = new Gson();
 
-        // Usa getResourceAsStream invece di FileReader
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
+        // Prova prima con il ClassLoader della classe
+        InputStream inputStream = getClass().getResourceAsStream("/" + resourcePath);
+
+        // Se non funziona, prova con il ClassLoader del thread
+        if (inputStream == null) {
+            inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+        }
+
+        // Se ancora non funziona, prova senza il prefisso
+        if (inputStream == null) {
+            inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
+        }
 
         if (inputStream == null) {
             throw new FileNotFoundException("Risorsa non trovata: " + resourcePath);

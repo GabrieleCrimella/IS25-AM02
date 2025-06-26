@@ -3,6 +3,7 @@ package it.polimi.ingsw.is25am02.controller.server;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.*;
+import java.util.logging.Level;
 
 public class PingManager {
     private final Map<String, Integer> pingMap = new ConcurrentHashMap<>();
@@ -39,8 +40,6 @@ public class PingManager {
     //Close scheduler
     public void stop() {
         scheduler.shutdownNow();
-
-        //todo logger per gabri
-        System.out.println("PingManager was stopped");
+        ServerController.logger.log(Level.SEVERE, "PingManager was stopped");
     }
 }

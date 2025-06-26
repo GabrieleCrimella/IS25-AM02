@@ -53,20 +53,27 @@ public class ResultController extends GeneralController{
     }
 
     public void showWinners(HashMap<String, Integer> winners) {
-        StringBuilder winnersText = new StringBuilder("Winners: ");
-        if(winners.isEmpty()){
-            winnersText.append("No winners :(");
-            winnersLabel.setText(winnersText.toString());
-            return;
-        }
-        for (Map.Entry<String, Integer> entry : winners.entrySet()) {
-            winnersText.append(entry.getKey())
-                    .append(" (")
-                    .append(entry.getValue())
-                    .append(") ")
-                    .append("  ");
-        }
-        winnersLabel.setText(winnersText.toString().trim());
+        Platform.runLater(() -> {
+            try {
+                StringBuilder winnersText = new StringBuilder("Winners: ");
+                if(winners.isEmpty()){
+                    winnersText.append("No winners :(");
+                    winnersLabel.setText(winnersText.toString());
+                    return;
+                }
+                for (Map.Entry<String, Integer> entry : winners.entrySet()) {
+                    winnersText.append(entry.getKey())
+                            .append(" (")
+                            .append(entry.getValue())
+                            .append(") ")
+                            .append("  ");
+                }
+                winnersLabel.setText(winnersText.toString().trim());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
 

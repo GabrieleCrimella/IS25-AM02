@@ -391,7 +391,7 @@ class SpaceshipTest {
 
     }
 
-    //todo anna
+    //anna
     @Test
     void test_should_check_that_mask_level_1_is_correct(){
         //4 spaceship

@@ -12,7 +12,9 @@ import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import javafx.util.Pair;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -54,8 +56,6 @@ public class CardDeck {
             if (card.getTestFlight()) {
                 finalDeck.add(card);
             }
-            //todo togli dopo
-            //Collections.shuffle(finalDeck);
         }
     }
 
@@ -95,11 +95,26 @@ public class CardDeck {
 
 
     private void loadCard() {
-        final String JSON_FILE_PATH = "src/main/resources/json/cards.json";
+        final String JSON_FILE_PATH = "json/cards.json";
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
-            rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+            // Caricamento robusto della risorsa
+            InputStream inputStream = getClass().getResourceAsStream("/" + JSON_FILE_PATH);
+
+            if (inputStream == null) {
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(JSON_FILE_PATH);
+            }
+
+            if (inputStream == null) {
+                inputStream = getClass().getClassLoader().getResourceAsStream(JSON_FILE_PATH);
+            }
+
+            if (inputStream == null) {
+                throw new FileNotFoundException("Risorsa non trovata: " + JSON_FILE_PATH);
+            }
+
+            rootNode = objectMapper.readTree(inputStream);
         } catch (IOException e) {
             ServerController.logger.log(Level.SEVERE, "error in method loadCard", e);
         }

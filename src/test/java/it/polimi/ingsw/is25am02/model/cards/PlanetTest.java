@@ -178,13 +178,13 @@ class PlanetTest {
         game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 
         //player 2 e 3 non atterrano su nessun pianeta
-        //todo qui ho cambiato il box con boxtype
+        //qui ho cambiato il box con boxtype
         planet.choicePlanet(game,player1,0);
         planet.moveBox(game, player1,  planet.getPlanetOffers().get(0), storage1.getOccupation(), BoxType.RED, true );
         planet.choicePlanet(game, player2, -1);
         planet.choicePlanet(game, player3, -1);
         planet.choicePlanet(game,player4,1);
-        //todo qui ho cambiato il box con boxtype
+        //qui ho cambiato il box con boxtype
         planet.moveBox(game, player4, planet.getPlanetOffers().get(1), storage1.getOccupation(), BoxType.RED, false );
 
 
@@ -283,7 +283,7 @@ class PlanetTest {
         game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
 
 
-        //todo qui ho cambiato il box con boxtype
+        //qui ho cambiato il box con boxtype
         planet.choicePlanet(game, player1, 0);
         planet.moveBox(game, player1, planet.getPlanetOffers().get(0), storage1.getOccupation(), BoxType.RED, true );
         planet.choicePlanet(game, player2, -1);

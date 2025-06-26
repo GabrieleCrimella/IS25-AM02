@@ -12,7 +12,9 @@ import it.polimi.ingsw.is25am02.model.tiles.Tile;
 import javafx.util.Pair;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +30,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
     private ConcurrentHashMap<String, VirtualView> observers;
     //the first is x, the second is y
 
-    private static final String JSON_FILE_PATH = "src/main/resources/json/spaceship.json";
+    private static final String JSON_FILE_PATH = "json/spaceship.json";
 
     @SuppressWarnings("unchecked")
     public SpaceshipIterator(int level) {
@@ -117,7 +119,23 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+
+            // Caricamento robusto della risorsa
+            InputStream inputStream = getClass().getResourceAsStream("/" + JSON_FILE_PATH);
+
+            if (inputStream == null) {
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(JSON_FILE_PATH);
+            }
+
+            if (inputStream == null) {
+                inputStream = getClass().getClassLoader().getResourceAsStream(JSON_FILE_PATH);
+            }
+
+            if (inputStream == null) {
+                throw new FileNotFoundException("Risorsa non trovata: " + JSON_FILE_PATH);
+            }
+
+            JsonNode rootNode = objectMapper.readTree(inputStream);
 
             for (JsonNode levelNode : rootNode) {  //foreach JSON node
                 // jump to the right level.
@@ -158,9 +176,7 @@ public class SpaceshipIterator implements Iterator<Optional<Tile>>, Iterable<Opt
             }
 
         } catch (IOException e) {
-            //todo logger
-            System.out.println("Error reading JSON file - spaceship mask");
-            e.printStackTrace();
+            ServerController.logger.log(Level.SEVERE, "Error reading JSON file - spaceship mask", e);
         }
     }
 

@@ -286,8 +286,6 @@ public class WarZone_II extends Card{
             }
             currentIndex++;
 
-
-            //todo aggiunto !res
             if(currentIndex == shots.size() && !res){
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
                 game.getCurrentCard().setStateCard(StateCardType.FINISH);
@@ -304,7 +302,6 @@ public class WarZone_II extends Card{
             game.setDiceResultManually(0);
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
 
-            //todo aggiunto if
             if(currentIndex == shots.size()){
                 game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
                 game.getCurrentCard().setStateCard(StateCardType.FINISH);

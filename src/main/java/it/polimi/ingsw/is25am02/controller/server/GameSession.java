@@ -8,6 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
 
 public class GameSession {
     private final Game game;
@@ -41,8 +42,7 @@ public class GameSession {
                     if (task == POISON_PILL) break;
                     gameThreadPool.submit(task);
                 } catch (InterruptedException e) {
-                    //todo sistemare con logger
-                    e.getMessage();
+                    ServerController.logger.log(Level.SEVERE,"Error in game queue processor", e);
                     break;
                 }
             }
@@ -56,8 +56,7 @@ public class GameSession {
             try {
                 gameQueueProcessor.join();
             } catch (InterruptedException e) {
-                //todo sistemare con logger
-                e.printStackTrace();
+                ServerController.logger.log(Level.SEVERE,"Error in game queue processor", e);
             }
             gameThreadPool.shutdownNow();
         }
