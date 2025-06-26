@@ -658,7 +658,7 @@ public class InGameController extends GeneralController {
             choiceboxfalse.setDisable(false);
             commentBox.setVisible(true);
             loadComments("Abandoned station: if you have enough alive on board, you can choose whether to take the boxes or not. If you choose to do so, click on the storage and add the boxes you want");
-            showNotification("If you have at least 5 humans on the ship, you can choose to load the boxes onto the ship", NotificationType.INFO, 15000);
+            showNotification("If you have enough alive on the ship, you can choose to load the boxes", NotificationType.INFO, 15000);
         } else if(newCard.getCardType().equals(CardType.EPIDEMY)){
             showNotification("One human has been removed from each interconnected cabin",NotificationType.INFO, 15000);
         }else if (newCard.getCardType().equals(CardType.ABANDONED_SHIP)) {
@@ -668,21 +668,25 @@ public class InGameController extends GeneralController {
             choiceNo.setDisable(false);
             commentBox.setVisible(true);
             loadComments("Abandoned ship: you can choose whether or not to sacrifice alive to gain credits");
-            showNotification("If you lose 3 humans, you can gain 4 credits", NotificationType.INFO, 15000);
+            showNotification("If you lose alive, you can gain credits", NotificationType.INFO, 15000);
         } else if (newCard.getCardType().equals(CardType.PIRATE)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
             commentBox.setVisible(true);
+            showNotification("Activate the cannons to defend yourself", NotificationType.INFO, 15000);
             loadComments("Pirate: you can choose to activate cannons using batteries by clicking on them. If you win, you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must roll the dice to find out where you'll be hit and activate Calculate Damage by clicking on a battery or directly on Calculate Damage");
         } else if (newCard.getCardType().equals(CardType.SLAVE_OWNER)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
             commentBox.setVisible(true);
+            showNotification("Activate the cannons to defend yourself", NotificationType.INFO, 15000);
             loadComments("Slave Owner: you can choose to activate cannons using batteries by clicking on them. If you win you receive credits. If it's a draw, the effect passes to the next player. If you lose, you must click on the cabins to eliminate the alive crew members..");
         } else if (newCard.getCardType().equals(CardType.WARZONE2)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
             commentBox.setVisible(true);
+            showNotification("Decide how many cannons you want to activate using which batteries", NotificationType.INFO, 15000);
+            showNotification("The player with less cannons will lose day of flight", NotificationType.INFO, 15000);
             loadComments("War Zone 2: Phase 1, you can choose to activate cannons using batteries; Phase 2: you can choose to activate motors using batteries; the player with fewer motors must choose where to remove boxes by clicking on storages. Phase 3: the player with fewer alive must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.TRAFFICKER)) {
             finishcannon.setVisible(true);
@@ -700,6 +704,7 @@ public class InGameController extends GeneralController {
             choiceCrewButton.setVisible(true);
             choiceCrewButton.setDisable(false);
             commentBox.setVisible(true);
+            showNotification("Click on the choice crew button to discover which player will lose day of flight", NotificationType.INFO, 15000);
             loadComments("War Zone 1: Phase 1, the player with fewer humans automatically loses flight days. Phase 2, you can choose to activate motors using batteries; the player with fewer motors must choose where to remove alive crew members by clicking on the cabins. Phase 3, you can choose to activate cannons using batteries; the player with fewer cannons must roll the dice to find out where they’ll be hit. By clicking on a battery, you activate either a shield or a cannon, otherwise you can click on Calculate Damage. If the ship breaks apart, you’ll need to choose which part to keep by clicking on a tile from that section.");
         } else if (newCard.getCardType().equals(CardType.METEORITES_STORM)) {
             if (isLeader()) {
@@ -739,6 +744,8 @@ public class InGameController extends GeneralController {
             commentBox.setVisible(true);
             loadComments("Planets: you can choose which planet to board by clicking on the card, then click on the storage to load the boxes.");
             showNotification("Choose a planet to land on", NotificationType.INFO, 15000);
+        } else if( newCard.getCardType().equals(CardType.STARDUST)) {
+            showNotification("You will be moved back on the gameboard based on the number of exposed connectors you have", NotificationType.INFO, 15000);
         }
     }
 
@@ -825,7 +832,7 @@ public class InGameController extends GeneralController {
         } catch (RemoteException e) {
             showNotification("Error during choice box", NotificationType.ERROR, 5000);
         }
-
+        showNotification("Load boxes by clicking on storages", NotificationType.INFO, 15000);
     }
 
     @FXML
@@ -998,6 +1005,7 @@ public class InGameController extends GeneralController {
     }
 
     public void hideFinishCannon(int number) {
+        showNotification("You have activated " + number + " cannons", NotificationType.INFO, 15000);
         finishcannon.setVisible(false);
         finishcannon.setDisable(true);
         batteries = new ArrayList<>();
@@ -1014,12 +1022,20 @@ public class InGameController extends GeneralController {
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
+            showNotification("Decide how many motors you want to activate using which batteries", NotificationType.INFO, 15000);
+            showNotification("The player with less motors will lose boxes", NotificationType.INFO, 15000);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.TRAFFICKER)) {
+            showNotification("If you lose the battle, you must remove boxes", NotificationType.INFO, 15000);
+            showNotification("If it's a draw, the effect passes to the next player", NotificationType.INFO, 15000);
+            showNotification("If you win the battle, you can add boxes", NotificationType.INFO, 15000);
             choiceboxtrue.setVisible(true);
             choiceboxtrue.setDisable(false);
             choiceboxfalse.setVisible(true);
             choiceboxfalse.setDisable(false);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.PIRATE)) {
+            showNotification("If you lose the battle, you will be hit from shots", NotificationType.INFO, 15000);
+            showNotification("If it's a draw, the effect passes to the next player", NotificationType.INFO, 15000);
+            showNotification("If you win the battle, you can decide to add credits and lose day of flight", NotificationType.INFO, 15000);
             calculatedamage.setVisible(true);
             calculatedamage.setDisable(false);
             rollDice.setVisible(true);
@@ -1030,6 +1046,9 @@ public class InGameController extends GeneralController {
             choiceNo.setVisible(true);
             choiceNo.setDisable(false);
         } else if( GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.SLAVE_OWNER)) {
+            showNotification("If you lose the battle, you must remove alive", NotificationType.INFO, 15000);
+            showNotification("If it's a draw, the effect passes to the next player", NotificationType.INFO, 15000);
+            showNotification("If you win the battle, you can decide to add credits and lose day of flight", NotificationType.INFO, 15000);
             choiceYes.setVisible(true);
             choiceYes.setDisable(false);
             choiceNo.setVisible(true);
@@ -1038,7 +1057,7 @@ public class InGameController extends GeneralController {
     }
 
     public void hideFinishMotor(int number) {
-        showNotification("You will be moved forward on the game board", NotificationType.INFO, 15000);
+        showNotification("You have activated " + number + " motors", NotificationType.INFO, 15000);
         finishmotor.setVisible(false);
         finishmotor.setDisable(true);
         batteries = new ArrayList<>();
@@ -1050,9 +1069,14 @@ public class InGameController extends GeneralController {
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             choiceCrewButton.setVisible(true);
             choiceCrewButton.setDisable(false);
+            showNotification("Click on the choice crew button to discover which one will be hit by shots", NotificationType.INFO, 15000);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishcannon.setVisible(true);
             finishcannon.setDisable(false);
+            showNotification("Decide how many cannons you want to activate using which batteries", NotificationType.INFO, 15000);
+            showNotification("The player with less cannons will be hit by shots", NotificationType.INFO, 15000);
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.OPENSPACE)) {
+            showNotification("You will be moved forward on the game board", NotificationType.INFO, 15000);
         }
 
     }
@@ -1078,6 +1102,8 @@ public class InGameController extends GeneralController {
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
+            showNotification("Decide how many motors you want to activate using which batteries", NotificationType.INFO, 15000);
+            showNotification("The player with less motors will lose alive", NotificationType.INFO, 15000);
         } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             rollDice.setVisible(true);
             rollDice.setDisable(false);
