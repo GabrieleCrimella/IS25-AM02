@@ -176,11 +176,9 @@ public class GUIApplication extends Application implements ConsoleClient {
         if (keys.equals("disconnect.game")||keys.equals("disconnect.lobby_owner")) {
             Platform.runLater(() -> {
                 try {
-                    System.out.println("Tentativo di switchScene...");
                     GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
                         //g.initialize();
                     });
-                    System.out.println("switchScene completato!");
                 } catch (Exception e) {
                     System.err.println("Errore durante switchScene: ");
                     e.printStackTrace();
