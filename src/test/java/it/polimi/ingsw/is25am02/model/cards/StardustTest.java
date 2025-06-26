@@ -202,7 +202,54 @@ class StardustTest {
 
     @Test
     void test_Stardust() {
-        Game game = make_a_spaceship();
+        //inizializzo spaceship
+        Spaceship spaceshipRosso = new Spaceship(2);
+        Spaceship spaceshipBlu = new Spaceship(2);
+        Spaceship spaceshipVerde = new Spaceship(2);
+        Spaceship spaceshipGiallo = new Spaceship(2);
+
+        //inizializzo player
+        Player playerRosso = new Player(spaceshipRosso, "Mario Rossi", PlayerColor.RED, null, 1);
+        Player playerBlu = new Player(spaceshipBlu, "Lisa Dagli Occhi Blu", PlayerColor.BLUE, null, 1);
+        Player playerVerde = new Player (spaceshipVerde, "Giuseppe Verdi", PlayerColor.GREEN, null, 1);
+        Player playerGiallo = new Player (spaceshipGiallo, "DJ Giallo", PlayerColor.YELLOW, null, 1);
+
+        //aggiungo player alla lista
+        List<Player> giocatori = new ArrayList<Player>();
+        giocatori.add(playerRosso);
+        giocatori.add(playerBlu);
+        giocatori.add(playerVerde);
+        giocatori.add(playerGiallo);
+
+        //inizializzo game
+        Game game = new Game(giocatori, 2);
+        game.getGameboard().initializeGameBoard(giocatori);
+
+        assertEquals(StateGameType.BUILD, game.getCurrentState().getPhase());
+
+        //tile 1 - battery 8 7
+        TileType t3 = TileType.BATTERY;
+        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.NONE};
+        RotationType rotationType3 = RotationType.NORTH;
+        int maxNum3 = 2;
+        Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
+        try {
+            playerRosso.getSpaceship().addTile(playerRosso.getNickname(),8,7, battery3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage() + " 3");
+        }
+
+        //tile 2 - battery 7 8
+        TileType t2 = TileType.BATTERY;
+        ConnectorType[] connectors2 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.NONE};
+        RotationType rotationType2 = RotationType.NORTH;
+        Tile battery2 = new BatteryStorage(t2, connectors2, rotationType2, null, maxNum3);
+        try {
+            playerRosso.getSpaceship().addTile(playerRosso.getNickname(),7,8, battery2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage() + " 3");
+        }
+
         int calcul1 = game.getPlayers().getFirst().getSpaceship().calculateExposedConnectors();
         int calcul2 = game.getPlayers().get(1).getSpaceship().calculateExposedConnectors();
         int calcul3 = game.getPlayers().get(2).getSpaceship().calculateExposedConnectors();
@@ -214,25 +261,43 @@ class StardustTest {
         assertEquals(calcul3, 4);
         assertEquals(calcul4, 4);
 
-        HashMap<Player,Integer> correct = new HashMap<>();
-        correct.put(game.getPlayers().getFirst(), 4);
-        correct.put(game.getPlayers().get(1), -1);
-        correct.put(game.getPlayers().get(2), -3);
-        correct.put(game.getPlayers().get(3), -4);
+        for(Player p : giocatori){
+            p.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        }
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        for(Player p : giocatori){
+            game.ready(p);
+        }
+
 
         //create card
         int level = 2;
         Card stardust = new Stardust(level, null, null, true);
         game.getCurrentState().setCurrentCard(stardust);
+        game.getCurrentState().getCurrentCard().setStateCard(StateCardType.FINISH);
         game.getCurrentState().setCurrentPlayer(game.getPlayers().getFirst());
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
+        game.playNextCard(playerRosso);
 
+        game.getCurrentState().setCurrentCard(stardust);
+        game.getCurrentState().getCurrentCard().setStateCard(StateCardType.DECISION);
+        LinkedList<String> nickname = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nickname);
         stardust.effect(game);
 
-        assertEquals(true, game.getGameboard().getPositions().get(game.getPlayers().getFirst()).equals(correct.get(game.getPlayers().getFirst())));
-        assertEquals(true, game.getGameboard().getPositions().get(game.getPlayers().get(1)).equals(correct.get(game.getPlayers().get(1))));
-        assertEquals(true, game.getGameboard().getPositions().get(game.getPlayers().get(2)).equals(correct.get(game.getPlayers().get(2))));
-        assertEquals(true, game.getGameboard().getPositions().get(game.getPlayers().get(3)).equals(correct.get(game.getPlayers().get(3))));
-        assertEquals(true, game.getGameboard().getPositions().equals(correct));
+        assertEquals(4, game.getGameboard().getPositions().get(game.getPlayers().getFirst()));
+        assertEquals(-1, game.getGameboard().getPositions().get(game.getPlayers().get(1)));
+        assertEquals(-3, game.getGameboard().getPositions().get(game.getPlayers().get(2)));
+        assertEquals(-4, game.getGameboard().getPositions().get(game.getPlayers().get(3)));
     }
 
     @Test

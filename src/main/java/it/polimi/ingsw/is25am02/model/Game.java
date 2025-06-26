@@ -1195,19 +1195,25 @@ public class Game implements Game_Interface {
 
             getCurrentCard().choiceBox(this, player, choice);
             try {
-                player.getObserver().displayMessage("ingame.hidechoicebox", Map.of("visible", String.valueOf(choice)));
+                if(player.getObserver() != null) {
+                    player.getObserver().displayMessage("ingame.hidechoicebox", Map.of("visible", String.valueOf(choice)));
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choiceBox");
             }
         } catch (UnsupportedOperationException e) {
             try {
-                player.getObserver().reportError("error.command", null);
+                if(player.getObserver() != null) {
+                    player.getObserver().reportError("error.command", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method choiceBox");
             }
@@ -1228,11 +1234,13 @@ public class Game implements Game_Interface {
             if (start.x() == -1 && start.y() == -1) { //Start equals Planet
                 if (on) {
                     getCurrentCard().moveBox(this, player, getCurrentCard().getBoxesWon(), giveTile(player, end).getOccupation(), boxType, on);
-                    for (String nick : observers.keySet()) {
-                        try {
-                            observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                    if(observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                            }
                         }
                     }
                 } else {
@@ -1242,11 +1250,13 @@ public class Game implements Game_Interface {
             } else if (end.x() == -1 && end.y() == -1) { //End equals Planet
                 if (on) {
                     getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), getCurrentCard().getBoxesWon(), boxType, on);
-                    for (String nick : observers.keySet()) {
-                        try {
-                            observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                    if(observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                            }
                         }
                     }
                 } else {
@@ -1256,12 +1266,14 @@ public class Game implements Game_Interface {
             } else { //Start and End are types of storage
                 if (on) {
                     getCurrentCard().moveBox(this, player, giveTile(player, start).getOccupation(), giveTile(player, end).getOccupation(), boxType, on);
-                    for (String nick : observers.keySet()) {
-                        try {
-                            observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
-                            observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
-                        } catch (RemoteException e) {
-                            ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                    if(observers != null) {
+                        for (String nick : observers.keySet()) {
+                            try {
+                                observers.get(nick).showBoxUpdate(end, player.getNickname(), player.getSpaceship().getTile(end.x(), end.y()).get().getOccupationTypes());
+                                observers.get(nick).showBoxUpdate(start, player.getNickname(), player.getSpaceship().getTile(start.x(), start.y()).get().getOccupationTypes());
+                            } catch (RemoteException e) {
+                                ServerController.logger.log(Level.SEVERE, "error in method movebox", e);
+                            }
                         }
                     }
                 } else {
@@ -1272,26 +1284,34 @@ public class Game implements Game_Interface {
             }
             if (!on) {
                 try {
-                    player.getObserver().displayMessage("ingame.hidemovebox", null);
+                    if(player.getObserver() != null) {
+                        player.getObserver().displayMessage("ingame.hidemovebox", null);
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
         } catch (IllegalStateException e) {
             try {
-                player.getObserver().reportError("error.state", null);
+                if(observers != null) {
+                    player.getObserver().reportError("error.state", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method moveBox");
             }
         } catch (IllegalAddException e) {
             try {
-                player.getObserver().reportError("error.add", null);
+                if(observers != null) {
+                    player.getObserver().reportError("error.add", null);
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method moveBox");
             }
         } catch (TileException e) {
             try {
-                player.getObserver().reportError("error.tile", Map.of("tType", "storage / card"));
+                if(observers != null) {
+                    player.getObserver().reportError("error.tile", Map.of("tType", "storage / card"));
+                }
             } catch (Exception ex) {
                 reportErrorOnServer("connection problem in method moveBox");
             }
