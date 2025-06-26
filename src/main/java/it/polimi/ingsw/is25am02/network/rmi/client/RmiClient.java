@@ -147,7 +147,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
-    //todo questo rimuove in automatica, sarebbe meglio che si prendesse la lista di alive, vedesse il tipo e quanti ce ne sono e lo settasse corretto.
     @Override
     public void showCrewRemoval(Coordinate coordinate, String nickname) {
         for (PlayerV playerv : gameV.getPlayers()) {
@@ -214,7 +213,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
         }
     }
 
-    //todo cosa deve fare?
     @Override
     public void showUpdatedOthers() {
 
@@ -250,7 +248,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     }
 
     @Override
-    public void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox) { //todo voglio aggiungere una tile all'heaptile
+    public void showVisibilityUpdate(String imagepath, ConnectorType[] connectors, RotationType rotationType, TileType tType, int maxBattery, int maxBox) { //voglio aggiungere una tile all'heaptile
         TileV tileV = new TileV(tType, connectors, rotationType, true, imagepath, maxBattery, maxBox);
         gameV.getHeapTilesV().addToHeapTile(tileV);
     }
@@ -294,7 +292,6 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     }
 
-    //todo in base a come scegliamo di fare la current card questa potrebbe dover essere rivista
     @Override
     public void showCurrentCardUpdate(String imagepath, StateCardType stateCard, CardType cardType, String comment) {
         CardV card = new CardV(stateCard, imagepath, cardType, comment);

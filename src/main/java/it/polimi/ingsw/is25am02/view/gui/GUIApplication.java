@@ -292,6 +292,4 @@ public class GUIApplication extends Application implements ConsoleClient {
             GUIController.getInstance().onRemoveTile(coordinate);
         });
     }
-
-//todo si potrebbe aggiugnere anche il caricamento dei fonts
 }

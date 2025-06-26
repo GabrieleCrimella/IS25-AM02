@@ -26,8 +26,6 @@ import static it.polimi.ingsw.is25am02.utils.enumerations.RotationType.*;
 //AliveTypeV diventa int numEnum
 //BoxTypeV diventa int numEnum
 
-//todo fare bene i controlli nella TUIconsole
-
 public class ClientController implements VirtualServer {
     private final ConnectionClient connection;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -35,8 +33,6 @@ public class ClientController implements VirtualServer {
     private boolean running;
     private GameV gameV;
     private int timeLeft = 10;
-    //todo devo definire gameV una volta che so in che game sono
-
 
     public ClientController(ConnectionClient connection) {
         this.connection = connection;
@@ -86,7 +82,6 @@ public class ClientController implements VirtualServer {
                 return p;
             }
         }
-        //todo messagio di errore chiedere
         //throw new PlayerNotFoundException("Player <" + nickname + "> not found");
         return null; //messo solo per non dare errore
     }
@@ -135,7 +130,6 @@ public class ClientController implements VirtualServer {
                     closeConnect();
                     scheduler.shutdownNow();
                 } catch (Exception e) {
-                    //todo sistemare con logger
                     System.out.println("Impossibile chiudere il client");
                 }
             }

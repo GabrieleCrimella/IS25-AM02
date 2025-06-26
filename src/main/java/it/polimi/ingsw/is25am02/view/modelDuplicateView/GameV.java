@@ -26,7 +26,7 @@ public class GameV {
     private final StateV currentState;
     private HeapTileV heapTilesV;
     private DiceV diceV;
-    private boolean buildTimeIsOver; //todo bisogna aggiornarlo in una update
+    private boolean buildTimeIsOver;
     private HourglassV hourglass;
     private CardDeckV deck;
     private ConsoleClient console;

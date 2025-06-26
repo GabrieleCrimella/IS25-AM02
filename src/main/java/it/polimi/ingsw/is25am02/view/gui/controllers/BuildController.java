@@ -651,7 +651,6 @@ public class BuildController extends GeneralController {
             if (booked) {
                 System.out.println(index + " " + coordinate + " " + rotation);
                 GUIController.getInstance().getController().addBookedTile(GUIController.getInstance().getNickname(), index, coordinate, rotation);
-                //todo ricordarsi di togliere la tile da tilesBooked
             } else {
                 GUIController.getInstance().getController().addTile(GUIController.getInstance().getNickname(), coordinate, rotation);
             }
