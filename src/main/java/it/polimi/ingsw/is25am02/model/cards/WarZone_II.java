@@ -83,7 +83,7 @@ public class WarZone_II extends Card{
                 if(observers != null) {
                     for (String nick : observers.keySet()) {
                         try {
-                            observers.get(nick).showPositionUpdate(player.getNickname(), game.getGameboard().getPositions().get(player));
+                            observers.get(nick).showPositionUpdate(p.getNickname(), game.getGameboard().getPositions().get(p));
                             try {
                                 observers.get(nick).displayMessage("ingame.moveongameboard", Map.of("nick", player.getNickname(), "pos", String.valueOf(game.getGameboard().getPositions().get(player))));
                             } catch (Exception e) {
