@@ -1,5 +1,6 @@
 package it.polimi.ingsw.is25am02.model.tiles;
 
+import it.polimi.ingsw.is25am02.utils.enumerations.AliveType;
 import it.polimi.ingsw.is25am02.utils.enumerations.ConnectorType;
 import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
 import it.polimi.ingsw.is25am02.utils.enumerations.TileType;
@@ -203,6 +204,26 @@ class TileTest {
 
     }
 
+    @Test
+    void test_should_check_unsupported_calls() {
 
+        TileType t1 = TileType.CANNON;
+        ConnectorType[] connectors1 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.NONE};
+        RotationType rotationType1 = RotationType.EAST;
+        Cannon tile = new Cannon(t1, connectors1, rotationType1, null);
 
+        assertThrows(UnsupportedOperationException.class, () -> tile.getOccupation());
+        assertThrows(UnsupportedOperationException.class, () -> tile.getOccupationTypes());
+        assertThrows(UnsupportedOperationException.class, () -> tile.removeBox(null));
+        assertThrows(UnsupportedOperationException.class, () -> tile.getNumOccupation());
+        assertThrows(UnsupportedOperationException.class, () -> tile.addBox(null));
+        assertThrows(UnsupportedOperationException.class, () -> tile.getMaxNum());
+        assertThrows(UnsupportedOperationException.class, () -> tile.isShielded(RotationType.NORTH));
+        assertThrows(UnsupportedOperationException.class, () -> tile.getCrew());
+        assertThrows(UnsupportedOperationException.class, () -> tile.addCrew("player", AliveType.HUMAN));
+        assertThrows(UnsupportedOperationException.class, () -> tile.removeCrew());
+        assertThrows(UnsupportedOperationException.class, () -> tile.getNumBattery());
+        assertThrows(UnsupportedOperationException.class, () -> tile.getBattery());
+        assertThrows(UnsupportedOperationException.class, () -> tile.removeBattery());
+    }
 }
