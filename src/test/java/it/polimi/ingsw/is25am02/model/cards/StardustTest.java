@@ -1,7 +1,12 @@
 package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
+import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
+import it.polimi.ingsw.is25am02.model.cards.boxes.BoxStore;
+import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
@@ -9,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -227,5 +233,177 @@ class StardustTest {
         assertEquals(true, game.getGameboard().getPositions().get(game.getPlayers().get(2)).equals(correct.get(game.getPlayers().get(2))));
         assertEquals(true, game.getGameboard().getPositions().get(game.getPlayers().get(3)).equals(correct.get(game.getPlayers().get(3))));
         assertEquals(true, game.getGameboard().getPositions().equals(correct));
+    }
+
+    @Test
+    void test_should_check_if_player_goes_back(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        //game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        game.checkSpaceship(player1);
+        game.checkSpaceship(player2);
+        game.checkSpaceship(player3);
+        game.checkSpaceship(player4);
+
+
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        game.ready(player1);
+        game.ready(player2);
+        game.ready(player3);
+        game.ready(player4);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+        game.getCurrentState().setCurrentPlayer(player1);
+
+
+        Card stardust = new Stardust(0, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(stardust);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        game.effect(game);
+
+        assertEquals(0, game.getGameboard().getPositions().get(player1));
+        assertEquals(-2, game.getGameboard().getPositions().get(player2));
+        assertEquals(-3, game.getGameboard().getPositions().get(player3));
+        assertEquals(-4, game.getGameboard().getPositions().get(player4));
+
+
+
+    }
+
+    @Test
+    void test_should_check_if_player_does_not_have_power_and_2_batteries(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType2 = RotationType.NORTH;
+        int maxNum = 3;
+        Tile battery1 = new BatteryStorage(TileType.BATTERY, connectors2, rotationType2, null, maxNum);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), battery1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 7,8, battery1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        //finished spaceships and initializing them
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        BoxStore store = new BoxStore();
+        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+        currentBoxesWonTypeT.add(BoxType.YELLOW);
+        currentBoxesWonTypeT.add(BoxType.GREEN);
+        currentBoxesWonTypeT.add(BoxType.BLUE);
+        Card trafficker = new Trafficker(0, store, 4, 1, 2, currentBoxesWonT, currentBoxesWonTypeT, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(trafficker);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        try {
+            game.getCurrentCard().choiceDoubleCannon(game, player1, new ArrayList<>(),new ArrayList<>() );
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
+
+        try {
+            game.getCurrentCard().removeBattery(game, player1, battery1);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
+
+        try {
+            game.getCurrentCard().removeBattery(game, player1, battery1);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
     }
 }

@@ -1425,7 +1425,9 @@ public class Game implements Game_Interface {
 
             getCurrentCard().choiceCrew(this, player);
             try {
-                player.getObserver().displayMessage("ingame.afterchoicecrew", null);
+                if (player.getObserver() != null) {
+                    player.getObserver().displayMessage("ingame.afterchoicecrew", null);
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
