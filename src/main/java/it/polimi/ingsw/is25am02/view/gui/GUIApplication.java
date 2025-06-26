@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
 public class GUIApplication extends Application implements ConsoleClient {
     public static final Logger logger = Logger.getLogger(GUIApplication.class.getName());
     public static int MIN_WIDTH = 1560;
@@ -174,13 +173,12 @@ public class GUIApplication extends Application implements ConsoleClient {
 
     @Override
     public void displayMessage(String keys, Map<String, String> params) {
-        if (keys.equals("disconnect.game")) {
-            System.out.println("PORCA VACCA DEVI CAMBIARE SCHERMATA");
+        if (keys.equals("disconnect.game")||keys.equals("disconnect.lobby_owner")) {
             Platform.runLater(() -> {
                 try {
                     System.out.println("Tentativo di switchScene...");
                     GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
-                        g.initialize();
+                        //g.initialize();
                     });
                     System.out.println("switchScene completato!");
                 } catch (Exception e) {
@@ -270,7 +268,7 @@ public class GUIApplication extends Application implements ConsoleClient {
     public void onResultState() {
         Platform.runLater(() -> {
             GUIController.getInstance().<ResultController>switchScene("Result", "Result", controller -> {
-                controller.initialize();
+                //controller.initialize();
             });
         });
     }

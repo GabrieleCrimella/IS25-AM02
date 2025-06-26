@@ -1,7 +1,8 @@
 package it.polimi.ingsw.is25am02.view.tui.utils;
 
 import com.google.gson.*;
-import java.io.FileReader;
+
+import java.io.*;
 import java.util.Map;
 
 public class JsonMessageManager {
@@ -9,7 +10,16 @@ public class JsonMessageManager {
 
     public JsonMessageManager(String filePath) throws Exception {
         Gson gson = new Gson();
-        this.messages = gson.fromJson(new FileReader(filePath), JsonObject.class);
+
+        InputStream inputStream = getClass().getResourceAsStream(filePath.startsWith("/") ? filePath : "/" + filePath);
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("Could not find resource: " + filePath);
+        }
+
+        try (Reader reader = new InputStreamReader(inputStream)) {
+            this.messages = gson.fromJson(reader, JsonObject.class);
+        }
     }
 
     private String getMessage(String[] keys) {

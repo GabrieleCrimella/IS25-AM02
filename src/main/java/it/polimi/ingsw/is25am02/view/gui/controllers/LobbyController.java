@@ -61,12 +61,10 @@ public class LobbyController extends GeneralController {
 
     private StackPane dimBackground;
 
-
     @FXML
     private Label errorLabel;
 
     public void initialize() {
-
         Button closeButton = new Button("x");
         closeButton.setOnAction(e -> {
             Platform.exit();
@@ -116,11 +114,7 @@ public class LobbyController extends GeneralController {
                 }
             }
         });
-
          */
-
-
-
     }
 
     private void hideButtonShowLoading() {
@@ -241,7 +235,6 @@ public class LobbyController extends GeneralController {
         root.getChildren().add(dimBackground);
     }
 
-
     public void setLobbyListFromMap(Map<Integer, LobbyView> lobbyMap) {
         Platform.runLater(() -> {
             setLobbies(new ArrayList<>(lobbyMap.values()));
@@ -251,6 +244,8 @@ public class LobbyController extends GeneralController {
 
     @FXML
     private void onJoinLobby(MouseEvent event) {
+        refreshLobbyList();
+        /*
         LobbyView selectedLobby = lobbyList.getSelectionModel().getSelectedItem();
         if (!lobbyList.isVisible()) {
             lobbyList.setVisible(true);
@@ -276,14 +271,14 @@ public class LobbyController extends GeneralController {
             } catch (RemoteException e) {
                 errorLabel.setText("Impossibile accedere alla lobby.");
             }
-
         }
+
+         */
     }
 
     @FXML
     private void onCreateLobby(MouseEvent event) {
         createForm.setVisible(true);
-
     }
 
     @FXML
@@ -321,7 +316,6 @@ public class LobbyController extends GeneralController {
     private void refreshLobbyList() {
         try {
             GUIController.getInstance().getController().getLobbies(GUIController.getInstance().getController().getVirtualView());
-
         } catch (RemoteException e) {
             displayError("Errore nel recupero delle lobby.");
         }

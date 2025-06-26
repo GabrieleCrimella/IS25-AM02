@@ -16,6 +16,7 @@ import it.polimi.ingsw.is25am02.network.VirtualView;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,22 +100,26 @@ public class ServerController extends UnicastRemoteObject implements VirtualServ
 
     //Creation of the thread that periodically sends the alive signal to the clients
     public void pingFromServer() {
-        Thread pingClients = new Thread(() -> {
-            while (running) {
-                for(String client : registeredClients.keySet()) {
-                    try {
-                        registeredClients.get(client).pingFromServer();
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        break;
-                    } catch (RemoteException e) {
-                        disconnectClient(client);
-                    }
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1); // Un thread per scheduling
+        scheduler.scheduleAtFixedRate(() -> {
+            // Per evitare ConcurrentModificationException e lavorare su una copia sicura
+            List<String> clientsToPing = new ArrayList<>(registeredClients.keySet());
+            for (String client : clientsToPing) {
+                try {
+                    // Si assume che pingFromServer() nel VirtualView sia un metodo RMI/Socket che invia il ping
+                    // Se questo è il metodo che effettivamente manda il ping, deve essere non-bloccante o molto veloce
+                    registeredClients.get(client).pingFromServer();
+                } catch (RemoteException e) {
+                    logger.log(Level.INFO, "Client " + client + " disconnected during ping (RemoteException).");
+                    disconnectClient(client);
+                } catch (Exception e) { // Cattura altre eccezioni impreviste
+                    logger.log(Level.WARNING, "Error pinging client " + client + ": " + e.getMessage());
+                    disconnectClient(client);
                 }
             }
-        });
-        pingClients.start();
+        }, 0, 3, TimeUnit.SECONDS); // Invia ping a tutti i client ogni 3 secondi (es.)
+        // Se running = false, dovrai spegnere lo scheduler
+        // Nel metodo shutdown(): scheduler.shutdownNow();
     }
 
     public void ping(String nickname) throws RemoteException {

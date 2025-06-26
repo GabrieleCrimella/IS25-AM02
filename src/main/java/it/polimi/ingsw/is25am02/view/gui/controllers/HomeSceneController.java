@@ -63,7 +63,7 @@ public class HomeSceneController extends GeneralController{
         //todo va fatto solo se il server cambia stato
 
         GUIController.getInstance().switchScene("lobby", "Seleziona una Lobby", (LobbyController g) -> {
-            g.initialize();
+            //g.initialize();
         });
     }
 

@@ -21,6 +21,7 @@ import java.util.*;
 
 
 public class RmiClient extends UnicastRemoteObject implements VirtualView, ConnectionClient {
+    private final Object printLock = new Object();
     VirtualServer server = null;
     ConsoleClient console;
     GameV gameV;
@@ -80,12 +81,16 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
 
     @Override
     public void reportError(String keys, Map<String, String> params) throws RemoteException {
-        console.reportError(keys, params);
+        synchronized (printLock) {
+            console.reportError(keys, params);
+        }
     }
 
     @Override
     public void displayMessage(String keys, Map<String, String> params) throws RemoteException {
-        console.displayMessage(keys, params);
+        synchronized (printLock) {
+            console.displayMessage(keys, params);
+        }
     }
 
     @Override
@@ -405,7 +410,7 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     public void showGameStateUpdate(StateGameType newGamestate) throws RemoteException {
         gameV.getCurrentState().setPhase(newGamestate);
         printOnConsole();
-        if(newGamestate.equals(StateGameType.RESULT)){
+        if (newGamestate.equals(StateGameType.RESULT)) {
             console.onResultState();
         }
     }

@@ -147,7 +147,6 @@ public class ClientController implements VirtualServer {
         timeLeft = 10;
     }
 
-
     //Methods for interacting with the server both inside and outside a game
     public void nicknameRegistration(String nickname, VirtualView client) throws RemoteException {
         if (menuControl(MenuState.LOGIN)) {

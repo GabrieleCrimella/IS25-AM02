@@ -1,12 +1,14 @@
 package it.polimi.ingsw.is25am02.controller.server;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
 
 public class PingManager {
     private final Map<String, Integer> pingMap = new ConcurrentHashMap<>();
     private final int TIMEOUT_SECONDS = 10;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private volatile boolean running = true;
 
     //Create a thread that periodically decreases client alive times
     public PingManager(ServerController controller) {

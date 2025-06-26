@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ServerHandler implements Runnable, VirtualServer{
+    private final Object sendLock = new Object();
+
     private final Socket socket;
     private RmiClient rmi;
     private final Gson gson = new Gson();
@@ -323,18 +325,23 @@ public class ServerHandler implements Runnable, VirtualServer{
     @Override
     public void ping(String nickname) throws RemoteException {
         try {
-            //Creation Json for params
-            JsonObject params = new JsonObject();
-            params.addProperty("nickname", nickname);
+            synchronized (sendLock){
+                if(out!=null && !socket.isClosed()){
+                    //Creation Json for params
+                    JsonObject params = new JsonObject();
+                    params.addProperty("nickname", nickname);
 
-            //Creation Command
-            Command cmd = new Command("ping", params);
+                    //Creation Command
+                    Command cmd = new Command("ping", params);
 
-            if(out != null) {
-                //Sending
-                out.writeObject(gson.toJson(cmd));
-                out.flush();
+                    if(out != null) {
+                        //Sending
+                        out.writeObject(gson.toJson(cmd));
+                        out.flush();
+                    }
+                }
             }
+
         } catch (IOException e) {
             System.err.println("Errore durante l'invio del metodo ping: " + e.getMessage());
         }
