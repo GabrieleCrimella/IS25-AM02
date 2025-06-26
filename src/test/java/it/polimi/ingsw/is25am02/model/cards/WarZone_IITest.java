@@ -281,53 +281,47 @@ class WarZone_IITest {
             System.out.println(e.getMessage());
         }
 
-
-        //tile 2 - Storage 7 6
-        TileType t2 = TileType.STORAGE;
-        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
-        RotationType rotationType2 = RotationType.NORTH;
-        int id2 = 1;
-        int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
-        try {
-            spaceship1.addTile(player1.getNickname(), 7,6, storage1);
-        } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
-        }
-
-        //tile 3 - battery 8 7
+        //tile 2 - battery 7 6
         TileType t3 = TileType.BATTERY;
-        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
+        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
         RotationType rotationType3 = RotationType.NORTH;
-        int id3 = 1;
         int maxNum3 = 2;
         Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(player1.getNickname(),8,7, battery3);
+            spaceship1.addTile(player1.getNickname(),7,6, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
-        //tile 5 - dmotor 8 6
+        //tile 3 - dmotor 8 7
         TileType t5 = TileType.D_MOTOR;
-        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
+        ConnectorType[] connectors5 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
-        int id5 = 1;
         Tile dmotor1 = new DoubleMotor(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(player1.getNickname(), 8,6, dmotor1);
+            spaceship1.addTile(player1.getNickname(), 8,7, dmotor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
-        //tile 6 - dmotor 6 6
+        //tile 4 - dmotor 8 8
         TileType t6 = TileType.D_MOTOR;
-        ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
+        ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType6 = RotationType.NORTH;
-        int id6 = 1;
         Tile dmotor2= new DoubleMotor(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(player1.getNickname(),6,6, dmotor2);
+            spaceship1.addTile(player1.getNickname(),8,8, dmotor2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 5 - motor 8 9
+        TileType t7 = TileType.D_MOTOR;
+        ConnectorType[] connectors7 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        RotationType rotationType7 = RotationType.NORTH;
+        Tile motor= new DoubleMotor(t6, connectors6, rotationType6, null);
+        try {
+            spaceship1.addTile(player1.getNickname(),8,9, motor);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -350,9 +344,20 @@ class WarZone_IITest {
         TileType t22 = TileType.STORAGE;
         ConnectorType[] connectors22 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType22 = RotationType.NORTH;
-        int id22 = 1;
         int maxNum2 = 3;
         Tile storage21 = new Storage(t22, connectors22, rotationType22, null, maxNum2);
+        GreenBox greenbox = new GreenBox(BoxType.GREEN);
+        YellowBox yellowbox = new YellowBox(BoxType.YELLOW);
+        try { //aggiungo box verde
+            storage21.addBox(greenbox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+        try { //aggiungo box giallo
+            storage21.addBox(yellowbox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
         try {
             spaceship2.addTile(player1.getNickname(), 7,6, storage21);
         } catch (IllegalAddException e) {
@@ -368,18 +373,6 @@ class WarZone_IITest {
         Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, null, maxNum23);
         try {
             spaceship2.addTile(player1.getNickname(), 8,7, battery23);
-        } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
-        }
-
-        //tile 4 - dmotor 6 6
-        TileType t24 = TileType.D_MOTOR;
-        ConnectorType[] connectors24 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
-        RotationType rotationType24 = RotationType.NORTH;
-        int id24 = 1;
-        Tile dmotor24= new DoubleMotor(t24, connectors24, rotationType24, null);
-        try {
-            spaceship2.addTile(player1.getNickname(), 6,6, dmotor24);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -491,31 +484,24 @@ class WarZone_IITest {
         player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
 
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-        Coordinate pos = new Coordinate(7,7);
-        game.addCrew(player1, pos, AliveType.HUMAN);
-        game.addCrew(player2, pos, AliveType.HUMAN);
-        game.addCrew(player3, pos, AliveType.HUMAN);
-        game.addCrew(player4, pos, AliveType.HUMAN);
-
-        pos = new Coordinate(7,8);
-        game.addCrew(player3, pos, AliveType.HUMAN);
-
-        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
-        player1.setStatePlayer(StatePlayerType.IN_GAME);
-        player2.setStatePlayer(StatePlayerType.IN_GAME);
-        player3.setStatePlayer(StatePlayerType.IN_GAME);
-        player4.setStatePlayer(StatePlayerType.IN_GAME);
-        //Create current card in state choice attributes
+        for(Player p : players){
+            p.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        }
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        for(Player p : players){
+            game.ready(p);
+        }
 
         //create card
         int level = 2;
-        int flyback = 3;
-        int boxesLost = 2;
+        int flyback = 4;
+        int boxesLost = 3;
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
         Card warzone2 = new WarZone_II(level,flyback, boxesLost, shots, null, null, true);
 
         game.getCurrentState().setCurrentCard(warzone2);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
         LinkedList<String> nicknames = new LinkedList<>(
                 game.getGameboard().getRanking().stream()
                         .map(Player::getNickname)
@@ -530,40 +516,24 @@ class WarZone_IITest {
         }
 
         //player 1 ha 2 doppi motori in 8,6 e 6,6, ha potenza 4, batteria in 8,7
-        Coordinate position = new Coordinate(8,6);
+        Coordinate position = new Coordinate(8,7);
+        Coordinate pos1 = new Coordinate(8,8);
+        Coordinate pos2 = new Coordinate(7,6);
+        Coordinate pos7 = new Coordinate(7,6);
+
         List<Coordinate> coordmot1 = new ArrayList<>();
         coordmot1.add(position);
-        position = new Coordinate(6,6);
-        coordmot1.add(position);
-        position = new Coordinate(8,7);
+        coordmot1.add(pos1);
+
         List<Coordinate> coordbatt1 = new ArrayList<>();
-        coordbatt1.add(position);
-        coordbatt1.add(position);
+        coordbatt1.add(pos2);
+        coordbatt1.add(pos7);
 
         game.choiceDoubleMotor(player1, coordmot1, coordbatt1);
 
+        game.choiceDoubleMotor(player2, new ArrayList<>(), new ArrayList<>());
 
-        //player 2 ha 1 motore doppio in 6,6, ha potenza 2, batteria in 8,7
-        position = new Coordinate(6,6);
-        List<Coordinate> coordmot2 = new ArrayList<>();
-        coordmot2.add(position);
-        position = new Coordinate(8,7);
-        List<Coordinate> coordbatt2 = new ArrayList<>();
-        coordbatt2.add(position);
-
-        game.choiceDoubleMotor(player2, coordmot2, coordbatt2);
-
-
-        //player 3 ha 1 motore doppio in 6,6, ha potenza 2, batteria in 8,7
-        position = new Coordinate(6,6);
-        List<Coordinate> coordmot3 = new ArrayList<>();
-        coordmot3.add(position);
-        position = new Coordinate(8,7);
-        List<Coordinate> coordbatt3 = new ArrayList<>();
-        coordbatt3.add(position);
-
-        game.choiceDoubleMotor(player3, coordmot3, coordbatt3);
-
+        game.choiceDoubleMotor(player3, new ArrayList<>(), new ArrayList<>());
 
         //player 4 ha 1 motore singolo in 7 6, ha potenza 1
         List<Coordinate> coordmot4 = new ArrayList<>();
@@ -573,12 +543,18 @@ class WarZone_IITest {
 
 
         assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
-        //devo vedere che il giocatore con meno motori perde 2 box (nel mio caso il player 4 perde 2 box)
-        position = new Coordinate(6,7);
-        game.removeBox(player4,position,BoxType.YELLOW);
-        game.removeBox(player4,position,BoxType.GREEN);
+        //devo vedere che il giocatore con meno motori perde 2 box (nel mio caso il player 2 perde 3 box)
+        Coordinate pos3 = new Coordinate(7,6);
+        game.removeBox(player2,pos3,BoxType.YELLOW);
+        game.removeBox(player2,pos3,BoxType.GREEN);
 
-        assertTrue(player4.getSpaceship().noBox());
+        Coordinate pos4 = new Coordinate(8,7);
+
+        game.removeBattery(player2, pos4);
+
+        assertTrue(player2.getSpaceship().noBox());
+        assertEquals(player2.getSpaceship().getTile(8,7).get().getNumBattery(), 1);
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
     }
 
     @Test
@@ -621,54 +597,47 @@ class WarZone_IITest {
             System.out.println(e.getMessage());
         }
 
-
-        //tile 2 - Storage 6 7
-        TileType t2 = TileType.STORAGE;
-        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
-        RotationType rotationType2 = RotationType.NORTH;
-        int id2 = 1;
-        int maxNum = 3;
-        Tile storage1 = new Storage(t2, connectors2, rotationType2, null, maxNum);
-        try {
-            spaceship1.addTile(player1.getNickname(), 6, 7, storage1);
-        } catch (IllegalAddException e) {
-            System.out.println(e.getMessage());
-        }
-
-
-        //tile 3 - battery 8 7
+        //tile 2 - battery 7 6
         TileType t3 = TileType.BATTERY;
-        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
+        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
         RotationType rotationType3 = RotationType.NORTH;
-        int id3 = 1;
         int maxNum3 = 2;
         Tile battery3 = new BatteryStorage(t3, connectors3, rotationType3, null, maxNum3);
         try {
-            spaceship1.addTile(player1.getNickname(), 8,7, battery3);
+            spaceship1.addTile(player1.getNickname(),7,6, battery3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
-        //tile 5 - dcannon 8 6
-        TileType t5 = TileType.D_CANNON;
-        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
+        //tile 3 - dmotor 8 7
+        TileType t5 = TileType.D_MOTOR;
+        ConnectorType[] connectors5 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
-        int id5 = 1;
-        Tile dcannon1 = new DoubleCannon(t5, connectors5, rotationType5, null);
+        Tile dmotor1 = new DoubleMotor(t5, connectors5, rotationType5, null);
         try {
-            spaceship1.addTile(player1.getNickname(), 8,6, dcannon1);
+            spaceship1.addTile(player1.getNickname(), 8,7, dmotor1);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
-        //tile 6 - dcannon 6 6
-        TileType t6 = TileType.D_CANNON;
-        ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
+        //tile 4 - dmotor 8 8
+        TileType t6 = TileType.D_MOTOR;
+        ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType6 = RotationType.NORTH;
-        int id6 = 1;
-        Tile dcannon2= new DoubleCannon(t6, connectors6, rotationType6, null);
+        Tile dmotor2= new DoubleMotor(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(player1.getNickname(), 6,6, dcannon2);
+            spaceship1.addTile(player1.getNickname(),8,8, dmotor2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 5 - motor 8 9
+        TileType t7 = TileType.D_MOTOR;
+        ConnectorType[] connectors7 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        RotationType rotationType7 = RotationType.NORTH;
+        Tile motor= new DoubleMotor(t6, connectors6, rotationType6, null);
+        try {
+            spaceship1.addTile(player1.getNickname(),8,9, motor);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -691,11 +660,35 @@ class WarZone_IITest {
         TileType t22 = TileType.STORAGE;
         ConnectorType[] connectors22 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
         RotationType rotationType22 = RotationType.NORTH;
-        int id22 = 1;
         int maxNum2 = 3;
         Tile storage21 = new Storage(t22, connectors22, rotationType22, null, maxNum2);
+        GreenBox greenbox = new GreenBox(BoxType.GREEN);
+        YellowBox yellowbox = new YellowBox(BoxType.YELLOW);
+        try { //aggiungo box verde
+            storage21.addBox(greenbox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+        try { //aggiungo box giallo
+            storage21.addBox(yellowbox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
         try {
             spaceship2.addTile(player1.getNickname(), 7,6, storage21);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 3 - battery 8 7
+        TileType t23 = TileType.BATTERY;
+        ConnectorType[] connectors23 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
+        RotationType rotationType23 = RotationType.NORTH;
+        int id23 = 1;
+        int maxNum23 = 2;
+        Tile battery23 = new BatteryStorage(t23, connectors23, rotationType23, null, maxNum23);
+        try {
+            spaceship2.addTile(player1.getNickname(), 8,7, battery23);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -725,6 +718,31 @@ class WarZone_IITest {
             System.out.println(e.getMessage());
         }
 
+        //tile 3 - dmotor 6 6
+        TileType t33 = TileType.D_MOTOR;
+        ConnectorType[] connectors33 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
+        RotationType rotationType33 = RotationType.NORTH;
+        int id33 = 1;
+        Tile dmotor33= new DoubleMotor(t33, connectors33, rotationType33, null);
+        try {
+            spaceship3.addTile(player1.getNickname(),6,6, dmotor33);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 4 - battery 8 7
+        TileType t34 = TileType.BATTERY;
+        ConnectorType[] connectors34 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.DOUBLE};
+        RotationType rotationType34 = RotationType.NORTH;
+        int id34 = 1;
+        int maxNum34 = 2;
+        Tile battery34 = new BatteryStorage(t34, connectors34, rotationType34, null, maxNum34);
+        try {
+            spaceship3.addTile(player1.getNickname(),8,7, battery34);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
         //inizializzo spaceship4
         //tile 1 - cabin centrale 7 7
         TileType t41 = TileType.CABIN;
@@ -733,19 +751,44 @@ class WarZone_IITest {
         int id41 = 1;
         Tile cabin41 = new Cabin(t41, connectors41, rotationType41, null);
         try {
-            spaceship4.addTile(player1.getNickname(), 7,7, cabin41);
+            spaceship4.addTile(player1.getNickname(),7,7, cabin41);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
-        //tile 2 - strutturale
-        TileType t42 = TileType.STRUCTURAL;
-        ConnectorType[] connectors42 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        //tile 2 - motor 7 6
+        TileType t42 = TileType.MOTOR;
+        ConnectorType[] connectors42 = {ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType42 = RotationType.NORTH;
         int id42 = 1;
-        Tile struct = new Structural(TileType.STRUCTURAL,connectors42,rotationType42, null);
+        Tile dmotor42 = new DoubleMotor(t42, connectors42, rotationType42, null);
         try {
-            spaceship4.addTile(player1.getNickname(), 7,8, struct);
+            spaceship4.addTile(player1.getNickname(),7,6, dmotor42);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //tile 3 - Storage 6 7 c'è un box verde e uno giallo
+        TileType t43 = TileType.STORAGE;
+        ConnectorType[] connectors43 = {ConnectorType.DOUBLE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType43 = RotationType.NORTH;
+        int id43 = 1;
+        int maxNum4 = 3;
+        Tile storage43 = new Storage(t43, connectors43, rotationType43, null, maxNum4);
+        GreenBox tilegreenbox = new GreenBox(BoxType.GREEN);
+        YellowBox tileyellowbox = new YellowBox(BoxType.YELLOW);
+        try { //aggiungo box verde
+            storage43.addBox(tilegreenbox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+        try { //aggiungo box giallo
+            storage43.addBox(tileyellowbox);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            spaceship4.addTile(player1.getNickname(),6,7, storage43);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -757,74 +800,54 @@ class WarZone_IITest {
         player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
 
         game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
-        Coordinate pos = new Coordinate(7,7);
-        game.addCrew(player1, pos, AliveType.HUMAN);
-        game.addCrew(player2, pos, AliveType.HUMAN);
-
-        game.addCrew(player3, pos, AliveType.HUMAN);
-        game.addCrew(player4, pos, AliveType.HUMAN);
-        pos = new Coordinate(7,8);
-        game.addCrew(player3, pos, AliveType.HUMAN);
-
-        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
-        player1.setStatePlayer(StatePlayerType.IN_GAME);
-        player2.setStatePlayer(StatePlayerType.IN_GAME);
-        player3.setStatePlayer(StatePlayerType.IN_GAME);
-        player4.setStatePlayer(StatePlayerType.IN_GAME);
-        //Create current card in state choice attributes
+        for(Player p : players){
+            p.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        }
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        for(Player p : players){
+            game.ready(p);
+        }
 
         //create card
         int level = 2;
-        int flyback = 3;
+        int flyback = 4;
         int boxesLost = 3;
         ArrayList<Pair<Integer, RotationType>> shots = new ArrayList<>();
-        Pair<Integer,RotationType> shot1 = new Pair<>(1,RotationType.NORTH);
-        shots.add(shot1);
+        shots.add(new Pair<>(1,RotationType.NORTH));
         Card warzone2 = new WarZone_II(level,flyback, boxesLost, shots, null, null, true);
 
         game.getCurrentState().setCurrentCard(warzone2);
         game.getCurrentCard().setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
         LinkedList<String> nicknames = new LinkedList<>(
                 game.getGameboard().getRanking().stream()
                         .map(Player::getNickname)
                         .toList()
         );
         game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
-
+        game.getCurrentState().setCurrentPlayer(player1);
         try {
             warzone2.setCurrentPhase(3);
         } catch (IllegalPhaseException e) {
             System.out.println(e.getMessage());
         }
 
-        assertEquals(StateCardType.DECISION, game.getCurrentState().getCurrentCard().getStateCard());
-        //devo vedere che il giocatore con meno umani prende colpi
-        //player 1 ha 2 umano
-        //player 2 ha 2 umani
-        //player 3 ha 4 umani
-        //player 4 ha 2 umani
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
 
         for(Player p: players){
-            try {
-                warzone2.choiceCrew(game,p);
-            } catch (IllegalPhaseException e) {
-                System.out.println(e.getMessage());
-            }
+            game.choiceCrew(p);
         }
-        warzone2.setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+
+        assertEquals(StateCardType.ROLL, game.getCurrentState().getCurrentCard().getStateCard());
+
+        game.rollDice(player1);
+        game.setDiceResultManually(8);
 
         game.calculateDamage(player1,new Coordinate(0,0));
 
-        try {
-            warzone2.keepBlocks(game,player1,new Coordinate(6,6));
-        } catch (IllegalPhaseException e) {
-            System.out.println(e.getMessage());
-        }
+        game.keepBlock(player1, new Coordinate(7,7));
 
-        //player 1 prende shot grande da nord
-        assertEquals(3,player1.getSpaceship().getNumOfWastedTiles());
-
-
+        assertEquals(2,player1.getSpaceship().getNumOfWastedTiles());
 
     }
 
