@@ -33,7 +33,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
     public TuiConsole() throws Exception {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
         this.running = false;
-        this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
+        this.messManager = new JsonMessageManager("json/messages.json");
         this.printer = new GraphicPrinter(this);
     }
 
@@ -139,7 +139,7 @@ public class TuiConsole implements Runnable, ConsoleClient {
                     printHelp();
                     break;
 
-                case "cheat": //todo è solo per velocizzarci, non segnarlo sui comandi
+                case "cheat": //è solo per velocizzarci, non segnarlo sui comandi
                     for (int i = 0; i < 40; i++) {
                         controller.takeTile(nickname);
                         try {

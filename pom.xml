@@ -12,41 +12,46 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.2</junit.version>
-        <main.class>it.polimi.ingsw.is25am02.view.ClientMain</main.class>
+        <!-- PER FARE IL JAR DEL CLIENT -->
+<!--        <main.class>it.polimi.ingsw.is25am02.view.ClientMain</main.class>-->
+
+
+        <!-- PER FARE IL JAR DEL SERVER -->
+        <main.class>it.polimi.ingsw.is25am02.network.ServerMain</main.class>
     </properties>
 
     <dependencies>
-        <!-- cosa aggiunte per il computer di erica -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>17.0.12</version>
-            <classifier>mac-aarch64</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>17.0.12</version>
-            <classifier>mac-aarch64</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>17.0.12</version>
-            <classifier>mac-aarch64</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>17.0.12</version>
-            <classifier>mac-aarch64</classifier>
-        </dependency>
-        <!-- cosa aggiunte per il computer di erica !-->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
-        </dependency>
+<!--        &lt;!&ndash; cosa aggiunte per il computer di erica &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.openjfx</groupId>-->
+<!--            <artifactId>javafx-controls</artifactId>-->
+<!--            <version>17.0.12</version>-->
+<!--            <classifier>mac-aarch64</classifier>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.openjfx</groupId>-->
+<!--            <artifactId>javafx-fxml</artifactId>-->
+<!--            <version>17.0.12</version>-->
+<!--            <classifier>mac-aarch64</classifier>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.openjfx</groupId>-->
+<!--            <artifactId>javafx-base</artifactId>-->
+<!--            <version>17.0.12</version>-->
+<!--            <classifier>mac-aarch64</classifier>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.openjfx</groupId>-->
+<!--            <artifactId>javafx-graphics</artifactId>-->
+<!--            <version>17.0.12</version>-->
+<!--            <classifier>mac-aarch64</classifier>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash; cosa aggiunte per il computer di erica !&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.openjfx</groupId>-->
+<!--            <artifactId>javafx-controls</artifactId>-->
+<!--            <version>17.0.6</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>

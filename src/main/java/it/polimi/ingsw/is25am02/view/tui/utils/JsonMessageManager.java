@@ -8,10 +8,19 @@ import java.util.Map;
 public class JsonMessageManager {
     private final JsonObject messages;
 
-    public JsonMessageManager(String filePath) throws Exception {
+    public JsonMessageManager(String resourcePath) throws Exception {
         Gson gson = new Gson();
-        this.messages = gson.fromJson(new FileReader(filePath), JsonObject.class);
 
+        // Usa getResourceAsStream invece di FileReader
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("Risorsa non trovata: " + resourcePath);
+        }
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            this.messages = gson.fromJson(reader, JsonObject.class);
+        }
     }
 
     private String getMessage(String[] keys) {

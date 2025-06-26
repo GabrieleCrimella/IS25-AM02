@@ -39,7 +39,7 @@ public class GUIController implements Runnable {
     private GUIController(Stage primaryStage) {
         this.primaryStage = primaryStage;
         try {
-            this.messManager = new JsonMessageManager("src/main/resources/json/messages.json");
+            this.messManager = new JsonMessageManager("json/messages.json");
         } catch (Exception e) {
             e.printStackTrace();
         }
