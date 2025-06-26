@@ -1,0 +1,73 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class ClientController {
+  + ClientController(ConnectionClient): 
+  - menuState: MenuState
+  - gameV: GameV
+  + createLobby(VirtualView, String, int, PlayerColor, int): void
+  + rotateBookedTile(String, int): void
+  + checkWrongSpaceship(String): void
+  + choiceBox(String, boolean): void
+  + choiceDoubleMotor(String, List<Coordinate>, List<Coordinate>): void
+  + nicknameRegistration(String, VirtualView): void
+  + bookTile(String): void
+  + choice(String, boolean): void
+  + shipFinished(String): void
+  + heartManager(): void
+  + choicePlanet(String, int): void
+  + addTile(String, Coordinate, RotationType): void
+  + endGame(int): void
+  + removeBox(String, Coordinate, BoxType): void
+  + heartbeat(): void
+  + choiceDoubleCannon(String, List<Coordinate>, List<Coordinate>): void
+  + addBookedTile(String, int, Coordinate, RotationType): void
+  + isGameRunning(VirtualView, int): void
+  + playNextCard(String): void
+  + closeConnect(): void
+  + joinLobby(VirtualView, int, String, PlayerColor): void
+  + removeTile(String, Coordinate): void
+  + getLobbies(VirtualView): void
+  + addCrew(String, Coordinate, AliveType): void
+  + getState(String): StatePlayerType
+  + returnTile(String): void
+  + returnMiniDeck(String): void
+  + getPlayerVFromNickname(String): PlayerV
+  + takeTile(String): void
+  + choiceCrew(String): void
+  + hourglass(String): void
+  + Winners(int): void
+  + rotateTile(String): void
+  + keepBlock(String, Coordinate): void
+  + flipHourglass(String): void
+  + rollDice(String): void
+  + buildPhaseControl(String): boolean
+  + takeTile(String, String): void
+  + ready(String): void
+  + ping(String): void
+  + takeMiniDeck(String, int): void
+  - menuControl(MenuState): boolean
+  + checkSpaceship(String): void
+  + removeCrew(String, Coordinate): void
+  + calculateDamage(String, Coordinate): void
+  + earlyLanding(String): void
+  + removeBattery(String, Coordinate): void
+  + moveBox(String, Coordinate, Coordinate, BoxType, boolean): void
+  + getTileFromID(int): TileV
+   menuState: MenuState
+   virtualView: VirtualView
+   players: List<String>
+   gameV: GameV
+   heapTiles: HeapTileV
+}
+enum MenuState << enumeration >> {
+  + MenuState(): 
+  + values(): MenuState[]
+  + valueOf(String): MenuState
+}
+
+ClientController "1" *-[#595959,plain]-> "menuState\n1" MenuState        
+@enduml

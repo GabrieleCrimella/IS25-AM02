@@ -1,0 +1,690 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AbbandonedShip {
+  + AbbandonedShip(int, int, int, int, String, String, boolean): 
+  - cardType: CardType
+  + removeCrew(Game, Player, Tile): void
+  + choice(Game, Player, boolean): void
+   cardType: CardType
+}
+class AbbandonedStation {
+  + AbbandonedStation(int, BoxStore, int, int, LinkedList<Box>, LinkedList<BoxType>, String, String, boolean): 
+  - boxesWonTypes: LinkedList<BoxType>
+  - cardType: CardType
+  - boxesWon: LinkedList<Box>
+  + addBoxWon(Box): void
+  + moveBox(Game, Player, List<Box>, List<Box>, BoxType, boolean): void
+  + clearBoxWon(): void
+  + choiceBox(Game, Player, boolean): void
+   cardType: CardType
+   boxesWonTypes: LinkedList<BoxType>
+   boxesWon: LinkedList<Box>
+}
+entity Alive << record >> {
+  + Alive(AliveType): 
+  + race(): AliveType
+}
+class AlreadyViewingException {
+  + AlreadyViewingException(String): 
+}
+class BatteryStorage {
+  + BatteryStorage(TileType, ConnectorType[], RotationType, String, int): 
+  ~ battery: int
+  + removeBattery(): void
+   numBattery: int
+   numMaxBattery: int
+   battery: int
+}
+class BlueBox {
+  + BlueBox(BoxType): 
+}
+class Box {
+  + Box(BoxType): 
+  - value: int
+  - type: BoxType
+   type: BoxType
+   value: int
+}
+class BoxStore {
+  + BoxStore(): 
+  ~ store: HashMap<BoxType, ArrayList<Box>>
+  + addBox(Box): void
+  + removeBox(BoxType): Box
+   store: HashMap<BoxType, ArrayList<Box>>
+}
+class BrownCabin {
+  + BrownCabin(TileType, ConnectorType[], RotationType, String): 
+}
+class Cabin {
+  + Cabin(TileType, ConnectorType[], RotationType, String): 
+  ~ crew: ArrayList<Alive>
+  + addCrew(String, AliveType): void
+  + removeCrew(): void
+   crew: ArrayList<Alive>
+}
+class Cannon {
+  + Cannon(TileType, ConnectorType[], RotationType, String): 
+}
+class Card {
+  + Card(int, StateCardType, String, String, boolean): 
+  # observers: ConcurrentHashMap<String, VirtualView>
+  - level: int
+  - currentOrder: LinkedList<String>
+  - stateCard: StateCardType
+  - comment: String
+  - testFlight: boolean
+  - imagePath: String
+  + keepBlocks(Game, Player, Coordinate): void
+  + moveBox(Game, Player, List<Box>, List<Box>, BoxType, boolean): void
+  + effect(Game): void
+  + clearPlanetOffers(): void
+  + choicePlanet(Game, Player, int): void
+  + choiceDoubleCannon(Game, Player, List<Coordinate>, List<Coordinate>): void
+  + clearBoxWon(): void
+  + removeBattery(Game, Player, Tile): void
+  + removeBox(Game, Player, Tile, BoxType): void
+  + removeCrew(Game, Player, Tile): void
+  + choiceBox(Game, Player, boolean): void
+  + choice(Game, Player, boolean): void
+  + addBoxWon(Box): void
+  + addPlanetOffers(LinkedList<Box>): void
+  + choiceCrew(Game, Player): void
+  + choiceDoubleMotor(Game, Player, List<Coordinate>, List<Coordinate>): void
+  + calculateDamage(Game, Player, Optional<Tile>): void
+   fly: HashMap<Player, Integer>
+   testFlight: boolean
+   comment: String
+   planetOffers: ArrayList<LinkedList<Box>>
+   phase: int
+   planetOffersTypes: ArrayList<LinkedList<BoxType>>
+   cardType: CardType
+   currentPhase: int
+   boxesWon: LinkedList<Box>
+   imagePath: String
+   boxesWonTypes: LinkedList<BoxType>
+   observers: ConcurrentHashMap<String, VirtualView>
+   stateCard: StateCardType
+   currentOrder: LinkedList<String>
+   level: int
+}
+class CardDeck {
+  + CardDeck(int): 
+  - initialDeck: List<Card>
+  - finalDeck: List<Card>
+  - deck: HashMap<Integer, Pair<List<Card>, Boolean>>
+  + createFinalDeck(): void
+  + giveDeck(int): void
+  + createDecks(): void
+  + createFinalDeckTestFlight(): void
+  + playnextCard(Game): Card
+  + returnDeck(int): void
+  - loadCard(): void
+   finalDeck: List<Card>
+   initialDeck: List<Card>
+   deck: HashMap<Integer, Pair<List<Card>, Boolean>>
+}
+class Dice {
+  + Dice(): 
+  - result: int
+  + pickRandomNumber(): int
+   result: int
+   manuallyResult: int
+}
+class DoubleCannon {
+  + DoubleCannon(TileType, ConnectorType[], RotationType, String): 
+}
+class DoubleMotor {
+  + DoubleMotor(TileType, ConnectorType[], RotationType, String): 
+}
+class Enemies {
+  + Enemies(int, int, int, int, StateCardType, String, String, boolean): 
+  - credit: int
+  - cannonPowers: int
+  - daysLost: int
+   daysLost: int
+   cannonPowers: int
+   credit: int
+}
+class Epidemy {
+  + Epidemy(int, String, String, boolean): 
+  - cardType: CardType
+  + effect(Game): void
+   cardType: CardType
+}
+class Game {
+  + Game(List<Player>, int): 
+  - maxAllowedPlayers: int
+  - diceResult: int
+  - deck: CardDeck
+  - players: List<Player>
+  - hourglass: Hourglass
+  - winners: Map<String, Integer>
+  - currentState: State
+  - heapTile: HeapTiles
+  + moveBox(Player, Coordinate, Coordinate, BoxType, boolean): void
+  + effect(Game): void
+  + getPlayerFromNickname(String): Player
+  + choice(Player, boolean): void
+  + removeBox(Player, Coordinate, BoxType): void
+  + nextPlayer(): void
+  + takeTile(Player): void
+  + rollDice(Player): void
+  + addBookedTile(Player, int, Coordinate, RotationType): void
+  + bookTile(Player): void
+  + removeCrew(Player, Coordinate): void
+  + addTile(Player, Coordinate, RotationType): void
+  + takeTile(Player, String): void
+  + removeTile(Player, Coordinate): void
+  + ready(Player): void
+  + keepBlock(Player, Coordinate): void
+  + earlyLanding(Player): void
+  + shipFinished(Player): void
+  + choiceBox(Player, boolean): void
+  + returnMiniDeck(Player): void
+  + choiceDoubleCannon(Player, List<Coordinate>, List<Coordinate>): void
+  + setBuildTimeIsOver(): void
+  + returnTile(Player): void
+  + choicePlanet(Player, int): void
+  + flipHourglass(Player): void
+  + getlevel(): int
+  + checkWrongSpaceship(Player): void
+  + setDiceResult(): void
+  + hourglass(Player): void
+  + removeBattery(Player, Coordinate): void
+  + takeMiniDeck(Player, int): void
+  + choiceCrew(Player): void
+  + playNextCard(Player): void
+  + checkSpaceship(Player): void
+  + Winners(): void
+  + choiceDoubleMotor(Player, List<Coordinate>, List<Coordinate>): void
+  + addCrew(Player, Coordinate, AliveType): void
+  + calculateDamage(Player, Coordinate): void
+  - currentPlayerControl(Player): void
+  - buildControl(): void
+  - decrementPlayerCount(): void
+  - reportErrorOnServer(String): void
+  - deckAllowedControl(Player): void
+  - levelControl(): void
+  - moveControl(Player, Coordinate, Coordinate, BoxType, boolean): void
+  - getTileFromImagePath(String): Optional<Tile>
+  - stateControl(StateGameType, StatePlayerType, StateCardType, Player): void
+  - currentTileControl(Player): void
+  - cabinControl(Player, Coordinate): void
+  - outOfGame(): void
+  - giveTile(Player, Coordinate): Tile
+  - typeControl(Player, Coordinate, TileType): void
+  - checkTileNear(Player, Coordinate, TileType): boolean
+  - choicesControl(Player, List<Coordinate>, List<Coordinate>, TileType): void
+   maxAllowedPlayers: int
+   winners: Map
+   players: List<Player>
+   diceResult: int
+   heapTile: HeapTiles
+   currentState: State
+   currentPlayer: Player
+   diceResultManually: int
+   deck: CardDeck
+   hourglass: Hourglass
+   visibleTiles: Set<Tile>
+   gameboard: Gameboard
+   currentCard: Card
+}
+interface Game_Interface << interface >> {
+  + hourglass(Player): void
+  + rollDice(Player): void
+  + effect(Game): void
+  + flipHourglass(Player): void
+  + takeMiniDeck(Player, int): void
+  + choicePlanet(Player, int): void
+  + keepBlock(Player, Coordinate): void
+  + moveBox(Player, Coordinate, Coordinate, BoxType, boolean): void
+  + choiceDoubleMotor(Player, List<Coordinate>, List<Coordinate>): void
+  + returnTile(Player): void
+  + takeTile(Player, String): void
+  + takeTile(Player): void
+  + removeTile(Player, Coordinate): void
+  + playNextCard(Player): void
+  + removeBattery(Player, Coordinate): void
+  + removeCrew(Player, Coordinate): void
+  + returnMiniDeck(Player): void
+  + bookTile(Player): void
+  + addCrew(Player, Coordinate, AliveType): void
+  + ready(Player): void
+  + removeBox(Player, Coordinate, BoxType): void
+  + Winners(): void
+  + shipFinished(Player): void
+  + checkWrongSpaceship(Player): void
+  + calculateDamage(Player, Coordinate): void
+  + addTile(Player, Coordinate, RotationType): void
+  + choiceDoubleCannon(Player, List<Coordinate>, List<Coordinate>): void
+  + choiceCrew(Player): void
+  + earlyLanding(Player): void
+  + choice(Player, boolean): void
+  + checkSpaceship(Player): void
+  + choiceBox(Player, boolean): void
+  + addBookedTile(Player, int, Coordinate, RotationType): void
+}
+class Gameboard {
+  + Gameboard(int): 
+  - bestShip: int
+  - rewardPosition: int[]
+  - startingPosition: int[]
+  - hourGlassFlip: int
+  - positions: HashMap<Player, Integer>
+  - numStep: int
+  - dice: Dice
+  + decreaseHourGlassFlip(): void
+  + initializeGameBoard(List<Player>): void
+  + move(int, Player): void
+   dice: Dice
+   ranking: LinkedList<Player>
+   startingPosition: int[]
+   positions: HashMap<Player, Integer>
+   hourGlassFlip: int
+   bestShip: int
+   rewardPosition: int[]
+   numStep: int
+}
+class GreenBox {
+  + GreenBox(BoxType): 
+}
+class HeapTiles {
+  + HeapTiles(): 
+  - cabinStartPlayer: HashMap<PlayerColor, Cabin>
+  - observers: ConcurrentHashMap<String, VirtualView>
+  - setTiles: Set<Tile>
+  + addTile(Tile, boolean): void
+  + removeVisibleTile(Tile): void
+  + drawTile(): Tile
+  - loadTiles(): void
+   observersToTiles: ConcurrentHashMap<String, VirtualView>
+   visibleTiles: Set<Tile>
+   observers: ConcurrentHashMap<String, VirtualView>
+   cabinStartPlayer: HashMap<PlayerColor, Cabin>
+   setTiles: Set<Tile>
+}
+class Hourglass {
+  + Hourglass(): 
+  - running: boolean
+  - timeLeft: long
+  + flip(Game): void
+   running: boolean
+   timeLeft: long
+}
+class IllegalAddException {
+  + IllegalAddException(String): 
+}
+class IllegalPhaseException {
+  + IllegalPhaseException(String): 
+}
+class IllegalRemoveException {
+  + IllegalRemoveException(String): 
+}
+class IllegalStateException {
+  + IllegalStateException(String): 
+}
+class InitialCard {
+  + InitialCard(int, String, String, boolean): 
+  - cardType: CardType
+   cardType: CardType
+}
+class LevelException {
+  + LevelException(String): 
+}
+class MeteoritesStorm {
+  + MeteoritesStorm(int, ArrayList<Pair<Integer, RotationType>>, String, String, boolean): 
+  - cardType: CardType
+  + keepBlocks(Game, Player, Coordinate): void
+  + calculateDamage(Game, Player, Optional<Tile>): void
+   cardType: CardType
+}
+class Motors {
+  + Motors(TileType, ConnectorType[], RotationType, String): 
+}
+class OpenSpace {
+  + OpenSpace(int, String, String, boolean): 
+  ~ fly: HashMap<Player, Integer>
+  - cardType: CardType
+  + choiceDoubleMotor(Game, Player, List<Coordinate>, List<Coordinate>): void
+   fly: HashMap<Player, Integer>
+   cardType: CardType
+}
+class Pirate {
+  + Pirate(int, int, int, int, ArrayList<Pair<Integer, RotationType>>, String, String, boolean): 
+  - phase: int
+  - cardType: CardType
+  + choice(Game, Player, boolean): void
+  + keepBlocks(Game, Player, Coordinate): void
+  + calculateDamage(Game, Player, Optional<Tile>): void
+  + choiceDoubleCannon(Game, Player, List<Coordinate>, List<Coordinate>): void
+   cardType: CardType
+   phase: int
+}
+class Planet {
+  + Planet(int, BoxStore, int, ArrayList<LinkedList<Box>>, ArrayList<LinkedList<BoxType>>, String, String, boolean): 
+  - cardType: CardType
+  - planetOffersTypes: ArrayList<LinkedList<BoxType>>
+  - boxesWon: LinkedList<Box>
+  - planetOffers: ArrayList<LinkedList<Box>>
+  + moveBox(Game, Player, List<Box>, List<Box>, BoxType, boolean): void
+  + clearPlanetOffers(): void
+  + choicePlanet(Game, Player, int): void
+  + addPlanetOffers(LinkedList<Box>): void
+  - initializeOccupied(): void
+   planetOffersTypes: ArrayList<LinkedList<BoxType>>
+   cardType: CardType
+   planetOffers: ArrayList<LinkedList<Box>>
+   boxesWon: LinkedList<Box>
+}
+class Player {
+  + Player(Spaceship, String, PlayerColor, VirtualView, int): 
+  - nickname: String
+  - spaceship: Spaceship
+  - observers: ConcurrentHashMap<String, VirtualView>
+  - observer: VirtualView
+  - color: PlayerColor
+  - deckAllowed: boolean
+  - numDeck: int
+  - statePlayer: StatePlayerType
+  - lobbyId: int
+  + onPositionUpdate(String, int): void
+  + onCurrentCardUpdate(String, StateCardType, CardType, String): void
+  + setDeckAllowed(): void
+  + onCreditUpdate(int): void
+  + onUpdateEverything(int, List<Player>, Gameboard, Card, State, boolean[][], int[], HashMap<Integer, Pair<List<Card>, Boolean>>): void
+  + onRemoveBatteryUpdate(int, Coordinate): void
+  + onPlayerStateUpdate(String, StatePlayerType): void
+   statePlayer: StatePlayerType
+   deckAllowed: boolean
+   observers: ConcurrentHashMap<String, VirtualView>
+   observer: VirtualView
+   numDeck: int
+   lobbyId: int
+   nickname: String
+   spaceship: Spaceship
+   color: PlayerColor
+}
+class PurpleCabin {
+  + PurpleCabin(TileType, ConnectorType[], RotationType, String): 
+}
+class RedBox {
+  + RedBox(BoxType): 
+}
+class Shield {
+  + Shield(TileType, ConnectorType[], RotationType, String, boolean[]): 
+  + isShielded(RotationType): boolean
+}
+class SlaveOwner {
+  + SlaveOwner(int, int, int, int, int, String, String, boolean): 
+  - cardType: CardType
+  + choiceDoubleCannon(Game, Player, List<Coordinate>, List<Coordinate>): void
+  + choice(Game, Player, boolean): void
+  + removeCrew(Game, Player, Tile): void
+  - noMore(Player): boolean
+   cardType: CardType
+}
+class Spaceship {
+  + Spaceship(int): 
+  - currentTile: Tile
+  - bookedTiles: HashMap<Integer, Tile>
+  - spaceshipIterator: SpaceshipIterator
+  - cosmicCredits: int
+  - numOfWastedTiles: int
+  - listener: UpdateListener
+  - observers: ConcurrentHashMap<String, VirtualView>
+  + calculateMotorPower(List<Tile>): int
+  + isExposed(RotationType, int): boolean
+  + removeBattery(BatteryStorage): void
+  + removeCosmicCredits(int): void
+  + setCurrentTile(String, Tile): void
+  + epidemyRemove(String): void
+  + calculateNumAlive(): int
+  + calculateNumHuman(): int
+  + checkSpaceship(): boolean
+  + addNumOfWastedTiles(int): void
+  + calculateCannonPower(List<Tile>): double
+  + keepBlock(String, Coordinate): void
+  + removeTile(String, int, int): void
+  + addCosmicCredits(int): void
+  + getTilesByType(TileType): List<Tile>
+  + addBookedTile(String, int, int, int, RotationType): void
+  + meteoriteDamage(String, int, RotationType, int, Optional<Tile>): boolean
+  + getTile(int, int): Optional<Tile>
+  + returnTile(String): void
+  + bookTile(Player): void
+  + isShielded(RotationType): boolean
+  + shotDamage(String, int, RotationType, int, Optional<Tile>): boolean
+  + addTile(String, int, int, Tile): void
+  + isMostExpensive(BoxType): boolean
+  + noBox(): boolean
+  + addInitialTile(int, int, Tile): void
+  + calculateExposedConnectors(): int
+  - CoveredByWhatCannon(RotationType, int): Optional<Tile>
+  - alienCheck(int, int, AliveType): void
+  - generateBlocks(List<Tile>, List<List<Tile>>): void
+  - targetTile(RotationType, int): Optional<Tile>
+  - startVisit(Tile, RotationType): List<Tile>
+   spaceshipIterator: SpaceshipIterator
+   bookedTiles: HashMap<Integer, Tile>
+   currentTile: Tile
+   observers: ConcurrentHashMap<String, VirtualView>
+   numOfWastedTiles: int
+   listener: UpdateListener
+   cosmicCredits: int
+   spaceshipDivided: boolean
+}
+class SpaceshipIterator {
+  + SpaceshipIterator(int): 
+  - observers: ConcurrentHashMap<String, VirtualView>
+  - spaceshipBoard: Optional<Tile>[][]
+  - spaceshipMask: boolean[][]
+  - listener: UpdateListener
+  + reference(): SpaceshipIterator
+  + getTileInDirection(Tile, RotationType): Optional<Tile>
+  + hasNext(): boolean
+  + next(): Optional<Tile>
+  + getUpTile(Tile): Optional<Tile>
+  + iterator(): Iterator<Optional<Tile>>
+  + removeOneTile(int, int): void
+  + addTile(String, Tile, int, int): void
+  + getX(Tile): int
+  + getY(Tile): int
+  + addInitialTile(Tile, int, int): void
+  + getRightTile(Tile): Optional<Tile>
+  + returnAllTiles(): List<Tile>
+  + checkAddition(Tile, int, int): boolean
+  + getDownTile(Tile): Optional<Tile>
+  + getTile(int, int): Optional<Tile>
+  + getFrontTile(Tile): Optional<Tile>
+  + getLeftTile(Tile): Optional<Tile>
+  + getNearTile(Tile): List<Tile>
+  + transpose(boolean[][]): boolean[][]
+  + getConnectedNearTiles(Tile): List<Tile>
+  - loadSpaceshipMask(int): void
+   observers: ConcurrentHashMap<String, VirtualView>
+   listener: UpdateListener
+   tileInStartingPosition: Optional<Tile>
+   x_start: int
+   spaceshipBoard: Optional<Tile>[][]
+   spaceshipMask: boolean[][]
+   firstTile: Optional<Tile>
+   y_start: int
+}
+class SpecialStorage {
+  + SpecialStorage(TileType, ConnectorType[], RotationType, String, int): 
+  ~ maxNum: int
+  ~ occupation: ArrayList<Box>
+  + removeBox(Box): void
+  + addBox(Box): void
+   occupation: ArrayList<Box>
+   numOccupation: int
+   numMaxBox: int
+   occupationTypes: List<BoxType>
+   maxNum: int
+}
+class Stardust {
+  + Stardust(int, String, String, boolean): 
+  - cardType: CardType
+  + effect(Game): void
+   cardType: CardType
+}
+class State {
+  + State(Player, Game): 
+  - currentPlayer: Player
+  - currentCard: Card
+  - observers: ConcurrentHashMap<String, VirtualView>
+  - phase: StateGameType
+   currentPlayer: Player
+   observers: ConcurrentHashMap<String, VirtualView>
+   phase: StateGameType
+   currentCard: Card
+}
+class Storage {
+  + Storage(TileType, ConnectorType[], RotationType, String, int): 
+  ~ maxNum: int
+  ~ occupation: List<Box>
+  + removeBox(Box): void
+  + addBox(Box): void
+   numOccupation: int
+   numMaxBox: int
+   occupationTypes: List<BoxType>
+   maxNum: int
+   occupation: List<Box>
+}
+class Structural {
+  + Structural(TileType, ConnectorType[], RotationType, String): 
+}
+class Tile {
+  + Tile(TileType, ConnectorType[], RotationType, String): 
+  # observers: ConcurrentHashMap<String, VirtualView>
+  - rotationType: RotationType
+  - numMaxBattery: int
+  - visible: boolean
+  - imagePath: String
+  - numMaxBox: int
+  - connectors: ConnectorType[]
+  + setVisible(): void
+  + checkConnectors(Tile, RotationType): boolean
+  + removeCrew(): void
+  + compatible(int, int): boolean
+  + removeBox(Box): void
+  + checkConnectorsforAttachedTiles(Tile, RotationType): boolean
+  + isShielded(RotationType): boolean
+  + addCrew(String, AliveType): void
+  + connectorOnSide(RotationType): ConnectorType
+  + compatibleforAttachedTiles(int, int): boolean
+  + removeBattery(): void
+  + addBox(Box): void
+   numMaxBox: int
+   type: TileType
+   numMaxBattery: int
+   visible: boolean
+   battery: int
+   numBattery: int
+   imagePath: String
+   rotationType: RotationType
+   numOccupation: int
+   occupationTypes: List<BoxType>
+   maxNum: int
+   observers: ConcurrentHashMap<String, VirtualView>
+   connectors: ConnectorType[]
+   occupation: List<Box>
+   crew: ArrayList<Alive>
+}
+class TileException {
+  + TileException(String): 
+}
+class Trafficker {
+  + Trafficker(int, BoxStore, int, int, int, LinkedList<Box>, LinkedList<BoxType>, String, String, boolean): 
+  - boxesWonTypes: LinkedList<BoxType>
+  - cardType: CardType
+  - boxesWon: LinkedList<Box>
+  + choiceDoubleCannon(Game, Player, List<Coordinate>, List<Coordinate>): void
+  + removeBattery(Game, Player, Tile): void
+  + addBoxWon(Box): void
+  + choiceBox(Game, Player, boolean): void
+  + clearBoxWon(): void
+  + moveBox(Game, Player, List<Box>, List<Box>, BoxType, boolean): void
+  + removeBox(Game, Player, Tile, BoxType): void
+  - noMore(Player): boolean
+   cardType: CardType
+   boxesWonTypes: LinkedList<BoxType>
+   boxesWon: LinkedList<Box>
+}
+interface UpdateListener << interface >> {
+  + onPositionUpdate(String, int): void
+  + onRemoveBatteryUpdate(int, Coordinate): void
+  + onCurrentCardUpdate(String, StateCardType, CardType, String): void
+  + onCreditUpdate(int): void
+  + onPlayerStateUpdate(String, StatePlayerType): void
+  + onUpdateEverything(int, List<Player>, Gameboard, Card, State, boolean[][], int[], HashMap<Integer, Pair<List<Card>, Boolean>>): void
+}
+class WarZone_I {
+  + WarZone_I(int, int, int, ArrayList<Pair<Integer, RotationType>>, String, String, boolean): 
+  - cardType: CardType
+  - currentPhase: int
+  + removeCrew(Game, Player, Tile): void
+  + keepBlocks(Game, Player, Coordinate): void
+  + choiceDoubleMotor(Game, Player, List<Coordinate>, List<Coordinate>): void
+  + calculateDamage(Game, Player, Optional<Tile>): void
+  + choiceDoubleCannon(Game, Player, List<Coordinate>, List<Coordinate>): void
+  + choiceCrew(Game, Player): void
+   currentPhase: int
+   cardType: CardType
+}
+class WarZone_II {
+  + WarZone_II(int, int, int, ArrayList<Pair<Integer, RotationType>>, String, String, boolean): 
+  - cardType: CardType
+  - currentPhase: int
+  + choiceCrew(Game, Player): void
+  + removeBattery(Game, Player, Tile): void
+  + choiceDoubleMotor(Game, Player, List<Coordinate>, List<Coordinate>): void
+  + calculateDamage(Game, Player, Optional<Tile>): void
+  + keepBlocks(Game, Player, Coordinate): void
+  + removeBox(Game, Player, Tile, BoxType): void
+  + choiceDoubleCannon(Game, Player, List<Coordinate>, List<Coordinate>): void
+  - noMore(Player): boolean
+   currentPhase: int
+   cardType: CardType
+}
+class YellowBox {
+  + YellowBox(BoxType): 
+}
+
+AbbandonedShip           -[#000082,plain]-^  Card                    
+AbbandonedStation        -[#000082,plain]-^  Card                    
+BatteryStorage           -[#000082,plain]-^  Tile                    
+BlueBox                  -[#000082,plain]-^  Box                     
+BrownCabin               -[#000082,plain]-^  Tile                    
+Cabin                    -[#000082,plain]-^  Tile                    
+Cannon                   -[#000082,plain]-^  Tile                    
+DoubleCannon             -[#000082,plain]-^  Tile                    
+DoubleMotor              -[#000082,plain]-^  Tile                    
+Enemies                  -[#000082,plain]-^  Card                    
+Epidemy                  -[#000082,plain]-^  Card                    
+Game                     -[#008200,dashed]-^  Game_Interface          
+GreenBox                 -[#000082,plain]-^  Box                     
+InitialCard              -[#000082,plain]-^  Card                    
+MeteoritesStorm          -[#000082,plain]-^  Card                    
+Motors                   -[#000082,plain]-^  Tile                    
+OpenSpace                -[#000082,plain]-^  Card                    
+Pirate                   -[#000082,plain]-^  Enemies                 
+Planet                   -[#000082,plain]-^  Card                    
+Player                   -[#008200,dashed]-^  UpdateListener          
+PurpleCabin              -[#000082,plain]-^  Tile                    
+RedBox                   -[#000082,plain]-^  Box                     
+Shield                   -[#000082,plain]-^  Tile                    
+SlaveOwner               -[#000082,plain]-^  Enemies                 
+SpecialStorage           -[#000082,plain]-^  Tile                    
+Stardust                 -[#000082,plain]-^  Card                    
+Storage                  -[#000082,plain]-^  Tile                    
+Structural               -[#000082,plain]-^  Tile                    
+Trafficker               -[#000082,plain]-^  Card                    
+WarZone_I                -[#000082,plain]-^  Card                    
+WarZone_II               -[#000082,plain]-^  Card                    
+YellowBox                -[#000082,plain]-^  Box                     
+@enduml

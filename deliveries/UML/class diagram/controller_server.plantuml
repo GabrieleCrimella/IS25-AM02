@@ -1,0 +1,97 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class GameSession {
+  + GameSession(int, List<Player>, int): 
+  - lobbyId: int
+  - game: Game
+  - startGameQueueProcessor(): void
+  + shutdown(): void
+   game: Game
+   lobbyId: int
+   queue: BlockingQueue<Runnable>
+}
+class Lobby {
+  + Lobby(int, int, Player, VirtualView, int): 
+  - maxPlayers: int
+  - level: int
+  - id: int
+  - gameStarted: boolean
+  - players: List<Player>
+  + addPlayer(Player): void
+  + startGame(): void
+   level: int
+   gameStarted: boolean
+   id: int
+   maxPlayers: int
+   full: boolean
+   players: List<Player>
+}
+class PingManager {
+  + PingManager(ServerController): 
+  + ping(String): void
+  + registerClient(String): void
+  + stop(): void
+}
+class ServerController {
+  + ServerController(): 
+  - startQueueProcessor(): void
+  + choiceDoubleMotor(String, List<Coordinate>, List<Coordinate>): void
+  + checkWrongSpaceship(String): void
+  + flipHourglass(String): void
+  + nicknameRegistration(String, VirtualView): void
+  - convertToLobbyViewMap(Map<Integer, Lobby>): Map<Integer, LobbyView>
+  + choiceBox(String, boolean): void
+  + addBookedTile(String, int, Coordinate, RotationType): void
+  + getLobbies(VirtualView): void
+  + ready(String): void
+  + shutdown(): void
+  + addTile(String, Coordinate, RotationType): void
+  + addCrew(String, Coordinate, AliveType): void
+  + takeMiniDeck(String, int): void
+  - getPlayerFromNickname(String): Player
+  + rollDice(String): void
+  + shipFinished(String): void
+  + Winners(int): void
+  + choicePlanet(String, int): void
+  + removeBox(String, Coordinate, BoxType): void
+  + endGame(int): void
+  + hourglass(String): void
+  + returnTile(String): void
+  + disconnectClient(String): void
+  + isGameRunning(VirtualView, int): void
+  + takeTile(String): void
+  + earlyLanding(String): void
+  + removeCrew(String, Coordinate): void
+  + bookTile(String): void
+  - getGameFromPlayer(String): GameSession?
+  + ping(String): void
+  + removeTile(String, Coordinate): void
+  + calculateDamage(String, Coordinate): void
+  - startGame(Lobby): void
+  + playNextCard(String): void
+  + moveBox(String, Coordinate, Coordinate, BoxType, boolean): void
+  + createLobby(VirtualView, String, int, PlayerColor, int): void
+  + choiceCrew(String): void
+  + checkSpaceship(String): void
+  + pingFromServer(): void
+  + joinLobby(VirtualView, int, String, PlayerColor): void
+  + takeTile(String, String): void
+  + keepBlock(String, Coordinate): void
+  + choiceDoubleCannon(String, List<Coordinate>, List<Coordinate>): void
+  + removeBattery(String, Coordinate): void
+  + choice(String, boolean): void
+  + returnMiniDeck(String): void
+}
+class node3 as "package  it.polimi.ingsw.is25am02.controller.server.exception" << package >>
+
+ServerController "1" *-[#595959,plain]-> "activeGames\n*" GameSession      
+ServerController  -[#595959,dashed]->  GameSession      : "«create»"
+ServerController  -[#595959,dashed]->  Lobby            : "«create»"
+ServerController "1" *-[#595959,plain]-> "lobbies\n*" Lobby            
+ServerController "1" *-[#595959,plain]-> "pingManager\n1" PingManager      
+ServerController  -[#595959,dashed]->  PingManager      : "«create»"
+@enduml
