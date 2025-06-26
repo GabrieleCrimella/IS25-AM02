@@ -70,9 +70,6 @@ public class MeteoritesStorm extends Card {
     public void calculateDamage(Game game, Player player, Optional<Tile> storage) throws IllegalRemoveException {
         boolean res = player.getSpaceship().meteoriteDamage(player.getNickname(), meteorites.get(currentIndex).getKey(), meteorites.get(currentIndex).getValue(), game.getDiceResult(), storage);
 
-        if(!storage.isPresent()){
-            res=false;
-        }
         for(Player p: game.getPlayers()) {
             try {
                 p.getObserver().displayMessage("ingame.meteoritesIndex", Map.of("index", String.valueOf(currentIndex)));
