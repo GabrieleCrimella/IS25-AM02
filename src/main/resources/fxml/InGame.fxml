@@ -184,10 +184,11 @@
         <Button fx:id="finishcannon" layoutX="50.0" layoutY="410.0" onAction="#onFinishChoiceCannon" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice cannon" visible="false" />
         <Button fx:id="finishmotor" layoutX="50.0" layoutY="270.0" onAction="#onFinishChoiceMotor" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish choice motor" visible="false" />
         <Button fx:id="finishmoveboxes" layoutX="50.0" layoutY="340.0" onAction="#onfinishMoveBoxes" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Finish move boxes" visible="false" />
-        <Button fx:id="calculatedamage" layoutX="50.0" layoutY="340.0" onAction="#onCalculateDamage" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Calculate damage" visible="false" />
+        <Button fx:id="calculatedamage" layoutX="50.0" layoutY="410.0" onAction="#onCalculateDamage" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Calculate damage" visible="false" />
         <Button fx:id="noChoicePlanet" layoutX="50.0" layoutY="270.0" onAction="#onNoChoicePlanet" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="I don't want to land" visible="false" />
         <Button fx:id="choiceYes" layoutX="50.0" layoutY="270.0" onAction="#onChoiceYes" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice yes" visible="false" />
         <Button fx:id="choiceNo" layoutX="50.0" layoutY="340.0" onAction="#onChoiceNo" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice no" visible="false" />
+        <Button fx:id="choiceCrewButton" layoutX="50.0" layoutY="340.0" onAction="#onChoiceCrew" prefHeight="40.0" prefWidth="300.0" styleClass="main-button" text="Choice crew" visible="false" />
         <Button fx:id="earlyLandingButton" layoutX="1100.0" layoutY="25.0" onAction="#onEarlyLanding" prefHeight="51.0" prefWidth="199.0" styleClass="main-button" text="Early Landing" />
 
 
