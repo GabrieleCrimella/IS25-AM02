@@ -19,7 +19,12 @@ The implementation includes:
 - **Network multiplayer support** via both RMI and Socket connections
 - **Dual interface options**: Textual User Interface (TUI) and Graphical User Interface (GUI)
 - **Two additional functionalities**: Test Flight mode and Multiple Games support
-- **Cross-platform compatibility** through Java
+
+## Screenshots
+### Build Phase
+![img.png](img/img.png)
+### In-Game Phase
+![img.png](img/inGame.png)
 
 ## How to Run
 
