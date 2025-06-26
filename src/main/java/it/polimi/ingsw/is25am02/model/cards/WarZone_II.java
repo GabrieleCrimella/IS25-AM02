@@ -6,10 +6,7 @@ import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.model.Game;
 import it.polimi.ingsw.is25am02.model.Player;
 import it.polimi.ingsw.is25am02.model.cards.boxes.Box;
-import it.polimi.ingsw.is25am02.utils.enumerations.BoxType;
-import it.polimi.ingsw.is25am02.utils.enumerations.CardType;
-import it.polimi.ingsw.is25am02.utils.enumerations.RotationType;
-import it.polimi.ingsw.is25am02.utils.enumerations.StateCardType;
+import it.polimi.ingsw.is25am02.utils.enumerations.*;
 import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import javafx.util.Pair;
@@ -33,7 +30,7 @@ public class WarZone_II extends Card{
     private final CardType cardType;
 
     public WarZone_II(int level, int flyback, int boxesLost, ArrayList<Pair<Integer, RotationType>> shots, String imagepath,String comment,boolean testFlight) {
-        super(level, StateCardType.DECISION, imagepath,comment,testFlight);
+        super(level, StateCardType.CHOICE_ATTRIBUTES, imagepath,comment,testFlight);
         this.flyback = flyback;
         this.boxesLost = boxesLost;
         this.shots = shots;
@@ -72,8 +69,8 @@ public class WarZone_II extends Card{
                     }
                 }
             }
-            if (player.getNickname().equals(getCurrentOrder().getLast())) {
-            //if (player.equals(game.getGameboard().getRanking().getLast())) {
+            //if (player.getNickname().equals(getCurrentOrder().getLast())) {
+            if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 double minCannon = Double.MAX_VALUE;
                 for (Map.Entry<Player, Double> entry : declarationCannon.entrySet()) {
@@ -97,10 +94,14 @@ public class WarZone_II extends Card{
                         }
                     }
                 }
-                //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
-                game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                //game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
                 currentPhase++;
-            } else game.nextPlayer();
+            } else {
+                //game.nextPlayer();
+                int index = game.getGameboard().getRanking().indexOf(game.getCurrentPlayer());
+                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
+            }
         } else throw new IllegalStateException();
     }
 
@@ -125,8 +126,8 @@ public class WarZone_II extends Card{
                     }
                 }
             }
-            if(player.getNickname().equals(getCurrentOrder().getLast())) {
-            //if (player.equals(game.getGameboard().getRanking().getLast())) {
+            //if(player.getNickname().equals(getCurrentOrder().getLast())) {
+            if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 int minMotor = Integer.MAX_VALUE;
                 for (Map.Entry<Player, Integer> entry : declarationMotor.entrySet()) {
@@ -135,10 +136,23 @@ public class WarZone_II extends Card{
                         p = entry.getKey();
                     }
                 }
-                game.getCurrentCard().setStateCard(StateCardType.REMOVE);
-                game.getCurrentState().setCurrentPlayer(p);
+
+                if (noMore(p)){
+                    setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                    //game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    currentPhase++;
+                }
+                else{
+                    game.getCurrentCard().setStateCard(StateCardType.REMOVE);
+                    game.getCurrentState().setCurrentPlayer(p);
+                }
+
             }
-            else game.nextPlayer();
+            else {
+                int index = game.getGameboard().getRanking().indexOf(game.getCurrentPlayer());
+                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
+            }
         }
         else throw new IllegalStateException();
     }
@@ -170,8 +184,16 @@ public class WarZone_II extends Card{
 
                 if (boxesRemoved == boxesLost) {
                     setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-                    game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
-                    //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    //game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    currentPhase++;
+                    return;
+                }
+
+                if (noMore(player)) {
+                    setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                    //game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
                     currentPhase++;
                 }
             } else throw new RuntimeException();
@@ -182,7 +204,7 @@ public class WarZone_II extends Card{
     @Override
     public void removeBattery(Game game, Player player, Tile storage) throws IllegalRemoveException {
         if(currentPhase == 2) {
-            if(player.getSpaceship().noBox()){
+            if(player.getSpaceship().noBox() && !noMore(player)) {
                 storage.removeBattery();
                 if(observers != null) {
                     for (String nick : observers.keySet()) {
@@ -198,10 +220,18 @@ public class WarZone_II extends Card{
 
                 if (boxesRemoved == boxesLost) {
                     setStateCard(StateCardType.CHOICE_ATTRIBUTES);
-                    game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
-                    //game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    //game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
+                    currentPhase++;
+                    return;
+                }
+                if (noMore(player)) {
+                    setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+                    //game.getCurrentState().setCurrentPlayer(game.getPlayerFromNickname(getCurrentOrder().getFirst()));
+                    game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
                     currentPhase++;
                 }
+
             }
             else
                 throw new IllegalRemoveException("You are trying to remove a battery but you still have boxes");
@@ -220,8 +250,8 @@ public class WarZone_II extends Card{
     public void choiceCrew(Game game, Player player) {
         if(currentPhase == 3) {
             declarationCrew.put(player, player.getSpaceship().calculateNumAlive());
-            if (player.getNickname().equals(getCurrentOrder().getLast())) {
-            //if (player.equals(game.getGameboard().getRanking().getLast())) {
+            //if (player.getNickname().equals(getCurrentOrder().getLast())) {
+            if (player.equals(game.getGameboard().getRanking().getLast())) {
                 Player p = null;
                 int minCrew = Integer.MAX_VALUE;
                 for (Map.Entry<Player, Integer> entry : declarationCrew.entrySet()) {
@@ -235,7 +265,10 @@ public class WarZone_II extends Card{
                 game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
             }
-            else game.nextPlayer();
+            else {
+                int index = game.getGameboard().getRanking().indexOf(game.getCurrentPlayer());
+                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().get(index + 1));//metto il prossimo giocatore come giocatore corrente
+            }
         }
         else throw new IllegalStateException();
     }
@@ -247,13 +280,14 @@ public class WarZone_II extends Card{
 
             if (res) {
                 game.getCurrentCard().setStateCard(StateCardType.DECISION);
-            } else {
+            } else if (currentIndex + 1 != shots.size()){
                 game.setDiceResultManually(0);
                 game.getCurrentCard().setStateCard(StateCardType.ROLL);
             }
             currentIndex++;
 
             if(currentIndex == shots.size()){
+                game.getCurrentState().setCurrentPlayer(game.getGameboard().getRanking().getFirst());
                 game.getCurrentCard().setStateCard(StateCardType.FINISH);
                 game.getCurrentState().setPhase(TAKE_CARD);
             }
@@ -269,5 +303,19 @@ public class WarZone_II extends Card{
             game.getCurrentCard().setStateCard(StateCardType.ROLL);
         }
         else throw new IllegalStateException();
+    }
+
+    private boolean noMore(Player player) {
+        if(player.getSpaceship().noBox()){
+            List<Tile> batteries = player.getSpaceship().getTilesByType(TileType.BATTERY);
+            for(Tile tile : batteries){
+                if(tile.getNumBattery() != 0) {
+                    return false;
+                }
+            }
+            boxesRemoved = 0;
+            return true;
+        }
+        return false;
     }
 }

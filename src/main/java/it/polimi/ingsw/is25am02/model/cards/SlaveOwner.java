@@ -118,6 +118,7 @@ public class SlaveOwner extends Enemies{
 
         if(noMore(player)){
             setStateCard(StateCardType.CHOICE_ATTRIBUTES);
+            AliveRemoved = 0;
             game.nextPlayer();
         }
     }
