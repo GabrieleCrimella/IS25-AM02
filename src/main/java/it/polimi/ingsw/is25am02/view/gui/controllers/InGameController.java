@@ -134,6 +134,7 @@ public class InGameController extends GeneralController {
     private Label doubleLabel;
     @FXML
     private Label batteryLabel;
+    private CardType typeOfTheCardBeingPlayed;
 
     @FXML
     public void initialize(int level, PlayerColor color) {
@@ -608,6 +609,7 @@ public class InGameController extends GeneralController {
     }
 
     public void newCard(CardV newCard) {
+        typeOfTheCardBeingPlayed = newCard.getCardType();
         calculatedamage.setVisible(false);
         calculatedamage.setDisable(true);
         choiceboxtrue.setVisible(false);
@@ -877,6 +879,9 @@ public class InGameController extends GeneralController {
 
                     diceResult.setVisible(true);
                     diceResult.setText("Result: " + result);
+                    if (typeOfTheCardBeingPlayed.equals(CardType.METEORITES_STORM)) {
+                        showNotification("Calculate the damage caused by the meteorite. If you want to activate a shield or a cannon, click on the battery.", NotificationType.INFO, 15000);
+                    }
 
                 });
             }).start();
@@ -960,6 +965,34 @@ public class InGameController extends GeneralController {
 
     public void updateCurrentPlayerName() {
         currentPlayerNameLabel.setText(GUIController.getInstance().getController().getGameV().getCurrentState().getCurrentPlayer().getNickname());
+        if (currentPlayerNameLabel.getText().equals(GUIController.getInstance().getNickname())) {
+            currentPlayerNameLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+            switch (typeOfTheCardBeingPlayed) {
+                case CardType.TRAFFICKER -> {
+                    showNotification("Activate the cannons to defend yourself", NotificationType.INFO, 15000);
+                }
+                case OPENSPACE -> {
+                    showNotification("Choose how many motors you want to activate with which batteries", NotificationType.INFO, 15000);
+                }
+                case METEORITES_STORM -> {
+                    showNotification("Roll the dice!", NotificationType.INFO, 15000);
+                }
+                case ABANDONED_SHIP -> {
+                    showNotification("If you lose 3 humans, you can gain 4 credits", NotificationType.INFO, 15000);
+                }
+                case PLANET -> {
+                    showNotification("Choose a planet to land on", NotificationType.INFO, 15000);
+                }
+                case ABANDONED_STATION -> {
+                    showNotification("If you have at least 5 humans on the ship, you can choose to load the boxes onto the ship", NotificationType.INFO, 15000);
+                }
+                case EPIDEMY -> {
+                    showNotification("One human has been removed from each interconnected cabin",NotificationType.INFO, 15000);
+                }
+            }
+        } else {
+            currentPlayerNameLabel.setStyle("-fx-text-fill: black; -fx-font-weight: normal;");
+        }
     }
 
     public void hideChoiceBox(boolean visible) {
@@ -1012,6 +1045,7 @@ public class InGameController extends GeneralController {
     }
 
     public void hideFinishMotor(int number) {
+        showNotification("You will be moved forward on the game board", NotificationType.INFO, 15000);
         finishmotor.setVisible(false);
         finishmotor.setDisable(true);
         batteries = new ArrayList<>();
@@ -1052,7 +1086,7 @@ public class InGameController extends GeneralController {
         if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE1)) {
             finishmotor.setVisible(true);
             finishmotor.setDisable(false);
-        } else if( GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
+        } else if (GUIController.getInstance().getController().getGameV().getCurrentCard().getCardType().equals(CardType.WARZONE2)) {
             rollDice.setVisible(true);
             rollDice.setDisable(false);
             calculatedamage.setVisible(true);
@@ -1114,7 +1148,7 @@ public class InGameController extends GeneralController {
     public void onOutOfGame() {
         Platform.runLater(() -> {
             // Mostra un messaggio di notifica
-            showNotification("You are out of the game", NotificationType.INFO, 5000);
+            showNotification("You are out of the game", NotificationType.INFO, 15000);
 
             outGamePopup.setVisible(true);
         });
