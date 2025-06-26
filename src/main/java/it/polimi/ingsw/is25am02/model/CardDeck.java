@@ -74,6 +74,9 @@ public class CardDeck {
 
         Collections.shuffle(livello1);
         Collections.shuffle(livello2);
+        /*while (livello1.getFirst().getCardType() != CardType.WARZONE2){
+            Collections.shuffle(livello1);
+        }*/
 
         for (int i = 0; i < 4; i++) {
             List<Card> mazzetto = new ArrayList<>();
@@ -321,6 +324,10 @@ public class CardDeck {
             finalDeck.addAll(cards.getKey());
         }
         Collections.shuffle(finalDeck);//mischio le carte
+
+        /*while (finalDeck.getFirst().getCardType() != CardType.WARZONE2){
+            Collections.shuffle(finalDeck);
+        }*/
     }
 
     public void giveDeck(int numDeck) throws AlreadyViewingException {
