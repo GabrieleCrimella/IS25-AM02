@@ -75,63 +75,62 @@ class AbbandonedStationTest {
 
         //tile 3 - motor
         TileType t3 = TileType.MOTOR;
-        ConnectorType[] connectors3 = {ConnectorType.SINGLE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
+        ConnectorType[] connectors3 = {ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType3 = RotationType.NORTH;
         int id3 = 1;
         Tile motor3 = new Motors(t3, connectors3, rotationType3, null);
         try {
-            spaceship1.addTile(player1.getNickname(), 7,8, motor3);
+            spaceship1.addTile(player1.getNickname(), 7,6, motor3);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
         //tile 4 - battery
         TileType t4 = TileType.BATTERY;
-        ConnectorType[] connectors4 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE, ConnectorType.NONE};
+        ConnectorType[] connectors4 = {ConnectorType.DOUBLE, ConnectorType.DOUBLE, ConnectorType.SINGLE, ConnectorType.UNIVERSAL};
         RotationType rotationType4 = RotationType.NORTH;
         int id4 = 1;
         int maxBattery = 3;
         Tile battery4 = new BatteryStorage(t4, connectors4, rotationType4, null, maxBattery);
         try {
-            spaceship1.addTile(player1.getNickname(), 6,8, battery4);
+            spaceship1.addTile(player1.getNickname(), 6,7, battery4);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
         //tile 5 - shield
         TileType t5 = TileType.SHIELD;
-        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.NONE};
+        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.DOUBLE, ConnectorType.UNIVERSAL};
         RotationType rotationType5 = RotationType.NORTH;
         int id5 = 1;
         boolean[] shielded = {true, false, false, true};
         Tile shield5 = new Shield(t5, connectors5, rotationType5, null, shielded);
         try {
-            spaceship1.addTile(player1.getNickname(), 6,7, shield5);
+            spaceship1.addTile(player1.getNickname(), 6,8, shield5);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
         //tile 6 - cannon
         TileType t6 = TileType.CANNON;
-        ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.SINGLE, ConnectorType.NONE};
+        ConnectorType[] connectors6 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.NONE};
         RotationType rotationType6 = RotationType.NORTH;
         int id6 = 1;
         Tile cannon6 = new Cannon(t6, connectors6, rotationType6, null);
         try {
-            spaceship1.addTile(player1.getNickname(), 7,6, cannon6);
+            spaceship1.addTile(player1.getNickname(), 5,7, cannon6);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
 
         //tile 7 - specialstorage
         TileType t7 = TileType.SPECIAL_STORAGE;
-        ConnectorType[] connectors7 = {ConnectorType.NONE, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.DOUBLE};
+        ConnectorType[] connectors7 = {ConnectorType.UNIVERSAL, ConnectorType.NONE, ConnectorType.NONE, ConnectorType.UNIVERSAL};
         RotationType rotationType7 = RotationType.NORTH;
-        int id7 = 1;
         int maxNum = 2;
         Tile specialStorage7 = new SpecialStorage(t7, connectors7, rotationType7, null, maxNum);
         try {
-            spaceship1.addTile(player1.getNickname(), 9,7, specialStorage7);
+            spaceship1.addTile(player1.getNickname(), 7,8, specialStorage7);
         } catch (IllegalAddException e) {
             System.out.println(e.getMessage());
         }
@@ -229,8 +228,7 @@ class AbbandonedStationTest {
         correctAvailableBoxesinitial.add(bluebox);
         assertEquals(availableBoxes.equals(correctAvailableBoxesinitial),true);
 
-        //todo qui ho cambiato il box con boxtype
-        abbandonedStation.moveBox(game, game.getPlayers().getFirst(), abbandonedStation.getBoxesWon(), game.getPlayers().getFirst().getSpaceship().getTile(9,7).get().getOccupation(), BoxType.RED, true);
+        abbandonedStation.moveBox(game, game.getPlayers().getFirst(), abbandonedStation.getBoxesWon(), game.getPlayers().getFirst().getSpaceship().getTile(7,8).get().getOccupation(), BoxType.RED, true);
 
 
         //correct list
@@ -251,6 +249,51 @@ class AbbandonedStationTest {
 
         assertEquals(true, game.getGameboard().getPositions().equals(correctPositions));
         assertEquals(true, availableBoxes.equals(correctAvailableBoxes));
-        assertEquals(true, game.getPlayers().getFirst().getSpaceship().getTile(9,7).get().getOccupation().equals(correctOccupationBoxes));
+        assertEquals(true, game.getPlayers().getFirst().getSpaceship().getTile(7,8).get().getOccupation().equals(correctOccupationBoxes));
+    }
+
+    @Test
+    void test_should_check_card_flow (){
+        Game game = make_a_spaceship();
+        //CreateCard
+        int level = 2;
+        BoxStore store = new BoxStore();
+        int daysLost = 1;
+        int aliveNeeded = 1;
+        RedBox redbox1 = new RedBox(BoxType.RED);
+        RedBox redbox2 = new RedBox(BoxType.RED);
+        BlueBox bluebox = new BlueBox(BoxType.BLUE);
+        //lista di boxesWon con 2 rossi e un blu
+        LinkedList<Box> boxesWon = new LinkedList<Box>();
+        LinkedList<BoxType> boxesWonTypes = new LinkedList<>();
+        boxesWon.add(redbox1);
+        boxesWon.add(redbox2);
+        boxesWon.add(bluebox);
+        Card abbandonedStation = new AbbandonedStation(level, store, aliveNeeded, daysLost, boxesWon, boxesWonTypes, null, null, true);
+
+        game.getCurrentState().setCurrentCard(abbandonedStation);
+        LinkedList<String> nicknames = new LinkedList<>(
+                game.getGameboard().getRanking().stream()
+                        .map(Player::getNickname)
+                        .toList()
+        );
+        game.getCurrentState().getCurrentCard().setCurrentOrder(nicknames);
+        game.getCurrentCard().setStateCard(StateCardType.DECISION);
+
+        game.choiceBox(game.getPlayers().getFirst(), true);
+        game.moveBox(game.getPlayers().getFirst(),new Coordinate(-1,-1), new Coordinate(7,8),BoxType.RED, true);
+        game.moveBox(game.getPlayers().getFirst(),new Coordinate(-1,-1), new Coordinate(7,8),BoxType.BLUE, true);
+        game.moveBox(game.getPlayers().getFirst(),new Coordinate(7,8), new Coordinate(-1,-1),BoxType.BLUE, true);
+        game.moveBox(game.getPlayers().getFirst(),new Coordinate(-1,-1), new Coordinate(7,8),BoxType.RED, true);
+        game.moveBox(game.getPlayers().getFirst(),new Coordinate(-1,-1), new Coordinate(7,8),BoxType.RED, false);
+
+        assertEquals(2, game.getPlayers().getFirst().getSpaceship().getTile(7,8).get().getOccupation().size());
+        assertEquals(StateCardType.FINISH, game.getCurrentCard().getStateCard());
+
+        abbandonedStation.addBoxWon(new BlueBox(BoxType.BLUE));
+        abbandonedStation.getBoxesWon();
+        abbandonedStation.getBoxesWonTypes();
+        abbandonedStation.clearBoxWon();
+        abbandonedStation.getCardType();
     }
 }

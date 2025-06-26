@@ -1127,7 +1127,7 @@ public class InGameController extends GeneralController {
         }
     }
 
-    public boolean isLeader() {
+    public boolean isLeader() { //per gestire anche il caso outofgame, quello che deve fare roll dice è il primo della plancia che non sia out of game
         Map<PlayerV, Integer> positions = GUIController.getInstance()
                 .getController()
                 .getGameV()
@@ -1135,6 +1135,7 @@ public class InGameController extends GeneralController {
                 .getPositions();
 
         Optional<Map.Entry<PlayerV, Integer>> maxEntry = positions.entrySet().stream()
+                .filter(entry -> !entry.getKey().getStatePlayer().equals(StatePlayerType.OUT_GAME))
                 .max(Map.Entry.comparingByValue());
 
         boolean isMe = false;
