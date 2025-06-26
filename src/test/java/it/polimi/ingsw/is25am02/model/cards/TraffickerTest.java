@@ -2,7 +2,10 @@ package it.polimi.ingsw.is25am02.model.cards;
 
 import it.polimi.ingsw.is25am02.model.*;
 import it.polimi.ingsw.is25am02.model.cards.boxes.*;
+import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalPhaseException;
+import it.polimi.ingsw.is25am02.model.exception.IllegalRemoveException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
@@ -789,4 +792,788 @@ class TraffickerTest {
     }
 
  */
+
+    @Test
+    void test_should_check_if_player_does_not_have_power_and_nothing_to_lose(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        //finished spaceships and initializing them
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+        BoxStore store = new BoxStore();
+        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+        currentBoxesWonTypeT.add(BoxType.YELLOW);
+        currentBoxesWonTypeT.add(BoxType.GREEN);
+        currentBoxesWonTypeT.add(BoxType.BLUE);
+        Card trafficker = new Trafficker(0, store, 4, 1, 2, currentBoxesWonT, currentBoxesWonTypeT, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(trafficker);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        try {
+            game.getCurrentCard().choiceDoubleCannon(game, player1, new ArrayList<>(),new ArrayList<>() );
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
+    }
+
+    @Test
+    void test_should_check_if_player_does_not_have_power_and_2_batteries(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType2 = RotationType.NORTH;
+        int maxNum = 3;
+        Tile battery1 = new BatteryStorage(TileType.BATTERY, connectors2, rotationType2, null, maxNum);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), battery1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 7,8, battery1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        //finished spaceships and initializing them
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        BoxStore store = new BoxStore();
+        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+        currentBoxesWonTypeT.add(BoxType.YELLOW);
+        currentBoxesWonTypeT.add(BoxType.GREEN);
+        currentBoxesWonTypeT.add(BoxType.BLUE);
+        Card trafficker = new Trafficker(0, store, 4, 1, 2, currentBoxesWonT, currentBoxesWonTypeT, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(trafficker);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        try {
+            game.getCurrentCard().choiceDoubleCannon(game, player1, new ArrayList<>(),new ArrayList<>() );
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
+
+        try {
+            game.getCurrentCard().removeBattery(game, player1, battery1);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
+
+        try {
+            game.getCurrentCard().removeBattery(game, player1, battery1);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
+    }
+
+    @Test
+    void test_should_check_if_player_does_not_have_power_and_2_boxes(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        ConnectorType[] connectors2 = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType2 = RotationType.NORTH;
+        int maxNum = 3;
+        Tile storage1 = new Storage(TileType.STORAGE, connectors2, rotationType2, null, maxNum);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), storage1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 7,8, storage1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            storage1.addBox(new YellowBox(BoxType.YELLOW));
+        } catch (IllegalAddException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            storage1.addBox(new BlueBox(BoxType.BLUE));
+        } catch (IllegalAddException e) {
+            throw new RuntimeException(e);
+        }
+
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        //finished spaceships and initializing them
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        BoxStore store = new BoxStore();
+        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+        currentBoxesWonTypeT.add(BoxType.YELLOW);
+        currentBoxesWonTypeT.add(BoxType.GREEN);
+        currentBoxesWonTypeT.add(BoxType.BLUE);
+        Card trafficker = new Trafficker(0, store, 4, 1, 2, currentBoxesWonT, currentBoxesWonTypeT, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(trafficker);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        try {
+            game.getCurrentCard().choiceDoubleCannon(game, player1, new ArrayList<>(),new ArrayList<>() );
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
+
+        try {
+            game.getCurrentCard().removeBox(game, player1, storage1, BoxType.YELLOW);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(StateCardType.REMOVE, game.getCurrentState().getCurrentCard().getStateCard());
+
+        try {
+            game.getCurrentCard().removeBox(game, player1, storage1, BoxType.BLUE);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
+    }
+
+    @Test
+    void test_should_check_if_player_has_enough_power_to_tie(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        //add 4 cannons
+        ConnectorType[] connectors2 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType2 = RotationType.NORTH;
+        int maxNum = 3;
+        Tile cannon1 = new Cannon(TileType.CANNON, connectors2, rotationType2, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,7, cannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors3 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType3 = RotationType.NORTH;
+        Tile cannon2 = new Cannon(TileType.CANNON, connectors3, rotationType3, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon2);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,8, cannon2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType4 = RotationType.NORTH;
+        Tile cannon3 = new Cannon(TileType.CANNON, connectors4, rotationType4, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon3);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,6, cannon3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors6 = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType6 = RotationType.NORTH;
+        Tile storage1 = new Storage(TileType.STORAGE, connectors6, rotationType6, null, maxNum);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), storage1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,7, storage1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType5 = RotationType.NORTH;
+        Tile cannon4 = new Cannon(TileType.CANNON, connectors5, rotationType5, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon4);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,8, cannon4);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        //finished spaceships and initializing them
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        BoxStore store = new BoxStore();
+        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+        currentBoxesWonTypeT.add(BoxType.YELLOW);
+        currentBoxesWonTypeT.add(BoxType.GREEN);
+        currentBoxesWonTypeT.add(BoxType.BLUE);
+        Card trafficker = new Trafficker(0, store, 4, 1, 2, currentBoxesWonT, currentBoxesWonTypeT, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(trafficker);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        try {
+            game.getCurrentCard().choiceDoubleCannon(game, player1, new ArrayList<>(),new ArrayList<>() );
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(StateCardType.CHOICE_ATTRIBUTES, game.getCurrentState().getCurrentCard().getStateCard());
+    }
+
+
+    @Test
+    void test_should_check_if_player_has_enough_power_to_win_and_choses_not_to(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        //add 4 cannons
+        ConnectorType[] connectors2 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType2 = RotationType.NORTH;
+        int maxNum = 3;
+        Tile cannon1 = new Cannon(TileType.CANNON, connectors2, rotationType2, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,7, cannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors3 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType3 = RotationType.NORTH;
+        Tile cannon2 = new Cannon(TileType.CANNON, connectors3, rotationType3, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon2);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,8, cannon2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType4 = RotationType.NORTH;
+        Tile cannon3 = new Cannon(TileType.CANNON, connectors4, rotationType4, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon3);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,6, cannon3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors6 = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType6 = RotationType.NORTH;
+        Tile storage1 = new Storage(TileType.STORAGE, connectors6, rotationType6, null, maxNum);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), storage1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,7, storage1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType5 = RotationType.NORTH;
+        Tile cannon4 = new Cannon(TileType.CANNON, connectors5, rotationType5, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon4);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,8, cannon4);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors7 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType7 = RotationType.NORTH;
+        Tile cannon5 = new Cannon(TileType.CANNON, connectors7, rotationType7, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon5);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,6, cannon5);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        //finished spaceships and initializing them
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+
+        BoxStore store = new BoxStore();
+        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+        currentBoxesWonTypeT.add(BoxType.YELLOW);
+        currentBoxesWonTypeT.add(BoxType.GREEN);
+        currentBoxesWonTypeT.add(BoxType.BLUE);
+        Card trafficker = new Trafficker(0, store, 4, 1, 2, currentBoxesWonT, currentBoxesWonTypeT, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(trafficker);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        try {
+            game.getCurrentCard().choiceDoubleCannon(game, player1, new ArrayList<>(),new ArrayList<>() );
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(StateCardType.DECISION, game.getCurrentState().getCurrentCard().getStateCard());
+
+        game.getCurrentCard().choiceBox(game, player1, true);
+
+
+        assertEquals(StateCardType.BOXMANAGEMENT, game.getCurrentState().getCurrentCard().getStateCard());
+
+        List<Box> boxList = new ArrayList<>();
+        boxList.add(new BlueBox(BoxType.BLUE));
+        List<Box> boxListend = new ArrayList<>();
+
+        game.getCurrentCard().moveBox(game, player1,boxList, boxListend, BoxType.BLUE, true);
+        assertEquals(1, boxListend.size());
+
+        game.getCurrentCard().moveBox(game, player1,boxList, boxListend, BoxType.BLUE, false);
+        assertEquals(StateCardType.FINISH,game.getCurrentState().getCurrentCard().getStateCard());
+
+
+    }
+
+    @Test
+    void test_should_check_if_player_has_enough_power_to_win_and_uses_boxes(){
+        //4 spaceship
+        Spaceship spaceship1 = new Spaceship(0);
+        Spaceship spaceship2 = new Spaceship(0);
+        Spaceship spaceship3 = new Spaceship(0);
+        Spaceship spaceship4 = new Spaceship(0);
+        //4 player
+        Player player1 = new Player(spaceship1, "Rosso", PlayerColor.RED, null, 1);
+        Player player2 = new Player(spaceship2, "Blu", PlayerColor.BLUE, null, 1);
+        Player player3 = new Player(spaceship3, "Verde", PlayerColor.GREEN, null, 1);
+        Player player4 = new Player(spaceship4, "Giallo", PlayerColor.YELLOW, null, 1);
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        //game di livello 0 con i 4 players
+        Game game = new Game(players,0);
+        //inizializzo
+        game.getCurrentState().setPhase(StateGameType.BUILD);
+        game.getGameboard().initializeGameBoard(players);
+
+        //add 4 cannons
+        ConnectorType[] connectors2 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType2 = RotationType.NORTH;
+        int maxNum = 3;
+        Tile cannon1 = new Cannon(TileType.CANNON, connectors2, rotationType2, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,7, cannon1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors3 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType3 = RotationType.NORTH;
+        Tile cannon2 = new Cannon(TileType.CANNON, connectors3, rotationType3, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon2);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,8, cannon2);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors4 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType4 = RotationType.NORTH;
+        Tile cannon3 = new Cannon(TileType.CANNON, connectors4, rotationType4, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon3);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 6,6, cannon3);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors6 = {ConnectorType.DOUBLE, ConnectorType.NONE, ConnectorType.DOUBLE, ConnectorType.SINGLE};
+        RotationType rotationType6 = RotationType.NORTH;
+        Tile storage1 = new Storage(TileType.STORAGE, connectors6, rotationType6, null, maxNum);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), storage1);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,7, storage1);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors5 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType5 = RotationType.NORTH;
+        Tile cannon4 = new Cannon(TileType.CANNON, connectors5, rotationType5, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon4);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,8, cannon4);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ConnectorType[] connectors7 = {ConnectorType.NONE, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL, ConnectorType.UNIVERSAL};
+        RotationType rotationType7 = RotationType.NORTH;
+        Tile cannon5 = new Cannon(TileType.CANNON, connectors7, rotationType7, null);
+        try {
+            game.getPlayers().get(0).getSpaceship().setCurrentTile(game.getPlayers().get(0).getNickname(), cannon5);
+        } catch (AlreadyViewingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            spaceship1.addTile(player1.getNickname(), 8,6, cannon5);
+        } catch (IllegalAddException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+        game.shipFinished(player1);
+        game.shipFinished(player2);
+        game.shipFinished(player3);
+        game.shipFinished(player4);
+
+        //finished spaceships and initializing them
+        player1.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player2.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player3.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+        player4.setStatePlayer(StatePlayerType.CORRECT_SHIP);
+
+        game.getCurrentState().setPhase(StateGameType.INITIALIZATION_SPACESHIP);
+        Coordinate pos = new Coordinate(7, 7);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+
+        pos = new Coordinate(7, 8);
+        game.addCrew(player1, pos, AliveType.HUMAN);
+        player1.setStatePlayer(StatePlayerType.IN_GAME);
+        player2.setStatePlayer(StatePlayerType.IN_GAME);
+        player3.setStatePlayer(StatePlayerType.IN_GAME);
+        player4.setStatePlayer(StatePlayerType.IN_GAME);
+
+        game.getCurrentState().setPhase(StateGameType.EFFECT_ON_PLAYER);
+
+        BoxStore store = new BoxStore();
+        LinkedList<Box> currentBoxesWonT = new LinkedList<>();
+        LinkedList<BoxType> currentBoxesWonTypeT = new LinkedList<BoxType>();
+        currentBoxesWonTypeT.add(BoxType.YELLOW);
+        currentBoxesWonTypeT.add(BoxType.GREEN);
+        currentBoxesWonTypeT.add(BoxType.BLUE);
+        Card trafficker = new Trafficker(0, store, 4, 1, 2, currentBoxesWonT, currentBoxesWonTypeT, "prova", "commento", true);
+        LinkedList<String> currentOrder = new LinkedList<>();
+        currentOrder.add("Rosso");
+        currentOrder.add("Blu");
+        currentOrder.add("Verde");
+        currentOrder.add("Giallo");
+        game.getCurrentState().setCurrentCard(trafficker);
+        game.getCurrentCard().setCurrentOrder(currentOrder);
+
+
+        try {
+            game.getCurrentCard().choiceDoubleCannon(game, player1, new ArrayList<>(),new ArrayList<>() );
+        } catch (IllegalPhaseException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalRemoveException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(StateCardType.DECISION, game.getCurrentState().getCurrentCard().getStateCard());
+
+        game.getCurrentCard().choiceBox(game, player1, false);
+
+        assertEquals(StateCardType.FINISH,game.getCurrentState().getCurrentCard().getStateCard());
+
+
+    }
 }
