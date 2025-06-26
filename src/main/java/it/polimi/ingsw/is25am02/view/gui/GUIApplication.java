@@ -98,7 +98,7 @@ public class GUIApplication extends Application implements ConsoleClient {
         stage.setScene(scene);
         GUIController.setScene(scene);
         HomeSceneController controller = loader.getController();
-        controller.initialize();
+        //controller.initialize();
 
         GUIController.getInstance().addControllerToList((it.polimi.ingsw.is25am02.view.gui.controllers.GeneralController) controller, "HomeScene");
 

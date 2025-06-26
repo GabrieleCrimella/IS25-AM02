@@ -294,7 +294,7 @@ public class LobbyController extends GeneralController {
 
         try {
             GUIController.getInstance().getController().createLobby(GUIController.getInstance().getController().getVirtualView(), GUIController.getInstance().getNickname(), maxplayers, color, level);
-            onLobbyCreatedCorrectly();
+            //onLobbyCreatedCorrectly();
         } catch (RemoteException e) {
             errorLabel.setText("Error " + e.getMessage());
         }
