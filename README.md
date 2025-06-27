@@ -143,7 +143,7 @@ This project demonstrates advanced software engineering concepts including:
 
 ## Important Notes on the Project
 
-The test coverage percentage for the `model` package currently stands at **65%**.  
+The test coverage percentage for the `model` package currently stands at **62%**.  
 While this value may appear modest, it is a direct consequence of the architectural responsibilities assigned to the package.
 Specifically, the `model` layer is tasked with broadcasting a considerable number of state updates to connected clients, which are essential to guarantee correct and dynamic game interaction. These update mechanisms are inherently interactive and network-dependent, and as such, they cannot be effectively tested in isolation using standard **JUnit** procedures.
 Consequently, the coverage rate reflects the structural necessity of coupling with remote clients, rather than a lack of testing rigor or oversight.
