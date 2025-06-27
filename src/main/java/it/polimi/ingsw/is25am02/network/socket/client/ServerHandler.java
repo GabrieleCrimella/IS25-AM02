@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.is25am02.controller.client.MenuState;
-import it.polimi.ingsw.is25am02.network.rmi.client.RmiClient;
+import it.polimi.ingsw.is25am02.network.rmi.client.NetworkController;
 import it.polimi.ingsw.is25am02.network.socket.Command;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.LobbyView;
@@ -27,7 +27,7 @@ public class ServerHandler implements Runnable, VirtualServer{
     private final Object sendLock = new Object();
 
     private final Socket socket;
-    private RmiClient rmi;
+    private NetworkController rmi;
     private final Gson gson = new Gson();
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -37,7 +37,7 @@ public class ServerHandler implements Runnable, VirtualServer{
         this.socket = socket;
         try {
             this.out = new ObjectOutputStream(socket.getOutputStream());
-            this.rmi = new RmiClient();
+            this.rmi = new NetworkController();
             rmi.setView(console);
         } catch (IOException e) {
             System.err.println("Errore durante l'esecuzione: " + e.getMessage());

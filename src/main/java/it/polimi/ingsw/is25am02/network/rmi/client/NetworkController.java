@@ -20,13 +20,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 
-public class RmiClient extends UnicastRemoteObject implements VirtualView, ConnectionClient {
+public class NetworkController extends UnicastRemoteObject implements VirtualView, ConnectionClient {
     private final Object printLock = new Object();
     VirtualServer server = null;
     ConsoleClient console;
     GameV gameV;
 
-    public RmiClient() throws RemoteException {
+    public NetworkController() throws RemoteException {
         super();
     }
 
