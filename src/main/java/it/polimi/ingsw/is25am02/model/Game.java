@@ -1591,7 +1591,9 @@ public class Game implements Game_Interface {
             getCurrentCard().calculateDamage(this, player, player.getSpaceship().getTile(pos.x(), pos.y()));
             if (pos.x() == -1 && pos.y() == -1) {
                 try {
-                    player.getObserver().displayMessage("ingame.hidecalculatedamage", null);
+                    if (player.getObserver() != null){
+                        player.getObserver().displayMessage("ingame.hidecalculatedamage", null);
+                    }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
