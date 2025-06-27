@@ -27,21 +27,23 @@ The implementation includes:
 ![img.png](img/inGame.png)
 
 ## How to Run
+⚠️ Note: The provided JAR files have been tested and verified to work only on Windows systems.
+Compatibility with other operating systems (e.g., macOS, Linux) is not guaranteed and may result in unexpected behavior due to platform-specific dependencies or file handling.
 
 The project consists of two main JAR files:
-- `IS25-AM02-1.0-server.jar` - Game Server
-- `IS25-AM02-1.0-client.jar` - Game Client
+- `IS25-AM02-1.0-server-win.jar` - Game Server
+- `IS25-AM02-1.0-client-win.jar` - Game Client
 
 ### Starting the Server
 
 ```bash
-java -jar IS25-AM02-1.0-server.jar
+java -jar IS25-AM02-1.0-server-win.jar
 ```
 
 ### Starting the Client
 
 ```bash
-java -jar IS25-AM02-1.0-client.jar [network-protocol] [interface-type] [server-ip]
+java -jar IS25-AM02-1.0-client-win.jar [network-protocol] [interface-type] [server-ip]
 ```
 
 **Parameters:**
@@ -56,13 +58,13 @@ java -jar IS25-AM02-1.0-client.jar [network-protocol] [interface-type] [server-i
 **Example usage:**
 ```bash
 # Connect with GUI via RMI to localhost
-java -jar IS25-AM02-1.0-client.jar rmi gui 127.0.0.1
+java -jar IS25-AM02-1.0-client-win.jar rmi gui 127.0.0.1
 
 # Connect with TUI via Socket to remote server
-java -jar IS25-AM02-1.0-client.jar socket tui 192.168.1.100
+java -jar IS25-AM02-1.0-client-win.jar socket tui 192.168.1.100
 
 # Connect with GUI via Socket to localhost
-java -jar IS25-AM02-1.0-client.jar socket gui localhost
+java -jar IS25-AM02-1.0-client-win.jar socket gui localhost
 ```
 
 ## Network Configuration
@@ -125,7 +127,7 @@ Beyond the core game implementation, we have successfully developed:
 
 ## Requirements
 
-- Java Runtime Environment (JRE) 11 or higher
+- Java Runtime Environment (JRE) 23 or higher
 - Network connectivity for multiplayer gameplay
 - For GUI mode: JavaFX-compatible system
 
@@ -138,3 +140,10 @@ This project demonstrates advanced software engineering concepts including:
 - Multithreading and concurrent programming
 - Object-oriented design patterns
 - Client-server architecture
+
+## Important Notes on the Project
+
+The test coverage percentage for the `model` package currently stands at **65%**.  
+While this value may appear modest, it is a direct consequence of the architectural responsibilities assigned to the package.
+Specifically, the `model` layer is tasked with broadcasting a considerable number of state updates to connected clients, which are essential to guarantee correct and dynamic game interaction. These update mechanisms are inherently interactive and network-dependent, and as such, they cannot be effectively tested in isolation using standard **JUnit** procedures.
+Consequently, the coverage rate reflects the structural necessity of coupling with remote clients, rather than a lack of testing rigor or oversight.
