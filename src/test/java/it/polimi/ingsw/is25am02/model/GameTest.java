@@ -7,17 +7,11 @@ import it.polimi.ingsw.is25am02.model.cards.boxes.RedBox;
 import it.polimi.ingsw.is25am02.model.exception.AlreadyViewingException;
 import it.polimi.ingsw.is25am02.model.exception.IllegalAddException;
 import it.polimi.ingsw.is25am02.model.tiles.*;
-import it.polimi.ingsw.is25am02.network.VirtualView;
-import it.polimi.ingsw.is25am02.network.rmi.client.RmiClient;
 import it.polimi.ingsw.is25am02.utils.Coordinate;
 import it.polimi.ingsw.is25am02.utils.enumerations.*;
-import it.polimi.ingsw.is25am02.view.modelDuplicateView.GameV;
-import it.polimi.ingsw.is25am02.view.modelDuplicateView.HourglassV;
 import org.junit.jupiter.api.Test;
 
-import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
