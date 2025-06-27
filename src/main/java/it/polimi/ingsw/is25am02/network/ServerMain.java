@@ -39,6 +39,7 @@ public class ServerMain {
             }
             controller.shutdown();
             System.out.println("Server stopped");
+            System.exit(0);
         } catch (IOException e) {
             System.err.println("Error while starting the Server.");
         }

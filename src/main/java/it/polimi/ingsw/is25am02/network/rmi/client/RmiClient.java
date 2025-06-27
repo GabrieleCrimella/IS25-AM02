@@ -230,7 +230,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
     @Override
     public void showWinnersUpdate(Map<String, Integer> winners) {
         gameV.setWinners(winners);
-        console.getPrinter().printWinners(winners);
+        if (console.getPrinter() != null)
+            console.getPrinter().printWinners(winners);
     }
 
     //viene chiamato quando viene girata la clessidra
@@ -287,7 +288,8 @@ public class RmiClient extends UnicastRemoteObject implements VirtualView, Conne
             }
         }
         if (console.getNickname().equals(nickname) && deck != -1) {
-            console.getPrinter().printDeck(deck);
+            if (console.getPrinter() != null)
+                console.getPrinter().printDeck(deck);
         }
 
     }
