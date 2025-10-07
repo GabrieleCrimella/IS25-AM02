@@ -25,6 +25,11 @@ The implementation includes:
 - **Dual interface options**: Textual User Interface (TUI) and Graphical User Interface (GUI)
 - **Two additional functionalities**: Test Flight mode and Multiple Games support
 
+## Screenshots
+### Build Phase
+![img.png](img/img.png)
+### In-Game Phase
+![img.png](img/inGame.png)
 
 ## How to Run
 
